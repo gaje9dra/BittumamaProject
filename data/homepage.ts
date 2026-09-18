@@ -194,10 +194,11 @@ export const homepageContent = {
     action: { label: "View Research Services", href: "/services" },
   },
   expertise: {
-    eyebrow: "05 / Experts",
+    eyebrow: "09 / Experts",
     title: "Meet Our Experts",
     description:
       "Subject expertise, research experience and academic support.",
+    experts: [],
     action: { label: "Meet Our Experts", href: "/experts" },
   },
   insights: {
