@@ -1018,3 +1018,17 @@ Organization facts are limited to the project's established research, methodolog
 
 ### Responsive and motion behavior
 The editorial columns rebalance into a deliberate stacked composition on smaller screens. Focus items remain separated by dividers and the CTA retains a comfortable touch target. The CTA arrow uses existing motion tokens; no client-side animation is required and reduced-motion behavior is inherited globally.
+
+## Homepage Final Narrative / Primary Conversion CTA — Phase 4.15
+
+### Visual direction
+The final CTA closes the homepage with a dark primary editorial field, asymmetric headline/action alignment, generous whitespace, and one clear conversion path. It is intentionally distinct from a generic centered CTA banner.
+
+### CTA hierarchy and content
+The section uses one primary action: `Request Research Support` → `/contact`. Copy is limited to the research requirements already established across the homepage and makes no guarantees or unsupported conversion claims.
+
+### Button and interaction treatment
+The existing `Button` primitive now supports `asChild` so the CTA can retain button styling while using a semantic Next.js link. The arrow uses the existing restrained hover transition and inherits the project's reduced-motion behavior.
+
+### Responsive behavior
+Desktop uses a 12-column editorial split between headline and action. Tablet preserves the hierarchy without crowding, while mobile stacks the content naturally and keeps the CTA comfortably tappable.
