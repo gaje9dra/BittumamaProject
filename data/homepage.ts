@@ -52,9 +52,9 @@ export const homepageContent = {
   },
   capabilities: {
     eyebrow: "02 / Capabilities",
-    title: "Different disciplines. One coherent point of view.",
+    title: "Four connected ways of working with knowledge.",
     intro:
-      "The capability layer is intentionally presented as a set of editorial signals rather than a grid of interchangeable cards.",
+      "Research, intelligence, education, and applied expertise form the core of the organization’s work. The overview stays deliberately high-level; deeper detail belongs to the dedicated experiences that follow.",
     items: [
       {
         index: "01",
