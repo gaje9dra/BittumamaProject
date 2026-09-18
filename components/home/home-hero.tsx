@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { homepageContent } from "@/data/homepage";
 
@@ -7,58 +7,127 @@ export function HomeHero() {
   const { hero } = homepageContent;
 
   return (
-    <section aria-labelledby="home-hero-title" className="border-b border-border">
-      <Container size="wide" className="layout-section-xl">
-        <div className="grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(20rem,.85fr)] lg:items-end lg:gap-16">
-          <div className="max-w-[58rem]">
-            <p className="type-label text-muted-foreground">{hero.eyebrow}</p>
-            <h1 id="home-hero-title" className="type-display mt-5 max-w-[11ch] text-foreground">
+    <section
+      aria-labelledby="home-hero-title"
+      className="relative overflow-hidden border-b border-border"
+    >
+      <Container size="wide" className="layout-section-lg pt-10 sm:pt-14 lg:pt-16">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
+          <div className="lg:col-span-7 lg:col-start-1">
+            <div className="flex items-center gap-3">
+              <span aria-hidden="true" className="h-px w-8 bg-accent" />
+              <p className="type-label text-muted-foreground">{hero.eyebrow}</p>
+            </div>
+
+            <h1
+              id="home-hero-title"
+              className="type-display mt-6 max-w-[12ch] text-foreground"
+            >
               {hero.title}
             </h1>
-            <p className="type-body-lg mt-7 max-w-[42rem] text-muted-foreground">
-              {hero.description}
-            </p>
 
-            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Link
-                href={hero.primaryAction.href}
-                className="group inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-md)] bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
-              >
-                {hero.primaryAction.label}
-                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-              <Link
-                href={hero.secondaryAction.href}
-                className="group inline-flex min-h-11 items-center gap-2 type-button text-foreground underline decoration-border underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-primary hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3"
-              >
-                {hero.secondaryAction.label}
-                <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
+            <div className="mt-8 grid gap-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-10">
+              <p className="type-body-lg max-w-[42rem] text-muted-foreground">
+                {hero.description}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 sm:justify-end">
+                <Link
+                  href={hero.primaryAction.href}
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-[var(--radius-md)] bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
+                >
+                  {hero.primaryAction.label}
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+                <Link
+                  href={hero.secondaryAction.href}
+                  className="group inline-flex min-h-11 items-center gap-2 type-button text-foreground underline decoration-border underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-primary hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3"
+                >
+                  {hero.secondaryAction.label}
+                  <ArrowUpRight
+                    aria-hidden="true"
+                    className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
+                </Link>
+              </div>
             </div>
           </div>
 
-          <figure className="relative min-h-[20rem] overflow-hidden border border-border bg-surface-muted lg:min-h-[31rem]">
-            <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(to_right,transparent_0,transparent_calc(25%_-_1px),var(--border)_25%,transparent_calc(25%_+_1px),transparent_calc(50%_-_1px),var(--border)_50%,transparent_calc(50%_+_1px),transparent_calc(75%_-_1px),var(--border)_75%,transparent_calc(75%_+_1px)),linear-gradient(to_bottom,transparent_0,transparent_calc(20%_-_1px),var(--border)_20%,transparent_calc(20%_+_1px),transparent_calc(40%_-_1px),var(--border)_40%,transparent_calc(40%_+_1px),transparent_calc(60%_-_1px),var(--border)_60%,transparent_calc(60%_+_1px),transparent_calc(80%_-_1px),var(--border)_80%,transparent_calc(80%_+_1px))] opacity-70" />
-            <div className="absolute inset-x-6 top-6 flex items-center justify-between border-b border-border pb-3">
-              <span className="type-caption font-medium uppercase tracking-[0.12em] text-muted-foreground">
-                Visual field
-              </span>
-              <span className="type-caption text-muted-foreground">01</span>
-            </div>
-            <div className="absolute inset-x-8 bottom-8 left-8 right-8">
-              <div className="border-l-2 border-primary pl-4">
-                <p className="type-h4 max-w-[16ch] text-foreground">
-                  Image / research visual placeholder
-                </p>
-                <p className="type-body-sm mt-3 max-w-[30ch] text-muted-foreground">
-                  Reserved for an authentic research, people, fieldwork, or explanatory visual.
-                </p>
+          <div className="lg:col-span-4 lg:col-start-9 lg:pt-14 xl:pt-20">
+            <figure className="relative overflow-hidden border-y border-border bg-surface-muted">
+              <div className="grid grid-cols-4 border-b border-border" aria-hidden="true">
+                {[0, 1, 2, 3].map((item) => (
+                  <span key={item} className="h-9 border-r border-border last:border-r-0" />
+                ))}
               </div>
-            </div>
-            <figcaption className="sr-only">
-              Placeholder for the final homepage hero visual; no fabricated organizational imagery is used.
-            </figcaption>
-          </figure>
+
+              <div className="relative aspect-[4/5] min-h-[22rem]">
+                <div className="absolute inset-x-5 top-5 flex items-center justify-between">
+                  <span className="type-caption uppercase tracking-[0.12em] text-muted-foreground">
+                    Research signal
+                  </span>
+                  <span className="type-caption text-muted-foreground">01—24</span>
+                </div>
+
+                <div className="absolute inset-x-5 top-16 bottom-14">
+                  <svg
+                    viewBox="0 0 400 300"
+                    role="img"
+                    aria-labelledby="hero-visual-title hero-visual-description"
+                    className="h-full w-full"
+                    preserveAspectRatio="none"
+                  >
+                    <title id="hero-visual-title">Illustrative research signal</title>
+                    <desc id="hero-visual-description">
+                      A restrained line visualization showing changing signals across a research field. It is an illustrative placeholder, not organizational data.
+                    </desc>
+                    <line x1="0" y1="260" x2="400" y2="260" stroke="currentColor" strokeOpacity="0.18" />
+                    <line x1="0" y1="180" x2="400" y2="180" stroke="currentColor" strokeOpacity="0.18" />
+                    <line x1="0" y1="100" x2="400" y2="100" stroke="currentColor" strokeOpacity="0.18" />
+                    <line x1="80" y1="0" x2="80" y2="300" stroke="currentColor" strokeOpacity="0.12" />
+                    <line x1="200" y1="0" x2="200" y2="300" stroke="currentColor" strokeOpacity="0.12" />
+                    <line x1="320" y1="0" x2="320" y2="300" stroke="currentColor" strokeOpacity="0.12" />
+                    <path
+                      d="M0 236 C38 224 46 174 82 188 S124 226 154 158 S194 92 220 124 S258 190 288 112 S332 58 354 78 S384 42 400 28"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    />
+                    <circle cx="154" cy="158" r="4.5" fill="currentColor" />
+                    <circle cx="288" cy="112" r="4.5" fill="currentColor" />
+                    <circle cx="400" cy="28" r="4.5" fill="currentColor" />
+                  </svg>
+                </div>
+
+                <div className="absolute inset-x-5 bottom-5 flex items-end justify-between border-t border-border pt-3">
+                  <span className="type-caption max-w-[18ch] text-muted-foreground">
+                    Illustrative visual system for future evidence-led content.
+                  </span>
+                  <span aria-hidden="true" className="text-primary">
+                    <ArrowDown size={16} />
+                  </span>
+                </div>
+              </div>
+
+              <figcaption className="sr-only">
+                Illustrative research visualization placeholder; it does not represent real organizational data.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+
+        <div className="mt-12 flex items-center justify-between border-t border-border pt-4 lg:mt-16">
+          <p className="type-caption text-muted-foreground">{hero.meta}</p>
+          <a
+            href="#home-positioning"
+            className="type-caption inline-flex min-h-11 items-center gap-2 text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
+          >
+            Scroll to explore
+            <ArrowDown aria-hidden="true" size={15} />
+          </a>
         </div>
       </Container>
     </section>
