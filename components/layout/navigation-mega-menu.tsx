@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 import type { NavigationItem } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
-import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
+import { subscribeToHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
 type Props = {
