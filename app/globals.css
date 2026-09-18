@@ -65,8 +65,10 @@
     --grid-gap:1rem; --grid-gap-lg:1.5rem; --grid-gap-xl:2rem;
     --layer-base:0; --layer-content:10; --layer-sticky:20; --layer-navigation:30; --layer-modal:40; --layer-toast:50;
     --motion-instant:80ms; --motion-micro:150ms; --motion-standard:260ms; --motion-emphasis:500ms; --motion-display:700ms;
+    --motion-fast:150ms; --motion-normal:260ms; --motion-slow:350ms; --motion-reveal:520ms;
     --motion-ease-standard:cubic-bezier(0.2,0,0,1);
-    --motion-ease-emphasized:cubic-bezier(0.16,1,0.3,1);
+    --motion-ease-emphasis:cubic-bezier(0.16,1,0.3,1);
+    --motion-ease-emphasized:var(--motion-ease-emphasis);
     --motion-ease-enter:cubic-bezier(0.16,1,0.3,1);
     --motion-ease-exit:cubic-bezier(0.7,0,0.84,0);
     --motion-ease-linear:linear;
@@ -129,6 +131,8 @@
   .motion-reveal{animation:motion-reveal var(--motion-emphasis) var(--motion-ease-emphasis) both}
   .motion-fade{animation:motion-fade var(--motion-normal) var(--motion-ease-standard) both}
   .motion-slide-up{animation:motion-slide-up var(--motion-emphasis) var(--motion-ease-emphasis) both}
+  @keyframes mobile-menu-enter{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes mobile-menu-exit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}
   .motion-focus{transition:box-shadow var(--motion-fast) var(--motion-ease-standard),border-color var(--motion-fast) var(--motion-ease-standard)}
   .motion-focus:focus-visible{box-shadow:0 0 0 3px rgb(47 107 96 / .18)}
   @keyframes motion-reveal{from{opacity:var(--motion-opacity-hidden);clip-path:inset(0 0 12% 0)}to{opacity:var(--motion-opacity-visible);clip-path:inset(0)}}
@@ -162,4 +166,9 @@
   .motion-stagger > *:nth-child(4){animation-delay:180ms}
   .motion-stagger > *:nth-child(5){animation-delay:240ms}
   .motion-stagger > *:nth-child(6){animation-delay:300ms}
+}
+
+
+@layer base {
+  [id] { scroll-margin-top: 5rem; }
 }
