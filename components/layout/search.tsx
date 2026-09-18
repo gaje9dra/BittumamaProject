@@ -96,7 +96,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("pointerdown", handlePointerDown);
     };
-  }, [onClose, open, variant]);
+  }, [onClose, open, restoreFocusRef, variant]);
 
   useEffect(() => {
     if (previousPathnameRef.current !== pathname) {
