@@ -2,10 +2,11 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { homepageContent } from "@/data/homepage";
+import { homepageContent, type HomepageExpert } from "@/data/homepage";
 
 export function HomeExpertise() {
   const { expertise } = homepageContent;
+  const experts: HomepageExpert[] = expertise.experts;
 
   return (
     <section
@@ -26,9 +27,9 @@ export function HomeExpertise() {
           </div>
 
           <div className="lg:col-span-8 lg:col-start-5">
-            {expertise.experts.length > 0 ? (
+            {experts.length > 0 ? (
               <ul className="border-t border-border">
-                {expertise.experts.map((expert) => (
+                {experts.map((expert) => (
                   <li key={expert.id} className="border-b border-border py-6">
                     <Link
                       href={expert.href}
