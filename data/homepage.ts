@@ -49,6 +49,13 @@ export type HomepageAboutFocus = {
   description: string;
 };
 
+export type HomepageExpert = {
+  id: string;
+  name: string;
+  specialization: string;
+  href: string;
+};
+
 export const homepageEvents: HomepageEvent[] = [];
 export const homepageArticles: HomepageArticle[] = [];
 
@@ -240,7 +247,7 @@ export const homepageContent = {
     title: "Meet Our Experts",
     description:
       "Subject expertise, research experience and academic support.",
-    experts: [],
+    experts: [] satisfies HomepageExpert[],
     action: { label: "Meet Our Experts", href: "/experts" },
   },
   events: {
