@@ -5,6 +5,7 @@ import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { NavigationItem } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
+import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
 export function NavigationDropdown({ item, pathname }: { item: NavigationItem; pathname: string }) {
@@ -14,6 +15,21 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
   const linksRef = useRef<HTMLAnchorElement[]>([]);
   const panelId = useId();
   const active = isNavigationItemActive(pathname, item.href);
+
+  const openMenu = useCallback(() => {
+    announceHeaderSurface("dropdown");
+    setOpen(true);
+  }, []);
+
+  useEffect(() => {
+    return subscribeToHeaderSurface((surface) => {
+      if (surface !== "dropdown") setOpen(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const close = useCallback((restoreFocus = false) => {
     setOpen(false);
@@ -51,7 +67,7 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", keyboard);
     };
-  }, [close, open]);
+  }, [close, open, openMenu]);
 
   return (
     <div ref={panelRef} className="relative">
@@ -61,11 +77,14 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
         aria-expanded={open}
         aria-haspopup="menu"
         aria-controls={panelId}
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          if (open) close();
+          else openMenu();
+        }}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown") {
             event.preventDefault();
-            setOpen(true);
+            openMenu();
             requestAnimationFrame(() => linksRef.current[0]?.focus());
           }
         }}
