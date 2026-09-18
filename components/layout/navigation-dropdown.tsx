@@ -22,10 +22,11 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
   }, []);
 
   useEffect(() => {
+    if (!open) return;
     return subscribeToHeaderSurface((surface) => {
       if (surface !== "dropdown") setOpen(false);
     });
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     setOpen(false);
