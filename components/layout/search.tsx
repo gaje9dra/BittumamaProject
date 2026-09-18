@@ -25,7 +25,6 @@ export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(f
       type="button"
       aria-label={open ? "Close search" : label}
       aria-expanded={open}
-      aria-haspopup="dialog"
       onClick={onClick}
       className={cn(
         "inline-flex min-h-11 items-center justify-center gap-2 border border-transparent px-2.5 type-nav text-muted-foreground transition-colors duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)] hover:border-border hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3",
@@ -127,8 +126,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   return (
     <div
       ref={panelRef}
-      role="dialog"
-      aria-modal={undefined}
+      role="search"
       aria-labelledby={labelId}
       className={cn(
         variant === "overlay"
