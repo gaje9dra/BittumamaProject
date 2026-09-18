@@ -11,7 +11,7 @@
   --color-primary-foreground: var(--primary-foreground);
 
   --font-sans: var(--font-body);
-  --font-display: var(--font-display);
+  --font-display: var(--font-display-family);
 }
 
 @layer base {
@@ -27,7 +27,7 @@
     --primary-foreground: #ffffff;
 
     /* Font architecture — body currently uses next/font; display aliases it until Phase 2. */
-    --font-display: var(--font-body), Arial, Helvetica, sans-serif;
+    --font-display-family: var(--font-body), Arial, Helvetica, sans-serif;
 
     /* Typography scale */
     --font-size-display: clamp(3rem, 7vw, 5.5rem);
@@ -142,7 +142,7 @@
 /* Semantic typography tokens. */
 @layer components {
   .type-display {
-    font-family: var(--font-display);
+    font-family: var(--font-display-family);
     font-size: var(--font-size-display);
     line-height: var(--line-height-display);
     letter-spacing: -0.03em;
