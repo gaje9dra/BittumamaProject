@@ -4,38 +4,60 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 
+const testCases = [
+  ["Top", "Load at the top of the page; header keeps its full treatment."],
+  ["Scrolled", "Scroll past the 12px threshold; the header remains visible with restrained separation."],
+  ["Desktop", "Test active, hover, focus, route changes, CTA, and wide-to-small desktop widths."],
+  ["Mobile", "Test closed/open, active route, Escape, focus loop, close transition, and touch targets."],
+  ["Edge cases", "Try narrow, short, landscape, zoomed, and long-content viewports without horizontal overflow."],
+  ["Reduced motion", "Enable prefers-reduced-motion and verify state changes remain clear without decorative movement."],
+];
+
 export default function HeaderPlaygroundPage() {
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-[180vh] bg-background text-foreground">
       <Header />
       <section className="layout-section-lg">
         <Container size="wide">
           <p className="type-label text-muted-foreground">Development reference</p>
-          <Heading level={1} className="type-measure-heading mt-3 font-semibold">Header & primary navigation</Heading>
+          <Heading level={1} className="type-measure-heading mt-3 font-semibold">
+            Header & primary navigation
+          </Heading>
           <Text size="lg" className="type-reading mt-5 text-muted-foreground">
-            Production header validation surface. Resize the viewport to inspect desktop, tablet, mobile,
-            keyboard focus, active navigation, menu behavior, and reduced-motion behavior.
+            Production header validation surface. Scroll to inspect the top/scrolled states, then resize the
+            viewport to test desktop, tablet, mobile, keyboard focus, active navigation, and reduced motion.
           </Text>
+
           <div className="mt-12 grid gap-8 border-t border-border pt-8 md:grid-cols-2">
-            <div>
-              <p className="type-label text-muted-foreground">Structure</p>
-              <ul className="type-body-sm mt-4 space-y-3">
-                <li>Typographic temporary brand treatment</li>
-                <li>Five primary navigation destinations</li>
-                <li>Single contextual action</li>
-                <li>Dedicated mobile navigation</li>
-              </ul>
-            </div>
-            <div>
-              <p className="type-label text-muted-foreground">States to test</p>
-              <ul className="type-body-sm mt-4 space-y-3">
-                <li>Default / hover / active / keyboard focus</li>
-                <li>Mobile closed / open / Escape</li>
-                <li>Long labels and narrow widths</li>
-                <li>Reduced-motion preference</li>
-              </ul>
+            {testCases.map(([label, description]) => (
+              <div key={label} className="border-b border-border pb-6">
+                <p className="type-label text-muted-foreground">{label}</p>
+                <Text size="sm" className="mt-3 text-muted-foreground">
+                  {description}
+                </Text>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-16 border-t border-border pt-8">
+            <p className="type-label text-muted-foreground">Long-content / anchor test</p>
+            <Heading level={2} className="type-h3 mt-3 max-w-[32ch]">
+              The header remains available without hijacking the document scroll.
+            </Heading>
+            <Text size="default" className="type-reading mt-5 text-muted-foreground">
+              This deliberately long development surface provides enough page height to verify sticky
+              positioning, scroll-state transitions, keyboard focus, and body-scroll restoration after the
+              mobile menu closes. Future in-page sections can opt into the scroll-anchor primitive when they
+              use hash navigation.
+            </Text>
+            <div className="mt-16 h-[60vh] border-l border-border pl-6">
+              <p className="type-label text-muted-foreground">Scroll depth</p>
+              <Text size="sm" className="mt-3 text-muted-foreground">
+                Continue scrolling, resize between mobile and desktop, and return to the top to confirm the
+                header state returns cleanly.
+              </Text>
             </div>
           </div>
         </Container>
