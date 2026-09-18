@@ -5,10 +5,24 @@
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-interactive: var(--surface-interactive);
+  --color-surface-highlight: var(--surface-highlight);
   --color-border: var(--border);
+  --color-input: var(--input);
   --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
 
   --font-sans: var(--font-body);
   --font-display: var(--font-display-family);
@@ -16,17 +30,76 @@
 
 @layer base {
   :root {
-    /* Neutral color foundation — intentionally temporary until Phase 2. */
-    --background: #ffffff;
-    --foreground: #171717;
+    /* Core semantic palette: mineral green, warm stone, restrained terracotta. */
+    --background: #f7f6f2;
+    --foreground: #17211f;
     --surface: #ffffff;
-    --surface-muted: #f5f5f5;
-    --border: #e5e5e5;
-    --muted: #666666;
-    --primary: #262626;
-    --primary-foreground: #ffffff;
+    --surface-muted: #efeee9;
+    --surface-elevated: #ffffff;
+    --surface-interactive: #e8e9e3;
+    --surface-highlight: #e9f0eb;
 
-    /* Font architecture — body currently uses next/font; display aliases it until Phase 2. */
+    --primary: #173f3a;
+    --primary-foreground: #ffffff;
+    --secondary: #6b6255;
+    --secondary-foreground: #ffffff;
+    --accent: #a34f3f;
+    --accent-foreground: #ffffff;
+
+    --muted: #e7e4dc;
+    --muted-foreground: #5c6561;
+    --border: #d7d7cf;
+    --input: #c6c9c1;
+    --ring: #2f6b60;
+
+    --success: #2f6b4f;
+    --warning: #9a6a20;
+    --error: #a33f3f;
+    --info: #386779;
+
+    /* Primary scale */
+    --primary-50: #edf5f2;
+    --primary-100: #dbeae5;
+    --primary-200: #b8d5ce;
+    --primary-300: #8eb9ae;
+    --primary-400: #5f9589;
+    --primary-500: #39766b;
+    --primary-600: #2f665c;
+    --primary-700: #28544d;
+    --primary-800: #21453f;
+    --primary-900: #1b3935;
+    --primary-950: #0f2522;
+
+    /* Secondary scale */
+    --secondary-50: #f6f3ed;
+    --secondary-100: #ebe5da;
+    --secondary-200: #d9cdbb;
+    --secondary-300: #c5b49b;
+    --secondary-400: #ad9678;
+    --secondary-500: #927b5f;
+    --secondary-600: #806b53;
+    --secondary-700: #695846;
+    --secondary-800: #574a3d;
+    --secondary-900: #483e34;
+    --secondary-950: #29241e;
+
+    /* Categorical research/data colors. Use with labels, patterns, or markers as needed. */
+    --data-1: #173f3a;
+    --data-2: #386779;
+    --data-3: #7b5b8a;
+    --data-4: #a34f3f;
+    --data-5: #9a6a20;
+    --data-6: #58724f;
+
+    /* Intentional dark surface for research/editorial contrast sections. */
+    --dark-background: #17211f;
+    --dark-foreground: #f5f3ec;
+    --dark-surface: #22302c;
+    --dark-surface-muted: #2a3733;
+    --dark-border: #43514c;
+    --dark-muted-foreground: #b9c1bc;
+
+    /* Font architecture — final typeface selection remains Phase 2.3. */
     --font-display-family: var(--font-body), Arial, Helvetica, sans-serif;
 
     /* Typography scale */
@@ -50,7 +123,7 @@
     --line-height-body-sm: 1.5;
     --line-height-caption: 1.4;
 
-    /* Spacing scale — use Tailwind spacing utilities for component-level spacing. */
+    /* Spacing scale */
     --space-micro: 0.25rem;
     --space-small: 0.5rem;
     --space-component: 1rem;
@@ -130,16 +203,15 @@
   }
 
   :focus-visible {
-    outline: 2px solid currentColor;
+    outline: 2px solid var(--ring);
     outline-offset: 3px;
   }
 
   ::selection {
-    background: rgb(23 23 23 / 0.12);
+    background: rgb(23 63 58 / 0.16);
   }
 }
 
-/* Semantic typography tokens. */
 @layer components {
   .type-display {
     font-family: var(--font-display-family);
