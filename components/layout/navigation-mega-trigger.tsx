@@ -39,14 +39,13 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
         ref={triggerRef}
         type="button"
         aria-expanded={open}
-        aria-haspopup="menu"
-        aria-controls={panelId}
+                aria-controls={panelId}
         onClick={() => {
           if (open) close();
           else openMenu();
         }}
         onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown") {
+          if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown" || event.key === "ArrowUp") {
             event.preventDefault();
             setOpen(true);
           }
