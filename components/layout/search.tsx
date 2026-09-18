@@ -42,7 +42,7 @@ export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(f
 
 type SearchPanelProps = {
   open: boolean;
-  onClose: () => void;
+  onClose: (restoreFocus?: boolean) => void;
   variant?: "overlay" | "inline";
   className?: string;
   restoreFocusRef?: RefObject<HTMLElement | null>;
@@ -52,7 +52,7 @@ type SearchPanelProps = {
 export function SearchPanel({ open, onClose, variant = "overlay", className, restoreFocusRef, id }: SearchPanelProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
+  const restoreFocusOnCloseRef = useRef(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const labelId = useId();
   const previousOpenRef = useRef(false);
@@ -67,13 +67,14 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
     requestAnimationFrame(() => inputRef.current?.focus());
 
     const unsubscribe = subscribeToHeaderSurface((surface) => {
-      if (surface !== "search") onClose();
+      if (surface !== "search") onClose(false);
     });
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        restoreFocusOnCloseRef.current = true;
+        onClose(true);
       }
     };
     const handlePointerDown = (event: PointerEvent) => {
@@ -100,12 +101,13 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   useEffect(() => {
     if (previousPathnameRef.current !== pathname) {
       previousPathnameRef.current = pathname;
-      onClose();
+      onClose(false);
     }
   }, [onClose, pathname]);
 
   useEffect(() => {
-    if (previousOpenRef.current && !open) {
+    if (previousOpenRef.current && !open && restoreFocusOnCloseRef.current) {
+      restoreFocusOnCloseRef.current = false;
       requestAnimationFrame(() => {
         restoreFocusRef?.current?.focus();
       });
@@ -122,7 +124,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
       inputRef.current?.focus();
       return;
     }
-    onClose();
+    onClose(false);
     router.push("/search?q=" + encodeURIComponent(trimmed));
   };
 
@@ -144,9 +146,11 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
         <div className="flex items-center justify-between gap-4">
           <p id={labelId} className="type-label text-muted-foreground">Search</p>
           <button
-            ref={closeRef}
             type="button"
-            onClick={onClose}
+            onClick={() => {
+              restoreFocusOnCloseRef.current = true;
+              onClose(true);
+            }}
             aria-label="Close search"
             className="inline-flex size-11 shrink-0 items-center justify-center text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
           >
