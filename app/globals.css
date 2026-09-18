@@ -26,7 +26,6 @@
 
   --font-sans: var(--font-body);
   --font-ui: var(--font-body);
-  --font-display: var(--font-display-family);
 }
 
 @layer base {
@@ -264,8 +263,41 @@
   }
 
   .type-body {
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
+  }
+
+  .type-h5 {
+    font-family: var(--font-display-family);
+    font-size: var(--text-h5);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .type-label {
+    font-family: var(--font-body), sans-serif;
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .type-reading {
+    max-width: 68ch;
+  }
+
+  .type-article {
+    max-width: 66ch;
+  }
+
+  .type-measure-heading {
+    max-width: 22ch;
+  }
+
+  .type-measure-section {
+    max-width: 32ch;
   }
 
   .type-body-sm {
