@@ -201,7 +201,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
           <Link
             href="/search"
             onClick={() => onClose(false)}
-            className="type-caption" text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+            className="type-caption text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
           >
             View search page
           </Link>
