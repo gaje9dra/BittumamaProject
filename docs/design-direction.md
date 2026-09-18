@@ -842,3 +842,25 @@ Desktop uses the editorial introduction plus service directory relationship. Tab
 
 ### Future compatibility
 Service links use the scalable `/services/[slug]` pattern, while `/services` remains the directory destination. The static content model is centralized in `data/homepage.ts` so future CMS or database-backed content can replace the source without changing the presentation contract. No service pages, CMS, database, filtering, admin, or backend are implemented in this phase.
+
+
+## Global Content & Copy Rule
+
+This is a permanent website-wide content requirement. Every heading, navigation label, CTA, description, service name, metadata label, placeholder, accessibility label, and other UI copy must be relevant to the actual organization, the actual service being described, and the visitor’s task.
+
+### Content standards
+- Prefer precise industry terminology over invented marketing language.
+- Write from user intent: explain what is provided, who it is for, what it includes, what problem it addresses, or what the visitor receives.
+- Navigation and CTAs must describe their destination or action.
+- Use consistent terminology across navigation, pages, services, forms, metadata, and SEO.
+- Do not add services or categories merely to make the site appear comprehensive.
+- Do not fabricate clients, universities, partnerships, awards, certifications, credentials, outcomes, statistics, testimonials, research findings, publication relationships, or other claims.
+- Research content must not invent datasets, findings, conclusions, citations, or publication credentials.
+- When verified organizational content is unavailable, use concise, clearly replaceable placeholders rather than generic marketing copy.
+- Empty space is preferable to irrelevant copy.
+
+### Existing-content handling
+Before changing established copy, inspect its intended role and preserve accurate terminology. Replace generic or unsupported wording selectively rather than rewriting unrelated content. Newly added copy must pass a relevance, specificity, factual-support, terminology, user-intent, and consistency check.
+
+### Homepage application
+The homepage content model remains centralized in `data/homepage.ts`. Provisional content explicitly identifies areas where verified organizational information is still required. Service and research structures are designed to accept verified content later without changing the presentation architecture.
