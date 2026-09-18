@@ -28,10 +28,6 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
     });
   }, [open]);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   const close = useCallback((restoreFocus = false) => {
     setOpen(false);
     if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
