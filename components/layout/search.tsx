@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Search, X } from "lucide-react";
 import type { FormEvent } from "react";
-import { useEffect, useId, useRef, useState, type RefObject } from "react";
+import { forwardRef, useEffect, useId, useRef, useState, type RefObject } from "react";
 import { cn } from "@/lib/utils";
 
 type SearchTriggerProps = {
@@ -13,9 +13,13 @@ type SearchTriggerProps = {
   label?: string;
 };
 
-export function SearchTrigger({ open, onClick, className, label = "Search" }: SearchTriggerProps) {
+export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(function SearchTrigger(
+  { open, onClick, className, label = "Search" },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type="button"
       aria-label={open ? "Close search" : label}
       aria-expanded={open}
@@ -31,7 +35,7 @@ export function SearchTrigger({ open, onClick, className, label = "Search" }: Se
       <span>{label}</span>
     </button>
   );
-}
+});
 
 type SearchPanelProps = {
   open: boolean;
