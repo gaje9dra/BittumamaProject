@@ -8,6 +8,7 @@ import type { NavigationItem } from "@/data/navigation";
 import { mobileNavigation } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
+import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 
 const MENU_TRANSITION_MS = 150;
 
@@ -16,6 +17,8 @@ export function MobileNav({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<NavigationItem | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchTriggerRef = useRef<HTMLButtonElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const submenuBackRef = useRef<HTMLButtonElement>(null);
@@ -24,8 +27,11 @@ export function MobileNav({ className }: { className?: string }) {
 
   const closeMenu = useCallback(() => {
     setActiveSubmenu(null);
+    setSearchOpen(false);
     setOpen(false);
   }, []);
+
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   const enterSubmenu = useCallback((item: NavigationItem) => setActiveSubmenu(item), []);
   const leaveSubmenu = useCallback(() => setActiveSubmenu(null), []);
@@ -157,6 +163,21 @@ export function MobileNav({ className }: { className?: string }) {
           <nav aria-label="Mobile primary navigation" className="mx-auto flex min-h-full max-w-[var(--container-content)] flex-col">
             <div className="flex-1">
               {!activeSubmenu ? (
+                <>
+                  <div className="mb-7">
+                    <SearchTrigger
+                      open={searchOpen}
+                      onClick={() => setSearchOpen((value) => !value)}
+                      className="w-full justify-start border-border bg-surface"
+                    />
+                    <SearchPanel
+                      open={searchOpen}
+                      onClose={closeSearch}
+                      variant="inline"
+                      className="mt-3"
+                      restoreFocusRef={searchTriggerRef}
+                    />
+                  </div>
                 <>
                   {mobileNavigation.map((item, index) => {
                     const hasNestedNavigation = Boolean(item.children?.length || item.groups?.length);
