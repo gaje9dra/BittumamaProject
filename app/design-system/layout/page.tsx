@@ -57,13 +57,13 @@ export default function LayoutPlaygroundPage() {
 
       <Sample title="Grid foundation" detail="1 / 2 / 3 / 4 / 6 / 12 columns">
         <div className="space-y-6">
-          {[
+          {([
             ["2 columns", "layout-grid-2", 2],
             ["3 columns", "layout-grid-3", 3],
             ["4 columns", "layout-grid-4", 4],
             ["6 columns", "layout-grid-6", 6],
             ["12 columns", "layout-grid-12", 12],
-          ].map(([name, grid, count]) => (
+          ] as const).map(([name, grid, count]) => (
             <div key={name}>
               <p className="type-caption mb-2 text-muted-foreground">{name}</p>
               <div className={`layout-grid ${grid}`}>
