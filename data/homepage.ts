@@ -116,6 +116,31 @@ export const homepageContent = {
     ],
     action: { label: "View All Services", href: "/services" },
   },
+  audience: {
+    eyebrow: "06 / Who we support",
+    title: "Support for students and researchers.",
+    description: "Choose the research requirement that matches your work.",
+    items: [
+      {
+        index: "01",
+        title: "Thesis & Dissertation",
+        description: "Support for students working on thesis and dissertation requirements.",
+        services: [
+          { label: "Thesis Support", href: "/services/thesis-support" },
+          { label: "Dissertation Support", href: "/services/dissertation-support" },
+        ],
+      },
+      {
+        index: "02",
+        title: "Research Papers & Analysis",
+        description: "Support for researchers and students working on papers and data analysis.",
+        services: [
+          { label: "Research Paper", href: "/services/research-paper" },
+          { label: "Data Analysis", href: "/services/data-analysis" },
+        ],
+      },
+    ],
+  },
   expertise: {
     eyebrow: "05 / Experts",
     title: "Meet Our Experts",
