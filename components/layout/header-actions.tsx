@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
