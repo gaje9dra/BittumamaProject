@@ -15,7 +15,7 @@ export function HeaderActions({ className }: { className?: string }) {
       <SearchTrigger ref={searchTriggerRef} open={searchOpen} onClick={() => setSearchOpen((value) => !value)} />
       <Link
         href="/contact"
-        className="inline-flex min-h-10 items-center border border-primary bg-primary px-4 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 active:bg-primary-800 focus-visible:outline-2 focus-visible:outline-offset-3"
+        className="inline-flex min-h-10 items-center rounded-[var(--radius-md)] border border-primary bg-primary px-4 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 active:bg-primary-800 focus-visible:outline-2 focus-visible:outline-offset-3"
       >
         Get in touch
       </Link>
