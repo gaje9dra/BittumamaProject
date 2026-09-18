@@ -2,28 +2,10 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { homepageContent } from "@/data/homepage";
+import { homepageContent, homepageEvents, type HomepageEvent } from "@/data/homepage";
 
-type Event = {
-  id: string;
-  title: string;
-  slug: string;
-  date: string;
-  endDate?: string;
-  time?: string;
-  category: string;
-  location?: string;
-  format?: string;
-  shortDescription: string;
-  registrationLabel?: string;
-  href?: string;
-  status?: "Upcoming" | "Registration Open" | "Coming Soon" | "Completed";
-  featured?: boolean;
-};
 
-export const homepageEvents: Event[] = [];
-
-function EventMeta({ event }: { event: Event }) {
+function EventMeta({ event }: { event: HomepageEvent }) {
   return (
     <div className="flex flex-wrap gap-x-4 gap-y-2">
       <span className="type-label text-muted-foreground">{event.date}</span>
@@ -37,7 +19,7 @@ function EventMeta({ event }: { event: Event }) {
   );
 }
 
-function EventAction({ event }: { event: Event }) {
+function EventAction({ event }: { event: HomepageEvent }) {
   if (!event.href) return null;
   return (
     <Link
