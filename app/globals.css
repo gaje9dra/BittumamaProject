@@ -64,6 +64,15 @@
     --container-full:100%; --page-gutter:1rem;
     --grid-gap:1rem; --grid-gap-lg:1.5rem; --grid-gap-xl:2rem;
     --layer-base:0; --layer-content:10; --layer-sticky:20; --layer-navigation:30; --layer-modal:40; --layer-toast:50;
+    --motion-instant:80ms; --motion-micro:150ms; --motion-standard:260ms; --motion-emphasis:500ms; --motion-display:700ms;
+    --motion-ease-standard:cubic-bezier(0.2,0,0,1);
+    --motion-ease-emphasized:cubic-bezier(0.16,1,0.3,1);
+    --motion-ease-enter:cubic-bezier(0.16,1,0.3,1);
+    --motion-ease-exit:cubic-bezier(0.7,0,0.84,0);
+    --motion-ease-linear:linear;
+    --motion-distance-sm:4px; --motion-distance-md:10px; --motion-distance-lg:20px;
+    --motion-scale-hover:1.015;
+    --motion-opacity-hidden:0; --motion-opacity-visible:1;
   }
   html{box-sizing:border-box;scroll-behavior:smooth;background:var(--background);color:var(--foreground)}
   *,*::before,*::after{box-sizing:inherit}
@@ -111,15 +120,15 @@
   .layout-layer-modal{position:relative;z-index:var(--layer-modal)}
   .layout-layer-toast{position:relative;z-index:var(--layer-toast)}
 
-  .motion-interactive{transition-duration:var(--motion-normal);transition-timing-function:var(--motion-ease-standard);transition-property:color,background-color,border-color,opacity,box-shadow,transform}
+  .motion-interactive{transition-duration:var(--motion-standard);transition-timing-function:var(--motion-ease-standard);transition-property:color,background-color,border-color,opacity,box-shadow,transform}
   .motion-interactive:hover{transition-duration:var(--motion-fast)}
   .motion-lift:hover{transform:translateY(calc(var(--motion-distance-sm) * -1))}
-  .motion-image{transition:transform var(--motion-reveal) var(--motion-ease-standard)}
+  .motion-image{transition:transform var(--motion-emphasis) var(--motion-ease-standard)}
   .motion-image:hover{transform:scale(var(--motion-scale-hover))}
   .motion-underline{transition:text-decoration-color var(--motion-fast) var(--motion-ease-standard),text-underline-offset var(--motion-fast) var(--motion-ease-standard)}
-  .motion-reveal{animation:motion-reveal var(--motion-reveal) var(--motion-ease-emphasis) both}
+  .motion-reveal{animation:motion-reveal var(--motion-emphasis) var(--motion-ease-emphasis) both}
   .motion-fade{animation:motion-fade var(--motion-normal) var(--motion-ease-standard) both}
-  .motion-slide-up{animation:motion-slide-up var(--motion-reveal) var(--motion-ease-emphasis) both}
+  .motion-slide-up{animation:motion-slide-up var(--motion-emphasis) var(--motion-ease-emphasis) both}
   .motion-focus{transition:box-shadow var(--motion-fast) var(--motion-ease-standard),border-color var(--motion-fast) var(--motion-ease-standard)}
   .motion-focus:focus-visible{box-shadow:0 0 0 3px rgb(47 107 96 / .18)}
   @keyframes motion-reveal{from{opacity:var(--motion-opacity-hidden);clip-path:inset(0 0 12% 0)}to{opacity:var(--motion-opacity-visible);clip-path:inset(0)}}
