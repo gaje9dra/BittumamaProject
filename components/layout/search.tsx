@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Search, X } from "lucide-react";
 import type { FormEvent } from "react";
 import { forwardRef, useEffect, useId, useRef, useState, type RefObject } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
@@ -55,6 +55,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   const labelId = useId();
   const previousOpenRef = useRef(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!open) return;
@@ -92,6 +93,13 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
       document.removeEventListener("pointerdown", handlePointerDown);
     };
   }, [onClose, open, variant]);
+
+  useEffect(() => {
+    if (!open) return;
+    const handlePathChange = () => onClose();
+    void pathname;
+    return () => handlePathChange;
+  }, [onClose, pathname, open]);
 
   useEffect(() => {
     if (previousOpenRef.current && !open) {
