@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Search, X } from "lucide-react";
 import type { FormEvent } from "react";
 import { forwardRef, useEffect, useId, useRef, useState, type RefObject } from "react";
+import { useRouter } from "next/navigation";
+import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
 type SearchTriggerProps = {
@@ -52,10 +54,17 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   const panelRef = useRef<HTMLDivElement>(null);
   const labelId = useId();
   const previousOpenRef = useRef(false);
+  const router = useRouter();
 
   useEffect(() => {
     if (!open) return;
+
+    announceHeaderSurface("search");
     requestAnimationFrame(() => inputRef.current?.focus());
+
+    const unsubscribe = subscribeToHeaderSurface((surface) => {
+      if (surface !== "search") onClose();
+    });
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -66,12 +75,19 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
     const handlePointerDown = (event: PointerEvent) => {
       if (variant !== "overlay") return;
       const target = event.target;
-      if (target instanceof Node && !panelRef.current?.contains(target)) onClose();
+      if (
+        target instanceof Node &&
+        !panelRef.current?.contains(target) &&
+        !restoreFocusRef?.current?.contains(target)
+      ) {
+        onClose();
+      }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("pointerdown", handlePointerDown);
     return () => {
+      unsubscribe();
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("pointerdown", handlePointerDown);
     };
@@ -84,7 +100,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
       });
     }
     previousOpenRef.current = open;
-  }, [open]);
+  }, [open, restoreFocusRef]);
 
   if (!open) return null;
 
@@ -95,7 +111,8 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
       inputRef.current?.focus();
       return;
     }
-    window.location.assign("/search?q=" + encodeURIComponent(trimmed));
+    onClose();
+    router.push("/search?q=" + encodeURIComponent(trimmed));
   };
 
   return (
