@@ -103,6 +103,18 @@ export const homepageContent = {
     ],
     action: { label: "Explore research", href: "/research" },
   },
+  services: {
+    eyebrow: "04 / Services & solutions",
+    title: "Ways to apply expertise to a real brief.",
+    description: "The services layer turns research, intelligence, education, and technical capabilities into practical engagements. This is a replaceable homepage overview, not a fixed catalog.",
+    items: [
+      { index: "01", title: "Research & advisory", description: "Focused research and advisory engagements for questions that need structured inquiry, evidence review, and informed direction.", category: "Research & advisory", audience: "Organizations with a defined question or brief", format: "Focused engagement", href: "/services/research-advisory" },
+      { index: "02", title: "Strategy & intelligence", description: "Structured analysis and strategic thinking for teams working through complex information, choices, or changing conditions.", category: "Strategy", audience: "Teams navigating complex decisions", format: "Advisory engagement", href: "/services/strategy-intelligence" },
+      { index: "03", title: "Education & training", description: "Learning programs that translate specialist knowledge into clear teaching, practical training, and accessible understanding.", category: "Education & training", audience: "Learners, teams, and professional groups", format: "Program or training", href: "/services/education-training" },
+      { index: "04", title: "Technology solutions", description: "Purposeful technology work that helps turn research, knowledge, or operational requirements into usable digital solutions.", category: "Technology", audience: "Teams with a defined technology need", format: "Applied technology engagement", href: "/services/technology-solutions" },
+    ],
+    action: { label: "View all services", href: "/services" },
+  },
   expertise: {
     eyebrow: "04 / Human expertise",
     title: "Technology is useful. Expertise makes it meaningful.",
