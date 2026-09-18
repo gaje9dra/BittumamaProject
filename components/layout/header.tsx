@@ -17,7 +17,7 @@ export function Header() {
             <span className="type-h5 font-semibold tracking-[-0.02em]">Bittumama</span>
           </Link>
           <DesktopNav />
-          <HeaderActions className="ml-7 hidden lg:flex" />
+          <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" />
           <MobileNav className="ml-auto lg:hidden" />
         </div>
       </header>
