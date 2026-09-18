@@ -444,6 +444,37 @@ The scroll-aware client boundary is limited to the header shell. It uses one pas
 - data/navigation.ts: structured navigation data.
 - lib/navigation.ts: shared, normalized route matching.
 - app/design-system/header/page.tsx: development-only validation playground.
+
+### Navigation dropdown and mega-menu foundation
+The current production navigation remains direct-link based because the established information architecture does not yet contain enough real child destinations to justify turning a header category into a dropdown or mega menu. No artificial production menu content is introduced.
+
+The navigation data model now supports four conceptual types: `link`, `dropdown`, `grouped`, and `mega`. Optional descriptions, children, groups, featured destinations, external-link metadata, and lightweight metadata can be added only when future pages establish a real need.
+
+### Dropdown behavior
+`NavigationDropdown` provides the reusable simple-dropdown foundation. It uses a button trigger with `aria-expanded`, `aria-haspopup="menu"`, and `aria-controls`. The panel is content-sized rather than given a giant fixed width. Content uses the existing surface, border, typography, spacing, radius, and shadow tokens.
+
+Pointer interaction is click-based rather than hover-only. Outside pointer interaction closes the panel. Keyboard support includes Enter, Space, Arrow Down, Arrow Up, Home, End, and Escape. Escape restores focus to the trigger. Arrow/Home/End behavior is intentionally limited to the open menu links.
+
+### Grouped and mega-menu structure
+`NavigationMegaMenu` provides the future multi-column foundation. It consumes the shared 12-column grid, page gutter, wide container, semantic navigation types, active-route matching, and optional featured destination. It does not introduce a separate grid, decorative card system, or promotional visual treatment.
+
+The production header does not currently activate this foundation. A mega menu should be enabled only after real information architecture establishes multiple meaningful groups that cannot be scanned effectively as direct links or a simple dropdown.
+
+### Development navigation playground
+The development-only `/design-system/navigation` surface demonstrates the reusable dropdown and multi-group mega-menu structures with clearly marked interaction fixtures. These fixtures are validation content only and are not exposed through production navigation.
+
+### Mobile navigation architecture
+Desktop dropdowns and future mega menus do not become oversized mobile overlays. The existing mobile navigation remains a separate, scrollable navigation surface. Its architecture can be extended to a category → destination flow with a local active submenu and explicit Back control when real nested destinations are introduced. The mobile menu's existing focus containment, Escape behavior, body-scroll lock, active states, and resize handling remain the source of truth.
+
+### Stacking and alignment
+Navigation panels use the existing `--layer-modal` level rather than arbitrary z-index values. Dropdowns are positioned from their trigger context, while future full-width mega menus should be anchored to the header/container context rather than arbitrary viewport offsets. Menus must remain inside the viewport and use the established container and gutter system.
+
+### Motion and reduced motion
+Dropdown and mega-menu panels use the Phase 2.6 motion language: restrained opacity and small positional entry, quick exit, no blur-heavy animation, bounce, spring physics, scaling spectacle, or continuous motion. The global reduced-motion rules minimize the transitions and remove transforms while preserving state communication.
+
+### Performance and client boundaries
+Interactive dropdown/mega-menu triggers are isolated client components. Static navigation configuration remains plain data, and the server-rendered Header is not converted into a global client component. No global state library, API, database, custom routing framework, pointer-tracking system, or additional dependency is introduced.
+
 ## Motion & Interaction Language
 
 ### 1. Motion philosophy
