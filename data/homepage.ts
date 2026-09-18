@@ -273,10 +273,10 @@ export const homepageContent = {
     ],
   },
   cta: {
-    eyebrow: "07 / Contact",
-    title: "Need Research Support?",
+    eyebrow: "12 / Contact",
+    title: "Discuss Your Research Requirement",
     description:
-      "Tell us about your thesis, dissertation, research paper or analysis requirement.",
-    action: { label: "Request Support", href: "/contact" },
+      "Tell us about your thesis, dissertation, research paper or data analysis requirement.",
+    action: { label: "Request Research Support", href: "/contact" },
   },
 } as const;
