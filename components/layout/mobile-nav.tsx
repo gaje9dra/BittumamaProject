@@ -148,7 +148,7 @@ export function MobileNav({ className }: { className?: string }) {
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={open}
         aria-controls="mobile-primary-navigation"
-        className="inline-flex size-11 items-center justify-center border border-border bg-transparent text-foreground transition-colors duration-[var(--motion-micro)] hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-3"
+        className="inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] border border-border bg-transparent text-foreground transition-colors duration-[var(--motion-micro)] hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-3"
         onClick={() => {
           if (open) closeMenu();
           else {
@@ -168,7 +168,7 @@ export function MobileNav({ className }: { className?: string }) {
           ref={panelRef}
           aria-label="Mobile primary navigation"
           className={cn(
-            "fixed inset-x-0 bottom-0 top-16 z-[var(--layer-modal)] overflow-y-auto border-t border-border bg-background px-[var(--page-gutter)] py-8 lg:hidden",
+            "fixed inset-x-0 bottom-0 top-[var(--header-height)] z-[var(--layer-modal)] overflow-y-auto border-t border-border bg-background px-[var(--page-gutter)] py-8 lg:hidden",
             open ? "animate-[mobile-menu-enter_var(--motion-micro)_var(--motion-ease-standard)_both]" : "animate-[mobile-menu-exit_var(--motion-micro)_var(--motion-ease-exit)_both]",
           )}
         >
@@ -256,7 +256,7 @@ export function MobileNav({ className }: { className?: string }) {
             <Link
               href="/contact"
               onClick={closeMenu}
-              className="mt-8 inline-flex min-h-11 w-fit items-center border border-primary bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-micro)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
+              className="mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border border-primary bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-micro)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
             >
               Get in touch
             </Link>
