@@ -1,4 +1,4 @@
-import type { ElementType, HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 type HeadingProps = HTMLAttributes<HTMLHeadingElement> & {
@@ -12,13 +12,20 @@ const levelClasses = {
   4: "type-h4",
 } as const;
 
+const headingTags = {
+  1: "h1",
+  2: "h2",
+  3: "h3",
+  4: "h4",
+} as const;
+
 export function Heading({
   children,
   className,
   level = 2,
   ...props
 }: HeadingProps) {
-  const Tag = `h${level}` as ElementType;
+  const Tag = headingTags[level];
 
   return (
     <Tag className={cn(levelClasses[level], className)} {...props}>
