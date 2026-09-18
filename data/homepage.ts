@@ -25,7 +25,8 @@ export const homepageContent = {
     eyebrow: "01 / Positioning",
     title: "Make complex knowledge easier to understand, apply, and act on.",
     description:
-      "This foundation gives the organization room to explain what it studies, how its expertise is applied, and where visitors can go deeper—without turning the homepage into a catalogue.",
+      "We connect disciplined research with human expertise and purposeful technology, giving complex questions the context, evidence, and practical direction they need.",
+    action: { label: "Learn about our approach", href: "/about" },
     links: [
       {
         label: "Research & AI",
