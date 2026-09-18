@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Header } from "@/components/layout/header";
 import { Container } from "@/components/ui/container";
 import { NavigationDropdown } from "@/components/layout/navigation-dropdown";
 import { NavigationMegaTrigger } from "@/components/layout/navigation-mega-trigger";
@@ -40,7 +39,6 @@ export default function NavigationPlaygroundPage() {
   if (process.env.NODE_ENV === "production") notFound();
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <Header />
       <section className="layout-section-lg">
         <Container size="wide">
           <p className="type-label text-muted-foreground">Development reference</p>
