@@ -729,3 +729,26 @@ Homepage sections use semantic `section` elements with labelled headings, logica
 
 ### Phase boundary
 Phase 4.1 establishes the homepage creative and structural foundation only. Backend, database, Prisma, authentication, CMS, payments, AI services, search indexing, service detail pages, article management, events, dashboards, and other content systems remain deferred to later phases.
+
+## Homepage Hero — Phase 4.2
+
+### Final direction
+The hero is an art-directed editorial composition rather than a centered SaaS-style landing pattern. A seven-column typographic field carries the primary message while a four-column research-signal visual creates a deliberately offset counterweight. The composition uses whitespace, alignment, rules, and scale as the main visual devices.
+
+### Content
+Hero content remains centralized in `data/homepage.ts`. The production-facing provisional message now explicitly describes research, intelligent technology, education, and applied expertise rather than relying on abstract future-facing language. The content is still replaceable without changing the hero component structure.
+
+### Visual treatment
+The hero visual is an explicitly illustrative research-signal placeholder built as a lightweight inline SVG. It is labelled as illustrative and does not imply real organizational data or photography. This avoids fabricated imagery while establishing the intended relationship between evidence, technology, and editorial composition. No gradients, glassmorphism, stock photography, 3D objects, glow, or decorative blobs were introduced.
+
+### CTA hierarchy
+One filled primary action leads into the research experience. A secondary text action leads to experts. Both use the existing Phase 2.5 interaction language and remain compact enough to belong to the editorial composition rather than behaving like oversized SaaS controls.
+
+### Responsive behavior
+Desktop preserves the asymmetric seven/four-column relationship. Tablet and mobile collapse the composition into a readable sequence: message and actions first, then the research visual. The visual uses a bounded aspect ratio and minimum height so it remains substantial without creating excessive mobile hero height. The bottom metadata/scroll cue remains a compact horizontal rule and is allowed to wrap naturally on narrow screens.
+
+### Motion and accessibility
+The hero uses existing transition tokens only for CTA feedback; no decorative entrance choreography was added. The inline SVG has an accessible title and description explaining that the visualization is illustrative. The primary H1 is semantic, links have descriptive labels, focus states remain visible, and the scroll cue targets the existing homepage positioning section. Reduced-motion behavior therefore remains inherited from the existing foundation without introducing an alternative animation path.
+
+### Performance
+The hero uses no client component, no new dependency, no remote asset, no video, and no large image payload. The visual is inline SVG and the composition is server-rendered. This keeps the above-the-fold surface lightweight and avoids layout shifts associated with unknown image dimensions.
