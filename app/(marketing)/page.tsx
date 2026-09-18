@@ -1,3 +1,4 @@
+import { HomeAudience } from "@/components/home/home-audience";
 import { HomeCapabilities } from "@/components/home/home-capabilities";
 import { HomeCta } from "@/components/home/home-cta";
 import { HomeExpertise } from "@/components/home/home-expertise";
@@ -17,6 +18,7 @@ export default function Home() {
       <HomeIntelligence />
       <HomeServices />
       <HomeServiceDiscovery />
+      <HomeAudience />
       <HomeExpertise />
       <HomeInsights />
       <HomeCta />
