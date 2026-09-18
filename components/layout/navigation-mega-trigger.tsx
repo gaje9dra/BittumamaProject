@@ -39,7 +39,7 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
         ref={triggerRef}
         type="button"
         aria-expanded={open}
-                aria-controls={panelId}
+        aria-controls={panelId}
         onClick={() => {
           if (open) close();
           else openMenu();
