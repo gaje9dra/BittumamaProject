@@ -249,7 +249,7 @@ export const homepageContent = {
     description: "Upcoming sessions for research, methodology and academic support.",
   },
   about: {
-    eyebrow: "11 / About the Organization",
+    eyebrow: "13 / About the Organization",
     title: "Research-led academic support.",
     description: "Research, methodology, analysis and technology-focused support for academic work.",
     focusAreas: [
@@ -262,7 +262,7 @@ export const homepageContent = {
     ctaHref: "/about",
   },
   insights: {
-    eyebrow: "06 / Articles",
+    eyebrow: "12 / Articles",
     title: "Research Articles & Resources",
     description:
       "Research methodology, academic writing and analysis resources.",
@@ -273,7 +273,7 @@ export const homepageContent = {
     ],
   },
   cta: {
-    eyebrow: "12 / Contact",
+    eyebrow: "14 / Contact",
     title: "Discuss Your Research Requirement",
     description:
       "Tell us about your thesis, dissertation, research paper or data analysis requirement.",
