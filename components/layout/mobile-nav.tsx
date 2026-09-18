@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, ChevronRight, Menu, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { NavigationItem } from "@/data/navigation";
 import { mobileNavigation } from "@/data/navigation";
@@ -22,13 +22,13 @@ export function MobileNav({ className }: { className?: string }) {
   const previousOverflowRef = useRef("");
   const previousPaddingRef = useRef("");
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     setActiveSubmenu(null);
     setOpen(false);
-  };
+  }, []);
 
-  const enterSubmenu = (item: NavigationItem) => setActiveSubmenu(item);
-  const leaveSubmenu = () => setActiveSubmenu(null);
+  const enterSubmenu = useCallback((item: NavigationItem) => setActiveSubmenu(item), []);
+  const leaveSubmenu = useCallback(() => setActiveSubmenu(null), []);
 
   useEffect(() => {
     if (!open) return;
@@ -77,7 +77,7 @@ export function MobileNav({ className }: { className?: string }) {
       document.body.style.overflow = previousOverflowRef.current;
       document.body.style.paddingRight = previousPaddingRef.current;
     };
-  }, [activeSubmenu, open]);
+  }, [activeSubmenu, closeMenu, leaveSubmenu, open]);
 
   useEffect(() => {
     if (!open || !activeSubmenu) return;
@@ -99,7 +99,7 @@ export function MobileNav({ className }: { className?: string }) {
     };
     window.addEventListener("resize", closeOnResize);
     return () => window.removeEventListener("resize", closeOnResize);
-  }, []);
+  }, [closeMenu]);
 
   const renderDestination = (item: NavigationItem) => {
     const active = isNavigationItemActive(pathname, item.href);
