@@ -1,9 +1,10 @@
-import type { ButtonHTMLAttributes } from "react";
+import { cloneElement, isValidElement, type ButtonHTMLAttributes, type ReactElement } from "react";
 import { cn } from "@/lib/utils";
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "text";
   size?: "sm" | "md" | "lg";
+  asChild?: boolean;
 };
 
 const variantClasses = {
@@ -26,17 +27,26 @@ export function Button({
   variant = "primary",
   size = "md",
   type = "button",
+  asChild = false,
   ...props
 }: ButtonProps) {
+  const classes = cn(
+    "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] type-button transition-[background-color,color,border-color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:border-border",
+    variantClasses[variant],
+    sizeClasses[size],
+    className,
+  );
+
+  if (asChild && isValidElement(children)) {
+    return cloneElement(children as ReactElement<{ className?: string }>, {
+      className: cn(classes, children.props.className),
+    });
+  }
+
   return (
     <button
       type={type}
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] type-button transition-[background-color,color,border-color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:border-border",
-        variantClasses[variant],
-        sizeClasses[size],
-        className,
-      )}
+      className={classes}
       {...props}
     >
       {children}
