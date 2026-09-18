@@ -773,3 +773,24 @@ Desktop preserves the editorial column relationship. Smaller screens move from l
 
 ### Relationship to hero
 The hero remains the visually dominant first statement; this section deliberately becomes calmer and more text-focused. It uses whitespace, rules, and an editorial index instead of another large visual or hero-like treatment, creating a natural transition into the remaining homepage story.
+
+
+## Homepage Core Capabilities — Phase 4.4
+
+### Purpose
+The Core Capabilities section answers “what does this organization actually do?” at overview level. It connects the positioning section to future research, services, and expertise experiences without attempting to replace those detailed architectures.
+
+### Capability architecture
+The section uses the four capability areas already established in the homepage content model: Research, Intelligence, Education, and Applied expertise. Each item supports an index, title, concise description, and future-facing route without introducing an invented taxonomy or arbitrary ranking.
+
+### Layout strategy
+A 12-column editorial layout places the section context on the left and a large indexed capability list on the right. The list uses horizontal rules, typography, spacing, and a restrained directional control rather than cards or repeated icon blocks. All capabilities retain equal structural weight.
+
+### Interaction strategy
+Capability rows are semantic links. Hover/focus feedback changes the surface, text emphasis, and directional marker using existing motion tokens. No essential information is hover-only and no client component is required.
+
+### Responsive behavior
+The desktop two-zone composition becomes a clear stacked introduction followed by the full capability list on smaller screens. Descriptions remain visible, controls retain comfortable touch targets, and the layout does not depend on horizontal scrolling or hover interaction.
+
+### Visual relationship to previous sections
+The hero remains the strongest visual statement, while the Intro/Positioning section is quieter and text-led. Core Capabilities introduces a more structured, tonal field and a larger typographic list, creating rhythm without repeating the hero or positioning composition.
