@@ -29,7 +29,7 @@ export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(f
       aria-controls={controlsId}
       onClick={onClick}
       className={cn(
-        "inline-flex min-h-11 items-center justify-center gap-2 border border-transparent px-2.5 type-nav text-muted-foreground transition-colors duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)] hover:border-border hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border border-transparent px-2.5 type-nav text-muted-foreground transition-colors duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)] hover:border-border hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3",
         open && "border-border bg-surface-muted text-foreground",
         className,
       )}
@@ -134,7 +134,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
       aria-labelledby={labelId}
       className={cn(
         variant === "overlay"
-          ? "fixed inset-x-0 top-16 z-[var(--layer-modal)] border-b border-border bg-surface shadow-[var(--shadow-md)] lg:top-[4.5rem]"
+          ? "fixed inset-x-0 top-[var(--header-height)] z-[var(--layer-modal)] border-b border-border bg-surface shadow-[var(--shadow-md)] lg:top-[var(--header-height-lg)]"
           : "border-y border-border bg-surface py-5",
         "motion-fade",
         className,
