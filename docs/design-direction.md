@@ -370,6 +370,54 @@ Avoid gradient buttons, glowing controls, hover scaling, excessive pills, univer
 ### 21. Component playground
 The development-only component playground is available at `/design-system/components`. It demonstrates buttons, links, cards, badges, forms, accordion, tabs, navigation elements, icons, images, dividers, tables, metrics, CTA hierarchy, and representative states. It is a validation surface only and is not part of the public website.
 
+
+## Header & Primary Navigation
+
+### Philosophy
+The production header extends the Phase 2 design system through alignment, typography, spacing, hierarchy, accessibility, and restrained interaction rather than decorative treatment. It uses the global wide container and remains visually integrated with page content.
+
+### Structure
+- Brand area: temporary typographic **Bittumama** treatment until a final logo asset exists.
+- Primary navigation: Services, Research & AI, Experts, Insights, About.
+- Header action: a single restrained **Get in touch** action.
+- Mobile: dedicated menu trigger and navigation panel.
+- Navigation data lives in `data/navigation.ts` so future destinations can be extended without duplicating markup.
+
+### Desktop behavior
+Desktop navigation is displayed from the established 1024px breakpoint. Active routes receive foreground emphasis, medium weight, an understated primary indicator, and `aria-current="page"`. Hover uses the Phase 2.6 micro timing and color transition only.
+
+### Mobile behavior
+Below 1024px the desktop navigation is replaced by a dedicated menu trigger. The menu is an independently scrollable navigation surface with comfortable touch targets. Critical navigation does not depend on hover.
+
+### Responsive strategy
+The header uses the global page gutter and wide container. It is intentionally compact: 4rem minimum height on smaller screens and 4.5rem on large screens. The navigation collapses before crowding rather than introducing compressed typography or overflow.
+
+### Mobile menu behavior
+Opening the menu locks body scrolling, moves focus into the navigation surface, and provides a focus loop. Escape closes the menu. Closing restores body scrolling and focus returns to the trigger. Resizing to desktop closes the mobile menu. The implementation avoids persistent global scroll listeners and uses a small client boundary only for interaction.
+
+### CTA behavior
+The header action is intentionally singular and restrained. It is not a generic oversized pill or an invented marketing device. Future information architecture can replace or refine the destination without changing the header structure.
+
+### Dropdown foundation
+No artificial mega-menu is included. The navigation data model leaves room for grouped destinations, while a future dropdown should be introduced only when the information architecture requires it. Any future dropdown must support keyboard, Escape, focus, outside interaction, and clear expanded state.
+
+### Motion behavior
+Header hover feedback uses micro timing. Menu and icon state changes use micro/standard motion from the global Phase 2.6 token system. No parallax, glow, large scale, bouncing, or decorative motion is used.
+
+### Reduced motion
+The global `prefers-reduced-motion` behavior minimizes transitions and removes transforms. Header state communication remains available through persistent visual and semantic state.
+
+### Accessibility
+The header uses semantic `header` and `nav` elements, labeled navigation landmarks, native links/buttons, visible focus treatment, `aria-expanded`, `aria-controls`, and `aria-current` where applicable. Mobile navigation traps focus only while the overlay is open and restores focus to its trigger on close. Touch controls use a 44px-class hit area.
+
+### Component architecture
+- `components/layout/header.tsx`: server-rendered composition.
+- `components/layout/desktop-nav.tsx`: minimal client boundary for pathname-aware active state.
+- `components/layout/mobile-nav.tsx`: client-only menu interaction and focus management.
+- `components/layout/header-actions.tsx`: reusable header action area.
+- `data/navigation.ts`: structured navigation data.
+- `app/design-system/header/page.tsx`: development-only validation playground.
+
 ## Motion & Interaction Language
 
 ### 1. Motion philosophy
