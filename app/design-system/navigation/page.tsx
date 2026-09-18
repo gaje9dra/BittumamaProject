@@ -4,6 +4,8 @@ import { Container } from "@/components/ui/container";
 import { NavigationDropdown } from "@/components/layout/navigation-dropdown";
 import { NavigationMegaTrigger } from "@/components/layout/navigation-mega-trigger";
 import type { NavigationItem } from "@/data/navigation";
+import { primaryNavigation } from "@/data/navigation";
+import { validateNavigation } from "@/lib/navigation";
 
 const dropdownFixture: NavigationItem = {
   label: "Dropdown fixture",
@@ -52,7 +54,7 @@ export default function NavigationPlaygroundPage() {
             <p className="type-label text-muted-foreground">Mega menu</p>
             <div className="relative mt-4 min-h-80 border border-border bg-background p-5"><NavigationMegaTrigger item={megaFixture} pathname="/research" /></div>
           </div>
-          <div className="mt-16 grid gap-8 border-t border-border pt-8 md:grid-cols-2">
+          <div className="mt-16 border-t border-border pt-8">\n            <p className="type-label text-muted-foreground">Data validation</p>\n            <p className="type-body-sm mt-3 text-muted-foreground">Production navigation issues: {validateNavigation(primaryNavigation).length}</p>\n          </div>\n          <div className="mt-16 grid gap-8 border-t border-border pt-8 md:grid-cols-2">
             <div><p className="type-label text-muted-foreground">Keyboard</p><p className="type-body-sm mt-3 text-muted-foreground">Enter, Space, or Arrow Down opens. Escape closes and restores trigger focus. Arrow Up/Down/Home/End navigate dropdown links.</p></div>
             <div><p className="type-label text-muted-foreground">Responsive</p><p className="type-body-sm mt-3 text-muted-foreground">Production mobile navigation remains hierarchical and does not inherit desktop mega-menu geometry.</p></div>
           </div>
