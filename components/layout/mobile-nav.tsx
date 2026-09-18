@@ -22,7 +22,7 @@ export function MobileNav({ className }: { className?: string }) {
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
   const searchPanelId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const submenuBackRef = useRef<HTMLButtonElement>(null);
   const previousOverflowRef = useRef("");
   const previousPaddingRef = useRef("");
