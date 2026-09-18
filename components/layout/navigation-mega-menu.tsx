@@ -51,10 +51,8 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
     };
   }, [open, onClose, triggerRef]);
 
-  if (!open) return null;
-
   return (
-    <div id={panelId} ref={panelRef} className="absolute inset-x-0 top-full z-[var(--layer-modal)] rounded-b-[var(--radius-md)] border-b border-border bg-surface shadow-[var(--shadow-sm)] motion-fade">
+    <div id={panelId} ref={panelRef} hidden={!open} className="absolute inset-x-0 top-full z-[var(--layer-modal)] rounded-b-[var(--radius-md)] border-b border-border bg-surface shadow-[var(--shadow-sm)] motion-fade">
       <div className="mx-auto w-full max-w-[var(--container-wide)] px-[var(--page-gutter)] py-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12">
           {(item.groups ?? []).map((group) => (
