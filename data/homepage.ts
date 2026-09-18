@@ -11,7 +11,6 @@ export type HomepageCapability = {
   href: string;
 };
 
-
 export type HomepageEvent = {
   id: string;
   title: string;
@@ -29,7 +28,24 @@ export type HomepageEvent = {
   featured?: boolean;
 };
 
+export type HomepageArticle = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  date: string;
+  author?: string;
+  authorRole?: string;
+  excerpt?: string;
+  image?: string;
+  readingTime?: string;
+  href?: string;
+  featured?: boolean;
+  tags?: string[];
+};
+
 export const homepageEvents: HomepageEvent[] = [];
+export const homepageArticles: HomepageArticle[] = [];
 
 export const homepageContent = {
   hero: {
