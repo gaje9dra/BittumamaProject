@@ -1,10 +1,11 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { NavigationItem } from "@/data/navigation";
 import { NavigationMegaMenu } from "@/components/layout/navigation-mega-menu";
 import { isNavigationItemActive } from "@/lib/navigation";
+import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
 export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem; pathname: string }) {
@@ -12,20 +13,38 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelId = useId();
 
-  const close = (restoreFocus = false) => {
+  const close = useCallback((restoreFocus = false) => {
     setOpen(false);
     if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
-  };
+  }, []);
+
+  const openMenu = useCallback(() => {
+    announceHeaderSurface("mega");
+    openMenu();
+  }, []);
+
+  useEffect(() => {
+    return subscribeToHeaderSurface((surface) => {
+      if (surface !== "mega") setOpen(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
-    <div className="relative">
+    <div className="static">
       <button
         ref={triggerRef}
         type="button"
         aria-expanded={open}
         aria-haspopup="menu"
         aria-controls={panelId}
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          if (open) close();
+          else openMenu();
+        }}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown") {
             event.preventDefault();
