@@ -20,7 +20,7 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
 
   const openMenu = useCallback(() => {
     announceHeaderSurface("mega");
-    openMenu();
+    setOpen(true);
   }, []);
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown" || event.key === "ArrowUp") {
             event.preventDefault();
-            setOpen(true);
+            openMenu();
           }
         }}
         className={cn("type-nav inline-flex items-center gap-1.5 py-2 text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4", (open || isNavigationItemActive(pathname, item.href)) && "text-foreground")}
