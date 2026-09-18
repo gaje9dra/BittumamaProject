@@ -621,3 +621,46 @@ This document is the evolving design contract for the project.
 - Phase 2.6: motion and interaction language
 
 Future phases should build on these tokens rather than creating parallel visual systems.
+
+## Header utility layer — Phase 3.4
+
+### Utility philosophy
+The Header separates **where visitors can go** (primary navigation) from **supporting actions** (utility layer). Utility controls remain compact and visually secondary so the primary navigation retains the strongest hierarchy.
+
+### Search strategy
+Search is justified by the future content model: research, articles, services, experts, and resources will eventually need discovery. This phase establishes only the frontend interaction foundation. There is no database, CMS, API, indexing, analytics, AI search, or external search service.
+
+### Search trigger and panel
+The reusable SearchTrigger uses Lucide Search, a compact 44px-class touch target, visible focus, selected/open treatment, and an accessible name. On desktop it sits beside the existing contact action. The SearchPanel uses the established neutral/surface system rather than a persistent SaaS-style search bar or decorative overlay.
+
+The panel contains a semantic search input, accessible label, Search icon, clear action when text exists, close action, submit action, and a small future-integration note. Empty input does not navigate. Non-empty submission uses the standard /search?q= URL mechanism.
+
+### Search route
+/search is a minimal frontend route foundation only. It contains no fabricated results and no search indexing. Future content/search phases can replace the placeholder with real result retrieval without changing the Header interaction contract.
+
+### Search interaction
+Opening Search moves focus to the input. Escape and the close action close the panel. Clearing returns focus to the input. Closing restores focus to the Search trigger. Clicking outside the desktop overlay closes it. Desktop search and navigation dropdowns naturally dismiss each other through their existing outside-interaction behavior, preventing competing open surfaces.
+
+### Mobile utility behavior
+Mobile keeps a single search interface inside the existing navigation panel. Search does not become a second competing full-screen overlay. Opening Search focuses the input; Escape closes Search while keeping the mobile navigation available; closing restores focus to the Search trigger. The existing mobile menu scroll lock and focus containment remain in place.
+
+### Utility hierarchy
+The existing Get in touch action remains the only primary header CTA. Search is a secondary utility action. No language/region selector, accessibility shortcut, newsletter control, login, or other utility was added because the current information architecture does not establish a genuine requirement for them.
+
+### Responsive behavior
+Desktop keeps the utility layer compact and aligned with the existing header grid. Mobile prioritizes brand, menu trigger, and search within the navigation surface. The implementation avoids shrinking controls below comfortable touch targets and avoids adding horizontal overflow.
+
+### Accessibility
+Search uses semantic buttons, a labeled search input, visible focus treatment, keyboard Escape handling, Enter submission, keyboard-accessible clear/close actions, and logical focus restoration. Search is not hover-dependent. Existing mobile focus containment, Escape behavior, body-scroll restoration, active navigation, and reduced-motion rules remain intact.
+
+### Z-index and scroll behavior
+Desktop SearchPanel uses the existing modal layer token and anchors below the known Header heights rather than introducing arbitrary z-index values. It does not lock body scroll because it is a compact header panel rather than a full-screen modal. Mobile search stays inside the already scroll-locked mobile navigation.
+
+### Motion
+Search opening uses the Phase 2.6 motion-fade treatment and existing micro/fast timing tokens. Hover/focus feedback uses the existing motion language. No new animation style, spring physics, blur, glow, or decorative movement was introduced.
+
+### Server/client boundaries
+The main Header remains server-rendered. SearchTrigger/SearchPanel and HeaderActions are isolated client components because they own local interactive state. Mobile search state remains local to MobileNav. No global state library was introduced.
+
+### Future integration
+The current form contract intentionally leaves search retrieval open: future phases can connect /search?q= to the site's content architecture, indexing strategy, filters, ranking, pagination, and analytics. The Header should continue to treat search as a discovery utility rather than turning it into a dominant navigation surface.
