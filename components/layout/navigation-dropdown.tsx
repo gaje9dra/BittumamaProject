@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { NavigationItem } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
@@ -15,10 +15,10 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
   const panelId = useId();
   const active = isNavigationItemActive(pathname, item.href);
 
-  const close = (restoreFocus = false) => {
+  const close = useCallback((restoreFocus = false) => {
     setOpen(false);
     if (restoreFocus) requestAnimationFrame(() => triggerRef.current?.focus());
-  };
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -51,7 +51,7 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", keyboard);
     };
-  }, [open]);
+  }, [close, open]);
 
   return (
     <div ref={panelRef} className="relative">
