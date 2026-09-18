@@ -26,7 +26,7 @@ export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(f
       type="button"
       aria-label={open ? "Close search" : label}
       aria-expanded={open}
-      aria-controls={controlsId}
+      aria-controls={open ? controlsId : undefined}
       onClick={onClick}
       className={cn(
         "inline-flex min-h-11 items-center justify-center gap-2 rounded-[var(--radius-md)] border border-transparent px-2.5 type-nav text-muted-foreground transition-colors duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)] hover:border-border hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3",
@@ -56,9 +56,9 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   const panelRef = useRef<HTMLDivElement>(null);
   const labelId = useId();
   const previousOpenRef = useRef(false);
+  const pathname = usePathname();
   const previousPathnameRef = useRef(pathname);
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     if (!open) return;
