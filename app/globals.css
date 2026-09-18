@@ -169,6 +169,6 @@
 }
 
 
-@layer base {
-  [id] { scroll-margin-top: 5rem; }
+@layer components {
+  .scroll-anchor { scroll-margin-top: 5rem; }
 }
