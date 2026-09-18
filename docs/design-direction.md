@@ -304,6 +304,72 @@ The production CSS exposes semantic primitives including `.layout-section`, `.la
 ### 18. Layout playground
 A development-only playground is available at `/design-system/layout`. It demonstrates the container, grid, editorial, asymmetry, spacing/rhythm, density, card strategy, image composition, reading width, full-width transitions, and responsive stacking. It is not intended as a public website page.
 
+
+## Component Visual Language
+
+### 1. Component design philosophy
+Reusable components are precise, premium, editorial, modern, human, intelligent, and purposeful. Components establish a common vocabulary without forcing identical shapes or treatments. Visual hierarchy, whitespace, surface contrast, and typography take precedence over decorative effects.
+
+### 2. Button philosophy
+Buttons use compact editorial geometry, medium-weight IBM Plex Sans, shared radius tokens, and a minimum 44px-class touch target at standard sizes. Variants are semantic: primary, secondary, outline, ghost, and text. Primary and secondary provide filled emphasis; outline and ghost remain quieter; text actions are used when a full button would overstate the action. Hover/active states change color or surface rather than scale, glow, or rotate. Disabled controls use muted surface/text and explicit non-interactive cues.
+
+### 3. Link philosophy
+Inline links use recognizable underline/decoration treatment. Navigation links remain quiet until active or hovered. Editorial/action links may combine restrained underline with directional movement or an arrow. Links never depend on color alone for meaning.
+
+### 4. Card strategy
+Cards are selective: bordered, subtle-surface, image-led, interactive, and open/list treatments are available. Rounded corners remain restrained and shadows are not default. Interactive cards may respond through border, surface, underline, arrow, or image changes; no scale, rotation, glow, or 3D treatment is part of the baseline language.
+
+### 5. Badge strategy
+Badges and labels are compact information markers for category, status, research type, event type, metadata, or tags. Small radii and tonal surfaces are preferred over excessive pills. Labels remain open text when a badge container adds no informational value.
+
+### 6. Form language
+Inputs, textareas, selects, search, and related controls use quiet surfaces, subtle borders, compact radii, readable IBM Plex Sans, and visible focus rings. Labels are uppercase/compact only where useful; helper, error, and success messages remain textual and contextual. Fields are not decorated with unnecessary icons or shadows. Checkbox/radio controls retain native semantics and keyboard behavior.
+
+### 7. Accordion language
+FAQ/accordion content uses open horizontal structures and restrained dividers. The question is the interactive heading; expansion is indicated with a simple directional icon. Open content receives vertical breathing room without becoming a floating card. Expansion animation is intentionally left to the motion phase.
+
+### 8. Tabs
+Tabs use an open baseline with an active underline/indicator rather than filled colored panels. Default and inactive tabs use muted text, active uses foreground plus primary indicator, and focus remains visibly outlined. Horizontal overflow is permitted on narrow screens where preserving tab labels is preferable to wrapping.
+
+### 9. Navigation language
+Navigation controls use the same typography, spacing, border, radius, and focus vocabulary as the rest of the system. Dropdown triggers use simple text plus a directional icon; menu buttons meet touch-target requirements; breadcrumbs use compact text and clear current-location treatment. This phase defines the component language only—the final site header/navigation is not implemented.
+
+### 10. Iconography
+Lucide React remains the baseline. Default icon size is 20px, small 16px, large 24px, with approximately 1.75px baseline stroke for emphasized icons. Icons align optically with adjacent text and use roughly 0.5rem spacing in action controls. Decorative icon repetition is avoided; meaningful icons receive accessible names when they are not purely decorative.
+
+### 11. Image treatment
+Image treatment follows composition rather than a universal radius: editorial crops may use restrained rounding, framed images use structural borders, contained images preserve breathing room, and full-bleed imagery can remain sharp-edged. Aspect ratio and crop should serve the content. Placeholder visuals in the playground are structural only.
+
+### 12. Borders and dividers
+The border token is structural, not decorative. Use horizontal dividers for lists, tables, and intentional section boundaries; vertical dividers for genuinely related columns; input borders for field affordance; card borders only when grouping needs them. Whitespace or surface contrast should often perform separation instead.
+
+### 13. Data/table treatment
+Research tables prioritize readable column alignment, semantic table markup, restrained borders, compact labels, and IBM Plex Sans for dense data. Numeric values may use monospace or strong display treatment when useful. Metrics should include a meaningful label and context/source. Mobile tables may scroll horizontally when necessary rather than compressing into unreadable columns.
+
+### 14. CTA hierarchy
+Primary CTAs use the primary button treatment and are reserved for the most important next action. Secondary CTAs use outline/secondary treatment. Inline and section CTAs use links when a button would overstate the action. High-emphasis CTAs are created through composition and surrounding whitespace as much as through color. Not every action should be visually dominant.
+
+### 15. Radius strategy
+The existing radius scale remains the source of truth. Small controls and fields use the small radius; buttons and cards generally use medium; larger visual containers may use larger radius only when the composition supports it. Pills are reserved for truly categorical/compact markers. Images choose radius based on their composition.
+
+### 16. Shadow strategy
+Depth should come first from whitespace, surface contrast, borders, and layering. Shadows are optional and restrained: small shadow for subtle elevation, medium for genuinely raised modules, large only for major overlays. Buttons and ordinary cards do not receive shadows by default.
+
+### 17. Component states
+Reusable interactive components use the relevant subset of: default, hover, focus, active, selected, disabled, loading, error, and success. State changes should be understandable through multiple cues where appropriate—not color alone. Loading and async states should preserve layout rather than cause avoidable shifts.
+
+### 18. Responsive behavior
+Components adapt to the layout system: buttons may become full-width in selected mobile contexts, navigation controls can transform for mobile, cards can change composition rather than merely shrink, tables can horizontally scroll, and tabs can scroll horizontally. Components should not automatically stack when an intermediate relationship remains useful.
+
+### 19. Accessibility rules
+All interactive components require semantic HTML, keyboard access, visible focus, adequate contrast, comfortable touch targets, clear disabled states, and no color-only state communication. Icons that convey meaning have accessible names; decorative icons are hidden from assistive technology. Form errors and success states are textual and associated with their controls where implemented.
+
+### 20. Anti-patterns to avoid
+Avoid gradient buttons, glowing controls, hover scaling, excessive pills, universal rounded cards, heavy shadows, decorative icon repetition, arbitrary raw colors/radii/shadows, spreadsheet-like research styling by default, and components whose visual treatment has no information or interaction purpose.
+
+### 21. Component playground
+The development-only component playground is available at `/design-system/components`. It demonstrates buttons, links, cards, badges, forms, accordion, tabs, navigation elements, icons, images, dividers, tables, metrics, CTA hierarchy, and representative states. It is a validation surface only and is not part of the public website.
+
 ## Image and visual direction
 
 Prioritize research visuals, diagrams, authentic editorial photography, data visualization, original explanatory illustrations, relevant interface screenshots, and typography-led compositions. Photography should favor real people, research activity, workshops, collaboration, and context over generic corporate stock. No Anushram assets will be used.
