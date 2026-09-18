@@ -62,6 +62,7 @@
     --transition-fast:150ms ease-out; --transition-normal:200ms ease-out; --transition-slow:350ms ease-out;
     --container-narrow:45rem; --container-reading:68ch; --container-content:65rem; --container-wide:80rem;
     --container-full:100%; --page-gutter:1rem;
+    --header-height:4rem; --header-height-lg:4.5rem; --header-scroll-offset:5rem;
     --grid-gap:1rem; --grid-gap-lg:1.5rem; --grid-gap-xl:2rem;
     --layer-base:0; --layer-content:10; --layer-sticky:20; --layer-navigation:30; --layer-modal:40; --layer-toast:50;
     --motion-instant:80ms; --motion-micro:150ms; --motion-standard:260ms; --motion-emphasis:500ms; --motion-display:700ms;
@@ -170,5 +171,5 @@
 
 
 @layer components {
-  .scroll-anchor { scroll-margin-top: 5rem; }
+  .scroll-anchor { scroll-margin-top: var(--header-scroll-offset); }
 }
