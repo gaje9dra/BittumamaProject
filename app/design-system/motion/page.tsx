@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { ArrowRight, ChevronDown, Menu, Search } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, Menu, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
@@ -20,11 +20,11 @@ function Section({ title, detail, children }: { title: string; detail: string; c
 }
 
 const tokenRows = [
-  ["Instant", "80ms", "Immediate feedback"],
-  ["Fast", "140ms", "Links, hover, compact controls"],
-  ["Normal", "220ms", "Most component state changes"],
-  ["Slow", "360ms", "Larger state or layout response"],
-  ["Reveal", "520ms", "Editorial content arrival / image response"],
+  ["Instant", "80ms", "Immediate state changes"],
+  ["Micro", "150ms", "Buttons, links, icons, tiny controls"],
+  ["Standard", "260ms", "Normal component transitions"],
+  ["Emphasis", "500ms", "Content reveals and larger transitions"],
+  ["Display", "700ms", "Rare presentation-level entrances"],
 ];
 
 export default function MotionPlaygroundPage() {
@@ -100,6 +100,14 @@ export default function MotionPlaygroundPage() {
         </div>
       </Section>
 
+
+      <Section title="Icon motion" detail="movement only when meaning changes">
+        <div className="flex flex-wrap items-center gap-10">
+          <div className="group flex items-center gap-3"><ArrowRight size={20} aria-hidden="true" className="transition-transform duration-[var(--motion-micro)] group-hover:translate-x-1" /><span>Direction</span></div>
+          <div className="group flex items-center gap-3"><ChevronDown size={20} aria-hidden="true" className="transition-transform duration-[var(--motion-standard)] group-hover:rotate-180" /><span>Expansion</span></div>
+          <div className="flex items-center gap-3"><span className="grid size-8 place-items-center"><Menu size={19} aria-hidden="true" /></span><span>Navigation state</span><span className="text-muted-foreground">→</span><X size={19} aria-hidden="true" /></div>
+        </div>
+      </Section>
       <Section title="Image response" detail="controlled movement">
         <div className="group overflow-hidden rounded-[var(--radius-md)] border border-border bg-surface">
           <div className="motion-image aspect-[16/7] bg-primary p-5 text-primary-foreground">
@@ -140,10 +148,21 @@ export default function MotionPlaygroundPage() {
         </div>
       </Section>
 
+
+      <Section title="Modal / overlay philosophy" detail="quiet entry and faster exit">
+        <div className="relative min-h-48 overflow-hidden border border-border bg-surface-muted p-4">
+          <div className="absolute inset-0 bg-foreground/10" aria-hidden="true" />
+          <div className="relative mx-auto max-w-md border border-border bg-surface p-5 shadow-sm">
+            <div className="flex items-start justify-between gap-4"><div><p className="type-label text-muted-foreground">Overlay</p><Heading level={3} className="mt-2 font-semibold">Focused information</Heading></div><button type="button" aria-label="Close dialog" className="inline-flex size-9 items-center justify-center hover:bg-surface-muted"><X size={18} aria-hidden="true" /></button></div>
+            <Text size="sm" className="mt-3 text-muted-foreground">Future dialogs should enter with opacity and very small movement, without cinematic zoom.</Text>
+            <div className="mt-4 flex gap-2"><Button size="sm">Continue</Button><Button size="sm" variant="ghost">Cancel</Button></div>
+          </div>
+        </div>
+      </Section>
       <Section title="Loading / status philosophy" detail="reserved state language">
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="border border-border p-4"><p className="type-label text-muted-foreground">Loading</p><div className="mt-4 h-1 overflow-hidden bg-muted"><div className="h-full w-2/5 bg-primary" /></div></div>
-          <div className="border border-success/40 bg-surface-highlight p-4"><p className="type-label text-success">Success</p><p className="type-body-sm mt-3">Confirmed without celebratory animation.</p></div>
+          <div className="border border-success/40 bg-surface-highlight p-4"><p className="type-label text-success"><Check size={14} className="mr-1 inline-block" aria-hidden="true" />Success</p><p className="type-body-sm mt-3">Confirmed without celebratory animation.</p></div>
           <div className="border border-error/40 bg-surface-muted p-4"><p className="type-label text-error">Error</p><p className="type-body-sm mt-3">Clear textual feedback with no attention-grabbing motion.</p></div>
         </div>
       </Section>
