@@ -54,6 +54,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   const panelRef = useRef<HTMLDivElement>(null);
   const labelId = useId();
   const previousOpenRef = useRef(false);
+  const previousPathnameRef = useRef(pathname);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -95,11 +96,11 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   }, [onClose, open, variant]);
 
   useEffect(() => {
-    if (!open) return;
-    const handlePathChange = () => onClose();
-    void pathname;
-    return () => handlePathChange;
-  }, [onClose, pathname, open]);
+    if (previousPathnameRef.current !== pathname) {
+      previousPathnameRef.current = pathname;
+      onClose();
+    }
+  }, [onClose, pathname]);
 
   useEffect(() => {
     if (previousOpenRef.current && !open) {
