@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +9,14 @@ export function HeaderActions({ className }: { className?: string }) {
   const [searchOpen, setSearchOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
   const closeSearch = useCallback(() => setSearchOpen(false), []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) closeSearch();
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [closeSearch]);
 
   return (
     <div className={cn("items-center gap-2", className)}>
