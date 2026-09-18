@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import type { RefObject } from "react";
 import type { NavigationItem } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
+import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -32,9 +33,13 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
         onClose(true);
       }
     };
+    const unsubscribe = subscribeToHeaderSurface((surface) => {
+      if (surface !== "mega") onClose();
+    });
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", keyboard);
     return () => {
+      unsubscribe();
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", keyboard);
     };
