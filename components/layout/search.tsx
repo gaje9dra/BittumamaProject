@@ -196,8 +196,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
           </div>
         </form>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3">
-          <p className="type-caption text-muted-foreground">Search foundation — results will connect to real content later.</p>
+        <div className="flex justify-end py-3">
           <Link
             href="/search"
             onClick={() => onClose(false)}
