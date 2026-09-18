@@ -752,3 +752,24 @@ The hero uses existing transition tokens only for CTA feedback; no decorative en
 
 ### Performance
 The hero uses no client component, no new dependency, no remote asset, no video, and no large image payload. The visual is inline SVG and the composition is server-rendered. This keeps the above-the-fold surface lightweight and avoids layout shifts associated with unknown image dimensions.
+
+
+## Homepage Intro / Positioning — Phase 4.3
+
+### Purpose
+The Intro/Positioning section bridges the hero into the deeper organization story. It answers who the organization is, what connects its disciplines, and why the work is useful without repeating the hero headline or becoming a generic About block.
+
+### Composition
+The section uses a 12-column editorial arrangement: a compact section index, a six-column positioning statement, and a separate supporting-copy/action column. A ruled navigation index follows below, creating a second rhythm without relying on cards or a centered marketing block.
+
+### Typography and hierarchy
+The positioning statement receives the strongest emphasis through the existing Literata heading hierarchy and a constrained measure. Supporting copy uses the established IBM Plex Sans body scale. The section label, numbered destinations, and rules provide structure without decorative UI.
+
+### Content hierarchy
+The content moves from section context to the core positioning statement, then explanation and a secondary About link, followed by four clear areas visitors can explore. Copy remains centralized in `data/homepage.ts` and can be replaced later without changing layout code.
+
+### Responsive behavior
+Desktop preserves the editorial column relationship. Smaller screens move from label to statement to explanation/action and then the destination index in a clear reading order. The index retains comfortable touch targets and avoids horizontal overflow.
+
+### Relationship to hero
+The hero remains the visually dominant first statement; this section deliberately becomes calmer and more text-focused. It uses whitespace, rules, and an editorial index instead of another large visual or hero-like treatment, creating a natural transition into the remaining homepage story.
