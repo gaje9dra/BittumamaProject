@@ -84,10 +84,23 @@ export const homepageContent = {
   },
   intelligence: {
     eyebrow: "03 / Research & intelligence",
-    title: "A place for questions worth investigating.",
+    title: "Questions first. Evidence next. Understanding follows.",
     description:
-      "The future research section can become the homepage's evidence-rich centre: featured work, methods, topics, datasets, and emerging signals can live here without adopting a dashboard aesthetic.",
-    labels: ["Research", "Methods", "Topics", "Signals"],
+      "Research here is framed as a disciplined way of asking better questions, examining evidence, and translating what emerges into useful understanding. The homepage introduces the approach without inventing findings or credentials.",
+    featured: {
+      status: "Development foundation",
+      title: "Research questions, methods, and signals",
+      description:
+        "A future featured study can occupy this space with its real question, evidence, authorship, and context once the organization's research program is established.",
+      meta: ["Question-led", "Evidence-aware", "Application-focused"],
+      href: "/research",
+    },
+    themes: [
+      { index: "01", label: "Questions", description: "Frame the problem before deciding what the answer should be." },
+      { index: "02", label: "Methods", description: "Make the path from question to evidence visible and understandable." },
+      { index: "03", label: "Signals", description: "Identify patterns, changes, and emerging areas worth examining." },
+      { index: "04", label: "Application", description: "Connect what is learned to decisions, practice, and further inquiry." },
+    ],
     action: { label: "Explore research", href: "/research" },
   },
   expertise: {
