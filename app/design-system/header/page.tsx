@@ -7,8 +7,10 @@ import { Text } from "@/components/ui/text";
 const testCases = [
   ["Top", "Load at the top of the page; header keeps its full treatment."],
   ["Scrolled", "Scroll past the 12px threshold; the header remains visible with restrained separation."],
-  ["Desktop", "Test active, hover, focus, route changes, CTA, and wide-to-small desktop widths."],
-  ["Mobile", "Test closed/open, active route, Escape, focus loop, close transition, and touch targets."],
+  ["Desktop", "Test active, hover, focus, search, CTA, and wide-to-small desktop widths."],
+  ["Mobile", "Test closed/open, search inside the menu, active route, Escape, focus loop, and touch targets."],
+  ["Search", "Open search, confirm input focus, type text, clear it, submit, close with Escape, and verify focus restoration."],
+  ["Utility hierarchy", "Search remains compact and secondary while the contact action remains the single primary header action."],
   ["Edge cases", "Try narrow, short, landscape, zoomed, and long-content viewports without horizontal overflow."],
   ["Reduced motion", "Enable prefers-reduced-motion and verify state changes remain clear without decorative movement."],
 ];
@@ -39,6 +41,18 @@ export default function HeaderPlaygroundPage() {
                 </Text>
               </div>
             ))}
+          </div>
+
+          <div className="mt-16 border-t border-border pt-8">
+            <p className="type-label text-muted-foreground">Utility layer reference</p>
+            <Heading level={2} className="type-h3 mt-3 max-w-[32ch]">
+              Search supports discovery without competing with the primary navigation.
+            </Heading>
+            <Text size="default" className="type-reading mt-5 text-muted-foreground">
+              Desktop exposes a compact Search action beside the existing contact CTA. Mobile keeps one search
+              interface inside the navigation surface, avoiding competing overlays. Search submission navigates
+              to the frontend-only /search?q= route foundation; no production search data is connected.
+            </Text>
           </div>
 
           <div className="mt-16 border-t border-border pt-8">
