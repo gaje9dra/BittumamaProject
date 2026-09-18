@@ -16,7 +16,7 @@ export function HomeExpertise() {
             <div aria-hidden="true" className="absolute inset-0 bg-[linear-gradient(135deg,transparent_49.5%,var(--border)_49.5%,var(--border)_50.5%,transparent_50.5%)]" />
             <div className="absolute inset-x-6 bottom-6 border-t border-border pt-4">
               <span className="type-caption text-muted-foreground">
-                People / expertise visual placeholder
+                Subject expertise
               </span>
             </div>
           </div>
