@@ -885,3 +885,23 @@ Desktop uses a compact two-zone editorial layout with the discovery list occupyi
 ### Interaction and accessibility
 Service rows are semantic links with visible focus states and restrained arrow/surface feedback using the existing motion tokens. Essential information is visible without hover. The section is a Server Component, adds no state or dependencies, and inherits the global reduced-motion behavior.
 
+## Homepage Audience / Use Cases — Phase 4.8
+
+### Purpose
+The Audience / Use Cases section follows Service Discovery by helping visitors identify whether the existing services match their work. It uses the supported audience wording “students and researchers” and frames the content around two concrete requirements already represented in the service model.
+
+### Content hierarchy
+The section uses a compact label, short heading, one supporting line, then an indexed use-case list. Each use case has one short relevance line followed by direct links to the applicable services.
+
+### Service relationship
+The relationships reuse existing service destinations for Thesis Support, Dissertation Support, Research Paper, and Data Analysis. No additional service categories or unsupported audience claims are introduced.
+
+### Visual composition
+The section uses a tonal editorial field with a four-column introductory zone and an eight-column ruled index. It is intentionally different from the previous service directory: the left column establishes relevance while each use-case row groups its related service links on the right.
+
+### Responsive behavior
+Desktop preserves the asymmetric introduction/use-case relationship. Tablet compresses the index while retaining the service grouping. Mobile stacks each use case and keeps all related service links visible with comfortable touch targets.
+
+### Interaction behavior
+Service names are semantic links with visible focus states and restrained arrow movement using existing motion tokens. No essential content depends on hover, no client state is required, and reduced-motion behavior remains inherited from the global system.
+
