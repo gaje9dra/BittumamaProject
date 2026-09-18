@@ -1004,3 +1004,17 @@ A verified featured article can receive primary hierarchy, followed by compact s
 
 ### Responsive and interaction behavior
 Desktop uses an asymmetric introduction and editorial article index. Featured and supporting content stack naturally on smaller screens while preserving metadata and tap targets. Simple arrow/underline transitions use existing motion tokens and inherit reduced-motion behavior.
+
+## Homepage About / Organization Snapshot — Phase 4.14
+
+### Visual direction
+The About snapshot uses an asymmetric editorial composition: concise organization statement on one side and a numbered focus index on the other. It avoids a centered corporate block, stock imagery, and repetitive cards.
+
+### Content hierarchy
+The section follows label → headline → one supporting statement → four specific focus areas → About Us CTA. Focus areas are kept to short titles and one-line descriptions so the section remains scannable.
+
+### Content rules
+Organization facts are limited to the project's established research, methodology, analysis, and technology-focused service positioning. No founding date, client count, expert count, partnership, award, certification, geographic reach, or performance claim is introduced.
+
+### Responsive and motion behavior
+The editorial columns rebalance into a deliberate stacked composition on smaller screens. Focus items remain separated by dividers and the CTA retains a comfortable touch target. The CTA arrow uses existing motion tokens; no client-side animation is required and reduced-motion behavior is inherited globally.
