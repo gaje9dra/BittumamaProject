@@ -26,6 +26,8 @@ export function MobileNav({ className }: { className?: string }) {
   const submenuBackRef = useRef<HTMLButtonElement>(null);
   const previousOverflowRef = useRef("");
   const previousPaddingRef = useRef("");
+  const activeSubmenuRef = useRef<NavigationItem | null>(null);
+  const searchOpenRef = useRef(false);
 
   const closeMenu = useCallback(() => {
     setActiveSubmenu(null);
@@ -33,10 +35,22 @@ export function MobileNav({ className }: { className?: string }) {
     setOpen(false);
   }, []);
 
-  const closeSearch = useCallback(() => setSearchOpen(false), []);
+  const closeSearch = useCallback(() => {
+    searchOpenRef.current = false;
+    setSearchOpen(false);
+  }, []);
 
-  const enterSubmenu = useCallback((item: NavigationItem) => setActiveSubmenu(item), []);
-  const leaveSubmenu = useCallback(() => setActiveSubmenu(null), []);
+  const enterSubmenu = useCallback((item: NavigationItem) => {
+    activeSubmenuRef.current = item;
+    setActiveSubmenu(item);
+  }, []);
+  const leaveSubmenu = useCallback(() => {
+    activeSubmenuRef.current = null;
+    setActiveSubmenu(null);
+  }, []);
+
+  activeSubmenuRef.current = activeSubmenu;
+  searchOpenRef.current = searchOpen;
 
   useEffect(() => {
     if (!open) return;
@@ -57,9 +71,9 @@ export function MobileNav({ className }: { className?: string }) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        if (searchOpen) {
+        if (searchOpenRef.current) {
           closeSearch();
-        } else if (activeSubmenu) {
+        } else if (activeSubmenuRef.current) {
           leaveSubmenu();
         } else {
           closeMenu();
@@ -90,7 +104,7 @@ export function MobileNav({ className }: { className?: string }) {
       document.body.style.overflow = previousOverflowRef.current;
       document.body.style.paddingRight = previousPaddingRef.current;
     };
-  }, [activeSubmenu, closeMenu, closeSearch, leaveSubmenu, open, searchOpen]);
+  }, [closeMenu, closeSearch, leaveSubmenu, open]);
 
   useEffect(() => {
     if (!open || !activeSubmenu) return;
@@ -163,7 +177,7 @@ export function MobileNav({ className }: { className?: string }) {
       </button>
 
       {mounted && (
-        <aside
+        <div
           id="mobile-primary-navigation"
           ref={panelRef}
           aria-label="Mobile primary navigation"
@@ -260,7 +274,7 @@ export function MobileNav({ className }: { className?: string }) {
               Get in touch
             </Link>
           </nav>
-        </aside>
+        </div>
       )}
     </div>
   );
