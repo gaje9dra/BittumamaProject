@@ -141,6 +141,34 @@ export const homepageContent = {
       },
     ],
   },
+  process: {
+    eyebrow: "07 / How it works",
+    title: "Start with your research requirement.",
+    description: "A clear path from service selection to research support.",
+    steps: [
+      {
+        number: "01",
+        title: "Choose a Service",
+        description: "Select the research support you need.",
+      },
+      {
+        number: "02",
+        title: "Share Requirements",
+        description: "Send your topic and project details.",
+      },
+      {
+        number: "03",
+        title: "Confirm Details",
+        description: "Discuss the scope and requirements.",
+      },
+      {
+        number: "04",
+        title: "Receive Support",
+        description: "Proceed with the agreed research service.",
+      },
+    ],
+    action: { label: "Request Support", href: "/contact" },
+  },
   expertise: {
     eyebrow: "05 / Experts",
     title: "Meet Our Experts",
