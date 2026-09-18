@@ -31,9 +31,9 @@ export type NavigationFeatured = {
 
 export const primaryNavigation: NavigationItem[] = [
   { label: "Services", href: "/services" },
-  { label: "Research & AI", href: "/research" },
+  { label: "Research Support", href: "/research" },
   { label: "Experts", href: "/experts" },
-  { label: "Insights", href: "/insights" },
+  { label: "Articles", href: "/insights" },
   { label: "About", href: "/about" },
 ];
 
