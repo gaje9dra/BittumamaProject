@@ -9,6 +9,7 @@ import { mobileNavigation } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
+import { announceHeaderSurface } from "@/lib/header-surface";
 
 const MENU_TRANSITION_MS = 150;
 
@@ -55,8 +56,13 @@ export function MobileNav({ className }: { className?: string }) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        if (activeSubmenu) leaveSubmenu();
-        else closeMenu();
+        if (searchOpen) {
+          closeSearch();
+        } else if (activeSubmenu) {
+          leaveSubmenu();
+        } else {
+          closeMenu();
+        }
         return;
       }
 
@@ -83,7 +89,7 @@ export function MobileNav({ className }: { className?: string }) {
       document.body.style.overflow = previousOverflowRef.current;
       document.body.style.paddingRight = previousPaddingRef.current;
     };
-  }, [activeSubmenu, closeMenu, leaveSubmenu, open]);
+  }, [activeSubmenu, closeMenu, closeSearch, leaveSubmenu, open, searchOpen]);
 
   useEffect(() => {
     if (!open || !activeSubmenu) return;
@@ -98,6 +104,10 @@ export function MobileNav({ className }: { className?: string }) {
     }, MENU_TRANSITION_MS);
     return () => window.clearTimeout(timer);
   }, [open, mounted]);
+
+  useEffect(() => {
+    if (pathname) closeMenu();
+  }, [closeMenu, pathname]);
 
   useEffect(() => {
     const closeOnResize = () => {
@@ -141,6 +151,7 @@ export function MobileNav({ className }: { className?: string }) {
         onClick={() => {
           if (open) closeMenu();
           else {
+            announceHeaderSurface("mobile");
             setMounted(true);
             setOpen(true);
           }
@@ -166,6 +177,7 @@ export function MobileNav({ className }: { className?: string }) {
                 <>
                   <div className="mb-7">
                     <SearchTrigger
+                      ref={searchTriggerRef}
                       open={searchOpen}
                       onClick={() => setSearchOpen((value) => !value)}
                       className="w-full justify-start border-border bg-surface"
