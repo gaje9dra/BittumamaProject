@@ -201,6 +201,11 @@ export const homepageContent = {
     experts: [],
     action: { label: "Meet Our Experts", href: "/experts" },
   },
+  events: {
+    eyebrow: "10 / Workshops & Events",
+    title: "Research Workshops & Events",
+    description: "Upcoming sessions for research, methodology and academic support.",
+  },
   insights: {
     eyebrow: "06 / Articles",
     title: "Research Articles & Resources",
