@@ -67,7 +67,7 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("keydown", keyboard);
     };
-  }, [close, open, openMenu]);
+  }, [close, open]);
 
   return (
     <div ref={panelRef} className="relative">
@@ -75,7 +75,7 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
         ref={triggerRef}
         type="button"
         aria-expanded={open}
-                aria-controls={panelId}
+        aria-controls={panelId}
         onClick={() => {
           if (open) close();
           else openMenu();
