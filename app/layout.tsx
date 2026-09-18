@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Literata } from "next/font/google";
 import "./globals.css";
+import { Header } from "@/components/layout/header";
 
 const bodyFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bodyFont.variable} ${displayFont.variable}`}>{children}</body>
+      <body className={`${bodyFont.variable} ${displayFont.variable}`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
