@@ -234,6 +234,76 @@ Production UI should consume semantic utilities such as:
 
 Raw color values belong in the token layer, not components.
 
+
+## Layout & Grid System
+
+### 1. Container system
+The production layout uses semantic container widths rather than one universal maximum:
+- **Full:** viewport-width composition when content or imagery requires it.
+- **Wide:** 80rem maximum for research showcases, visual compositions, and broad multi-column structures.
+- **Standard:** 65rem maximum for general page content.
+- **Narrow:** 45rem maximum for focused content groups.
+- **Reading:** 68ch maximum for long-form reading; article body targets the existing 66ch typographic measure.
+
+Containers always use the shared responsive page gutter. Sections should choose the narrowest container that fits the information rather than stretching content to fill available space.
+
+### 2. Page gutters
+Horizontal padding is centralized in `--page-gutter`: 1rem on mobile, 1.5rem from 640px, 2rem from 1024px, and 2.5rem from 1280px. Components should consume this token rather than inventing section-specific viewport padding.
+
+### 3. Grid system
+The foundation provides 1-column mobile layouts and semantic 2-, 3-, 4-, 6-, and 12-column structures as space allows. The 12-column grid is reserved for compositions that benefit from finer spans; simpler content should use fewer columns. Grid gaps are tokenized rather than arbitrary.
+
+### 4. Editorial grid
+The editorial pattern uses a small supporting rail beside a larger content field on wider screens. It supports an eyebrow, statement, supporting copy, metadata, visual, and CTA without imposing a universal section template. Production sections may alter spans and order according to content priority.
+
+### 5. Asymmetry rules
+Controlled 40/60 and 60/40 relationships are available, alongside offset and variable-span compositions. Asymmetry is a rhythm device, not a default. It must preserve hierarchy, reading order, alignment, and content priority. Overlap should be introduced only when it clarifies composition.
+
+### 6. Section widths
+Use full-bleed for genuinely immersive visuals or major transitions; wide for research/data compositions; standard for general content; narrow for focused explanatory groups; and reading width for long-form prose. Different sections on the same page may use different widths.
+
+### 7. Vertical rhythm
+The spacing foundation uses semantic values: small section 2rem, standard section 3rem, large section 5rem, page-scale section 6–9rem, with component spacing at 1–1.5rem and micro/small spacing at 0.25–0.5rem. These relationships should be adjusted centrally, not replaced with scattered pixel values.
+
+### 8. Content density
+Four density modes guide composition:
+- **Compact:** metadata, controls, lists, utility content.
+- **Standard:** balanced service and general information.
+- **Editorial:** more breathing room around important statements and evidence.
+- **Immersive:** large visual emphasis with minimal competing information.
+
+Density is selected by information needs, not by page type alone.
+
+### 9. Card strategy
+Cards are optional. Use them for grouping, comparison, selection, interaction, or previews. Prefer editorial lists, open typography, numbered findings, tables, horizontal structures, and image-led compositions where a card would only add a wrapper.
+
+### 10. Image composition
+The system supports full-bleed, contained, portrait, landscape, square, cropped, offset, and overlapping imagery. Image treatment should be chosen as part of the composition and information hierarchy; imagery must not be inserted merely to fill space.
+
+### 11. Responsive behavior
+Mobile prioritizes reading, touch interaction, hierarchy, and simplified composition. Tablet can preserve multi-column relationships where useful. Desktop enables controlled asymmetry and broader research/data structures. Large desktop adds breathing room through max-width constraints rather than endlessly stretching content.
+
+### 12. Mobile collapse rules
+Complex desktop relationships collapse according to content priority. A text/visual pair normally becomes text then visual, but visual-first is valid when the visual is the primary information source. Mobile order is deliberate rather than a mechanical stacking rule.
+
+### 13. Article reading width
+Long-form content uses a dedicated reading measure: approximately 66–68ch. Titles, metadata, intro, body, subheads, lists, figures, quotations, and references can participate in this measure while data tables or figures may intentionally exceed it when their structure requires additional width.
+
+### 14. Whitespace philosophy
+Whitespace is an active structural tool. It separates ideas, establishes hierarchy, gives editorial typography room, and creates focus. Empty space should be intentional; density should increase only when information demands it.
+
+### 15. Section transition philosophy
+Sections may transition through whitespace, a tonal surface change, a full-width visual, a fine divider, a typographic shift, an intentional overlap, or another restrained compositional change. Dividers are not required between every section.
+
+### 16. Overflow and layering
+Layout primitives use `min-width: 0` where grid children need safe shrinking and reserve horizontal overflow handling for actual compositions. Global `overflow-hidden` is not used as a layout fix. Layering is tokenized from base through content, sticky, navigation, modal, and toast levels (0/10/20/30/40/50).
+
+### 17. Layout primitives
+The production CSS exposes semantic primitives including `.layout-section`, `.layout-section-sm`, `.layout-section-lg`, `.layout-section-xl`, `.layout-grid-2/3/4/6/12`, `.layout-editorial`, `.layout-asym-40-60`, `.layout-asym-60-40`, and `.layout-reading`. The existing `Container` component now supports narrow, reading, default, wide, and full sizes.
+
+### 18. Layout playground
+A development-only playground is available at `/design-system/layout`. It demonstrates the container, grid, editorial, asymmetry, spacing/rhythm, density, card strategy, image composition, reading width, full-width transitions, and responsive stacking. It is not intended as a public website page.
+
 ## Image and visual direction
 
 Prioritize research visuals, diagrams, authentic editorial photography, data visualization, original explanatory illustrations, relevant interface screenshots, and typography-led compositions. Photography should favor real people, research activity, workshops, collaboration, and context over generic corporate stock. No Anushram assets will be used.
@@ -325,5 +395,6 @@ This document is the evolving design contract for the project.
 - Phase 2.1: creative direction
 - Phase 2.2: production color system
 - Phase 2.3: production typography system
+- Phase 2.4: production layout, grid, and spacing system
 
 Future phases should build on these tokens rather than creating parallel visual systems.
