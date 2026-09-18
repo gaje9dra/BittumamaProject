@@ -49,8 +49,10 @@ export function MobileNav({ className }: { className?: string }) {
     setActiveSubmenu(null);
   }, []);
 
-  activeSubmenuRef.current = activeSubmenu;
-  searchOpenRef.current = searchOpen;
+  useEffect(() => {
+    activeSubmenuRef.current = activeSubmenu;
+    searchOpenRef.current = searchOpen;
+  }, [activeSubmenu, searchOpen]);
 
   useEffect(() => {
     if (!open) return;
@@ -119,10 +121,6 @@ export function MobileNav({ className }: { className?: string }) {
     }, MENU_TRANSITION_MS);
     return () => window.clearTimeout(timer);
   }, [open, mounted]);
-
-  useEffect(() => {
-    if (pathname) closeMenu();
-  }, [closeMenu, pathname]);
 
   useEffect(() => {
     const closeOnResize = () => {
