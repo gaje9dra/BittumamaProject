@@ -864,3 +864,24 @@ Before changing established copy, inspect its intended role and preserve accurat
 
 ### Homepage application
 The homepage content model remains centralized in `data/homepage.ts`. Provisional content explicitly identifies areas where verified organizational information is still required. Service and research structures are designed to accept verified content later without changing the presentation architecture.
+
+## Homepage Service Discovery — Phase 4.7
+
+### Purpose
+The Service Discovery layer follows Services as a compact navigation step from service awareness to a specific destination. It keeps the homepage action-oriented without adding another card grid or long explanation.
+
+### Information hierarchy
+The section uses a small section label, a short task-focused heading, a numbered service index, one-line service descriptions, and a single View All Services action. Service names and descriptions reuse the existing centralized services.items data rather than duplicating the taxonomy.
+
+### Service terminology
+Discovery uses the same service names and destinations as the homepage Services section. No additional service categories are introduced solely to fill the section.
+
+### CTA strategy
+Individual service rows link directly to their existing service destinations. One section-level CTA points to /services using the existing View All Services action. There are no competing primary buttons.
+
+### Responsive behavior
+Desktop uses a compact two-zone editorial layout with the discovery list occupying the wider column. Tablet preserves the indexed list while allowing the text columns to compress. Mobile converts each row into a clear vertical reading unit with the service name, description, and destination remaining accessible without horizontal scrolling.
+
+### Interaction and accessibility
+Service rows are semantic links with visible focus states and restrained arrow/surface feedback using the existing motion tokens. Essential information is visible without hover. The section is a Server Component, adds no state or dependencies, and inherits the global reduced-motion behavior.
+
