@@ -27,6 +27,10 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
       const target = event.target;
       if (target instanceof Node && !panelRef.current?.contains(target) && !triggerRef.current?.contains(target)) onClose();
     };
+    const focusOutside = (event: FocusEvent) => {
+      const target = event.target;
+      if (target instanceof Node && !panelRef.current?.contains(target) && !triggerRef.current?.contains(target)) onClose();
+    };
     const keyboard = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
@@ -37,10 +41,12 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
       if (surface !== "mega") onClose();
     });
     document.addEventListener("pointerdown", outside);
+    document.addEventListener("focusin", focusOutside);
     document.addEventListener("keydown", keyboard);
     return () => {
       unsubscribe();
       document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", focusOutside);
       document.removeEventListener("keydown", keyboard);
     };
   }, [open, onClose, triggerRef]);
