@@ -664,3 +664,35 @@ The main Header remains server-rendered. SearchTrigger/SearchPanel and HeaderAct
 
 ### Future integration
 The current form contract intentionally leaves search retrieval open: future phases can connect /search?q= to the site's content architecture, indexing strategy, filters, ranking, pagination, and analytics. The Header should continue to treat search as a discovery utility rather than turning it into a dominant navigation surface.
+
+## Header & Navigation — Phase 3.5 final integration
+
+### Production integration
+The Header is now mounted once in the root App Router layout, making it the global site navigation rather than a development-only composition. Development header/navigation playgrounds rely on this same global instance and do not render duplicate headers.
+
+### Final hierarchy
+The global header follows a restrained hierarchy: Bittumama brand first, primary navigation second, compact Search utility third, and the single primary Get in touch action last. Mobile replaces the desktop navigation/actions with one menu trigger and keeps Search inside that navigation surface.
+
+### Responsive behavior
+The header uses shared --header-height and --header-height-lg tokens for the sticky shell, mobile panel, search overlay, and future content-offset behavior. Desktop navigation spacing reduces at the base large breakpoint and expands at extra-large widths. Crossing the 1024px breakpoint closes desktop surfaces and mobile navigation surfaces so hidden menus do not persist across viewport changes.
+
+### Surface coordination
+Search, simple dropdowns, mega menus, and the mobile menu use a small shared header-surface event contract. Opening one mutually exclusive surface closes another where appropriate. Route changes close open surfaces, and resize transitions prevent stale overlays from surviving a breakpoint change.
+
+### Dropdown and mega-menu strategy
+Dropdown and mega-menu structures remain data-driven and are not populated with artificial production destinations. Navigation dropdowns use normal navigation links with disclosure buttons rather than application-menu ARIA semantics. Mega-menu positioning is anchored to the global header context so a future genuine multi-group navigation can span the header width while retaining the established wide container and page gutters.
+
+### Search utility
+Search is a named search landmark with a labeled search field, clear/close actions, keyboard Escape handling, controlled aria-expanded/aria-controls, focus restoration, outside-click dismissal on desktop, and client-side navigation to the future /search?q= contract. No search results, indexing, backend, CMS, or analytics are introduced in this phase.
+
+### Mobile behavior
+The mobile panel is a dedicated scrollable navigation surface with body-scroll locking, focus containment, active-route states, explicit nested-navigation Back behavior, Search within the panel, and a single primary CTA. Escape closes Search first, then a nested submenu, then the entire mobile menu. Route changes close the menu. The panel uses the same header-height and spacing tokens as the global header.
+
+### Accessibility final rules
+Semantic header, nav, links, buttons, and search landmark semantics are preferred over unnecessary ARIA roles. Interactive disclosures expose aria-expanded and aria-controls. Active links expose aria-current. Keyboard focus remains visible, dropdown Escape restores trigger focus, mobile menu focus is contained while open and restored after close, and Search focuses its input on open and restores the trigger on close. Reduced-motion rules continue to remove transforms and minimize transitions.
+
+### Performance and implementation conventions
+The root Header remains a Server Component. Client boundaries are limited to pathname-aware navigation, local menu/search state, and the minimal scroll-state shell. Surface coordination uses a lightweight browser event contract rather than global state. Scroll handling remains passive and animation-frame gated; resize/listener effects are cleaned up. No new dependency was introduced and the locked technology versions remain unchanged.
+
+### Final validation surface
+The development-only header and navigation playgrounds are the canonical manual verification surfaces for top/scrolled state, active routes, dropdowns, mega-menu geometry, mobile navigation, Search, focus behavior, resize/orientation changes, long labels, and reduced motion. They remain development references and are not part of the production information architecture.
