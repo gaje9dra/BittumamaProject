@@ -61,10 +61,16 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
         links[next]?.focus();
       }
     };
+    const focusOutside = (event: FocusEvent) => {
+      const target = event.target;
+      if (target instanceof Node && !panelRef.current?.contains(target) && !triggerRef.current?.contains(target)) close();
+    };
     document.addEventListener("pointerdown", outside);
+    document.addEventListener("focusin", focusOutside);
     document.addEventListener("keydown", keyboard);
     return () => {
       document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", focusOutside);
       document.removeEventListener("keydown", keyboard);
     };
   }, [close, open]);
