@@ -9,6 +9,7 @@ import { HomePositioning } from "@/components/home/home-positioning";
 import { HomeProcess } from "@/components/home/home-process";
 import { HomeServices } from "@/components/home/home-services";
 import { HomeTrust } from "@/components/home/home-trust";
+import { HomeEvents } from "@/components/home/home-events";
 import { HomeServiceDiscovery } from "@/components/home/home-service-discovery";
 
 export default function Home() {
@@ -24,6 +25,7 @@ export default function Home() {
       <HomeProcess />
       <HomeTrust />
       <HomeExpertise />
+      <HomeEvents />
       <HomeInsights />
       <HomeCta />
     </main>
