@@ -67,7 +67,7 @@ export function HomeHero() {
               <div className="relative aspect-[4/5] min-h-[22rem]">
                 <div className="absolute inset-x-5 top-5 flex items-center justify-between">
                   <span className="type-caption uppercase tracking-[0.12em] text-muted-foreground">
-                    Research signal
+                    Research framework
                   </span>
                   <span className="type-caption text-muted-foreground">01—24</span>
                 </div>
@@ -75,15 +75,10 @@ export function HomeHero() {
                 <div className="absolute inset-x-5 top-16 bottom-14">
                   <svg
                     viewBox="0 0 400 300"
-                    role="img"
-                    aria-labelledby="hero-visual-title hero-visual-description"
+                    aria-hidden="true"
                     className="h-full w-full"
                     preserveAspectRatio="none"
                   >
-                    <title id="hero-visual-title">Illustrative research signal</title>
-                    <desc id="hero-visual-description">
-                      A restrained line visualization showing changing signals across a research field. It is an illustrative placeholder, not organizational data.
-                    </desc>
                     <line x1="0" y1="260" x2="400" y2="260" stroke="currentColor" strokeOpacity="0.18" />
                     <line x1="0" y1="180" x2="400" y2="180" stroke="currentColor" strokeOpacity="0.18" />
                     <line x1="0" y1="100" x2="400" y2="100" stroke="currentColor" strokeOpacity="0.18" />
@@ -104,7 +99,7 @@ export function HomeHero() {
 
                 <div className="absolute inset-x-5 bottom-5 flex items-end justify-between border-t border-border pt-3">
                   <span className="type-caption max-w-[18ch] text-muted-foreground">
-                    Illustrative research visual.
+Research framework
                   </span>
                   <span aria-hidden="true" className="text-primary">
                     <ArrowDown size={16} />
@@ -113,7 +108,7 @@ export function HomeHero() {
               </div>
 
               <figcaption className="sr-only">
-                Illustrative research visualization placeholder; it does not represent real organizational data.
+                Abstract research framework visual.
               </figcaption>
             </figure>
           </div>
