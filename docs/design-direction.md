@@ -927,3 +927,29 @@ Desktop presents the four steps in sequence. Tablet uses a two-column arrangemen
 
 ### Interaction and motion
 The section is a Server Component with no state, effects, listeners, or new dependencies. The CTA uses existing motion tokens. The numbered sequence remains fully understandable without animation and inherits the global reduced-motion behavior.
+
+## Homepage Trust, Proof & Credibility — Phase 4.10
+
+### Purpose
+The Trust section follows Process and presents the factual service scope already established in the homepage content. It reduces hesitation through specificity rather than unsupported social proof.
+
+### Evidence strategy
+No client logos, testimonials, ratings, statistics, credentials, awards, affiliations, publication counts, or other evidence not established in the project was added. Proof is limited to the documented service areas already represented by the homepage: Thesis & Dissertation, Research Papers, Research Methodology, and Data Analysis.
+
+### Content density
+The section uses a short label, concise heading, one supporting line, and a compact evidence index. Each proof point contains a specific service area and one short factual description.
+
+### Visual composition
+A deep primary surface creates a calm transition from the Process section. A four-row editorial evidence list uses restrained numbering and rules instead of trust cards, badges, checkmarks, ratings, or large unsupported statistics.
+
+### CTA strategy
+A single View Research Services link points to the existing /services destination. It provides a factual next step without artificial urgency or pressure.
+
+### Responsive behavior
+Desktop uses an asymmetric introduction and evidence list. Tablet compresses the evidence columns while preserving the hierarchy. Mobile stacks each proof point with all factual information visible and avoids oversized metric blocks.
+
+### Accessibility considerations
+The section uses semantic section, heading, definition-list, and link elements. Contrast is maintained on the primary surface, focus remains visible, and decorative styling is not required to understand the evidence.
+
+### Interaction and motion
+The section is a Server Component with no state or effects. The CTA uses existing motion tokens only. Proof content does not depend on animation and inherits the global reduced-motion behavior.
