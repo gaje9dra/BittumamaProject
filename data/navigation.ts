@@ -1,7 +1,32 @@
+export type NavigationMetadata = {
+  eyebrow?: string;
+  badge?: string;
+};
+
 export type NavigationItem = {
   label: string;
   href: string;
-  type?: "link" | "group";
+  type?: "link" | "dropdown" | "grouped" | "mega";
+  description?: string;
+  children?: NavigationItem[];
+  groups?: NavigationGroup[];
+  featured?: NavigationFeatured;
+  external?: boolean;
+  metadata?: NavigationMetadata;
+};
+
+export type NavigationGroup = {
+  label: string;
+  description?: string;
+  items: NavigationItem[];
+};
+
+export type NavigationFeatured = {
+  label: string;
+  href: string;
+  description?: string;
+  eyebrow?: string;
+  external?: boolean;
 };
 
 export const primaryNavigation: NavigationItem[] = [
