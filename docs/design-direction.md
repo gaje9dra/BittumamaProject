@@ -40,6 +40,70 @@ Final typefaces are deferred to Phase 2.3. The desired character is contemporary
 
 Exact values are deferred to Phase 2.2. Use a restrained neutral foundation, a trustworthy primary tone, a selective secondary tone, and a scarce accent for meaningful actions, states, data emphasis, or navigation. Prefer tonal surfaces over gradients. Avoid purple/blue AI gradients, neon accents, glow, and arbitrary color variation.
 
+## Typography System
+
+### 1. Selected fonts
+**Display / editorial:** Literata  
+**Body / interface:** IBM Plex Sans
+
+Literata supplies the editorial, human, research-oriented voice for major headings and statements. IBM Plex Sans provides a precise, neutral interface layer for body copy, navigation, controls, metadata, tables, and research context. The pairing creates contrast without becoming decorative or resembling a generic SaaS stack.
+
+Both are loaded through `next/font/google` with `display: "swap"`.
+
+### 2. Font weights
+Only the weights used by the system are loaded:
+- Literata: 400, 500, 600, 700
+- IBM Plex Sans: 400, 500, 600
+
+No unnecessary font families, weights, or italic variants are loaded.
+
+### 3. Display hierarchy
+Display type is reserved for major editorial statements, hero headlines, important research statements, and meaningful statistics. Literata uses tighter tracking and compact leading to create visual identity through typography itself.
+
+- Display: 3.25rem–6.5rem, fluid, 700, 1.02 leading, -0.035em tracking
+- H1: 2.5rem–4.75rem, fluid, 600, 1.12 leading, -0.022em tracking
+- H2: 2rem–3.25rem, fluid, 600, 1.12 leading, -0.022em tracking
+- H3: 1.5rem–2.25rem, fluid, 600, 1.12 leading, -0.022em tracking
+- H4: 1.25rem–1.5rem, fluid, 600, 1.12 leading
+- H5: 1.125rem, 600, 1.12 leading
+
+### 4. Body scale
+IBM Plex Sans carries reading and interface content:
+- Body Large: 1.125rem, 400, 1.65 leading
+- Body: 1rem, 400, 1.6 leading
+- Body Small: 0.875rem, 400, 1.5 leading
+- Caption: 0.75rem, 400, 1.4 leading
+- Label: 0.8125rem, 600, 1.35 leading, 0.075em tracking
+
+### 5. UI typography
+Navigation uses 0.9375rem / 1.4 with subtle 0.005em tracking. Buttons use 0.9375rem / 1.25 with medium weight. Labels are compact, semantically clear, and slightly tracked. Metadata, breadcrumbs, pagination, and form labels should use the small/label styles rather than bespoke sizes.
+
+### 6. Responsive behavior
+The major display and heading levels use fluid `clamp()` sizing. Mobile retains hierarchy rather than simply applying a smaller desktop scale. Desktop can use larger editorial compositions; mobile reduces size while preserving Literata's typographic contrast. Body sizes remain stable enough for comfortable reading.
+
+### 7. Text-width rules
+- Display / major headline: target maximum around 22ch
+- Section heading: target maximum around 32ch
+- Standard reading text: target maximum around 68ch
+- Long-form article content: target maximum around 66ch
+
+Widths are semantic constraints, not universal layout widths. Data tables and wide research visualizations may intentionally exceed reading measure when their structure requires it.
+
+### 8. Letter-spacing strategy
+Display and headings use restrained negative tracking. Body text stays neutral. Uppercase labels use wider tracking for scanability. Navigation uses only subtle tracking. Wide tracking is not used as a global decorative treatment.
+
+### 9. Typographic rhythm
+Spacing should be composed according to content hierarchy rather than a fixed heading/paragraph/button recipe. Eyebrows sit close enough to headings to form one unit; supporting text gets more breathing room; actions follow the informational message naturally. Article headings, paragraphs, subheadings, lists, figures, and captions use distinct rhythm appropriate to reading flow.
+
+### 10. Numbers and data
+Important metrics use the display family with strong but restrained scale. A number should always be paired with a meaningful label and, where appropriate, context/source. Charts and tables use IBM Plex Sans for labels and supporting data text so dense information remains legible.
+
+### 11. Accessibility
+Body text is never intentionally thin or dependent on low-contrast color. Heading hierarchy is communicated through size, family, weight, leading, spacing, and measure rather than color alone. Text should remain usable when zoomed, and existing visible focus treatment remains mandatory.
+
+### 12. Performance
+Fonts are self-contained through Next.js font optimization. Only two families and seven total weights are loaded. `font-display: swap` is configured, and no local unauthorized font assets or third-party runtime font loading is introduced.
+
 ## Color System
 
 ### 1. Color philosophy
