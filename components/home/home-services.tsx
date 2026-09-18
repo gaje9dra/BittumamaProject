@@ -39,7 +39,7 @@ export function HomeServices() {
                 </Link>
               ))}
             </div>
-            <p className="mt-6 max-w-[60ch] type-caption text-muted-foreground">Service architecture is intentionally replaceable as the organization&apos;s final offering taxonomy is established.</p>
+            <p className="mt-6 max-w-[60ch] type-caption text-muted-foreground"></p>
           </div>
         </div>
       </Container>
