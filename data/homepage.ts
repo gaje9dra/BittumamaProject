@@ -14,19 +14,19 @@ export type HomepageCapability = {
 export const homepageContent = {
   hero: {
     eyebrow: "Research · Intelligence · Expertise",
-    title: "Evidence, expertise, and technology—made useful.",
+    title: "Research, analysis, and practical support for complex questions.",
     description:
-      "Bittumama brings research, intelligent technology, education, and applied expertise together to investigate complex questions and turn knowledge into useful understanding.",
-    primaryAction: { label: "Explore our work", href: "/research" },
-    secondaryAction: { label: "Meet the experts", href: "/experts" },
-    meta: "Independent thinking / Applied knowledge",
+      "Research support for thesis and dissertation work, research papers, literature reviews, methodology, data analysis, and related academic requirements. Replace this provisional description with the organization’s verified offering before launch.",
+    primaryAction: { label: "View Research Services", href: "/services" },
+    secondaryAction: { label: "Meet Our Experts", href: "/experts" },
+    meta: "Research support / Academic services",
   },
   positioning: {
     eyebrow: "01 / Positioning",
-    title: "Make complex knowledge easier to understand, apply, and act on.",
+    title: "Research support for academic work that needs structure and specialist input.",
     description:
-      "We connect disciplined research with human expertise and purposeful technology, giving complex questions the context, evidence, and practical direction they need.",
-    action: { label: "Learn about our approach", href: "/about" },
+      "Provisional homepage positioning: support may include thesis and dissertation preparation, literature review, research methodology, data analysis, and academic editing where these are part of the verified offering.",
+    action: { label: "View Research Services", href: "/services" },
     links: [
       {
         label: "Research & AI",
@@ -52,9 +52,9 @@ export const homepageContent = {
   },
   capabilities: {
     eyebrow: "02 / Capabilities",
-    title: "Four connected ways of working with knowledge.",
+    title: "Research and academic support, organized around real tasks.",
     intro:
-      "Research, intelligence, education, and applied expertise form the core of the organization’s work. The overview stays deliberately high-level; deeper detail belongs to the dedicated experiences that follow.",
+      "Provisional capability overview. Replace each item with the organization’s verified capabilities and terminology before launch; do not treat this development content as a claim about the final service catalog.",
     items: [
       {
         index: "01",
@@ -84,14 +84,14 @@ export const homepageContent = {
   },
   intelligence: {
     eyebrow: "03 / Research & intelligence",
-    title: "Questions first. Evidence next. Understanding follows.",
+    title: "Research support built around the question, method, and evidence.",
     description:
-      "Research here is framed as a disciplined way of asking better questions, examining evidence, and translating what emerges into useful understanding. The homepage introduces the approach without inventing findings or credentials.",
+      "This provisional section can explain the organization’s actual research-support process, including topic selection, literature review, methodology, analysis, and research-paper preparation where offered. No findings or credentials are implied.",
     featured: {
-      status: "Development foundation",
-      title: "Research questions, methods, and signals",
+      status: "Provisional content",
+      title: "Research support: topics, methods, literature, and analysis",
       description:
-        "A future featured study can occupy this space with its real question, evidence, authorship, and context once the organization's research program is established.",
+        "Replace this placeholder with a verified research service, research paper, or other real knowledge resource once the organization’s content is available.",
       meta: ["Question-led", "Evidence-aware", "Application-focused"],
       href: "/research",
     },
@@ -117,27 +117,27 @@ export const homepageContent = {
   },
   expertise: {
     eyebrow: "04 / Human expertise",
-    title: "Technology is useful. Expertise makes it meaningful.",
+    title: "Verified subject expertise belongs here.",
     description:
-      "People should appear as authors, practitioners, educators, and subject-matter experts—not as decorative portraits. This section reserves space for biographies, disciplines, and relevant work.",
+      "Expert profiles are not yet available in the project content. Replace this placeholder with verified names, disciplines, qualifications, and relevant work before presenting the section as factual.",
     action: { label: "Meet the experts", href: "/experts" },
   },
   insights: {
     eyebrow: "05 / Insights",
-    title: "Knowledge with somewhere to go next.",
+    title: "Research articles and academic resources.",
     description:
-      "A restrained editorial index can surface the latest thinking while leaving room for future article metadata, topics, authorship, and search.",
+      "Article and resource content is not yet available. Replace these placeholders with verified titles, topics, authorship, and publication information before launch.",
     items: [
-      { label: "Featured insight", meta: "Article / Topic", href: "/insights" },
-      { label: "Research note", meta: "Research / Method", href: "/insights" },
-      { label: "Field perspective", meta: "Perspective / Practice", href: "/insights" },
+      { label: "Article title placeholder", meta: "Replace with verified article topic", href: "/insights" },
+      { label: "Research resource placeholder", meta: "Replace with verified research topic", href: "/insights" },
+      { label: "Academic resource placeholder", meta: "Replace with verified resource type", href: "/insights" },
     ],
   },
   cta: {
     eyebrow: "06 / Continue the conversation",
-    title: "Have a question, a brief, or a subject worth exploring?",
+    title: "Need help with a research or academic requirement?",
     description:
-      "The final call to action should feel like the natural continuation of the homepage narrative—not a sales interruption.",
-    action: { label: "Get in touch", href: "/contact" },
+      "Use this contact route for verified services offered by the organization. Replace the provisional wording with the actual contact process and supported requirements before launch."
+    action: { label: "Contact Research Support", href: "/contact" },
   },
 } as const;
