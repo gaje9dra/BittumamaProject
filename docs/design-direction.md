@@ -905,3 +905,25 @@ Desktop preserves the asymmetric introduction/use-case relationship. Tablet comp
 ### Interaction behavior
 Service names are semantic links with visible focus states and restrained arrow movement using existing motion tokens. No essential content depends on hover, no client state is required, and reduced-motion behavior remains inherited from the global system.
 
+## Homepage Process / How It Works — Phase 4.9
+
+### Purpose
+The Process section follows Audience / Use Cases and explains the customer-facing path from choosing a research service to proceeding with the agreed support. It reduces friction without exposing internal operations.
+
+### Process structure
+The section uses four concise indexed steps: Choose a Service, Share Requirements, Confirm Details, and Receive Support. Each step has one short supporting line. The process is presented as a sequence, not as four repeated cards.
+
+### Content density
+Copy is intentionally compact. The section communicates the next action and required information without adding operational claims, delivery guarantees, revision policies, payment stages, or internal workflow details.
+
+### Visual composition
+Desktop uses a large editorial introduction beside a four-step indexed sequence with restrained rules. The connector treatment is static and structural; it does not represent live progress. Mobile changes to a vertical numbered sequence rather than squeezing desktop columns into the viewport.
+
+### CTA strategy
+A single section-level Request Support link points to the existing /contact destination. The process itself contains no competing actions.
+
+### Responsive behavior
+Desktop presents the four steps in sequence. Tablet uses a two-column arrangement. Mobile presents one step at a time with readable titles, compact descriptions, clear numbering, and comfortable spacing.
+
+### Interaction and motion
+The section is a Server Component with no state, effects, listeners, or new dependencies. The CTA uses existing motion tokens. The numbered sequence remains fully understandable without animation and inherits the global reduced-motion behavior.
