@@ -1,4 +1,4 @@
-import type { ElementType, HTMLAttributes } from "react";
+import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
 type TextProps = HTMLAttributes<HTMLElement> & {
@@ -20,7 +20,7 @@ export function Text({
   size = "default",
   ...props
 }: TextProps) {
-  const Tag = as as ElementType;
+  const Tag = as;
 
   return (
     <Tag className={cn(sizeClasses[size], className)} {...props}>
