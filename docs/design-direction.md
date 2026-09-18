@@ -40,6 +40,136 @@ Final typefaces are deferred to Phase 2.3. The desired character is contemporary
 
 Exact values are deferred to Phase 2.2. Use a restrained neutral foundation, a trustworthy primary tone, a selective secondary tone, and a scarce accent for meaningful actions, states, data emphasis, or navigation. Prefer tonal surfaces over gradients. Avoid purple/blue AI gradients, neon accents, glow, and arbitrary color variation.
 
+## Color System
+
+### 1. Color philosophy
+A quiet mineral foundation with a deep botanical primary, warm stone secondary, and restrained terracotta accent. The palette feels knowledgeable and human rather than futuristic for its own sake. Most interfaces remain neutral-first; brand color earns emphasis through hierarchy and context. It deliberately avoids blue/purple AI gradients, neon colors, glow effects, and high-saturation surfaces.
+
+### 2. Primary color
+**Deep Pine — #173F3A**
+- Purpose: primary actions, key navigation, selected states, important rules, and high-confidence emphasis.
+- Scale: 50 #EDF5F2, 100 #DBEAE5, 200 #B8D5CE, 300 #8EB9AE, 400 #5F9589, 500 #39766B, 600 #2F665C, 700 #28544D, 800 #21453F, 900 #1B3935, 950 #0F2522.
+- Do not use the scale as decorative fills across every section.
+
+### 3. Secondary color
+**Warm Stone — #6B6255**
+- Purpose: secondary actions, supporting controls, metadata emphasis, editorial rules, and restrained supporting accents.
+- Scale: 50 #F6F3ED, 100 #EBE5DA, 200 #D9CDBB, 300 #C5B49B, 400 #AD9678, 500 #927B5F, 600 #806B53, 700 #695846, 800 #574A3D, 900 #483E34, 950 #29241E.
+- Use sparingly beside primary so it remains a supporting voice.
+
+### 4. Accent
+**Terracotta — #A34F3F**
+- Purpose: a small number of meaningful calls to action, editorial highlights, selected data emphasis, and visual punctuation.
+- The accent is scarce and must not become the dominant page color.
+
+### 5. Neutral palette
+- Page background: #F7F6F2
+- Foreground / primary text: #17211F
+- Surface: #FFFFFF
+- Muted surface: #EFEEE9
+- Interactive surface: #E8E9E3
+- Highlighted surface: #E9F0EB
+- Border: #D7D7CF
+- Input border: #C6C9C1
+- Muted text: #5C6561
+
+Neutrals should carry most of the visual area.
+
+### 6. Surface hierarchy
+1. Page background #F7F6F2 — default canvas.
+2. Section/background surface #EFEEE9 — gentle major-zone separation.
+3. Elevated surface #FFFFFF — genuinely raised modules.
+4. Interactive surface #E8E9E3 — neutral hover/pressed treatment.
+5. Highlighted surface #E9F0EB — research callouts and contextual emphasis.
+
+Reserved dark editorial/research surfaces:
+- Dark background #17211F
+- Dark foreground #F5F3EC
+- Dark surface #22302C
+- Dark muted surface #2A3733
+- Dark border #43514C
+- Dark muted text #B9C1BC
+
+Dark sections require a content reason and should not alternate randomly.
+
+### 7. Text hierarchy
+- Foreground #17211F: primary body and heading text.
+- Muted foreground #5C6561: secondary text and metadata.
+- Primary foreground #FFFFFF: text/icons on primary fills.
+- Secondary foreground #FFFFFF: text/icons on secondary fills.
+- Accent foreground #FFFFFF: text/icons on accent fills.
+- Dark foreground #F5F3EC: primary text on dark surfaces.
+- Dark muted text #B9C1BC: supporting text on dark surfaces.
+
+Do not use low-contrast muted text for essential content.
+
+### 8. Interactive states
+- Default: semantic base token.
+- Hover: a meaningful step within the same family or the interactive surface.
+- Active/pressed: deeper brand tone or stronger surface contrast.
+- Focus: ring #2F6B60 with a visible 2px outline and offset.
+- Disabled: muted surface/text with additional non-color cues; never opacity alone.
+- Selected: highlighted surface plus a primary indicator.
+- Visited: may use a darker secondary tone; do not introduce a new color family.
+
+### 9. Status colors
+- Success: #2F6B4F — positive completion and confirmed states.
+- Warning: #9A6A20 — caution, attention, pending review.
+- Error: #A33F3F — validation, destructive, or failed states.
+- Info: #386779 — neutral informational guidance.
+
+Status colors are muted rather than fluorescent and must be paired with labels, icons, or text.
+
+### 10. Data visualization colors
+Categorical set:
+1. #173F3A
+2. #386779
+3. #7B5B8A
+4. #A34F3F
+5. #9A6A20
+6. #58724F
+
+Never rely on color alone. Use direct labels, legends, patterns, markers, position, or line styles as appropriate.
+
+### 11. Gradient rules
+Gradients are optional and exceptional. If introduced later, they need a defined purpose such as a single hero artwork, large visual composition, or special research highlight. Keep them low-saturation and subordinate to content.
+
+Never use gradients for every heading, button, card, section background, or decorative blob. Purple/blue AI gradients, neon glow, and gradient text are excluded.
+
+### 12. Accessibility and contrast
+The system prioritizes dark text on light neutral surfaces and light text on deep brand fills. Foreground/background pairs must be checked in their actual UI context, especially for small text, buttons, links, form controls, borders, and dark sections.
+
+Borders are structural. If a subtle border is insufficient, increase contrast or add another cue. Focus uses the dedicated ring token and must remain visible on light and dark contexts.
+
+Accessibility also requires semantic HTML, visible focus, readable type, comfortable touch targets, logical reading order, reduced motion, and no color-only communication.
+
+### 13. Usage rules
+**Use primary for:** primary actions, selected navigation, strong brand moments, important rules, high-confidence emphasis.
+
+**Use secondary for:** supporting actions, editorial metadata, secondary controls, quiet structural emphasis.
+
+**Use accent for:** a small number of meaningful calls to action, important highlights, and selected research/data emphasis.
+
+**Use neutrals for:** most page area, reading surfaces, section separation, modules, and structural layout.
+
+**Do not:** flood pages with brand color, use accent as generic decoration, make every module a colored card, or introduce raw hex values inside components.
+
+### 14. Semantic implementation
+Production UI should consume semantic utilities such as:
+- bg-background
+- text-foreground
+- bg-surface
+- bg-surface-muted
+- bg-primary
+- text-primary-foreground
+- bg-secondary
+- bg-accent
+- text-muted-foreground
+- border-border
+- ring-ring
+
+Raw color values belong in the token layer, not components.
+
 ## Image and visual direction
 
 Prioritize research visuals, diagrams, authentic editorial photography, data visualization, original explanatory illustrations, relevant interface screenshots, and typography-led compositions. Photography should favor real people, research activity, workshops, collaboration, and context over generic corporate stock. No Anushram assets will be used.
