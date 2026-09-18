@@ -105,10 +105,9 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
         {item.label}
         <ChevronDown aria-hidden="true" size={16} className={cn("transition-transform duration-[var(--motion-fast)]", open && "rotate-180")} />
       </button>
-      {open && (
-        <div id={panelId} className="absolute left-0 top-full z-[var(--layer-modal)] w-[min(22rem,calc(100vw-2rem))] rounded-[var(--radius-md)] border border-border bg-surface py-2 shadow-[var(--shadow-sm)] motion-fade">
-          {item.description && <p className="type-body-sm border-b border-border px-5 py-3 text-muted-foreground">{item.description}</p>}
-          <ul className="m-0 list-none p-0">
+      <div id={panelId} hidden={!open} className="absolute left-0 top-full z-[var(--layer-modal)] w-[min(22rem,calc(100vw-2rem))] rounded-[var(--radius-md)] border border-border bg-surface py-2 shadow-[var(--shadow-sm)] motion-fade">
+        {item.description && <p className="type-body-sm border-b border-border px-5 py-3 text-muted-foreground">{item.description}</p>}
+        <ul className="m-0 list-none p-0">
             {(item.children ?? []).map((child, index) => {
               const childActive = isNavigationItemActive(pathname, child.href);
               return (
@@ -126,9 +125,8 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
                 </li>
               );
             })}
-          </ul>
-        </div>
-      )}
+        </ul>
+      </div>
     </div>
   );
 }
