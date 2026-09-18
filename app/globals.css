@@ -25,6 +25,7 @@
   --color-info: var(--info);
 
   --font-sans: var(--font-body);
+  --font-ui: var(--font-body);
   --font-display: var(--font-display-family);
 }
 
@@ -99,29 +100,39 @@
     --dark-border: #43514c;
     --dark-muted-foreground: #b9c1bc;
 
-    /* Font architecture — final typeface selection remains Phase 2.3. */
-    --font-display-family: var(--font-body), Arial, Helvetica, sans-serif;
+    /* Typography architecture: Literata for editorial display, IBM Plex Sans for body/UI. */
+    --font-display-family: var(--font-display), Georgia, serif;
 
-    /* Typography scale */
-    --font-size-display: clamp(3rem, 7vw, 5.5rem);
-    --font-size-h1: clamp(2.25rem, 5vw, 4rem);
-    --font-size-h2: clamp(1.875rem, 3.5vw, 3rem);
-    --font-size-h3: clamp(1.5rem, 2.5vw, 2.25rem);
-    --font-size-h4: 1.25rem;
-    --font-size-body-lg: 1.125rem;
-    --font-size-body: 1rem;
-    --font-size-body-sm: 0.875rem;
-    --font-size-caption: 0.75rem;
-    --font-size-nav: 0.9375rem;
-    --font-size-button: 0.9375rem;
+    /* Semantic type scale */
+    --text-display: clamp(3.25rem, 7vw, 6.5rem);
+    --text-h1: clamp(2.5rem, 5.2vw, 4.75rem);
+    --text-h2: clamp(2rem, 3.8vw, 3.25rem);
+    --text-h3: clamp(1.5rem, 2.5vw, 2.25rem);
+    --text-h4: clamp(1.25rem, 1.8vw, 1.5rem);
+    --text-h5: 1.125rem;
+    --text-body-lg: 1.125rem;
+    --text-body: 1rem;
+    --text-body-sm: 0.875rem;
+    --text-caption: 0.75rem;
+    --text-label: 0.8125rem;
+    --text-navigation: 0.9375rem;
+    --text-button: 0.9375rem;
 
     /* Line-height scale */
-    --line-height-display: 1.05;
-    --line-height-heading: 1.15;
-    --line-height-body-lg: 1.6;
-    --line-height-body: 1.6;
-    --line-height-body-sm: 1.5;
-    --line-height-caption: 1.4;
+    --leading-display: 1.02;
+    --leading-heading: 1.12;
+    --leading-body-lg: 1.65;
+    --leading-body: 1.6;
+    --leading-body-sm: 1.5;
+    --leading-caption: 1.4;
+    --leading-label: 1.35;
+
+    /* Letter-spacing scale */
+    --tracking-display: -0.035em;
+    --tracking-heading: -0.022em;
+    --tracking-body: 0em;
+    --tracking-label: 0.075em;
+    --tracking-navigation: 0.005em;
 
     /* Spacing scale */
     --space-micro: 0.25rem;
@@ -176,9 +187,9 @@
     margin: 0;
     background: var(--background);
     color: var(--foreground);
-    font-family: var(--font-body), Arial, Helvetica, sans-serif;
-    font-size: var(--font-size-body);
-    line-height: var(--line-height-body);
+    font-family: var(--font-body), sans-serif;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
     text-rendering: optimizeLegibility;
   }
 
@@ -215,41 +226,41 @@
 @layer components {
   .type-display {
     font-family: var(--font-display-family);
-    font-size: var(--font-size-display);
-    line-height: var(--line-height-display);
-    letter-spacing: -0.03em;
+    font-size: var(--text-display);
+    line-height: var(--leading-display);
+    letter-spacing: var(--tracking-display);
   }
 
   .type-h1 {
     font-family: var(--font-display);
-    font-size: var(--font-size-h1);
-    line-height: var(--line-height-heading);
-    letter-spacing: -0.025em;
+    font-size: var(--text-h1);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
   }
 
   .type-h2 {
     font-family: var(--font-display);
-    font-size: var(--font-size-h2);
-    line-height: var(--line-height-heading);
-    letter-spacing: -0.02em;
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
   }
 
   .type-h3 {
     font-family: var(--font-display);
-    font-size: var(--font-size-h3);
-    line-height: var(--line-height-heading);
-    letter-spacing: -0.015em;
+    font-size: var(--text-h3);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-heading);
   }
 
   .type-h4 {
     font-family: var(--font-display);
-    font-size: var(--font-size-h4);
-    line-height: var(--line-height-heading);
+    font-size: var(--text-h4);
+    line-height: var(--leading-heading);
   }
 
   .type-body-lg {
-    font-size: var(--font-size-body-lg);
-    line-height: var(--line-height-body-lg);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-body-lg);
   }
 
   .type-body {
@@ -258,22 +269,23 @@
   }
 
   .type-body-sm {
-    font-size: var(--font-size-body-sm);
-    line-height: var(--line-height-body-sm);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-body-sm);
   }
 
   .type-caption {
-    font-size: var(--font-size-caption);
-    line-height: var(--line-height-caption);
+    font-size: var(--text-caption);
+    line-height: var(--leading-caption);
   }
 
   .type-nav {
-    font-size: var(--font-size-nav);
+    font-size: var(--text-navigation);
     line-height: 1.4;
+    letter-spacing: var(--tracking-navigation);
   }
 
   .type-button {
-    font-size: var(--font-size-button);
+    font-size: var(--text-button);
     line-height: 1.25;
     font-weight: 500;
   }
