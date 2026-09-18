@@ -58,16 +58,16 @@ export default function LayoutPlaygroundPage() {
       <Sample title="Grid foundation" detail="1 / 2 / 3 / 4 / 6 / 12 columns">
         <div className="space-y-6">
           {[
-            ["2 columns", "layout-grid-2"],
-            ["3 columns", "layout-grid-3"],
-            ["4 columns", "layout-grid-4"],
-            ["6 columns", "layout-grid-6"],
-            ["12 columns", "layout-grid-12"],
-          ].map(([name, grid]) => (
+            ["2 columns", "layout-grid-2", 2],
+            ["3 columns", "layout-grid-3", 3],
+            ["4 columns", "layout-grid-4", 4],
+            ["6 columns", "layout-grid-6", 6],
+            ["12 columns", "layout-grid-12", 12],
+          ].map(([name, grid, count]) => (
             <div key={name}>
               <p className="type-caption mb-2 text-muted-foreground">{name}</p>
               <div className={`layout-grid ${grid}`}>
-                {Array.from({ length: grid === "layout-grid-12" ? 12 : Number(name[0]) }).map((_, index) => (
+                {Array.from({ length: grid === "layout-grid-12" ? 12 : count }).map((_, index) => (
                   <div key={index} className={`${box} min-h-14`}>
                     <span className="font-mono text-xs text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                   </div>
@@ -179,8 +179,8 @@ export default function LayoutPlaygroundPage() {
       <Sample title="Full-width transition" detail="viewport-wide visual zone">
         <div className="-mx-[var(--page-gutter)] bg-dark-background px-[var(--page-gutter)] py-12 text-dark-foreground sm:py-16">
           <Container size="wide" className="px-0">
-            <p className="type-label text-dark-muted-foreground">Full bleed zone</p>
-            <p className="type-h3 mt-3 max-w-2xl font-semibold">Use full width when the visual or evidence genuinely benefits from it.</p>
+            <p className="type-label text-[var(--dark-muted-foreground)]">Full bleed zone</p>
+            <p className="type-h3 mt-3 max-w-2xl font-semibold text-[var(--dark-foreground)]">Use full width when the visual or evidence genuinely benefits from it.</p>
           </Container>
         </div>
       </Sample>
