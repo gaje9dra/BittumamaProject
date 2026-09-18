@@ -1,11 +1,9 @@
 export default function Home() {
   return (
-    <main className="min-h-screen px-[var(--page-gutter)] py-16">
+    <main className="min-h-screen bg-background px-[var(--page-gutter)] py-[var(--space-page)] text-foreground">
       <div className="mx-auto w-full max-w-[var(--container-content)]">
-        <p className="text-[length:var(--font-size-body-sm)] text-[var(--muted)]">
-          Project Foundation
-        </p>
-        <h1 className="mt-2 text-[length:var(--font-size-h1)] font-semibold tracking-tight sm:text-[length:var(--font-size-display)]">
+        <p className="type-body-sm text-muted">Project Foundation</p>
+        <h1 className="type-h1 mt-[var(--space-small)] font-semibold">
           Project initialized successfully.
         </h1>
       </div>
