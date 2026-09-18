@@ -2,6 +2,10 @@
   "name": "bittumama-project",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=24.21.0",
+    "npm": ">=11.6.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -15,12 +19,12 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
-    "@types/node": "^24.0.0",
-    "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0",
-    "eslint": "^9.0.0",
+    "@types/node": "26.6.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "eslint": "10.9.0",
     "eslint-config-next": "16.3.5",
     "tailwindcss": "4.3.3",
-    "typescript": "^5.9.0"
+    "typescript": "7.0.2"
   }
 }
