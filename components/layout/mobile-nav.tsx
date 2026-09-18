@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, ChevronRight, Menu, X } from "lucide-react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import type { NavigationItem } from "@/data/navigation";
 import { mobileNavigation } from "@/data/navigation";
@@ -20,6 +20,7 @@ export function MobileNav({ className }: { className?: string }) {
   const [activeSubmenu, setActiveSubmenu] = useState<NavigationItem | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
+  const searchPanelId = useId();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLElement>(null);
   const submenuBackRef = useRef<HTMLButtonElement>(null);
@@ -178,11 +179,13 @@ export function MobileNav({ className }: { className?: string }) {
                   <div className="mb-7">
                     <SearchTrigger
                       ref={searchTriggerRef}
+                      controlsId={searchPanelId}
                       open={searchOpen}
                       onClick={() => setSearchOpen((value) => !value)}
                       className="w-full justify-start border-border bg-surface"
                     />
                     <SearchPanel
+                      id={searchPanelId}
                       open={searchOpen}
                       onClose={closeSearch}
                       variant="inline"
