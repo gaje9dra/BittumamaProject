@@ -1,4 +1,21 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
+
+const typography = [
+  ["Display", ".type-display", "Literata", "700", "clamp(3.25rem, 7vw, 6.5rem)", "1.02", "-0.035em"],
+  ["H1", ".type-h1", "Literata", "600", "clamp(2.5rem, 5.2vw, 4.75rem)", "1.12", "-0.022em"],
+  ["H2", ".type-h2", "Literata", "600", "clamp(2rem, 3.8vw, 3.25rem)", "1.12", "-0.022em"],
+  ["H3", ".type-h3", "Literata", "600", "clamp(1.5rem, 2.5vw, 2.25rem)", "1.12", "-0.022em"],
+  ["H4", ".type-h4", "Literata", "600", "clamp(1.25rem, 1.8vw, 1.5rem)", "1.12", "-0.022em"],
+  ["H5", ".type-h5", "Literata", "600", "1.125rem", "1.12", "-0.022em"],
+  ["Body Large", ".type-body-lg", "IBM Plex Sans", "400", "1.125rem", "1.65", "0em"],
+  ["Body", ".type-body", "IBM Plex Sans", "400", "1rem", "1.6", "0em"],
+  ["Body Small", ".type-body-sm", "IBM Plex Sans", "400", "0.875rem", "1.5", "0em"],
+  ["Caption", ".type-caption", "IBM Plex Sans", "400", "0.75rem", "1.4", "0em"],
+  ["Label", ".type-label", "IBM Plex Sans", "600", "0.8125rem", "1.35", "0.075em"],
+  ["Navigation", ".type-nav", "IBM Plex Sans", "500", "0.9375rem", "1.4", "0.005em"],
+  ["Button", ".type-button", "IBM Plex Sans", "500", "0.9375rem", "1.25", "0em"],
+];
 
 const colors = [
   ["Background", "--background", "#F7F6F2", "Default page canvas"],
@@ -49,6 +66,44 @@ export default function ColorSystemPage() {
               <p className="type-body-sm mt-3 text-muted-foreground">{usage}</p>
             </article>
           ))}
+        </section>
+
+        <section className="mt-10" aria-labelledby="typography-preview">
+          <div className="flex flex-col gap-2 border-b border-border pb-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 id="typography-preview" className="type-h3 font-semibold">Typography preview</h2>
+              <p className="type-body-sm mt-2 max-w-2xl text-muted-foreground">
+                Editorial display uses Literata; body and interface text use IBM Plex Sans.
+              </p>
+            </div>
+            <Link href="/design-system/colors" className="type-body-sm text-primary underline underline-offset-4">
+              Color tokens
+            </Link>
+          </div>
+          <div className="mt-6 divide-y divide-border border-y border-border">
+            {typography.map(([name, token, family, weight, size, leading, tracking]) => (
+              <article key={name} className="grid gap-4 py-6 lg:grid-cols-[10rem_1fr_20rem] lg:items-center">
+                <div>
+                  <p className="type-body-sm font-semibold">{name}</p>
+                  <p className="mt-1 font-mono text-xs text-muted-foreground">{token}</p>
+                </div>
+                <div className={token.replace(".", "")}>
+                  {name === "Display" ? "Research, interpreted." : name === "Large Numbers" ? "42.8" : "Clarity with character, built for research and real people."}
+                </div>
+                <dl className="grid grid-cols-2 gap-x-4 gap-y-1 font-mono text-xs text-muted-foreground sm:grid-cols-4 lg:grid-cols-2">
+                  <div><dt className="sr-only">Typeface</dt><dd>{family}</dd></div>
+                  <div><dt className="sr-only">Weight</dt><dd>Weight {weight}</dd></div>
+                  <div><dt className="sr-only">Size</dt><dd>{size}</dd></div>
+                  <div><dt className="sr-only">Line height and tracking</dt><dd>{leading} / {tracking}</dd></div>
+                </dl>
+              </article>
+            ))}
+            <article className="grid gap-4 py-6 lg:grid-cols-[10rem_1fr_20rem] lg:items-center">
+              <div><p className="type-body-sm font-semibold">Large Numbers</p><p className="mt-1 font-mono text-xs text-muted-foreground">--text-display-metric</p></div>
+              <div className="font-display text-5xl font-semibold tracking-[-0.035em] sm:text-6xl">42.8</div>
+              <p className="type-body-sm text-muted-foreground">Example metric with contextual label and source in production.</p>
+            </article>
+          </div>
         </section>
 
         <section className="mt-10">
