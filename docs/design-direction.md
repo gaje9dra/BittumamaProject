@@ -374,50 +374,76 @@ The development-only component playground is available at `/design-system/compon
 ## Header & Primary Navigation
 
 ### Philosophy
-The production header extends the Phase 2 design system through alignment, typography, spacing, hierarchy, accessibility, and restrained interaction rather than decorative treatment. It uses the global wide container and remains visually integrated with page content.
+The production header extends the Phase 2 system through alignment, typography, spacing, hierarchy, accessibility, and restrained state changes. It remains visually quiet and usable while scrolling rather than relying on decorative effects.
+
+### Scroll strategy and states
+The header uses **sticky positioning** in normal document flow. This avoids layout jumps while keeping navigation available as content moves. A lightweight client shell observes scroll position only to distinguish the top and scrolled states.
+
+- **Top:** full 4rem mobile / 4.5rem desktop height, neutral background, structural border, normal hierarchy.
+- **Scrolled:** same geometry and navigation availability, with a restrained shadow for separation. The header never disappears.
+- **Threshold:** 12px of scroll before the state changes, preventing jitter from tiny movements.
+- No scroll hiding, scroll hijacking, smooth-scroll engine, continuous interpolation, or large transform is used.
+
+The scroll listener is passive and schedules at most one animation-frame update at a time. React state changes only when the boolean scroll state actually changes.
 
 ### Structure
 - Brand area: temporary typographic **Bittumama** treatment until a final logo asset exists.
 - Primary navigation: Services, Research & AI, Experts, Insights, About.
 - Header action: a single restrained **Get in touch** action.
-- Mobile: dedicated menu trigger and navigation panel.
-- Navigation data lives in `data/navigation.ts` so future destinations can be extended without duplicating markup.
+- Mobile: dedicated menu trigger and independently scrollable navigation panel.
+- Navigation data lives in data/navigation.ts; route matching is shared through lib/navigation.ts.
 
 ### Desktop behavior
-Desktop navigation is displayed from the established 1024px breakpoint. Active routes receive foreground emphasis, medium weight, an understated primary indicator, and `aria-current="page"`. Hover uses the Phase 2.6 micro timing and color transition only.
+Desktop navigation begins at the established 1024px breakpoint. Active routes use foreground emphasis, medium weight, an understated primary indicator, and aria-current="page". Matching normalizes query/hash portions and trailing slashes, and nested paths activate their parent destination. Hover uses color feedback only; focus remains visibly outlined.
+
+The header uses the global wide container and page-gutter tokens. Link spacing is defined at the navigation level rather than through per-item margin exceptions.
 
 ### Mobile behavior
-Below 1024px the desktop navigation is replaced by a dedicated menu trigger. The menu is an independently scrollable navigation surface with comfortable touch targets. Critical navigation does not depend on hover.
+Below 1024px the desktop navigation is replaced by a dedicated 44px-class menu trigger. The mobile panel is fixed beneath the 4rem header, fills the remaining viewport, scrolls independently, and keeps the CTA available after navigation content. It is a navigation environment rather than a compressed desktop row.
+
+Mobile links share the same active-route matcher and expose aria-current="page". Each link closes the menu. The menu does not rely on hover behavior.
+
+### Mobile menu state and body scroll
+Opening mounts the panel, locks body scrolling, and compensates for an existing scrollbar to avoid a horizontal layout shift. Focus moves to the first navigation control. Escape closes the menu. While open, Tab/Shift+Tab is contained within the menu controls. Closing restores the previous body overflow/padding values and returns focus to the trigger.
+
+The panel has a restrained enter/exit transition. A short closing window keeps the exit animation from being cut off by immediate unmounting. Resize to desktop closes the menu, preventing stale mobile state during breakpoint changes or orientation changes.
+
+### Dropdown behavior
+No dropdown or mega-menu is currently required by the established information architecture, so none is fabricated in this phase. The navigation data model remains intentionally small and can support grouped destinations later. Any future expandable navigation must use tap/keyboard interaction, explicit expanded state, Escape, predictable focus, and restrained motion rather than hover-only behavior.
+
+### Anchor navigation
+A .scroll-anchor primitive provides a 5rem scroll offset for future hash-linked sections so sticky navigation does not cover their headings. It is opt-in rather than applied to every element with an id.
 
 ### Responsive strategy
-The header uses the global page gutter and wide container. It is intentionally compact: 4rem minimum height on smaller screens and 4.5rem on large screens. The navigation collapses before crowding rather than introducing compressed typography or overflow.
+The header uses the shared page gutter and changes to mobile navigation before desktop links become crowded. It is intended to remain usable across large desktop, standard/small desktop, tablet, large/standard/small/very-narrow mobile, and landscape mobile widths. The layout does not depend on shrinking navigation text to solve crowding.
 
-### Mobile menu behavior
-Opening the menu locks body scrolling, moves focus into the navigation surface, and provides a focus loop. Escape closes the menu. Closing restores body scrolling and focus returns to the trigger. Resizing to desktop closes the mobile menu. The implementation avoids persistent global scroll listeners and uses a small client boundary only for interaction.
-
-### CTA behavior
-The header action is intentionally singular and restrained. It is not a generic oversized pill or an invented marketing device. Future information architecture can replace or refine the destination without changing the header structure.
-
-### Dropdown foundation
-No artificial mega-menu is included. The navigation data model leaves room for grouped destinations, while a future dropdown should be introduced only when the information architecture requires it. Any future dropdown must support keyboard, Escape, focus, outside interaction, and clear expanded state.
+### Header variants
+No transparent, dark-context, or alternate header variant is implemented yet. The default neutral header is the only justified variant until future page compositions demonstrate a real need. If variants are introduced later, they must preserve the same typography, spacing, navigation logic, motion, and accessibility.
 
 ### Motion behavior
-Header hover feedback uses micro timing. Menu and icon state changes use micro/standard motion from the global Phase 2.6 token system. No parallax, glow, large scale, bouncing, or decorative motion is used.
+Header scroll separation, link states, and menu transitions use the Phase 2.6 motion tokens. Scroll state uses only a subtle shadow; menu open/close uses a small opacity/vertical movement. No bounce, glow, blur-heavy glass effect, large transform, animated gradient, or persistent motion is used.
 
 ### Reduced motion
-The global `prefers-reduced-motion` behavior minimizes transitions and removes transforms. Header state communication remains available through persistent visual and semantic state.
+The global prefers-reduced-motion: reduce rules minimize transitions and animations and remove transforms. Semantic state communication remains intact: active routes, focus, expanded state, and menu availability do not depend on motion.
 
 ### Accessibility
-The header uses semantic `header` and `nav` elements, labeled navigation landmarks, native links/buttons, visible focus treatment, `aria-expanded`, `aria-controls`, and `aria-current` where applicable. Mobile navigation traps focus only while the overlay is open and restores focus to its trigger on close. Touch controls use a 44px-class hit area.
+The header uses semantic header and nav landmarks, native links/buttons, accessible menu labels, aria-expanded, aria-controls, and aria-current where applicable. Keyboard navigation is supported without hover-only functionality. Focus is moved into the mobile menu on open, contained while open, and restored to the trigger on close. Touch controls meet the 44px-class target.
+
+### Z-index and layering
+The sticky shell uses the existing --layer-navigation token. The mobile menu uses the existing modal-level token so it remains above page content without introducing arbitrary z-index values. No new stacking framework is introduced.
+
+### Performance considerations
+The scroll-aware client boundary is limited to the header shell. It uses one passive listener, one animation-frame gate, one boolean state, and no layout measurements or DOM queries during scrolling. Static header composition remains server-rendered; only pathname/menu/scroll interactions require client components.
 
 ### Component architecture
-- `components/layout/header.tsx`: server-rendered composition.
-- `components/layout/desktop-nav.tsx`: minimal client boundary for pathname-aware active state.
-- `components/layout/mobile-nav.tsx`: client-only menu interaction and focus management.
-- `components/layout/header-actions.tsx`: reusable header action area.
-- `data/navigation.ts`: structured navigation data.
-- `app/design-system/header/page.tsx`: development-only validation playground.
-
+- components/layout/header.tsx: server-rendered header composition.
+- components/layout/header-scroll-shell.tsx: minimal client boundary for sticky scroll state.
+- components/layout/desktop-nav.tsx: pathname-aware desktop active state.
+- components/layout/mobile-nav.tsx: mobile menu, focus management, body scroll lock, and active state.
+- components/layout/header-actions.tsx: reusable header action area.
+- data/navigation.ts: structured navigation data.
+- lib/navigation.ts: shared, normalized route matching.
+- app/design-system/header/page.tsx: development-only validation playground.
 ## Motion & Interaction Language
 
 ### 1. Motion philosophy
