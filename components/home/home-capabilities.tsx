@@ -27,7 +27,7 @@ export function HomeCapabilities() {
 
             <div className="mt-10 border-t border-border pt-4">
               <p className="type-caption max-w-[28ch] text-muted-foreground">
-                Research / Intelligence / Education / Applied expertise
+                Research / Literature Review / Methodology / Data Analysis
               </p>
             </div>
           </div>
