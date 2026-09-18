@@ -110,6 +110,21 @@
   .layout-layer-navigation{position:relative;z-index:var(--layer-navigation)}
   .layout-layer-modal{position:relative;z-index:var(--layer-modal)}
   .layout-layer-toast{position:relative;z-index:var(--layer-toast)}
+
+  .motion-interactive{transition-duration:var(--motion-normal);transition-timing-function:var(--motion-ease-standard);transition-property:color,background-color,border-color,opacity,box-shadow,transform}
+  .motion-interactive:hover{transition-duration:var(--motion-fast)}
+  .motion-lift:hover{transform:translateY(calc(var(--motion-distance-sm) * -1))}
+  .motion-image{transition:transform var(--motion-reveal) var(--motion-ease-standard)}
+  .motion-image:hover{transform:scale(var(--motion-scale-hover))}
+  .motion-underline{transition:text-decoration-color var(--motion-fast) var(--motion-ease-standard),text-underline-offset var(--motion-fast) var(--motion-ease-standard)}
+  .motion-reveal{animation:motion-reveal var(--motion-reveal) var(--motion-ease-emphasis) both}
+  .motion-fade{animation:motion-fade var(--motion-normal) var(--motion-ease-standard) both}
+  .motion-slide-up{animation:motion-slide-up var(--motion-reveal) var(--motion-ease-emphasis) both}
+  .motion-focus{transition:box-shadow var(--motion-fast) var(--motion-ease-standard),border-color var(--motion-fast) var(--motion-ease-standard)}
+  .motion-focus:focus-visible{box-shadow:0 0 0 3px rgb(47 107 96 / .18)}
+  @keyframes motion-reveal{from{opacity:var(--motion-opacity-hidden);clip-path:inset(0 0 12% 0)}to{opacity:var(--motion-opacity-visible);clip-path:inset(0)}}
+  @keyframes motion-fade{from{opacity:var(--motion-opacity-hidden)}to{opacity:var(--motion-opacity-visible)}}
+  @keyframes motion-slide-up{from{opacity:var(--motion-opacity-hidden);transform:translateY(var(--motion-distance-md))}to{opacity:var(--motion-opacity-visible);transform:translateY(0)}}
 }
 @media (min-width:640px){
   :root{--page-gutter:1.5rem;--space-page:7rem}
