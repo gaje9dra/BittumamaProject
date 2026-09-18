@@ -11,6 +11,26 @@ export type HomepageCapability = {
   href: string;
 };
 
+
+export type HomepageEvent = {
+  id: string;
+  title: string;
+  slug: string;
+  date: string;
+  endDate?: string;
+  time?: string;
+  category: string;
+  location?: string;
+  format?: string;
+  shortDescription: string;
+  registrationLabel?: string;
+  href?: string;
+  status?: "Upcoming" | "Registration Open" | "Coming Soon" | "Completed";
+  featured?: boolean;
+};
+
+export const homepageEvents: HomepageEvent[] = [];
+
 export const homepageContent = {
   hero: {
     eyebrow: "Research Support",
