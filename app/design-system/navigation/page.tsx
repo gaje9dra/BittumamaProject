@@ -54,7 +54,15 @@ export default function NavigationPlaygroundPage() {
           </div>
           <div className="mt-16 border-t border-border pt-8">
             <p className="type-label text-muted-foreground">Data validation</p>\n            <p className="type-body-sm mt-3 text-muted-foreground">Production navigation issues: {validateNavigation(primaryNavigation).length}</p>
-          </div>\n          <div className="mt-16 grid gap-8 border-t border-border pt-8 md:grid-cols-2">
+          </div>\n          <div className="mt-16 border-t border-border pt-8">
+            <p className="type-label text-muted-foreground">Surface coordination</p>
+            <p className="type-body-sm mt-3 max-w-[68ch] text-muted-foreground">
+              Opening Search, a dropdown, the mega menu, or the mobile navigation dismisses competing header
+              surfaces. Resize below the desktop breakpoint and navigate between routes to verify stale surfaces
+              do not persist.
+            </p>
+          </div>
+          <div className="mt-16 grid gap-8 border-t border-border pt-8 md:grid-cols-2">
             <div><p className="type-label text-muted-foreground">Keyboard</p><p className="type-body-sm mt-3 text-muted-foreground">Enter, Space, or Arrow Down opens. Escape closes and restores trigger focus. Arrow Up/Down/Home/End navigate dropdown links.</p></div>
             <div><p className="type-label text-muted-foreground">Responsive</p><p className="type-body-sm mt-3 text-muted-foreground">Production mobile navigation remains hierarchical and does not inherit desktop mega-menu geometry.</p></div>
           </div>
