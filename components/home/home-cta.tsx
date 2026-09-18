@@ -33,7 +33,7 @@ export function HomeCta() {
             </p>
             <Button
               asChild
-              className="mt-7 bg-background text-foreground hover:bg-surface-muted active:bg-surface-interactive"
+              className="group mt-7 bg-background text-foreground hover:bg-surface-muted active:bg-surface-interactive"
             >
               <Link href={cta.action.href}>
                 {cta.action.label}
