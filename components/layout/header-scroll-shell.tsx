@@ -1,11 +1,12 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const SCROLL_THRESHOLD = 12;
 
-export function HeaderScrollShell({ children }: { children: React.ReactNode }) {
+export function HeaderScrollShell({ children }: { children: ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
