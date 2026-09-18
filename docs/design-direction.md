@@ -973,3 +973,20 @@ Desktop uses an asymmetric introduction and profile index. Tablet compresses the
 
 ### Interaction behavior
 Profile rows use semantic links and restrained arrow movement with existing motion tokens. No client state or interaction is required. The section remains understandable without hover or animation and respects the global reduced-motion behavior.
+
+## Homepage Workshops / Events — Phase 4.12
+
+### Visual direction
+Workshops and events use an editorial event-index treatment rather than a generic card grid. The section follows the human-expertise section and uses the existing neutral surfaces, typography, dividers, spacing, and restrained interaction language.
+
+### Event hierarchy
+Verified events can be presented as one featured event followed by compact supporting rows. Metadata is ordered around date, category, format/location, status, and a contextual event action. Only populated approved fields are rendered.
+
+### Data architecture
+Event data is kept separate from presentation in `homepageEvents`, with support for title, slug, date, optional end date/time, category, location, format, short description, registration label, destination, status, and featured state. The current collection is intentionally empty because verified event information is not available.
+
+### CTA and responsive behavior
+Event actions use contextual labels such as View Event or an approved registration label. Desktop uses the editorial index; smaller screens stack event information while preserving date, hierarchy, and tap-friendly actions.
+
+### Motion and content rules
+Interactions are limited to existing restrained link/arrow transitions and inherit reduced-motion behavior. No event, speaker, venue, date, attendance figure, partnership, credential, or outcome is invented or exposed as public information.
