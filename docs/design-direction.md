@@ -320,9 +320,10 @@ Before adding a visual treatment, ask: **Does it make the content clearer, more 
 
 ## Phase boundaries
 
-This document defines creative direction only.
+This document is the evolving design contract for the project.
 
-- Phase 2.2: exact color system
-- Phase 2.3: final typography and font selection
+- Phase 2.1: creative direction
+- Phase 2.2: production color system
+- Phase 2.3: production typography system
 
-No final palette or final typeface is established here.
+Future phases should build on these tokens rather than creating parallel visual systems.
