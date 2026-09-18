@@ -1032,3 +1032,20 @@ The existing `Button` primitive now supports `asChild` so the CTA can retain but
 
 ### Responsive behavior
 Desktop uses a 12-column editorial split between headline and action. Tablet preserves the hierarchy without crowding, while mobile stacks the content naturally and keeps the CTA comfortably tappable.
+
+## Homepage Final Integration, Flow & Conversion Audit — Phase 4.16
+
+### Page-level narrative
+The homepage now follows a deliberate progression from research positioning and capabilities, through research/analysis and services, into service discovery, audience relevance, process, factual scope, human expertise, events, articles, organization context, and the final contact action. Existing section roles are preserved; no new homepage section was added.
+
+### Consistency rules
+All homepage sections use the established container/gutter, typography, spacing, color, border, radius, focus, and motion tokens. Editorial composition varies by section—lists, asymmetric splits, indexed sequences, featured content, and dark evidence-led surfaces—rather than repeating a card-grid pattern.
+
+### CTA hierarchy
+Section CTAs remain contextual navigation actions, while the final homepage CTA is the clearest conversion point: Request Research Support → /contact. CTA wording stays specific to the destination and established research-service terminology.
+
+### Responsive and accessibility rules
+Desktop uses controlled asymmetry and wide editorial composition; tablet compresses columns without collapsing hierarchy; mobile uses intentional stacking, readable type, and touch-friendly links. Semantic headings/sections, keyboard-visible focus, non-hover-dependent content, and global reduced-motion behavior remain the baseline.
+
+### Content and visual rules
+Homepage copy stays short and specific. Unsupported claims, fabricated people/events/research, generic marketing language, and customer-visible development language are excluded. Abstract visuals are treated as supporting composition rather than organizational evidence.
