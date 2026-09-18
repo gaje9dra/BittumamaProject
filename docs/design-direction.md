@@ -990,3 +990,17 @@ Event actions use contextual labels such as View Event or an approved registrati
 
 ### Motion and content rules
 Interactions are limited to existing restrained link/arrow transitions and inherit reduced-motion behavior. No event, speaker, venue, date, attendance figure, partnership, credential, or outcome is invented or exposed as public information.
+
+## Homepage Articles / Insights — Phase 4.13
+
+### Visual direction
+Articles use an editorial publication index rather than a repetitive blog-card grid. The section uses the established typography, spacing, neutral surfaces, dividers, and restrained link motion.
+
+### Editorial hierarchy
+A verified featured article can receive primary hierarchy, followed by compact supporting article rows. Metadata is limited to category, date, and optional author/role or reading time. Titles remain the strongest content element.
+
+### Data model and content rules
+`HomepageArticle` centralizes article identity, category, date, optional author details, excerpt, image, reading time, destination, featured state, and tags. `homepageArticles` is currently empty because no verified article publications are available. No authors, dates, findings, citations, or publication claims are fabricated.
+
+### Responsive and interaction behavior
+Desktop uses an asymmetric introduction and editorial article index. Featured and supporting content stack naturally on smaller screens while preserving metadata and tap targets. Simple arrow/underline transitions use existing motion tokens and inherit reduced-motion behavior.
