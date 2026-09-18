@@ -794,3 +794,27 @@ The desktop two-zone composition becomes a clear stacked introduction followed b
 
 ### Visual relationship to previous sections
 The hero remains the strongest visual statement, while the Intro/Positioning section is quieter and text-led. Core Capabilities introduces a more structured, tonal field and a larger typographic list, creating rhythm without repeating the hero or positioning composition.
+
+
+## Homepage Research & Intelligence — Phase 4.5
+
+### Purpose
+The Research & Intelligence section demonstrates a research mindset without claiming unpublished findings, credentials, statistics, clients, awards, or other evidence that has not been established. It moves the homepage from capability (“what we do”) toward method and knowledge production (“how we investigate and understand”).
+
+### Editorial composition
+A deep primary surface creates contrast with the lighter Core Capabilities section. The composition uses a five-column research statement beside a seven-column featured research frame, followed by a four-part indexed research-methodology strip and a restrained illustrative geometry panel. It avoids a three-card article grid and dashboard treatment.
+
+### Research content hierarchy
+The section leads with the research/intelligence proposition, then a clearly labelled development foundation that can later be replaced by an authentic featured study. The supporting frame is organized around Questions, Methods, Signals, and Application rather than invented research topics or metrics. The data model is centralized in `data/homepage.ts`.
+
+### Visual/data strategy
+The lower visual is abstract information geometry, explicitly labelled as non-organizational data. It establishes the intended visual vocabulary for future evidence-led content without presenting fake statistics, charts, findings, or numerical claims.
+
+### Responsive behavior
+Desktop uses the asymmetric statement/featured-frame relationship. Tablet and mobile move into a sequential reading flow: proposition, featured research frame, research themes, then visual geometry. Metadata stays concise and the illustrative visual remains bounded so it does not overwhelm mobile content.
+
+### Interaction behavior
+The featured research frame and research CTA are semantic links. Existing motion tokens provide only subtle directional feedback. No essential information depends on hover, no client-side state is required, and reduced-motion behavior remains inherited from the global system.
+
+### Relationship to previous sections
+Core Capabilities is list-led and neutral-toned; Research & Intelligence deliberately shifts into a deep primary surface and a more information-dense editorial composition. The change in density and tone signals a move from “what we do” to “how we think” without introducing a new design language.
