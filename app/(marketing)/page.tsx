@@ -1,3 +1,4 @@
+import { HomeAbout } from "@/components/home/home-about";
 import { HomeAudience } from "@/components/home/home-audience";
 import { HomeCapabilities } from "@/components/home/home-capabilities";
 import { HomeCta } from "@/components/home/home-cta";
@@ -27,6 +28,7 @@ export default function Home() {
       <HomeExpertise />
       <HomeEvents />
       <HomeInsights />
+      <HomeAbout />
       <HomeCta />
     </main>
   );
