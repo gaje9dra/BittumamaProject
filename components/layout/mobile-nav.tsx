@@ -213,7 +213,6 @@ export function MobileNav({ className }: { className?: string }) {
                           index === 0 && "border-t",
                           isNavigationItemActive(pathname, item.href) && "font-semibold text-primary",
                         )}
-                        aria-haspopup="menu"
                       >
                         <span>{item.label}</span>
                         <ChevronRight aria-hidden="true" size={22} className="shrink-0 text-muted-foreground" />
