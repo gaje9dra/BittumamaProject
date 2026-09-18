@@ -104,7 +104,7 @@ export function HomeHero() {
 
                 <div className="absolute inset-x-5 bottom-5 flex items-end justify-between border-t border-border pt-3">
                   <span className="type-caption max-w-[18ch] text-muted-foreground">
-                    Illustrative visual system for future evidence-led content.
+                    Illustrative research visual.
                   </span>
                   <span aria-hidden="true" className="text-primary">
                     <ArrowDown size={16} />
@@ -125,7 +125,7 @@ export function HomeHero() {
             href="#home-positioning"
             className="type-caption inline-flex min-h-11 items-center gap-2 text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
           >
-            Scroll to explore
+            See research support
             <ArrowDown aria-hidden="true" size={15} />
           </a>
         </div>
