@@ -953,3 +953,23 @@ The section uses semantic section, heading, definition-list, and link elements. 
 
 ### Interaction and motion
 The section is a Server Component with no state or effects. The CTA uses existing motion tokens only. Proof content does not depend on animation and inherits the global reduced-motion behavior.
+
+## Homepage Experts / Human Expertise — Phase 4.11
+
+### Purpose
+The Experts section introduces the human expertise behind the organization without inventing people or credentials. It follows Trust / Proof and provides a clear path to the future Experts destination.
+
+### Profile information hierarchy
+Expert data is centralized under `homepageContent.expertise.experts` and is intentionally empty until verified names, roles, specializations, credentials, and profile destinations are available. No fabricated expert identity is rendered.
+
+### Visual and content strategy
+The section uses an editorial profile index rather than a repeated portrait-card grid. When verified profiles are added, each row can present the expert name, specialization, and profile link without requiring a homepage biography.
+
+### Image strategy
+No photographs or stock portraits are loaded while verified expert photography is unavailable. This avoids presenting generated or unrelated people as organizational experts and keeps the replacement path straightforward.
+
+### Responsive behavior
+Desktop uses an asymmetric introduction and profile index. Tablet compresses the profile information. Mobile stacks profiles into a compact readable sequence while preserving profile links and focus states.
+
+### Interaction behavior
+Profile rows use semantic links and restrained arrow movement with existing motion tokens. No client state or interaction is required. The section remains understandable without hover or animation and respects the global reduced-motion behavior.
