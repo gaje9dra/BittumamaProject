@@ -141,4 +141,16 @@
   .layout-grid-12{grid-template-columns:repeat(12,minmax(0,1fr))}
 }
 @media (min-width:1280px){:root{--page-gutter:2.5rem;--space-page:9rem}}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transform:none!important}
+}
+
+@media (prefers-reduced-motion: no-preference){
+  .motion-stagger > *{animation:motion-slide-up var(--motion-reveal) var(--motion-ease-emphasis) both}
+  .motion-stagger > *:nth-child(2){animation-delay:60ms}
+  .motion-stagger > *:nth-child(3){animation-delay:120ms}
+  .motion-stagger > *:nth-child(4){animation-delay:180ms}
+  .motion-stagger > *:nth-child(5){animation-delay:240ms}
+  .motion-stagger > *:nth-child(6){animation-delay:300ms}
+}
