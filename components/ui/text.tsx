@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 type TextProps = HTMLAttributes<HTMLElement> & {
   as?: "p" | "span" | "div";
-  size?: "lg" | "default" | "sm" | "caption";
+  size?: "lg" | "default" | "sm" | "caption" | "label";
 };
 
 const sizeClasses = {
@@ -11,6 +11,7 @@ const sizeClasses = {
   default: "type-body",
   sm: "type-body-sm",
   caption: "type-caption",
+  label: "type-label",
 } as const;
 
 export function Text({
