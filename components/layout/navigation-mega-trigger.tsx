@@ -30,10 +30,6 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
     });
   }, [open]);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
-
   return (
     <div className="static">
       <button
