@@ -13,10 +13,11 @@ type SearchTriggerProps = {
   onClick: () => void;
   className?: string;
   label?: string;
+  controlsId?: string;
 };
 
 export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(function SearchTrigger(
-  { open, onClick, className, label = "Search" },
+  { open, onClick, className, label = "Search", controlsId },
   ref,
 ) {
   return (
@@ -25,6 +26,7 @@ export const SearchTrigger = forwardRef<HTMLButtonElement, SearchTriggerProps>(f
       type="button"
       aria-label={open ? "Close search" : label}
       aria-expanded={open}
+      aria-controls={controlsId}
       onClick={onClick}
       className={cn(
         "inline-flex min-h-11 items-center justify-center gap-2 border border-transparent px-2.5 type-nav text-muted-foreground transition-colors duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)] hover:border-border hover:bg-surface-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3",
@@ -44,9 +46,10 @@ type SearchPanelProps = {
   variant?: "overlay" | "inline";
   className?: string;
   restoreFocusRef?: RefObject<HTMLElement | null>;
+  id?: string;
 };
 
-export function SearchPanel({ open, onClose, variant = "overlay", className, restoreFocusRef }: SearchPanelProps) {
+export function SearchPanel({ open, onClose, variant = "overlay", className, restoreFocusRef, id }: SearchPanelProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -126,6 +129,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
   return (
     <div
       ref={panelRef}
+      id={id}
       role="search"
       aria-labelledby={labelId}
       className={cn(
