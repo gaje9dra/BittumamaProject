@@ -106,7 +106,8 @@ export const homepageContent = {
   services: {
     eyebrow: "04 / Services & solutions",
     title: "Ways to apply expertise to a real brief.",
-    description: "The services layer turns research, intelligence, education, and technical capabilities into practical engagements. This is a replaceable homepage overview, not a fixed catalog.",
+    description:
+      "The services layer turns research, intelligence, education, and technical capabilities into practical engagements. This is a replaceable homepage overview, not a fixed catalog.",
     items: [
       { index: "01", title: "Research & advisory", description: "Focused research and advisory engagements for questions that need structured inquiry, evidence review, and informed direction.", category: "Research & advisory", audience: "Organizations with a defined question or brief", format: "Focused engagement", href: "/services/research-advisory" },
       { index: "02", title: "Strategy & intelligence", description: "Structured analysis and strategic thinking for teams working through complex information, choices, or changing conditions.", category: "Strategy", audience: "Teams navigating complex decisions", format: "Advisory engagement", href: "/services/strategy-intelligence" },
@@ -137,7 +138,7 @@ export const homepageContent = {
     eyebrow: "06 / Continue the conversation",
     title: "Need help with a research or academic requirement?",
     description:
-      "Use this contact route for verified services offered by the organization. Replace the provisional wording with the actual contact process and supported requirements before launch."
+      "Use this contact route for verified services offered by the organization. Replace the provisional wording with the actual contact process and supported requirements before launch.",
     action: { label: "Contact Research Support", href: "/contact" },
   },
 } as const;
