@@ -75,17 +75,19 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
         ref={triggerRef}
         type="button"
         aria-expanded={open}
-        aria-haspopup="menu"
-        aria-controls={panelId}
+                aria-controls={panelId}
         onClick={() => {
           if (open) close();
           else openMenu();
         }}
         onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown") {
+          if (event.key === "Enter" || event.key === " " || event.key === "ArrowDown" || event.key === "ArrowUp") {
             event.preventDefault();
             openMenu();
-            requestAnimationFrame(() => linksRef.current[0]?.focus());
+            requestAnimationFrame(() => {
+              if (event.key === "ArrowUp") linksRef.current[linksRef.current.length - 1]?.focus();
+              else linksRef.current[0]?.focus();
+            });
           }
         }}
         className={cn(
@@ -97,7 +99,7 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
         <ChevronDown aria-hidden="true" size={16} className={cn("transition-transform duration-[var(--motion-fast)]", open && "rotate-180")} />
       </button>
       {open && (
-        <div id={panelId} role="menu" aria-label={item.label + " menu"} className="absolute left-0 top-full z-[var(--layer-modal)] w-[min(22rem,calc(100vw-2rem))] border border-border bg-surface py-2 shadow-[var(--shadow-sm)] motion-fade">
+        <div id={panelId} className="absolute left-0 top-full z-[var(--layer-modal)] w-[min(22rem,calc(100vw-2rem))] rounded-[var(--radius-md)] border border-border bg-surface py-2 shadow-[var(--shadow-sm)] motion-fade">
           {item.description && <p className="type-body-sm border-b border-border px-5 py-3 text-muted-foreground">{item.description}</p>}
           <ul className="m-0 list-none p-0">
             {(item.children ?? []).map((child, index) => {
@@ -106,7 +108,6 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
                 <li key={child.href}>
                   <Link
                     ref={(node) => { if (node) linksRef.current[index] = node; }}
-                    role="menuitem"
                     href={child.href}
                     aria-current={childActive ? "page" : undefined}
                     onClick={() => close()}
