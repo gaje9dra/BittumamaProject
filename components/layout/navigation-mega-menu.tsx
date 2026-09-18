@@ -48,7 +48,7 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
   if (!open) return null;
 
   return (
-    <div id={panelId} ref={panelRef} role="menu" aria-label={item.label + " menu"} className="absolute inset-x-0 top-full z-[var(--layer-modal)] border-b border-border bg-surface shadow-[var(--shadow-sm)] motion-fade">
+    <div id={panelId} ref={panelRef} className="absolute inset-x-0 top-full z-[var(--layer-modal)] rounded-b-[var(--radius-md)] border-b border-border bg-surface shadow-[var(--shadow-sm)] motion-fade">
       <div className="mx-auto w-full max-w-[var(--container-wide)] px-[var(--page-gutter)] py-8">
         <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12">
           {(item.groups ?? []).map((group) => (
@@ -60,7 +60,7 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
                   const active = isNavigationItemActive(pathname, child.href);
                   return (
                     <li key={child.href}>
-                      <Link role="menuitem" href={child.href} aria-current={active ? "page" : undefined} onClick={() => onClose()} className={cn("group flex items-start justify-between gap-4 py-2 text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2", active && "font-medium text-primary")}>
+                      <Link href={child.href} aria-current={active ? "page" : undefined} onClick={() => onClose()} className={cn("group flex items-start justify-between gap-4 py-2 text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2", active && "font-medium text-primary")}>
                         <span className="min-w-0">
                           <span className="type-body-sm block font-medium">{child.label}</span>
                           {child.description && <span className="type-caption mt-1 block text-muted-foreground">{child.description}</span>}
