@@ -161,7 +161,7 @@ export function MobileNav({ className }: { className?: string }) {
         type="button"
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={open}
-        aria-controls="mobile-primary-navigation"
+        aria-controls={mounted ? "mobile-primary-navigation" : undefined}
         className="inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] border border-border bg-transparent text-foreground transition-colors duration-[var(--motion-micro)] hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-3"
         onClick={() => {
           if (open) closeMenu();
@@ -180,7 +180,6 @@ export function MobileNav({ className }: { className?: string }) {
         <div
           id="mobile-primary-navigation"
           ref={panelRef}
-          aria-label="Mobile primary navigation"
           className={cn(
             "fixed inset-x-0 bottom-0 top-[var(--header-height)] z-[var(--layer-modal)] overflow-y-auto border-t border-border bg-background px-[var(--page-gutter)] py-8 lg:hidden",
             open ? "animate-[mobile-menu-enter_var(--motion-micro)_var(--motion-ease-standard)_both]" : "animate-[mobile-menu-exit_var(--motion-micro)_var(--motion-ease-exit)_both]",
