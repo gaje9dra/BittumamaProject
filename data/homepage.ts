@@ -13,12 +13,13 @@ export type HomepageCapability = {
 
 export const homepageContent = {
   hero: {
-    eyebrow: "Working homepage direction",
-    title: "Research, intelligence, and expertise—connected.",
+    eyebrow: "Research · Intelligence · Expertise",
+    title: "Evidence, expertise, and technology—made useful.",
     description:
-      "A provisional positioning for an organization bringing research, education, applied expertise, and technology into one clear experience.",
+      "Bittumama brings research, intelligent technology, education, and applied expertise together to investigate complex questions and turn knowledge into useful understanding.",
     primaryAction: { label: "Explore our work", href: "/research" },
     secondaryAction: { label: "Meet the experts", href: "/experts" },
+    meta: "Independent thinking / Applied knowledge",
   },
   positioning: {
     eyebrow: "01 / Positioning",
