@@ -8,7 +8,7 @@ export function Header() {
   return (
     <HeaderScrollShell>
       <header className="border-b border-border bg-background transition-[background-color,border-color] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)]">
-        <div className="mx-auto flex min-h-16 w-full max-w-[var(--container-wide)] items-center px-[var(--page-gutter)] lg:min-h-[4.5rem]">
+        <div className="mx-auto flex min-h-[var(--header-height)] w-full max-w-[var(--container-wide)] items-center px-[var(--page-gutter)] lg:min-h-[var(--header-height-lg)]">
           <Link
             href="/"
             aria-label="Bittumama home"
