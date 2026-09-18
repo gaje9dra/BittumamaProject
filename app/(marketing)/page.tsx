@@ -5,6 +5,7 @@ import { HomeHero } from "@/components/home/home-hero";
 import { HomeInsights } from "@/components/home/home-insights";
 import { HomeIntelligence } from "@/components/home/home-intelligence";
 import { HomePositioning } from "@/components/home/home-positioning";
+import { HomeServices } from "@/components/home/home-services";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       <HomePositioning />
       <HomeCapabilities />
       <HomeIntelligence />
+      <HomeServices />
       <HomeExpertise />
       <HomeInsights />
       <HomeCta />
