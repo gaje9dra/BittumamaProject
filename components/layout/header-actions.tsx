@@ -20,7 +20,7 @@ export function HeaderActions({ className }: { className?: string }) {
   }, [closeSearch]);
 
   return (
-    <div className={cn("items-center gap-2 lg:ml-5 xl:ml-7", className)}>
+    <div className={cn("items-center gap-2", className)}>
       <SearchTrigger ref={searchTriggerRef} controlsId={searchPanelId} open={searchOpen} onClick={() => setSearchOpen((value) => !value)} />
       <Link
         href="/contact"
