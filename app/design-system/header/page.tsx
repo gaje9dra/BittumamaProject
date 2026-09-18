@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { Header } from "@/components/layout/header";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
@@ -20,7 +19,6 @@ export default function HeaderPlaygroundPage() {
 
   return (
     <main className="min-h-[180vh] bg-background text-foreground">
-      <Header />
       <section className="layout-section-lg">
         <Container size="wide">
           <p className="type-label text-muted-foreground">Development reference</p>
