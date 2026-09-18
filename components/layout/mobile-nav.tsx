@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { ArrowLeft, ArrowUpRight, ChevronRight, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
+import type { NavigationItem } from "@/data/navigation";
 import { mobileNavigation } from "@/data/navigation";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
@@ -14,12 +15,20 @@ export function MobileNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [activeSubmenu, setActiveSubmenu] = useState<NavigationItem | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLElement>(null);
+  const submenuBackRef = useRef<HTMLButtonElement>(null);
   const previousOverflowRef = useRef("");
   const previousPaddingRef = useRef("");
 
-  const closeMenu = () => setOpen(false);
+  const closeMenu = () => {
+    setActiveSubmenu(null);
+    setOpen(false);
+  };
+
+  const enterSubmenu = (item: NavigationItem) => setActiveSubmenu(item);
+  const leaveSubmenu = () => setActiveSubmenu(null);
 
   useEffect(() => {
     if (!open) return;
@@ -28,7 +37,7 @@ export function MobileNav({ className }: { className?: string }) {
     previousPaddingRef.current = document.body.style.paddingRight;
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    if (scrollbarWidth > 0) document.body.style.paddingRight = scrollbarWidth + "px";
 
     requestAnimationFrame(() => {
       const firstFocusable = panelRef.current?.querySelector<HTMLElement>(
@@ -40,11 +49,12 @@ export function MobileNav({ className }: { className?: string }) {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        closeMenu();
+        if (activeSubmenu) leaveSubmenu();
+        else closeMenu();
         return;
       }
-      if (event.key !== "Tab") return;
 
+      if (event.key !== "Tab") return;
       const focusable = panelRef.current?.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
       );
@@ -67,16 +77,19 @@ export function MobileNav({ className }: { className?: string }) {
       document.body.style.overflow = previousOverflowRef.current;
       document.body.style.paddingRight = previousPaddingRef.current;
     };
-  }, [open]);
+  }, [activeSubmenu, open]);
+
+  useEffect(() => {
+    if (!open || !activeSubmenu) return;
+    requestAnimationFrame(() => submenuBackRef.current?.focus());
+  }, [activeSubmenu, open]);
 
   useEffect(() => {
     if (open || !mounted) return;
-
     const timer = window.setTimeout(() => {
       setMounted(false);
       triggerRef.current?.focus();
     }, MENU_TRANSITION_MS);
-
     return () => window.clearTimeout(timer);
   }, [open, mounted]);
 
@@ -87,6 +100,28 @@ export function MobileNav({ className }: { className?: string }) {
     window.addEventListener("resize", closeOnResize);
     return () => window.removeEventListener("resize", closeOnResize);
   }, []);
+
+  const renderDestination = (item: NavigationItem) => {
+    const active = isNavigationItemActive(pathname, item.href);
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        aria-current={active ? "page" : undefined}
+        onClick={closeMenu}
+        className={cn(
+          "type-h4 flex min-h-14 items-center justify-between border-b border-border py-3 text-foreground transition-colors duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4",
+          active && "font-semibold text-primary",
+        )}
+      >
+        <span>
+          <span className="block">{item.label}</span>
+          {item.description && <span className="type-body-sm mt-1 block text-muted-foreground">{item.description}</span>}
+        </span>
+        <ArrowUpRight aria-hidden="true" size={20} className="shrink-0 text-muted-foreground" />
+      </Link>
+    );
+  };
 
   return (
     <div className={cn("relative", className)}>
@@ -105,8 +140,8 @@ export function MobileNav({ className }: { className?: string }) {
           }
         }}
       >
-        <Menu aria-hidden="true" className={cn("absolute transition-[opacity,transform] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)]", open && "scale-75 opacity-0")} size={20} />
-        <X aria-hidden="true" className={cn("absolute transition-[opacity,transform] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)]", !open && "scale-75 opacity-0")} size={20} />
+        <Menu aria-hidden="true" className={cn("absolute transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-75 opacity-0")} size={20} />
+        <X aria-hidden="true" className={cn("absolute transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-75 opacity-0")} size={20} />
       </button>
 
       {mounted && (
@@ -121,26 +156,68 @@ export function MobileNav({ className }: { className?: string }) {
         >
           <nav aria-label="Mobile primary navigation" className="mx-auto flex min-h-full max-w-[var(--container-content)] flex-col">
             <div className="flex-1">
-              {mobileNavigation.map((item, index) => {
-                const active = isNavigationItemActive(pathname, item.href);
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    aria-current={active ? "page" : undefined}
-                    onClick={closeMenu}
-                    className={cn(
-                      "type-h4 flex min-h-14 items-center justify-between border-b border-border py-3 text-foreground transition-colors duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4",
-                      index === 0 && "border-t",
-                      active && "font-semibold text-primary",
-                    )}
+              {!activeSubmenu ? (
+                <>
+                  {mobileNavigation.map((item, index) => {
+                    const hasNestedNavigation = Boolean(item.children?.length || item.groups?.length);
+                    if (!hasNestedNavigation) {
+                      return (
+                        <div key={item.href} className={cn(index === 0 && "border-t border-border")}>
+                          {renderDestination(item)}
+                        </div>
+                      );
+                    }
+
+                    return (
+                      <button
+                        key={item.href}
+                        type="button"
+                        onClick={() => enterSubmenu(item)}
+                        className={cn(
+                          "type-h4 flex min-h-14 w-full items-center justify-between border-b border-border py-3 text-left text-foreground transition-colors duration-[var(--motion-micro)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4",
+                          index === 0 && "border-t",
+                          isNavigationItemActive(pathname, item.href) && "font-semibold text-primary",
+                        )}
+                        aria-haspopup="menu"
+                      >
+                        <span>{item.label}</span>
+                        <ChevronRight aria-hidden="true" size={22} className="shrink-0 text-muted-foreground" />
+                      </button>
+                    );
+                  })}
+                </>
+              ) : (
+                <div className="motion-fade">
+                  <button
+                    ref={submenuBackRef}
+                    type="button"
+                    onClick={leaveSubmenu}
+                    className="type-nav mb-6 inline-flex min-h-11 items-center gap-2 text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
+                    aria-label={"Back to " + (activeSubmenu.label === "Services" ? "main menu" : "main navigation")}
                   >
-                    <span>{item.label}</span>
-                    <ArrowUpRight aria-hidden="true" size={20} className="shrink-0 text-muted-foreground" />
-                  </Link>
-                );
-              })}
+                    <ArrowLeft aria-hidden="true" size={18} />
+                    Back
+                  </button>
+
+                  <div className="border-b border-border pb-5">
+                    <p className="type-h3">{activeSubmenu.label}</p>
+                    {activeSubmenu.description && <p className="type-body-sm mt-2 text-muted-foreground">{activeSubmenu.description}</p>}
+                  </div>
+
+                  <div className="mt-2">
+                    {(activeSubmenu.children ?? []).map(renderDestination)}
+                    {(activeSubmenu.groups ?? []).map((group) => (
+                      <section key={group.label} className="border-b border-border py-5">
+                        <p className="type-label text-muted-foreground">{group.label}</p>
+                        {group.description && <p className="type-caption mt-2 text-muted-foreground">{group.description}</p>}
+                        <div className="mt-2">{group.items.map(renderDestination)}</div>
+                      </section>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
+
             <Link
               href="/contact"
               onClick={closeMenu}
