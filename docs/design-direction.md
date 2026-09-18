@@ -696,3 +696,36 @@ The root Header remains a Server Component. Client boundaries are limited to pat
 
 ### Final validation surface
 The development-only header and navigation playgrounds are the canonical manual verification surfaces for top/scrolled state, active routes, dropdowns, mega-menu geometry, mobile navigation, Search, focus behavior, resize/orientation changes, long labels, and reduced motion. They remain development references and are not part of the production information architecture.
+
+## Homepage Creative Direction — Phase 4.1
+
+### Narrative role
+The homepage is structured as an editorial introduction rather than a directory. Its provisional narrative moves from identity and positioning into capabilities, research/intelligence, human expertise, insights, and a natural contact action. Each section has a distinct information job so the page does not become a repeated card grid.
+
+### Section architecture
+The production route remains the existing App Router marketing route at `/`. The foundation is split into meaningful visual sections: Hero, Positioning, Capabilities, Research & Intelligence, Human Expertise, Insights, and closing CTA. Detailed service, research, expert, article, event, and CMS content remains outside this phase.
+
+Homepage content is centralized in `data/homepage.ts` so later CMS/API work can replace the content source without duplicating copy across presentation components. Current copy is explicitly provisional and should be replaced when final organizational positioning is established.
+
+### Composition and grid
+The hero uses a two-zone editorial composition: a wide typographic message and a deliberately framed visual placeholder. Subsequent sections alternate between editorial split layouts, numbered horizontal rows, full-width tonal fields, image-led composition, and restrained article rows. The page intentionally avoids a repeated section → three cards rhythm.
+
+Existing container, page-gutter, section-spacing, grid, border, radius, typography, and color tokens are reused. No parallel homepage design system or arbitrary color palette was introduced.
+
+### Typography
+Typography carries the primary visual hierarchy. The hero uses the established display scale with a constrained reading measure; section headings use the existing Literata-based heading hierarchy; labels and metadata use the established IBM Plex Sans interface scale. Numeric markers and compact metadata create structure without decorative treatment.
+
+### Imagery
+No fabricated organizational photography or external stock assets were introduced. The hero and expertise areas establish stable aspect-ratio/crop zones using restrained visual placeholders. These slots are designed to accept authentic research, fieldwork, people, educational, or explanatory imagery later without changing the surrounding composition.
+
+### Responsive strategy
+Desktop uses controlled asymmetry and wider editorial relationships. Tablet rebalances columns at the existing breakpoints. Mobile intentionally stacks and simplifies the compositions, preserves heading-to-supporting-copy order, keeps links comfortably tappable, and removes unnecessary horizontal density rather than mechanically shrinking desktop layouts.
+
+### Motion philosophy
+Phase 4.1 establishes motion locations rather than heavily animating the homepage. Future implementation may use the existing motion system for hero/content arrival, image reveal, subtle interactive image response, and research/data storytelling. No scroll-jacking, perpetual motion, decorative parallax, cursor tracking, glow, or animated gradients were introduced.
+
+### Accessibility
+Homepage sections use semantic `section` elements with labelled headings, logical heading levels, meaningful destination links, visible focus states, readable measures, and non-essential visual placeholders that do not carry required information. The structure remains compatible with the existing reduced-motion rules and keyboard conventions.
+
+### Phase boundary
+Phase 4.1 establishes the homepage creative and structural foundation only. Backend, database, Prisma, authentication, CMS, payments, AI services, search indexing, service detail pages, article management, events, dashboards, and other content systems remain deferred to later phases.
