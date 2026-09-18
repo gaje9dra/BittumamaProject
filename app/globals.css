@@ -23,6 +23,11 @@
   --color-warning: var(--warning);
   --color-error: var(--error);
   --color-info: var(--info);
+  --color-dark-background: var(--dark-background);
+  --color-dark-foreground: var(--dark-foreground);
+  --color-dark-surface: var(--dark-surface);
+  --color-dark-border: var(--dark-border);
+  --color-dark-muted-foreground: var(--dark-muted-foreground);
   --font-sans: var(--font-body);
   --font-ui: var(--font-body);
 }
