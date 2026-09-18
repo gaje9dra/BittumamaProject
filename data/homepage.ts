@@ -169,6 +169,30 @@ export const homepageContent = {
     ],
     action: { label: "Request Support", href: "/contact" },
   },
+  trust: {
+    eyebrow: "08 / Research scope",
+    title: "Specific support for defined academic requirements.",
+    description: "The current service scope covers thesis, dissertation, research paper and data analysis support.",
+    proof: [
+      {
+        label: "Thesis & Dissertation",
+        description: "Academic support for thesis and dissertation requirements.",
+      },
+      {
+        label: "Research Papers",
+        description: "Research paper writing, review and editing support.",
+      },
+      {
+        label: "Research Methodology",
+        description: "Research design and methodology support.",
+      },
+      {
+        label: "Data Analysis",
+        description: "Statistical analysis, interpretation and visualization.",
+      },
+    ],
+    action: { label: "View Research Services", href: "/services" },
+  },
   expertise: {
     eyebrow: "05 / Experts",
     title: "Meet Our Experts",
