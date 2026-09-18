@@ -24,10 +24,11 @@ export function NavigationMegaTrigger({ item, pathname }: { item: NavigationItem
   }, []);
 
   useEffect(() => {
+    if (!open) return;
     return subscribeToHeaderSurface((surface) => {
       if (surface !== "mega") setOpen(false);
     });
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     setOpen(false);
