@@ -178,7 +178,6 @@ export function MobileNav({ className }: { className?: string }) {
                       restoreFocusRef={searchTriggerRef}
                     />
                   </div>
-                <>
                   {mobileNavigation.map((item, index) => {
                     const hasNestedNavigation = Boolean(item.children?.length || item.groups?.length);
                     if (!hasNestedNavigation) {
