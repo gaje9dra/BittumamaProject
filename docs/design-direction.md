@@ -818,3 +818,27 @@ The featured research frame and research CTA are semantic links. Existing motion
 
 ### Relationship to previous sections
 Core Capabilities is list-led and neutral-toned; Research & Intelligence deliberately shifts into a deep primary surface and a more information-dense editorial composition. The change in density and tone signals a move from “what we do” to “how we think” without introducing a new design language.
+
+
+## Homepage Services / Solutions — Phase 4.6
+
+### Purpose
+The Services / Solutions section translates the preceding research and intelligence story into practical ways an audience can engage the organization. It distinguishes services (“what someone can engage us to do”) from capabilities (“what we are capable of”) and remains a homepage overview rather than individual service-page architecture.
+
+### Service taxonomy
+The initial replaceable taxonomy contains Research & advisory, Strategy & intelligence, Education & training, and Technology solutions. Each service carries practical metadata useful to the overview: audience and engagement format. No clients, outcomes, statistics, awards, or other unsupported credibility claims are presented.
+
+### Composition
+The section deliberately avoids a repeated card grid. A four-column editorial introduction sits beside a large ruled service index. Each service is a semantic link with a numbered index, large title, concise practical description, audience, format, and directional marker. Equal structural treatment avoids implying an arbitrary business priority; the index is navigational, not a ranking.
+
+### Relationship to capabilities and research
+Core Capabilities establishes the organization’s areas of competence, while Research & Intelligence establishes its inquiry and evidence-oriented approach. Services follows as the practical application layer: research and knowledge can become advisory work, strategy/intelligence engagements, education, or purposeful technology work.
+
+### Interaction
+Service rows use existing motion tokens for restrained background, typography, and arrow feedback. The entire row is a semantic link, so keyboard and touch users receive the same destination and essential content without hover dependence. Focus remains visible through the established focus treatment.
+
+### Responsive behavior
+Desktop uses the editorial introduction plus service directory relationship. Tablet preserves the directory structure while allowing metadata to compress. Mobile becomes a deliberate vertical index: service descriptions remain visible, metadata simplifies into a compact two-column block, and touch targets remain comfortably sized. No service is hidden to shorten the section.
+
+### Future compatibility
+Service links use the scalable `/services/[slug]` pattern, while `/services` remains the directory destination. The static content model is centralized in `data/homepage.ts` so future CMS or database-backed content can replace the source without changing the presentation contract. No service pages, CMS, database, filtering, admin, or backend are implemented in this phase.
