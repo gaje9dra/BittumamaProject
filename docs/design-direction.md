@@ -370,6 +370,56 @@ Avoid gradient buttons, glowing controls, hover scaling, excessive pills, univer
 ### 21. Component playground
 The development-only component playground is available at `/design-system/components`. It demonstrates buttons, links, cards, badges, forms, accordion, tabs, navigation elements, icons, images, dividers, tables, metrics, CTA hierarchy, and representative states. It is a validation surface only and is not part of the public website.
 
+## Motion & Interaction Language
+
+### 1. Motion philosophy
+Motion reinforces hierarchy, spatial relationship, state change, interaction feedback, navigation, continuity, progressive disclosure, and content arrival. If movement does not communicate one of these relationships, it should not be added. The default feeling is calm, precise, editorial, responsive, intelligent, and subtle.
+
+### 2. Motion hierarchy
+- **Instant — 80ms:** immediate acknowledgement where delay would feel unnecessary.
+- **Fast — 140ms:** links, hover states, compact controls, directional cues.
+- **Normal — 220ms:** primary component state transitions.
+- **Slow — 360ms:** larger state changes or meaningful interface transitions.
+- **Reveal — 520ms:** editorial content arrival and slower image response.
+
+These are semantic tokens, not a requirement that every interaction use animation.
+
+### 3. Easing
+Standard easing is `cubic-bezier(0.2, 0, 0, 1)` for predictable interface transitions. Emphasis easing is `cubic-bezier(0.16, 1, 0.3, 1)` for restrained editorial arrival. Linear is reserved for genuinely continuous progress indicators. Spring physics are not part of the baseline system.
+
+### 4. Movement scale
+Default movement distances are deliberately small: 4px, 10px, and 20px. Hover lift is limited to approximately 4px and optional. Hover scale is capped around 1.015 for exceptional cases rather than used as a standard card behavior.
+
+### 5. Interaction feedback
+Buttons respond through background, text, and border changes. Links may use underline or a small directional movement. Interactive cards may change border/surface, lift slightly, move an arrow, reveal content, or move an image. Inputs transition into their focus state. Navigation communicates active location through persistent styling rather than animation.
+
+### 6. Content reveal
+Editorial content can use a restrained opacity + small vertical movement or clip reveal when content arrival benefits comprehension. Staggering is limited and sequential; it should establish reading order rather than become a spectacle.
+
+### 7. Image motion
+Images may respond with a slow, very small scale movement when the image is interactive and the movement clarifies pointer relationship. Image motion is slower than control feedback. Static images should not animate simply because they are visible.
+
+### 8. Progressive disclosure
+Accordions and similar controls should communicate open/closed state clearly. Directional icons can rotate subtly to reinforce the relationship. Expansion choreography remains subordinate to content.
+
+### 9. Navigation
+Navigation should feel stable. Active state, focus, selected state, and menu availability carry most of the communication. Avoid animated navigation that delays access to content.
+
+### 10. Loading and status
+Loading indicators should preserve layout and communicate progress without celebratory or alarming motion. Success and error states should primarily use text, iconography, surface, and status color. Avoid confetti, bouncing, shaking, flashing, or other attention-seeking effects.
+
+### 11. Reduced motion
+All motion utilities and choreography must respect `prefers-reduced-motion`. The foundation minimizes transitions and animations, disables transforms, and keeps content immediately understandable. Future component motion must follow the same requirement.
+
+### 12. Motion boundaries
+Do not use scroll-jacking, large parallax effects, floating blobs, particle fields, animated gradients, glowing effects, excessive morphing, 3D transforms, bouncing cards, spinning controls, exaggerated spring physics, or constant decorative movement.
+
+### 13. Implementation tokens
+Motion tokens live in the global design system: `--motion-instant`, `--motion-fast`, `--motion-normal`, `--motion-slow`, `--motion-reveal`, standard/emphasis/linear easing, 4/10/20px distances, and a restrained 1.015 hover scale. Components should consume these tokens rather than introduce arbitrary durations or curves.
+
+### 14. Motion playground
+The development-only motion playground is available at `/design-system/motion`. It demonstrates timing/easing tokens, button/link/card/image responses, content reveal, accordion disclosure, navigation feedback, loading/status philosophy, and reduced-motion boundaries. It is a design-validation surface and not a public website page.
+
 ## Image and visual direction
 
 Prioritize research visuals, diagrams, authentic editorial photography, data visualization, original explanatory illustrations, relevant interface screenshots, and typography-led compositions. Photography should favor real people, research activity, workshops, collaboration, and context over generic corporate stock. No Anushram assets will be used.
@@ -462,5 +512,7 @@ This document is the evolving design contract for the project.
 - Phase 2.2: production color system
 - Phase 2.3: production typography system
 - Phase 2.4: production layout, grid, and spacing system
+- Phase 2.5: component visual language
+- Phase 2.6: motion and interaction language
 
 Future phases should build on these tokens rather than creating parallel visual systems.
