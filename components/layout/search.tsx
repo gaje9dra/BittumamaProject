@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Search, X } from "lucide-react";
 import type { FormEvent } from "react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type RefObject } from "react";
 import { cn } from "@/lib/utils";
 
 type SearchTriggerProps = {
@@ -38,9 +38,10 @@ type SearchPanelProps = {
   onClose: () => void;
   variant?: "overlay" | "inline";
   className?: string;
+  restoreFocusRef?: RefObject<HTMLElement | null>;
 };
 
-export function SearchPanel({ open, onClose, variant = "overlay", className }: SearchPanelProps) {
+export function SearchPanel({ open, onClose, variant = "overlay", className, restoreFocusRef }: SearchPanelProps) {
   const [query, setQuery] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -73,7 +74,11 @@ export function SearchPanel({ open, onClose, variant = "overlay", className }: S
   }, [onClose, open, variant]);
 
   useEffect(() => {
-    if (previousOpenRef.current && !open) requestAnimationFrame(() => closeRef.current?.focus());
+    if (previousOpenRef.current && !open) {
+      requestAnimationFrame(() => {
+        restoreFocusRef?.current?.focus();
+      });
+    }
     previousOpenRef.current = open;
   }, [open]);
 
@@ -93,7 +98,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className }: S
     <div
       ref={panelRef}
       role="dialog"
-      aria-modal={variant === "overlay" ? true : undefined}
+      aria-modal={undefined}
       aria-labelledby={labelId}
       className={cn(
         variant === "overlay"
