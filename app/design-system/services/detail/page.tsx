@@ -33,6 +33,14 @@ export default function ServiceDetailPlaygroundPage() {
       id: "preview-no-highlights",
       title: "Dissertation Support",
       highlights: undefined,
+      audience: undefined,
+    },
+    {
+      ...services[2],
+      id: "preview-long-content",
+      title: "Research Paper Support for Extended Academic Projects",
+      shortDescription:
+        "Research paper writing, review and editing support across a longer service description used only to test responsive text flow.",
     },
   ];
 
