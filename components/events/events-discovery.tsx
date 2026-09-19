@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import type { Event } from "@/data/events";
+import { getEventCategoryAnchor, type Event } from "@/data/events";
 
 function formatDate(date: string) {
   const parsed = new Date(date + "T00:00:00");
@@ -64,7 +64,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
         <div className="divide-y divide-border border-y border-border">
           {Array.from(new Set(events.map((event) => event.category))).map((category) => {
             const categoryEvents = events.filter((event) => event.category === category);
-            const categoryId = "event-category-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+            const categoryId = getEventCategoryAnchor(category);
             return (
               <section key={category} id={categoryId} className="scroll-anchor">
                 <div className="border-b border-border bg-surface-muted px-4 py-3 sm:px-5">
