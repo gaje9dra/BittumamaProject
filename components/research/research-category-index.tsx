@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { getResearchCategoryAnchor, researchCategories } from "@/data/research";
+import { getResearchCategoryAnchor, researchCategories as canonicalCategories } from "@/data/research";
+
+type ResearchCategoryIndexProps = {
+  categories?: string[];
+};
 
 export function ResearchCategoryIndex() {
   return (
