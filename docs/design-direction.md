@@ -1123,3 +1123,29 @@ The page reuses the existing container, typography, spacing, border, color, butt
 ### Data architecture
 Service records remain the single source of truth for the directory and detail routes. Optional `highlights` are supported without requiring every service to populate them. No database, CMS, authentication, payment system, API, or service-specific backend logic is introduced.
 
+## Service Detail Content Depth & Information Architecture — Phase 5.4
+
+### Information architecture
+Service detail pages now progress from breadcrumb/context and hero into a concise overview, optional verified highlights, audience context, related services, and the final contact action. Optional sections render only when their corresponding service data exists.
+
+### Scope and included areas
+The existing optional `highlights` structure is retained as the available verified-detail mechanism. Dedicated scope, deliverable, and process sections are not rendered until approved service data exists; no unsupported service claims are fabricated.
+
+### Audience treatment
+The existing `audience` field is presented as a compact editorial metadata section. Services without an audience omit the section rather than showing empty content.
+
+### Related services
+Related services continue to derive from centralized service data, use the current service category relationship, and exclude the current service. The presentation remains a numbered editorial list rather than a card grid.
+
+### On-page navigation
+A dedicated "On this page" navigation is not introduced at the current content depth. The service pages do not yet contain enough verified sections to justify an additional navigation layer.
+
+### CTA hierarchy
+The service page has one clear conversion destination: `/contact`, using `Discuss Your Requirement`. No unsupported offers, timelines, guarantees, pricing, or outcomes are presented.
+
+### Responsive and accessibility behavior
+The page preserves the established editorial grid and intentionally stacks content on smaller screens. Semantic sections, headings, lists, breadcrumb links, visible focus states, comfortable tap targets, and reduced-motion behavior remain part of the shared design system.
+
+### Content rules
+Service data remains centralized in `data/services.ts`. Optional content is omitted when unavailable. No placeholder, temporary, development, fabricated, or unsupported customer-facing content is introduced.
+\n
