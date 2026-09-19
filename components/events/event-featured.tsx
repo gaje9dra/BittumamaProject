@@ -7,7 +7,7 @@ export function EventFeatured({ event }: { event?: Event }) {
 
   return (
     <section aria-labelledby="featured-event-title" className="border-b border-border bg-surface-muted">
-      <Container width="wide" className="py-12 sm:py-16">
+      <Container size="wide" className="py-12 sm:py-16">
         <div className="grid gap-8 lg:grid-cols-[8rem_minmax(0,1fr)_18rem] lg:items-end">
           <div>
             <p className="type-label text-primary">Featured event</p>
