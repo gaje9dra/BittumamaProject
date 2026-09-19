@@ -1,5 +1,10 @@
 export type ServiceStatus = "Available" | "Coming Soon";
 
+export type ServiceHighlight = {
+  title: string;
+  description: string;
+};
+
 export type Service = {
   id: string;
   title: string;
@@ -7,6 +12,7 @@ export type Service = {
   category: string;
   shortDescription: string;
   audience?: string;
+  highlights?: ServiceHighlight[];
   href: string;
   featured?: boolean;
   status?: ServiceStatus;
@@ -51,7 +57,6 @@ export const services: Service[] = [
   },
 ];
 
-
 export const serviceCategories = Array.from(
   new Set(services.map((service) => service.category).filter(Boolean)),
 );
@@ -67,4 +72,16 @@ export function getServiceCategoryAnchor(category: string) {
     .replace(/(^-|-$)/g, "");
 
   return `service-category-${slug}`;
+}
+
+export function getServiceBySlug(slug: string) {
+  return services.find((service) => service.slug === slug);
+}
+
+export function getRelatedServices(service: Service) {
+  return services.filter(
+    (candidate) =>
+      candidate.slug !== service.slug &&
+      candidate.category === service.category,
+  );
 }
