@@ -5,6 +5,11 @@ export type ServiceHighlight = {
   description: string;
 };
 
+export type ServiceFaq = {
+  question: string;
+  answer: string;
+};
+
 export type Service = {
   id: string;
   title: string;
@@ -13,6 +18,7 @@ export type Service = {
   shortDescription: string;
   audience?: string;
   highlights?: ServiceHighlight[];
+  faq?: ServiceFaq[];
   href: string;
   featured?: boolean;
   status?: ServiceStatus;
