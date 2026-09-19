@@ -34,6 +34,7 @@ export type ResearchEntry = {
   audience?: string[];
   highlights?: string[];
   relatedServiceIds?: string[];
+  relatedResearchIds?: string[];
   relatedArticleIds?: string[];
   relatedExpertIds?: string[];
   date?: string;
@@ -82,7 +83,7 @@ export function getResearchBySlug(slug: string) {
 }
 
 export function getRelatedResearch(entry: ResearchEntry) {
-  const relatedIds = new Set(entry.relatedArticleIds ?? []);
+  const relatedIds = new Set(entry.relatedResearchIds ?? []);
   return researchEntries.filter(
     (candidate) =>
       candidate.id !== entry.id && relatedIds.has(candidate.id),
