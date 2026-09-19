@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getRelatedResearch, type ResearchEntry } from "@/lib/content";
+import { getRelatedResearch, type ResearchEntry } from "@/data/research";
 
 export function RelatedResearch({ research }: { research: ResearchEntry }) {
   const related = getRelatedResearch(research);
