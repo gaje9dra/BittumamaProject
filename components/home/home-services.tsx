@@ -33,7 +33,7 @@ export function HomeServices() {
                   </div>
                   <dl className="grid grid-cols-2 gap-x-5 gap-y-2 sm:block sm:border-l sm:border-border sm:pl-6">
                     <div><dt className="type-caption text-muted-foreground/80">Audience</dt><dd className="type-body-sm mt-1">{service.audience}</dd></div>
-                    <div className="sm:mt-4"><dt className="type-caption text-muted-foreground/80">Format</dt><dd className="type-body-sm mt-1">{service.format}</dd></div>
+                    <div className="sm:mt-4"><dt className="type-caption text-muted-foreground/80">Category</dt><dd className="type-body-sm mt-1">{service.category}</dd></div>
                   </dl>
                   <ArrowUpRight aria-hidden="true" className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </Link>
