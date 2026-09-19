@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: ResearchDetailRouteProps): Pr
   const research = getResearchBySlug(slug);
   if (!research) return { title: "Research not found | Bittumama" };
   return {
-    title: research.title + " | Research & Intelligence | Bittumama",
+    title: research.title + " | Research | Bittumama",
     description: research.shortDescription,
     alternates: {
       canonical: research.href,
