@@ -21,7 +21,7 @@ const displayFont = Literata({
 export const metadata: Metadata = {
   title: "Bittumama — Research, Intelligence & Expertise",
   description:
-    "A working homepage foundation for research, intelligence, education, and applied expertise.",
+    "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
 };
 
 export default function RootLayout({
