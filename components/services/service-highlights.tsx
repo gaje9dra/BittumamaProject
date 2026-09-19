@@ -17,7 +17,7 @@ export function ServiceHighlights({ service }: ServiceHighlightsProps) {
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">02 / Highlights</p>
+            <p className="type-label text-muted-foreground">Key areas</p>
             <Heading
               id="service-highlights-title"
               level={2}
