@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { EventDetailPage } from "@/components/events/event-detail-page";
-import { events, getEventBySlug } from "@/data/events";
+import { getAllWorkshops, getWorkshopBySlug } from "@/lib/content";
 
 export function generateStaticParams() {
-  return events.map((event) => ({ slug: event.slug }));
+  return getAllWorkshops().map((event) => ({ slug: event.slug }));
 }
 
 export async function generateMetadata({
@@ -12,9 +13,11 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const event = getEventBySlug(slug);
+  const event = getWorkshopBySlug(slug);
 
-  if (!event) return { title: "Event Not Found | Bittumama" };
+  if (!event) {
+    return { title: "Event Not Found | Bittumama" };
+  }
 
   return {
     title: event.seo?.title ?? event.title + " | Bittumama Workshops & Events",
@@ -29,5 +32,11 @@ export default async function WorkshopDetailRoute({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <EventDetailPage event={getEventBySlug(slug)} />;
+  const event = getWorkshopBySlug(slug);
+
+  if (!event) {
+    notFound();
+  }
+
+  return <EventDetailPage event={event} />;
 }
