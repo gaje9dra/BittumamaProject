@@ -25,7 +25,7 @@ export const about: AboutData = {
   ],
   relationships: [
     { title: "Services", description: "Practical support for specific research and academic requirements.", href: "/services", action: "Explore Services" },
-    { title: "Research", description: "Research and knowledge work published through the research hub.", href: "/research", action: "Explore Research" },
+    { title: "Research", description: "Research and knowledge work published through the research area.", href: "/research", action: "Explore Research" },
     { title: "Experts", description: "The people and subject expertise behind the organization's work.", href: "/experts", action: "Meet the Experts" },
     { title: "Articles", description: "Accessible articles and insights connected to research and knowledge.", href: "/articles", action: "Read Articles" },
   ],
