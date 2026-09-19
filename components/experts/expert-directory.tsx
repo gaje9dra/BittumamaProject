@@ -2,15 +2,11 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { expertDisciplines as canonicalDisciplines, experts as canonicalExperts, type Expert } from "@/data/expertise";
+import { getAllExperts, getExpertDisciplineAnchor, getExpertHref, getExpertsByDiscipline, expertDisciplines as canonicalDisciplines, type Expert } from "@/data/expertise";
 
 type ExpertDirectoryProps = { experts?: Expert[]; disciplines?: string[] };
 
-function disciplineAnchor(discipline: string) {
-  return "expert-discipline-" + discipline.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-
-export function ExpertDirectory({ experts = canonicalExperts, disciplines = canonicalDisciplines }: ExpertDirectoryProps) {
+export function ExpertDirectory({ experts = getAllExperts(), disciplines = canonicalDisciplines }: ExpertDirectoryProps) {
   if (!experts.length) {
     return (
       <section id="expert-directory" aria-labelledby="expert-directory-title" className="scroll-anchor bg-background">
@@ -46,10 +42,10 @@ export function ExpertDirectory({ experts = canonicalExperts, disciplines = cano
           <div className="lg:col-span-9 lg:col-start-4">
             <div className="border-t border-border">
               {disciplines.map((discipline) => {
-                const group = experts.filter((expert) => expert.discipline === discipline);
+                const group = experts === getAllExperts() ? getExpertsByDiscipline(discipline) : experts.filter((expert) => expert.discipline === discipline);
                 if (!group.length) return null;
                 return (
-                  <section key={discipline} id={disciplineAnchor(discipline)} className="scroll-anchor">
+                  <section key={discipline} id={getExpertDisciplineAnchor(discipline)} className="scroll-anchor">
                     <div className="grid gap-2 border-b border-border py-4 sm:grid-cols-[minmax(0,1fr)_auto]">
                       <p className="type-label text-muted-foreground">{discipline}</p>
                       <span className="type-caption text-muted-foreground">{String(group.length).padStart(2, "0")} profiles</span>
@@ -57,7 +53,7 @@ export function ExpertDirectory({ experts = canonicalExperts, disciplines = cano
                     <ol>
                       {group.map((expert, index) => (
                         <li key={expert.id} className="border-b border-border">
-                          <Link href={"/experts/" + expert.slug} className="group grid gap-4 py-6 focus-visible:bg-surface-muted/60 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(12rem,.6fr)_auto] sm:items-start sm:gap-6">
+                          <Link href={getExpertHref(expert)} className="group grid gap-4 py-6 focus-visible:bg-surface-muted/60 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(12rem,.6fr)_auto] sm:items-start sm:gap-6">
                             <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                             <div>
                               <Heading level={3} className="max-w-[30ch]">{expert.name}</Heading>
