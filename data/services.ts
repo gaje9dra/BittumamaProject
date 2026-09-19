@@ -161,10 +161,6 @@ export function getServiceBySlug(slug: string) {
   return services.find((service) => service.slug === slug);
 }
 
-export function getFeaturedServices() {
-  return services.filter((service) => service.featured);
-}
-
 export const serviceCategories = Array.from(
   new Set(services.map((service) => service.category).filter(Boolean)),
 );
