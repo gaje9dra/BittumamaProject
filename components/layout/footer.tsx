@@ -2,21 +2,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { about } from "@/data/about";
+import { footerNavigation } from "@/data/navigation";
+import { site } from "@/data/site";
 import { services } from "@/data/services";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Container } from "@/components/ui/container";
-
-const researchLinks = [
-  { label: "Research", href: "/research" },
-  { label: "Articles", href: "/articles" },
-  { label: "Workshops & Events", href: "/workshops" },
-];
-
-const companyLinks = [
-  { label: "About", href: "/about" },
-  { label: "Experts", href: "/experts" },
-  { label: "Contact", href: "/contact" },
-];
 
 function FooterLink({
   href,
@@ -80,7 +70,7 @@ export function Footer() {
 
         <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-x-12">
           <div className="lg:col-span-5">
-            <p className="type-label text-primary-100">Bittumama</p>
+            <p className="type-label text-primary-100">{site.name}</p>
             <h2
               id="footer-title"
               className="mt-5 max-w-[11ch] font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-5xl lg:text-[clamp(3rem,4.2vw,4.5rem)]"
@@ -151,8 +141,8 @@ export function Footer() {
             </section>
 
             <div className="grid gap-9 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1 xl:grid-cols-2">
-              <FooterLinkGroup title="Explore" links={researchLinks} />
-              <FooterLinkGroup title="Organization" links={companyLinks} />
+              <FooterLinkGroup title="Explore" links={[...footerNavigation.explore]} />
+              <FooterLinkGroup title="Organization" links={[...footerNavigation.organization]} />
             </div>
           </div>
         </div>
