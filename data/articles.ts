@@ -12,6 +12,7 @@ export type Article = {
   category: string;
   date?: string;
   author?: string;
+  authorId?: string;
   authorRole?: string;
   authorSlug?: string;
   excerpt?: string;
@@ -26,17 +27,22 @@ export type Article = {
   seo?: {
     title?: string;
     description?: string;
+    image?: string;
   };
 };
 
 export const articles: Article[] = [];
 
+export function getAllArticles() {
+  return articles;
+}
+
 export const articleCategories = Array.from(
   new Set(articles.map((article) => article.category).filter(Boolean)),
 );
 
-export function getArticlesByCategory(category: string) {
-  return articles.filter((article) => article.category === category);
+export function getArticleById(id: string) {
+  return articles.find((article) => article.id === id);
 }
 
 export function getArticleBySlug(slug: string) {
@@ -47,10 +53,23 @@ export function getFeaturedArticles() {
   return articles.filter((article) => article.featured);
 }
 
+export function getArticlesByCategory(category: string) {
+  return articles.filter((article) => article.category === category);
+}
+
+export function getArticleCategoryAnchor(category: string) {
+  const slug = category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return `article-category-${slug}`;
+}
+
 export function getRelatedArticles(article: Article) {
   if (article.relatedArticles?.length) {
     return article.relatedArticles
-      .map((slug) => getArticleBySlug(slug))
+      .map((idOrSlug) => getArticleById(idOrSlug) ?? getArticleBySlug(idOrSlug))
       .filter((item): item is Article => Boolean(item));
   }
 
@@ -61,3 +80,32 @@ export function getRelatedArticles(article: Article) {
       Boolean(article.tags?.some((tag) => candidate.tags?.includes(tag))),
   );
 }
+
+export function validateArticles(records: readonly Article[] = articles) {
+  const ids = new Set<string>();
+  const slugs = new Set<string>();
+
+  for (const article of records) {
+    if (!article.id || !article.title || !article.slug) {
+      throw new Error("Every article must have an id, title and slug.");
+    }
+
+    if (ids.has(article.id)) {
+      throw new Error(`Duplicate article id: ${article.id}`);
+    }
+    ids.add(article.id);
+
+    if (slugs.has(article.slug)) {
+      throw new Error(`Duplicate article slug: ${article.slug}`);
+    }
+    slugs.add(article.slug);
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(article.slug)) {
+      throw new Error(`Invalid article slug: ${article.slug}`);
+    }
+  }
+
+  return true;
+}
+
+validateArticles();
