@@ -11,7 +11,7 @@ export function HomeProcess() {
     <section
       id="home-process"
       aria-labelledby="home-process-title"
-      className="scroll-anchor bg-background"
+      className="scroll-anchor border-t border-border bg-surface-muted"
     >
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
