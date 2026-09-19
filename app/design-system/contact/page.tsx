@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ContactForm } from "@/components/contact/contact-form";
+import { ContactFormStatePreview } from "@/components/contact/contact-form-state-preview";
 import { ContactGuidance } from "@/components/contact/contact-guidance";
 import { ContactIntroduction } from "@/components/contact/contact-introduction";
 import { ContactMethods } from "@/components/contact/contact-methods";
@@ -25,6 +26,7 @@ export default function ContactDesignPreview() {
           <div className="lg:col-span-8"><ContactForm /></div>
         </div>
       </section>
+      <ContactFormStatePreview />
       <ContactMethods />
       <ContactGuidance />
       <ContactServiceContext />
