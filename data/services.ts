@@ -23,6 +23,7 @@ export type Service = {
   faq?: ServiceFaq[];
   href: string;
   relatedResearchIds?: string[];
+  relatedServiceIds?: string[];
   relatedArticleIds?: string[];
   relatedExpertIds?: string[];
   featured?: boolean;
@@ -186,7 +187,7 @@ export function getServiceBySlug(slug: string) {
 }
 
 export function getRelatedServices(service: Service) {
-  const relatedIds = new Set(service.relatedArticleIds ?? []);
+  const relatedIds = new Set(service.relatedServiceIds ?? []);
   return services.filter(
     (candidate) =>
       candidate.id !== service.id && relatedIds.has(candidate.id),
