@@ -374,7 +374,6 @@ The former per-record `href` field is not retained. Service URLs are derived fro
 - `getServiceById(id)`
 - `getServiceBySlug(slug)`
 - `getServiceHref(service)`
-- `getFeaturedServices()`
 - `getServicesByCategory(category)`
 - `getServiceCategoryAnchor(category)`
 - `getRelatedServices(service)`
