@@ -28,7 +28,7 @@ export type HomepageEvent = {
   shortDescription: string;
   registrationLabel?: string;
   href?: string;
-  status?: "Upcoming" | "Registration Open" | "Coming Soon" | "Completed";
+  status?: "Upcoming" | "Registration Open" | "Registration Closed" | "Coming Soon" | "Completed";
   featured?: boolean;
 };
 
