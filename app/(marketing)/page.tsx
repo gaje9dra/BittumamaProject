@@ -1,4 +1,3 @@
-import { HomeAbout } from "@/components/home/home-about";
 import { HomeAudience } from "@/components/home/home-audience";
 import { HomeExpertise } from "@/components/home/home-expertise";
 import { HomeHero } from "@/components/home/home-hero";
@@ -30,7 +29,6 @@ export default function Home() {
       <HomeExpertise />
       <HomeEvents />
       <HomeInsights />
-      <HomeAbout />
     </main>
   );
 }
