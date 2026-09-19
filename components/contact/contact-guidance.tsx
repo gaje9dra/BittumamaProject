@@ -4,7 +4,7 @@ import { contactData } from "@/data/contact";
 export function ContactGuidance() {
   return (
     <section className="border-b border-border">
-      <Container width="standard" className="py-12">
+      <Container size="default" className="py-12">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-x-10">
           <div className="lg:col-span-4">
             <p className="type-label text-primary">What to include</p>
