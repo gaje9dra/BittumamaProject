@@ -1309,3 +1309,59 @@ The detail route and all production detail components remain Server Components. 
 
 ### SEO and integration
 Detail metadata is generated from the canonical research title and short description. The global Header remains unchanged and its existing route matcher keeps Research active for `/research/[slug]`. Homepage and Services systems are not redesigned.
+
+
+## Research Detail Content Depth & Information Architecture — Phase 6.4
+
+### Content model
+data/research.ts remains the single source of truth. Phase 6.4 adds only content structures that support a meaningful research detail page: optional overview/summary, scope items, research themes, structured sections, methodology, audience/relevance, highlights, and explicit service relationships. The existing category/tag relationship remains the basis for related research.
+
+All deeper fields are optional. A research item can therefore remain concise without receiving empty sections or placeholder content.
+
+### Conditional section rules
+Every deeper section checks its canonical data before rendering. Missing scope, themes, methodology, audience, highlights, related research, or related services are omitted completely. No empty cards, filler copy, invented findings, statistics, dates, authors, methodologies, institutions, or credentials are introduced.
+
+### Detail hierarchy
+The production detail page now progresses through:
+1. breadcrumb/context;
+2. research hero and verified metadata;
+3. optional on-page contents navigation when the content is long enough;
+4. quick overview;
+5. optional scope;
+6. optional research themes;
+7. structured research sections;
+8. optional methodology/approach;
+9. optional audience/relevance;
+10. optional highlights;
+11. optional related research;
+12. optional explicitly related services;
+13. one final Research directory CTA.
+
+The page remains editorial rather than adopting a generic article or card-grid template.
+
+### Structured research sections
+Research sections support a title, optional introductory statement, body content, and optional key points. This is deliberately smaller than a rich-text system: there is no CMS, editor, database, arbitrary block renderer, or client-side content fetching.
+
+### On-page navigation
+A lightweight "On this page" navigation appears only when there are enough real sections or enough structured section content to justify it. It links to semantic section anchors, uses the existing header scroll offset, remains horizontally usable on mobile, and is not sticky. Short research pages omit it.
+
+### Visual storytelling
+The page uses controlled typography, numbered sections, dividers, asymmetrical editorial columns, tonal section changes, and whitespace to create rhythm. Real research imagery remains optional and is rendered only when supplied by canonical data. No decorative charts, fake percentages, fabricated trend lines, or visual filler are introduced.
+
+### Related research and services
+Related research continues to require a real canonical relationship: the current item is excluded, category must match, and at least one meaningful canonical tag must overlap. Explicit service relationships use canonical data/services.ts records and render only when the research item declares the relationship. No random service or research recommendations are generated to fill space.
+
+### Responsive reading behavior
+Desktop uses the existing 12-column editorial grid for scope, themes, methodology, relevance, related content, and supporting metadata while keeping prose within controlled reading measures. Tablet collapses complex relationships without cramped columns. Mobile stacks content in reading order, preserves section numbering, keeps metadata scannable, and allows contents links to scroll horizontally without page overflow.
+
+### Accessibility and motion
+Research content remains server-rendered. Sections use semantic landmarks and heading hierarchy; contents navigation uses semantic nav and anchor links; indexed research/service lists use ordered lists and meaningful links. Existing visible focus, scroll-margin-top, contrast, image alt text, and reduced-motion behavior remain authoritative. No client component was introduced for the research detail page.
+
+### Development preview
+The development-only Research detail preview now exercises overview, scope, themes, long content, methodology, relevance, highlights, related research, related services, contents navigation, and the final CTA. Its fixture data is isolated from researchEntries, so no development content is publicly routable.
+
+### SEO and integration
+Dynamic metadata remains derived from canonical research data, with a canonical route for each valid research slug. /research remains the directory source, the global Header remains unchanged, and existing homepage and Services links are not redesigned.
+
+### Content accuracy
+The production research dataset remains empty because no verified research records have been supplied. The architecture is ready for approved content without manufacturing research substance. No database, CMS, authentication, backend API, AI research functionality, advanced search, analytics, or future-phase systems were introduced.
