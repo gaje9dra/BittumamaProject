@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { about } from "@/data/about";
-import { services } from "@/data/services";
+import { getAllServices, getServiceHref } from "@/data/services";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Container } from "@/components/ui/container";
 
@@ -137,9 +137,9 @@ export function Footer() {
               </div>
 
               <ul className="mt-4 grid gap-x-8 gap-y-0 sm:grid-cols-2 xl:grid-cols-3">
-                {services.map((service, index) => (
+                {getAllServices().map((service, index) => (
                   <li key={service.id} className="border-b border-primary-foreground/10">
-                    <FooterLink href={service.href}>
+                    <FooterLink href={getServiceHref(service)}>
                       <span className="mr-2 tabular-nums text-primary-100/55">
                         {String(index + 1).padStart(2, "0")}
                       </span>
