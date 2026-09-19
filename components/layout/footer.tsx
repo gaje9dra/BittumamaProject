@@ -86,21 +86,16 @@ export function Footer() {
             </p>
           </div>
 
-          <div className="lg:col-span-4 lg:col-start-5">
+          <div className="order-3 lg:order-none lg:col-span-4 lg:col-start-5">
             <div className="grid gap-9 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 xl:gap-x-8">
               <FooterLinkGroup title="Research & Insights" links={researchLinks} />
               <FooterLinkGroup title="Company & People" links={companyLinks} />
             </div>
 
-            <div className="mt-10 border-t border-primary-foreground/10 pt-5">
-              <p className="type-caption max-w-[38ch] text-primary-100">
-                {about.description}
-              </p>
-            </div>
           </div>
 
-          <div className="lg:col-span-4 lg:col-start-9">
-            <div className="relative overflow-hidden border border-primary-foreground/15 bg-primary-800/70 p-6 sm:p-7 lg:p-8">
+          <div className="order-2 lg:order-none lg:col-span-4 lg:col-start-9">
+            <div className="relative overflow-hidden border border-primary-foreground/15 bg-primary/70 p-6 sm:p-7 lg:p-8">
               <div aria-hidden="true" className="absolute -right-8 -top-8 size-24 rounded-full border border-accent/35" />
               <div aria-hidden="true" className="absolute right-5 top-5 size-2 rounded-full bg-accent" />
 
