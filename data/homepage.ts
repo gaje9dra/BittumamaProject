@@ -110,38 +110,7 @@ export const homepageContent = {
       },
     ] satisfies HomepageLink[],
   },
-  capabilities: {
-    eyebrow: "02 / Capabilities",
-    title: "Research & Academic Support",
-    intro:
-      "Support across research writing, methodology, analysis and academic editing.",
-    items: [
-      {
-        index: "01",
-        label: "Research Support",
-        description: "Research papers, thesis and dissertation assistance.",
-        href: "/research",
-      },
-      {
-        index: "02",
-        label: "Literature Review",
-        description: "Literature search, review and academic synthesis.",
-        href: "/services",
-      },
-      {
-        index: "03",
-        label: "Research Methodology",
-        description: "Methodology planning and research design support.",
-        href: "/services",
-      },
-      {
-        index: "04",
-        label: "Data Analysis",
-        description: "Statistical analysis, interpretation and visualization.",
-        href: "/services",
-      },
-    ] satisfies HomepageCapability[],
-  },
+
   intelligence: {
     eyebrow: "03 / Research & Analysis",
     title: "Research & Analysis",
