@@ -180,19 +180,19 @@ export const homepageContent = {
         index: "01",
         title: "Thesis & Dissertation",
         description: "Support for students working on thesis and dissertation requirements.",
-        services: [
-          { label: serviceDirectory[0].title, href: serviceDirectory[0].href },
-          { label: serviceDirectory[1].title, href: serviceDirectory[1].href },
-        ],
+        services: ["thesis-support", "dissertation-support"]
+          .map((id) => serviceDirectory.find((service) => service.id === id))
+          .filter((service): service is (typeof serviceDirectory)[number] => Boolean(service))
+          .map((service) => ({ label: service.title, href: service.href })),
       },
       {
         index: "02",
         title: "Research Papers & Analysis",
         description: "Support for researchers and students working on papers and data analysis.",
-        services: [
-          { label: serviceDirectory[2].title, href: serviceDirectory[2].href },
-          { label: serviceDirectory[3].title, href: serviceDirectory[3].href },
-        ],
+        services: ["research-paper", "data-analysis"]
+          .map((id) => serviceDirectory.find((service) => service.id === id))
+          .filter((service): service is (typeof serviceDirectory)[number] => Boolean(service))
+          .map((service) => ({ label: service.title, href: service.href })),
       },
     ],
   },
