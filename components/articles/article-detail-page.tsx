@@ -110,7 +110,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
           <Container size="wide" className="layout-section-lg">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
               <div className="lg:col-span-8 lg:col-start-3 space-y-10">
-                <RelatedList title="Related articles" items={relatedArticles.map((item) => ({ title: item.title, href: item.href ?? "/articles/" + item.slug, description: item.excerpt }))} />
+                <RelatedList title="Related articles" items={relatedArticles.map((item) => ({ title: item.title, href: "/articles/" + item.slug, description: item.excerpt }))} />
                 <RelatedList title="Related research" items={relatedResearch.map((item) => ({ title: item.title, href: item.href, description: item.summary ?? item.shortDescription }))} />
                 <RelatedList title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: item.href, description: item.shortDescription }))} />
               </div>
