@@ -113,17 +113,6 @@ Research framework
             </figure>
           </div>
         </div>
-
-        <div className="mt-12 flex items-center justify-between border-t border-border pt-4 lg:mt-16">
-          <p className="type-caption text-muted-foreground">{hero.meta}</p>
-          <a
-            href="#home-positioning"
-            className="type-caption inline-flex min-h-11 items-center gap-2 text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
-          >
-            See research support
-            <ArrowDown aria-hidden="true" size={15} />
-          </a>
-        </div>
       </Container>
     </section>
   );
