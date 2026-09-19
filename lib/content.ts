@@ -69,7 +69,7 @@ export const getWorkshopsByIds = (ids: readonly string[]) => ids.map((id) => eve
 
 export const getRelatedServices = (service: Service) => getServicesByIds(service.relatedServiceIds ?? []);
 export const getRelatedResearch = (entry: ResearchEntry) => getResearchByIds(entry.relatedResearchIds ?? []);
-export const getRelatedArticles = (article: Article) => getArticlesByIds(article.relatedArticles ?? []);
+export const getRelatedArticles = (article: Article) => getArticlesByIds(article.relatedArticleIds ?? []);
 export const getExpertServices = (expert: Expert) => getServicesByIds(expert.serviceIds ?? []);
 export const getExpertResearch = (expert: Expert) => getResearchByIds(expert.researchIds ?? []);
 export const getExpertArticles = (expert: Expert) => getArticlesByIds(expert.articleIds ?? []);
