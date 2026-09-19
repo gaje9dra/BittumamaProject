@@ -11,7 +11,7 @@ export function EventsIntroduction() {
           <Heading level={1} className="mt-3 max-w-[24ch]">
             Learning sessions, workshops and research-focused events.
           </Heading>
-          <Text size="large" className="mt-5 max-w-[62ch] text-muted-foreground">
+          <Text size="lg" className="mt-5 max-w-[62ch] text-muted-foreground">
             Discover workshops and events available through Bittumama.
           </Text>
         </div>
