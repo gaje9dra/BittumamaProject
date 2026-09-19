@@ -2,13 +2,9 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import type { Article } from "@/data/articles";
+import { getArticleCategoryAnchor, type Article } from "@/data/articles";
 
 type ArticleArchiveProps = { articles?: Article[]; categories?: string[] };
-
-function categoryAnchor(category: string) {
-  return "article-category-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
 
 export function ArticleArchive({ articles = [], categories = [] }: ArticleArchiveProps) {
   return (
@@ -37,7 +33,7 @@ export function ArticleArchive({ articles = [], categories = [] }: ArticleArchiv
                   const group = articles.filter((article) => article.category === category);
                   if (!group.length) return null;
                   return (
-                    <section key={category} id={categoryAnchor(category)} className="scroll-anchor">
+                    <section key={category} id={getArticleCategoryAnchor(category)} className="scroll-anchor">
                       <div className="grid gap-2 border-b border-border py-4 sm:grid-cols-[minmax(0,1fr)_auto]">
                         <p className="type-label text-muted-foreground">{category}</p>
                         <span className="type-caption text-muted-foreground">{String(group.length).padStart(2, "0")} articles</span>
