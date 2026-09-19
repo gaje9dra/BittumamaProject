@@ -504,3 +504,96 @@ Future Research records must be added only to `data/research.ts`. Page component
 ### Phase boundary
 
 Phase 7.3 does not migrate Experts, Articles, Workshops, navigation, metadata, or the complete cross-content relationship system. It does not introduce backend/database/CMS/authentication/payment/search/SEO/deployment work.
+
+
+## Phase 7.4 implementation — canonical Experts
+
+The Phase 7.4 migration keeps `data/expertise.ts` as the single authoritative frontend Expert dataset because it was the project's existing Expert source. No second `data/experts.ts` dataset was created.
+
+### Canonical model
+
+The existing `Expert` model remains focused on fields already supported by the project:
+
+- `id` — stable Expert identifier
+- `name` — canonical display name
+- `slug` — stable URL identifier
+- optional `role`, `discipline`, `shortBio`, `bio`, `image`
+- optional `expertise`, `qualifications`, `researchInterests`
+- optional `serviceIds`, `researchIds`, `articleIds`
+- optional `featured`
+- optional `seo.title` and `seo.description`
+
+No new people, credentials, biographies, qualifications, images, awards or affiliations were added. The existing `experts` collection remains empty.
+
+### Canonical access helpers
+
+`data/expertise.ts` now exposes:
+
+- `getAllExperts()`
+- `getExpertById(id)`
+- `getExpertBySlug(slug)`
+- `getExpertHref(expert)`
+- `getFeaturedExperts()`
+- `getExpertsByDiscipline(discipline)`
+- `getExpertDisciplineAnchor(discipline)`
+- `validateExperts(records)`
+
+Invalid lookups return `undefined`. No helper substitutes another Expert.
+
+### IDs and slugs
+
+Every future Expert must have a stable unique ID, name and URL-safe slug. Module-load validation rejects missing required identity fields, duplicate IDs, duplicate slugs and malformed slugs.
+
+The current dataset is empty, so no existing Expert ID or slug was changed.
+
+### Discipline handling
+
+The available discipline list remains derived from the canonical Expert dataset. Expert directory grouping and discipline anchors use the canonical discipline values rather than maintaining a separate Expert category catalogue.
+
+### Current consumers
+
+The canonical Expert source/access layer now powers:
+
+- `/experts` directory
+- `/experts` discipline index
+- `/experts/[slug]` static params
+- `/experts/[slug]` record lookup
+- Expert detail metadata and canonical URL
+- Expert detail Service relationships
+- Expert detail Research relationships
+
+The visual Experts experience and existing empty state are unchanged.
+
+### Relationships
+
+Existing Expert relationship fields remain ID-based:
+
+- `serviceIds` → resolved through the Phase 7.2 canonical Services source
+- `researchIds` → resolved through the Phase 7.3 canonical Research source
+- `articleIds` remains available for future real Article relationships
+
+No relationship was invented.
+
+The current Article model has an optional `authorSlug` field, but the Article dataset is empty. No article author record is therefore migrated or fabricated in Phase 7.4. The existing structure is preserved as a documented limitation until real Article records require author resolution.
+
+### Images
+
+The existing optional `image` field is preserved. Because there are currently no Expert records, no image paths or profile photos were introduced or changed.
+
+### Empty-state behavior
+
+`experts` remains empty. The Experts directory continues to show its existing intentional empty state rather than fabricated profiles.
+
+### Dynamic route behavior
+
+`/experts/[slug]` resolves through `getExpertBySlug()`. Missing slugs continue to call `notFound()`. Static params are derived from `getAllExperts()`.
+
+No unrelated Expert is used as a fallback.
+
+### Duplicate-definition rule
+
+Future Expert records must be added only to `data/expertise.ts`. Page components, homepage data, Article records, Research records, Service records and related-content components must reference canonical Experts by stable ID/slug rather than duplicating complete person definitions.
+
+### Phase boundary
+
+Phase 7.4 does not migrate Articles or Workshops, build a complete cross-content relationship engine, centralize navigation or metadata, or introduce backend/database/CMS/authentication/payment/search/SEO/deployment work.
