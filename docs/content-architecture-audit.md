@@ -42,13 +42,13 @@ Current service relationships are not explicit. getRelatedServices() infers rela
 
 data/research.ts defines ResearchStatus, ResearchPoint, ResearchMethodology, ResearchSection and ResearchEntry.
 
-ResearchEntry supports id, title, slug, category, shortDescription, summary, scope, topics, sections, methodology, audience, highlights, relatedServiceIds, date, status, type, topic, image, href, featured and tags.
+ResearchEntry supports id, title, slug, category, shortDescription, summary, scope, topics, sections, methodology, audience, highlights, relatedServiceIds, date, status, type, topic, image, featured and tags.
 
 researchEntries is empty.
 
-Research routes and directory components consume this dataset directly. No filler research records are present.
+Phase 7.3 establishes data/research.ts as the single authoritative Research source and exposes the small access helpers needed by current consumers. Research URLs are derived from the canonical slug through getResearchHref(); no per-record href field is maintained.
 
-Research has an explicit relatedServiceIds field, but no explicit article or expert relationship field.
+Research has an explicit relatedServiceIds field for existing Service relationships, but no explicit article or expert relationship field.
 
 getRelatedResearch() currently infers related research using category and shared tags.
 
@@ -418,3 +418,89 @@ Phase 7.2 does not introduce a cross-content relationship engine. Existing servi
 ### Future rule
 
 New service references must resolve by canonical service ID or slug and must not repeat service names, descriptions, categories or URLs in page-local data. Future relationship/content migrations must build on this source rather than create another Services dataset.
+
+
+## Phase 7.3 implementation — canonical Research
+
+The Phase 7.3 migration keeps `data/research.ts` as the single authoritative frontend Research dataset. The existing collection remains empty because the project currently contains no verified Research records.
+
+### Canonical model
+
+The existing Research model was retained and refined only where current consumers require it:
+
+- `id` — stable Research identifier
+- `title` — canonical display title
+- `slug` — stable URL-safe identifier
+- `category`
+- `shortDescription`
+- optional editorial/detail fields already used by the Research experience: `summary`, `scope`, `topics`, `sections`, `methodology`, `audience`, `highlights`, `date`, `status`, `type`, `topic`, `image`, `featured`, and `tags`
+- optional `relatedServiceIds` for existing Research-to-Service references
+
+The former per-record `href` field is not retained. Research URLs are derived from the canonical slug through `getResearchHref()`, keeping the route contract in one place.
+
+No author, publication, findings, statistics, citations, affiliations, SEO object, article relationship, expert relationship, or other fields were added because the current project has no real Research records requiring them.
+
+### Canonical access helpers
+
+`data/research.ts` now exposes the small helpers needed by current consumers:
+
+- `getAllResearch()`
+- `getResearchById(id)`
+- `getResearchBySlug(slug)`
+- `getResearchHref(research)`
+- `getResearchByCategory(category)`
+- `getFeaturedResearch()`
+- `getResearchCategoryAnchor(category)`
+- `getRelatedResearch(research)`
+- `validateResearch(records)`
+
+Invalid ID or slug lookups return `undefined`. No lookup falls back to another Research record.
+
+### IDs and slugs
+
+Every future canonical Research record must use a stable unique ID and stable URL-safe slug. Module-load validation checks for missing ID/title/slug, duplicate IDs, duplicate slugs, and invalid slug syntax.
+
+Because the current Research collection is empty, no existing Research IDs or slugs were changed or invented.
+
+### Categories and order
+
+Research categories continue to derive from the canonical Research dataset. The existing array order remains the canonical order; consumers do not create independent Research record ordering.
+
+No latest-by-date behavior was introduced because the current project has no Research records and no such existing behavior to preserve.
+
+### Current consumers
+
+The canonical Research source/access layer now powers:
+
+- `/research` directory data and category navigation
+- `/research/[slug]` static params, record lookup and canonical metadata URL
+- featured Research rendering
+- related Research rendering
+- Research-to-Service relationship rendering
+- Research detail components through the canonical `ResearchEntry` type
+
+The Research directory, featured component and related Research component no longer maintain or use per-record Research URLs.
+
+### Relationships
+
+Existing Research-to-Service references remain represented by stable Service IDs and are resolved through the canonical Services access layer. No new relationships were invented.
+
+The existing same-category/shared-tag related Research behavior remains unchanged. A complete cross-content relationship engine is not introduced in Phase 7.3.
+
+### Empty-state behavior
+
+`researchEntries` remains empty. The existing Research page therefore retains its intentional empty archive state and does not receive fake records, placeholder studies, invented authors, dates, findings, statistics, or citations.
+
+### Dynamic route behavior
+
+`/research/[slug]` resolves records with `getResearchBySlug()`. Missing records continue to call `notFound()`. Static params are derived from `getAllResearch()`.
+
+No unrelated Research record is used as a fallback.
+
+### Duplicate-definition rule
+
+Future Research records must be added only to `data/research.ts`. Page components, homepage editorial data, filters, related-content components, and dynamic routes must reference canonical Research records by ID/slug or through the Research access helpers rather than defining duplicate Research objects.
+
+### Phase boundary
+
+Phase 7.3 does not migrate Experts, Articles, Workshops, navigation, metadata, or the complete cross-content relationship system. It does not introduce backend/database/CMS/authentication/payment/search/SEO/deployment work.
