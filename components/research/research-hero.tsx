@@ -9,7 +9,7 @@ export function ResearchHero() {
       <Container size="wide" className="py-10 sm:py-14 lg:py-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-7">
-            <p className="type-label text-muted-foreground">Research &amp; Intelligence</p>
+            <p className="type-label text-muted-foreground">Research</p>
             <Heading id="research-title" level={1} className="mt-3 max-w-[20ch]">
               Research work, analysis and knowledge resources.
             </Heading>
