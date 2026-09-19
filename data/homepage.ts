@@ -97,7 +97,7 @@ export const homepageContent = {
       },
       {
         label: "Articles",
-        href: "/insights",
+        href: "/articles",
         description: "Research methods and academic resources.",
       },
     ] satisfies HomepageLink[],
