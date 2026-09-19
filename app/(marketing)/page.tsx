@@ -6,7 +6,6 @@ import { HomeInsights } from "@/components/home/home-insights";
 import { HomeIntelligence } from "@/components/home/home-intelligence";
 import { HomePositioning } from "@/components/home/home-positioning";
 import { HomeProcess } from "@/components/home/home-process";
-import { HomeServices } from "@/components/home/home-services";
 import { HomeTrust } from "@/components/home/home-trust";
 import { HomeEvents } from "@/components/home/home-events";
 import type { Metadata } from "next";
@@ -24,7 +23,6 @@ export default function Home() {
       <HomeHero />
       <HomePositioning />
       <HomeIntelligence />
-      <HomeServices />
       <HomeServiceDiscovery />
       <HomeAudience />
       <HomeProcess />
