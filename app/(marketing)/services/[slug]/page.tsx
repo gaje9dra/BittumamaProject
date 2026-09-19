@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServiceDetailPage } from "@/components/services/service-detail-page";
-import { getServiceBySlug, services } from "@/data/services";
+import { getAllServices, getServiceBySlug } from "@/lib/content";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
+  return getAllServices().map((service) => ({ slug: service.slug }));
 }
 
 export async function generateMetadata({
@@ -22,8 +22,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${service.title} | Bittumama`,
-    description: service.shortDescription,
+    title: service.seo?.title ?? `${service.title} | Bittumama`,
+    description: service.seo?.description ?? service.shortDescription,
     alternates: { canonical: service.href },
   };
 }
