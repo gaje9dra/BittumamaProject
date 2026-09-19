@@ -45,12 +45,20 @@ function resolveByIdOrSlug<T extends { id: string; slug: string }>(
   return getById(reference) ?? getBySlug(reference);
 }
 
-export function getServicesForResearch(research: ResearchEntry): Service[] {\n  return (research.relatedServiceIds ?? [])\n    .map((reference) => resolveByIdOrSlug(reference, getServiceById, getServiceBySlug))\n    .filter((item): item is Service => Boolean(item));\n}\n\nexport function getResearchForService(serviceId: string): ResearchEntry[] {
+export function getServicesForResearch(research: ResearchEntry): Service[] {
+  return (research.relatedServiceIds ?? [])
+    .map((reference) => resolveByIdOrSlug(reference, getServiceById, getServiceBySlug))
+    .filter((item): item is Service => Boolean(item));
+}
+
+export function getResearchForService(serviceId: string): ResearchEntry[] {
   const service = getServiceById(serviceId);
   if (!service) return [];
 
   return getAllResearch().filter((research) =>
-    research.relatedServiceIds?.includes(service.id),
+    research.relatedServiceIds?.some(
+      (reference) => reference === service.id || reference === service.slug,
+    ),
   );
 }
 
@@ -265,4 +273,9 @@ export function assertContentRelationships() {
   }
 
   return issues;
+}
+
+
+if (process.env.NODE_ENV !== "production") {
+  assertContentRelationships();
 }
