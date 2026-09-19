@@ -1546,3 +1546,50 @@ Article titles remain prominent on mobile; metadata remains readable; category n
 
 ### Scope constraints
 Phase 6.9 adds no backend, database, CMS, authentication, payments, admin panel, article editor, AI writing system, advanced search, analytics or newsletter backend. Locked project versions remain unchanged.
+
+## About / Organization Dedicated Experience — Phase 6.10
+
+### Purpose
+The About route is the organization and identity experience. It explains who Bittumama is, what areas it brings together, its factual purpose, how the work is approached, and how the public-facing Services, Research, Experts and Articles experiences relate to the organization.
+
+### Canonical organization data
+`data/about.ts` is the centralized factual source for the About experience and metadata. The content is deliberately limited to information already established elsewhere in the project. No founding date, staff count, clients, countries, partnerships, awards, certifications, affiliations, milestones, testimonials or performance claims are introduced.
+
+### Information architecture
+The production page uses:
+1. Organization introduction
+2. Organizational focus
+3. Purpose
+4. How the organization works
+5. Organization structure / relationship map
+6. People connection only when verified experts exist
+7. Final next-step actions
+
+Sections without legitimate source data are omitted rather than filled with generic corporate copy.
+
+### Organizational focus
+Focus areas describe Bittumama at an organizational level rather than reproducing the Services catalogue. Current factual areas are Research, Academic Support, Analysis, Publication and Research Technology.
+
+### Purpose and approach
+The page uses a concise purpose statement derived from the established project scope. The approach section describes specific working principles already reflected in the product architecture: beginning with the research requirement, keeping methodology and analysis structured, and using research-oriented technology where relevant. Generic corporate values are intentionally avoided.
+
+### Organization relationships
+The relationship map explains the distinct roles of Services, Research, Experts and Articles. It does not duplicate those directories. Each item links to its dedicated experience.
+
+### People
+The people section is data-dependent. Because the canonical experts dataset is currently empty, production About does not invent or display people. When verified experts exist, the page can provide a concise organizational connection to the Experts directory.
+
+### Timeline and credibility
+No timeline or generic trust section is rendered because the project does not contain verified dated milestones or quantified credibility evidence. The organization is represented through its actual scope and information architecture rather than unsupported claims.
+
+### Visual language
+About uses an institutional/editorial composition: concise organization statement, numbered focus index, reading-width purpose statement, structured approach list, relationship map and restrained action area. It deliberately avoids the homepage hero pattern, generic corporate cards, huge centered typography, stock corporate imagery, gradients, glassmorphism and decorative 3D.
+
+### Responsive and accessibility
+The page uses semantic headings and lists, visible focus states, accessible internal links, sufficient contrast, compact mobile sections and existing reduced-motion behavior. Desktop relationship rows collapse into readable mobile blocks without page-level horizontal overflow.
+
+### Development preview
+`/design-system/about` is development-only and renders the same production components. It is unavailable in production and contains no production-only organizational claims.
+
+### Scope
+Phase 6.10 changes only the About experience. No backend, database, CMS, authentication, payments, analytics, organization-management system or other future-phase work is included.
