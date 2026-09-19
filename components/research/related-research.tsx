@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getRelatedResearch, type ResearchEntry } from "@/data/research";
+import { getRelatedResearch, getResearchHref, type ResearchEntry } from "@/data/research";
 
 export function RelatedResearch({ research }: { research: ResearchEntry }) {
   const related = getRelatedResearch(research);
@@ -18,7 +18,7 @@ export function RelatedResearch({ research }: { research: ResearchEntry }) {
           <ol className="border-t border-border lg:col-span-8 lg:col-start-5">
             {related.map((item, index) => (
               <li key={item.id} className="border-b border-border">
-                <Link href={item.href} className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-5 py-6 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:gap-6">
+                <Link href={getResearchHref(item)} className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-5 py-6 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:gap-6">
                   <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                   <div>
                     <Heading level={3} className="max-w-[28ch]">{item.title}</Heading>
