@@ -785,3 +785,66 @@ Future verified Workshop/Event records must be added only to `data/events.ts`. P
 
 Phase 7.6 does not implement the complete cross-content relationship engine, navigation migration, complete metadata framework, PostgreSQL, Prisma, backend, CMS, admin, authentication, payments, advanced search, SEO implementation, performance optimization, security hardening or deployment.
 
+
+
+
+## Phase 7.7 implementation — canonical cross-content relationships
+
+Phase 7.7 introduces a lightweight relationship/access layer at `lib/content/relationships.ts`. The five canonical datasets remain separate:
+
+- Services → `data/services.ts`
+- Research → `data/research.ts`
+- Experts → `data/expertise.ts`
+- Articles → `data/articles.ts`
+- Workshops / Events → `data/events.ts`
+
+No records were merged into a shared mega-dataset and no duplicate full content objects were introduced.
+
+### Reference strategy
+
+Existing relationship conventions are preserved rather than forcing a broad migration:
+
+- Service IDs are used by Research and Expert references.
+- Article Research/Service references can resolve by canonical ID or slug.
+- Article authors resolve by `authorId` or `authorSlug`.
+- Event speakers resolve by `speakerId` or `speakerSlug`.
+- Event Research/Service and related-event references resolve by canonical ID or slug.
+- Expert relationship arrays continue to use canonical IDs.
+
+Resolution is performed outside the raw canonical data modules to avoid circular imports.
+
+### Relationship access layer
+
+The relationship layer provides only the current useful resolvers:
+
+- Service → Research / Articles / Experts
+- Research → Services / Articles / Experts
+- Article → Expert / Research / Services
+- Workshop → Expert / Research / Services
+- Expert → Services / Research / Articles
+
+Reverse relationships are derived where practical instead of requiring duplicate relationship entries in both records.
+
+Invalid references resolve to an omitted result rather than an unrelated fallback.
+
+### Existing UI integration
+
+Only existing related-content UI was migrated:
+
+- Article detail now resolves author, Research and Service relationships through the central relationship layer.
+- Research-to-Service rendering now resolves through the relationship layer.
+- Expert detail now resolves Services, Research and Articles through the relationship layer.
+
+No new large related-content sections were added and no visual redesign was performed.
+
+### Validation
+
+`validateContentRelationships()` checks currently present relationship references for Services, Research, Experts, Articles and Events. In development, the relationship module reports unresolved references without changing production rendering behavior.
+
+The current canonical Research, Expert, Article and Event collections are empty, so no new relationships were fabricated during Phase 7.7. Existing populated Services therefore remain unchanged.
+
+### Architectural rule
+
+Canonical content records contain references, not complete related records. Future relationships must resolve through `lib/content/relationships.ts` or the appropriate canonical accessor. Broken references must never fall back to another record.
+
+Phase 7.7 does not implement the later navigation, site configuration, metadata, backend, database, CMS, admin, authentication, payments, search, SEO, performance, security or deployment work.
