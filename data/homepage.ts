@@ -132,14 +132,7 @@ export const homepageContent = {
     ],
     action: { label: "View Research Services", href: "/research" },
   },
-  services: {
-    eyebrow: "04 / Services",
-    title: "Research Services",
-    description:
-      "Academic support for writing, editing, methodology and research analysis.",
-    items: serviceDirectory,
-    action: { label: "View All Services", href: "/services" },
-  },
+
   audience: {
     eyebrow: "06 / Who we support",
     title: "Support for students and researchers.",
