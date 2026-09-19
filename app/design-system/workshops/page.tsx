@@ -4,12 +4,12 @@ import { EventFeatured } from "@/components/events/event-featured";
 import { EventsCta } from "@/components/events/events-cta";
 import { EventsDiscovery } from "@/components/events/events-discovery";
 import { EventsIntroduction } from "@/components/events/events-introduction";
-import { events, eventCategories, getFeaturedEvents, getUpcomingEvents } from "@/data/events";
+import { eventCategories, getAllEvents, getFeaturedEvents, getUpcomingEvents } from "@/data/events";
 
 export default function WorkshopsDesignPreview() {
   if (process.env.NODE_ENV === "production") notFound();
 
-  const previewEvents = events;
+  const previewEvents = getAllEvents();
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="border-b border-accent bg-surface-muted">
