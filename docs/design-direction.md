@@ -1195,3 +1195,37 @@ The existing editorial grid, typography, dividers, focus styles, tap targets, an
 
 ### Production cleanup
 The unused standalone service overview component was removed after its content was consolidated into the hero. The development service-detail playground now reflects the final page composition and continues to cover optional content and long-content states without being exposed in production.
+
+## Research & Intelligence Directory — Phase 6.1
+
+### Purpose
+The `/research` route is the dedicated Research & Intelligence directory. It provides a distinct editorial knowledge experience while remaining within the existing design system and connecting naturally with Services.
+
+### Information hierarchy
+The current page uses:
+1. restrained Research & Intelligence hero;
+2. optional category index;
+3. centralized research directory;
+4. contextual research-support CTA.
+
+Optional category navigation disappears when there is zero or one category, avoiding unnecessary filtering UI.
+
+### Data architecture
+`data/research.ts` is the canonical research source. The `ResearchEntry` model is intentionally limited to fields useful for the directory and future detail routing: identity, title, slug, category, concise description, optional metadata, route, featured state and tags. No database or CMS is introduced.
+
+The current `researchEntries` collection is empty because no verified research records are available. The production directory therefore displays a concise empty state rather than fabricated publications, findings or statistics.
+
+### Future compatibility
+The data model and `href` convention are compatible with a future `/research/[slug]` route, search, filtering, related research, related articles and SEO metadata. None of those systems are implemented in Phase 6.1.
+
+### Relationship to Services
+Services describe available research and academic support. Research is the separate knowledge/discovery layer. The Research page CTA points to `/contact` for an existing research-support workflow; no new enquiry or submission system is introduced.
+
+### Editorial and responsive direction
+Research uses numbered/indexed rows, typography, dividers, controlled asymmetry and whitespace rather than repetitive cards. The directory remains server-rendered. Category links are simple anchors when multiple real categories exist. Mobile layouts retain metadata hierarchy and avoid horizontal overflow.
+
+### Motion and accessibility
+The page uses existing transition and focus tokens only. No new client-side interaction is required in the empty state. Semantic sections, headings, navigation landmarks and accessible links are used throughout. Existing reduced-motion rules remain authoritative.
+
+### Content rule
+Only verified research content may populate the directory. No authors, findings, datasets, publications, dates, institutions, awards, counts or authority claims are invented.
