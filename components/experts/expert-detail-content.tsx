@@ -2,8 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceBySlug } from "@/data/services";
-import { getResearchBySlug } from "@/data/research";
+import { getServiceById, getServiceHref } from "@/data/services";
+import { getResearchById, getResearchHref } from "@/data/research";
 import type { Expert } from "@/data/expertise";
 
 function LinkedRows({ title, items, resolve }: { title: string; items: string[]; resolve: (id: string) => { title: string; href: string } | undefined }) {
@@ -71,8 +71,8 @@ export function ExpertDetailContent({ expert }: { expert: Expert }) {
           ) : null}
           {expert.bio ? <section className="mt-10 border-t border-border pt-7"><p className="type-label text-muted-foreground">Professional background</p><p className="type-body mt-4 max-w-[66ch] whitespace-pre-line">{expert.bio}</p></section> : null}
           <div className="mt-10">
-            <LinkedRows title="Related services" items={expert.serviceIds ?? []} resolve={(id) => { const item = getServiceBySlug(id); return item ? { title: item.title, href: item.href } : undefined; }} />
-            <LinkedRows title="Related research" items={expert.researchIds ?? []} resolve={(id) => { const item = getResearchBySlug(id); return item ? { title: item.title, href: item.href } : undefined; }} />
+            <LinkedRows title="Related services" items={expert.serviceIds ?? []} resolve={(id) => { const item = getServiceById(id); return item ? { title: item.title, href: getServiceHref(item) } : undefined; }} />
+            <LinkedRows title="Related research" items={expert.researchIds ?? []} resolve={(id) => { const item = getResearchById(id); return item ? { title: item.title, href: getResearchHref(item) } : undefined; }} />
           </div>
         </div>
       </div>
