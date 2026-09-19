@@ -4,6 +4,7 @@ import { ServiceAudience } from "@/components/services/service-audience";
 import { ServiceCta } from "@/components/services/service-cta";
 import { ServiceHero } from "@/components/services/service-hero";
 import { ServiceHighlights } from "@/components/services/service-highlights";
+import { ServiceFAQ } from "@/components/services/service-faq";
 import { ServiceOverview } from "@/components/services/service-overview";
 
 type ServiceDetailPageProps = {
@@ -17,6 +18,7 @@ export function ServiceDetailPage({ service }: ServiceDetailPageProps) {
       <ServiceOverview service={service} />
       <ServiceHighlights service={service} />
       <ServiceAudience service={service} />
+      <ServiceFAQ service={service} />
       <RelatedServices service={service} />
       <ServiceCta service={service} />
     </main>
