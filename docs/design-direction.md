@@ -1681,3 +1681,34 @@ Phase 6.12 is frontend only. No email sending, persistence, database, API endpoi
 
 ### Scope
 Phase 6.12 changes only the Contact/enquiry experience and the service-to-contact context handoff. Locked project versions remain unchanged.
+
+
+## Global Footer & Cross-Page Navigation — Phase 6.13
+
+### Purpose
+The global footer closes the site as a shared navigation and conversion layer without flattening the distinct identity of the internal experiences.
+
+### Information architecture
+The production footer provides:
+- Bittumama identity and concise positioning;
+- primary destination discovery from the existing primary navigation configuration;
+- a direct Contact route for research enquiries;
+- service discovery generated from the canonical data/services.ts dataset and existing service categories;
+- a restrained final brand line.
+
+No legal or social links are rendered because no corresponding verified routes or URLs exist in the project.
+
+### Service architecture
+Service names and routes are never duplicated into a footer-specific dataset. The footer consumes serviceCategories, getServicesByCategory, and each service's canonical href. This keeps /services/[slug] destinations synchronized with the Services system.
+
+### Visual language
+The footer uses the existing deep primary semantic surface, editorial typography, controlled spacing, fine separators, open link lists and a single enquiry action. It avoids generic SaaS columns, gradients, glassmorphism, newsletter blocks, decorative blobs and oversized marketing copy.
+
+### Cross-page relationship
+Footer is rendered once by app/layout.tsx, alongside the existing global Header, so the same navigation layer appears across homepage and dedicated internal routes. Existing page identities and route architectures remain unchanged.
+
+### Accessibility and responsive behavior
+The footer uses a semantic <footer> landmark, navigation heading, semantic lists, meaningful internal link labels, visible focus treatment and touch-sized links. Desktop uses an editorial multi-area composition; mobile collapses naturally to a readable single-column flow without client-side state or horizontal overflow. No additional animation or client component is introduced.
+
+### Scope
+Phase 6.13 is frontend/design only. No database, authentication, CMS, payment, CRM, email backend, API, social integration, legal placeholder page, deployment, or other future-phase system is introduced.
