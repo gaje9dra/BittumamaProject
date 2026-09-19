@@ -60,7 +60,7 @@ export function ResearchDirectory({
                       <ol>
                         {categoryEntries.map((entry, index) => (
                           <li key={entry.id} className="border-b border-border">
-                            <Link href={entry.href} className="group grid gap-4 py-6 sm:grid-cols-[3rem_minmax(0,1fr)_8rem_auto] sm:items-start sm:gap-6">
+                            <Link href={entry.href} className="group grid gap-4 py-6 transition-colors duration-[var(--motion-fast)] hover:bg-surface-muted/60 focus-visible:bg-surface-muted/60 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_8rem_auto] sm:items-start sm:gap-6">
                               <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                               <div>
                                 <Heading level={3} className="max-w-[30ch]">{entry.title}</Heading>
