@@ -32,8 +32,17 @@ export function FaqItem({ question, answer }: FaqItemProps) {
         />
       </button>
 
-      <div id={answerId} hidden={!open} className="pb-5">
-        <p className="type-body-sm max-w-[58ch] text-muted-foreground">{answer}</p>
+      <div
+        id={answerId}
+        aria-hidden={!open}
+        className={cn(
+          "grid transition-[grid-template-rows,opacity] duration-[var(--motion-standard)] ease-[var(--motion-ease-standard)]",
+          open ? "grid-rows-[1fr] pb-5 opacity-100" : "grid-rows-[0fr] opacity-0",
+        )}
+      >
+        <div className="min-h-0 overflow-hidden">
+          <p className="type-body-sm max-w-[58ch] text-muted-foreground">{answer}</p>
+        </div>
       </div>
     </div>
   );
