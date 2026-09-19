@@ -48,18 +48,7 @@ export function ServiceHero({ service }: ServiceHeroProps) {
           </div>
         </div>
 
-        {service.audience && (
-          <dl className="mt-12 grid max-w-[42rem] gap-5 border-t border-border pt-5 sm:grid-cols-2">
-            <div>
-              <dt className="type-caption text-muted-foreground">For</dt>
-              <dd className="type-body-sm mt-1">{service.audience}</dd>
-            </div>
-            <div>
-              <dt className="type-caption text-muted-foreground">Category</dt>
-              <dd className="type-body-sm mt-1">{service.category}</dd>
-            </div>
-          </dl>
-        )}
+
       </Container>
     </section>
   );
