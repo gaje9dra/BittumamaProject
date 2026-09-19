@@ -2,7 +2,11 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { services } from "@/data/services";
+import {
+  getServiceCategoryAnchor,
+  getServicesByCategory,
+  serviceCategories,
+} from "@/data/services";
 
 export function ServicesDirectory() {
   return (
@@ -24,51 +28,61 @@ export function ServicesDirectory() {
           </div>
 
           <div className="lg:col-span-8 lg:col-start-5">
-            <div id="research-academic-support" className="scroll-anchor border-t border-border">
-              <div className="flex items-baseline justify-between gap-6 border-b border-border py-4">
-                <p className="type-label text-muted-foreground">
-                  Research & Academic Support
-                </p>
-                <span className="type-caption text-muted-foreground">
-                  {String(services.length).padStart(2, "0")} services
-                </span>
-              </div>
+            <div className="border-t border-border">
+              {serviceCategories.map((category) => {
+                const categoryServices = getServicesByCategory(category);
 
-              <ol>
-                {services.map((service, index) => (
-                  <li key={service.id} className="border-b border-border">
-                    <Link
-                      href={service.href}
-                      className="group grid gap-5 py-7 transition-colors duration-[var(--motion-fast)] hover:bg-background/70 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(11rem,.45fr)_auto] sm:items-start sm:gap-6 sm:py-8"
-                    >
+                return (
+                  <div
+                    key={category}
+                    id={getServiceCategoryAnchor(category)}
+                    className="scroll-anchor"
+                  >
+                    <div className="flex items-baseline justify-between gap-6 border-b border-border py-4">
+                      <p className="type-label text-muted-foreground">{category}</p>
                       <span className="type-caption text-muted-foreground">
-                        {String(index + 1).padStart(2, "0")}
+                        {String(categoryServices.length).padStart(2, "0")} services
                       </span>
+                    </div>
 
-                      <div>
-                        <Heading level={3} className="max-w-[24ch] transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5">
-                          {service.title}
-                        </Heading>
-                        <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">
-                          {service.shortDescription}
-                        </p>
-                      </div>
+                    <ol>
+                      {categoryServices.map((service, index) => (
+                        <li key={service.id} className="border-b border-border">
+                          <Link
+                            href={service.href}
+                            className="group grid gap-5 py-7 transition-colors duration-[var(--motion-fast)] hover:bg-background/70 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(11rem,.45fr)_auto] sm:items-start sm:gap-6 sm:py-8"
+                          >
+                            <span className="type-caption text-muted-foreground">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
 
-                      {service.audience && (
-                        <div className="sm:border-l sm:border-border sm:pl-6">
-                          <p className="type-caption text-muted-foreground">For</p>
-                          <p className="type-body-sm mt-1">{service.audience}</p>
-                        </div>
-                      )}
+                            <div>
+                              <Heading level={3} className="max-w-[24ch] transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5">
+                                {service.title}
+                              </Heading>
+                              <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">
+                                {service.shortDescription}
+                              </p>
+                            </div>
 
-                      <ArrowUpRight
-                        aria-hidden="true"
-                        className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ol>
+                            {service.audience && (
+                              <div className="sm:border-l sm:border-border sm:pl-6">
+                                <p className="type-caption text-muted-foreground">For</p>
+                                <p className="type-body-sm mt-1">{service.audience}</p>
+                              </div>
+                            )}
+
+                            <ArrowUpRight
+                              aria-hidden="true"
+                              className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                            />
+                          </Link>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
