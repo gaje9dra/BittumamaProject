@@ -22,11 +22,11 @@ export function ServiceCta({ service }: ServiceCtaProps) {
           </div>
           <div className="lg:col-span-4 lg:pb-1">
             <p className="type-body-sm max-w-[40ch] text-primary-100">
-              Tell us what support you need and the context of your research work.
+              Tell us what you need and the context of your research work.
             </p>
             <Button asChild className="group mt-7 bg-background text-foreground hover:bg-surface-muted active:bg-surface-interactive">
               <Link href="/contact">
-                Discuss Your Requirement
+                Discuss This Service
                 <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
             </Button>
