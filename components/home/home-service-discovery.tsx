@@ -2,11 +2,9 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { homepageContent } from "@/data/homepage";
+import { services } from "@/data/services";
 
 export function HomeServiceDiscovery() {
-  const { services } = homepageContent;
-
   return (
     <section
       id="home-service-discovery"
@@ -16,9 +14,7 @@ export function HomeServiceDiscovery() {
       <Container size="wide" className="layout-section">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">
-              05 / Service discovery
-            </p>
+            <p className="type-label text-muted-foreground">05 / Service discovery</p>
             <Heading
               id="home-service-discovery-title"
               level={2}
@@ -30,7 +26,7 @@ export function HomeServiceDiscovery() {
 
           <div className="lg:col-span-8 lg:col-start-5">
             <div className="border-t border-border">
-              {services.items.map((service, index) => (
+              {services.map((service, index) => (
                 <Link
                   key={service.id}
                   href={service.href}
@@ -57,10 +53,10 @@ export function HomeServiceDiscovery() {
             </div>
 
             <Link
-              href={services.action.href}
+              href="/services"
               className="group mt-7 inline-flex min-h-11 items-center gap-2 type-button text-primary underline decoration-primary/30 underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3"
             >
-              {services.action.label}
+              View All Services
               <ArrowUpRight
                 aria-hidden="true"
                 className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
