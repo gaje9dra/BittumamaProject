@@ -1,11 +1,7 @@
 import Link from "next/link";
-import { expertDisciplines as canonicalDisciplines } from "@/data/expertise";
+import { getExpertDisciplineAnchor, expertDisciplines as canonicalDisciplines } from "@/data/expertise";
 
 type ExpertiseIndexProps = { disciplines?: string[] };
-
-function disciplineAnchor(discipline: string) {
-  return "expert-discipline-" + discipline.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
 
 export function ExpertiseIndex({ disciplines = canonicalDisciplines }: ExpertiseIndexProps) {
   if (!disciplines.length) return null;
@@ -27,7 +23,7 @@ export function ExpertiseIndex({ disciplines = canonicalDisciplines }: Expertise
             </li>
             {disciplines.map((discipline, index) => (
               <li key={discipline} className="border-b border-border py-3 pr-5">
-                <Link href={"#" + disciplineAnchor(discipline)} className="group flex min-h-11 items-center gap-4 focus-visible:outline-2 focus-visible:outline-offset-2">
+                <Link href={"#" + getExpertDisciplineAnchor(discipline)} className="group flex min-h-11 items-center gap-4 focus-visible:outline-2 focus-visible:outline-offset-2">
                   <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                   <span className="type-body-sm underline decoration-border underline-offset-4 group-hover:text-primary group-hover:decoration-primary">{discipline}</span>
                 </Link>
