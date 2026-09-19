@@ -14,7 +14,7 @@ export function HomeIntelligence() {
       aria-labelledby="home-intelligence-title"
       className="scroll-anchor bg-primary text-primary-foreground"
     >
-      <Container size="wide" className="layout-section-xl">
+      <Container size="wide" className="layout-section-lg">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-5">
             <p className="type-label text-primary-foreground/70">{intelligence.eyebrow}</p>
