@@ -1472,3 +1472,33 @@ The development-only Research preview uses isolated fixture entries passed into 
 
 ### Content accuracy and scope
 Production research content remains empty because no verified research records have been supplied. No authors, findings, statistics, publication counts, affiliations, dates, awards, partnerships or credentials are invented. Phase 6.7 adds no backend, database, CMS, authentication, payments, admin panel, AI assistant, advanced search, analytics or research submission system.
+
+
+## Experts / People Dedicated Experience Rebuild — Phase 6.8
+
+### Page purpose
+The Experts route is the dedicated people-and-expertise experience. It answers who has relevant expertise, what each verified expert specializes in, and where meaningful service or research relationships exist. Services remains the engagement catalogue and Research remains the knowledge hub.
+
+### Canonical expert data
+The canonical expert dataset is the single source of truth for expert identity, role, discipline, concise biography, expertise, qualifications, research interests, and explicit service/research/article relationships. The production expert collection is currently empty because no verified expert information is available in the project. No names, credentials, universities, publications, awards, experience claims or professional relationships are fabricated.
+
+### People discovery
+The production page uses a compact people-focused introduction, a conditional discipline index, an indexed expert directory, and a research-enquiry CTA. The discipline index appears only when verified expert disciplines exist. The directory groups real experts by canonical discipline and keeps names and expertise metadata visually dominant.
+
+### Expert profiles
+The /experts/[slug] route resolves only from the canonical expert dataset and uses Next.js not-found handling for unknown slugs. Profile sections render only when corresponding verified data exists. Images are optional and are never generated as placeholders. Related services and research are resolved through canonical service/research data from explicit IDs; article relationships are reserved for future verified article data.
+
+### Visual identity
+Experts uses a human, professional, editorial people directory rather than corporate team cards. Indexed rows, name-led typography, discipline metadata, subtle rules and restrained image treatment establish hierarchy. No circular avatar grids, stock portraits, fake headshots, gradients, glassmorphism, decorative 3D or excessive shadows are used.
+
+### Homepage relationship
+The homepage Experts section remains a concise preview. It continues to show a verified-profile empty state while the canonical expert dataset is empty and links to /experts. The dedicated Experts route owns full people discovery and profile architecture.
+
+### Responsive and accessibility
+Names, disciplines and profile links remain immediately scannable on mobile. Directory rows collapse without horizontal page overflow. Semantic lists, headings, accessible links, visible focus states, meaningful image alt text and the existing reduced-motion system are used. No client-side filtering is added because the verified catalogue is currently empty.
+
+### Development preview
+The development-only Experts preview uses isolated fixture profiles to inspect the introduction, discipline index, grouped directory, profile hierarchy, related service treatment, focus states and responsive composition. Preview people never enter the production expert dataset.
+
+### Scope constraints
+Phase 6.8 adds no backend, database, CMS, authentication, payments, booking, admin, AI assistant, advanced search, analytics or future-phase systems. Locked project versions remain unchanged.
