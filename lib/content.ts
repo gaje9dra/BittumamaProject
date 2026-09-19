@@ -73,8 +73,6 @@ export const getRelatedArticles = (article: Article) => getArticlesByIds(article
 export const getExpertServices = (expert: Expert) => getServicesByIds(expert.serviceIds ?? []);
 export const getExpertResearch = (expert: Expert) => getResearchByIds(expert.researchIds ?? []);
 export const getExpertArticles = (expert: Expert) => getArticlesByIds(expert.articleIds ?? []);
-export const getArticleAuthor = (article: Article) =>
-  article.authorSlug ? getExpertBySlug(article.authorSlug) : undefined;
 export const getEventRelatedWorkshops = (event: Event) => getWorkshopsByIds(event.relatedEventIds ?? []);
 
 export { articleCategories, eventCategories, expertDisciplines, researchCategories, serviceCategories };
