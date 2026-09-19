@@ -1073,3 +1073,23 @@ Service copy is specific and concise. No pricing, delivery guarantees, credentia
 
 ### Future compatibility
 The directory is a Server Component with no client-side filtering, database, CMS, authentication, payments, or backend. `data/services.ts` is the reusable source for the directory, homepage service references, navigation, future detail pages, and future search/filtering.
+
+## Services Discovery & UX Refinement — Phase 5.2
+
+### Discovery model
+The current directory contains four services under one canonical category, **Research & Academic Support**. Interactive filtering is intentionally not used because the current service volume and single-category taxonomy do not justify client-side filter controls. The directory instead uses semantic category grouping and remains ready to expose a category index when additional approved categories exist.
+
+### Category behavior
+Categories are derived from `data/services.ts`; no category names are duplicated in filter or presentation data. When more than one category exists, `ServicesCategoryIndex` renders lightweight anchor links to canonical category sections. The index uses real links, sticky-header-aware `scroll-anchor` targets, keyboard focus, and a horizontally scrollable mobile treatment without page-level overflow.
+
+### Service ordering and hierarchy
+Services preserve the approved Phase 5.1 order. Each row uses a numbered index, service name, concise description, optional audience metadata, and a direct `/services/[slug]` destination. No service is artificially featured, ranked, or assigned unsupported metadata.
+
+### Interaction and accessibility
+Service rows retain restrained hover, focus, and arrow feedback. Category navigation uses semantic links rather than JavaScript filters. Essential content does not depend on hover or animation, focus remains visible, and reduced-motion behavior is inherited from the global motion system.
+
+### Data architecture
+`data/services.ts` remains the single source for service records and now derives canonical category values and category anchors. Homepage service references continue to consume the same records. The Services page and future service-detail routes can reuse this source without duplicating service content.
+
+### Responsive behavior
+The current small service set remains compact on desktop, tablet, and mobile. If additional categories are approved later, the category index will remain lightweight on desktop and become a practical horizontal index on mobile. No filter-heavy or dashboard-style UI is introduced.
