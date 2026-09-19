@@ -6,7 +6,6 @@ import {
   getAllResearch,
   getResearchCategoryAnchor,
   getResearchHref,
-  getResearchHref,
   researchCategories as canonicalCategories,
   type ResearchEntry,
 } from "@/data/research";
