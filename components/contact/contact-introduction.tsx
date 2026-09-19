@@ -4,7 +4,7 @@ import { Heading } from "@/components/ui/heading";
 export function ContactIntroduction() {
   return (
     <section className="border-b border-border">
-      <Container size="default" className="py-10 sm:py-14">
+      <Container size="default" className="py-10 sm:py-14 lg:py-16">
         <div className="max-w-3xl">
           <p className="type-label text-primary">Contact / Enquiry</p>
           <Heading level={1} className="mt-3 max-w-[22ch]">
