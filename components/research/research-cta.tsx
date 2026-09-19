@@ -9,12 +9,12 @@ export function ResearchCta() {
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
           <div>
-            <p className="type-label text-muted-foreground">Research enquiries</p>
-            <Heading id="research-cta-title" level={2} className="mt-4 max-w-[22ch]">
-              Have a research question?
+            <p className="type-label text-muted-foreground">Research enquiry</p>
+            <Heading id="research-cta-title" level={2} className="mt-3 max-w-[24ch]">
+              Discuss a research requirement.
             </Heading>
-            <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">
-              Contact Bittumama for a research enquiry or to discuss the information you need.
+            <p className="type-body-sm mt-3 max-w-[50ch] text-muted-foreground">
+              Use the contact route when you need to discuss a research question or understand the support relevant to your work.
             </p>
           </div>
           <Link href="/contact" className="group inline-flex min-h-11 items-center gap-2 type-button text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3">
