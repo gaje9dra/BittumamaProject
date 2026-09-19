@@ -1,5 +1,6 @@
 import { services as serviceDirectory } from "@/data/services";
 import { experts as expertDirectory } from "@/data/expertise";
+import { events as eventDirectory } from "@/data/events";
 
 export type HomepageLink = {
   label: string;
@@ -59,7 +60,14 @@ export type HomepageExpert = {
   href: string;
 };
 
-export const homepageEvents: HomepageEvent[] = [];
+export const homepageEvents: HomepageEvent[] = eventDirectory.map((event) => ({
+  id: event.id, title: event.title, slug: event.slug, date: event.date, endDate: event.endDate,
+  time: event.time, category: event.category, location: event.location, format: event.format,
+  shortDescription: event.shortDescription, registrationLabel: event.registrationLabel,
+  href: "/workshops/" + event.slug,
+  status: event.registrationStatus === "Completed" ? "Completed" : event.registrationStatus,
+  featured: event.featured,
+}));
 export const homepageArticles: HomepageArticle[] = [];
 
 
