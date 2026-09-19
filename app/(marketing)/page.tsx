@@ -1,7 +1,6 @@
 import { HomeAbout } from "@/components/home/home-about";
 import { HomeAudience } from "@/components/home/home-audience";
 import { HomeCapabilities } from "@/components/home/home-capabilities";
-import { HomeCta } from "@/components/home/home-cta";
 import { HomeExpertise } from "@/components/home/home-expertise";
 import { HomeHero } from "@/components/home/home-hero";
 import { HomeInsights } from "@/components/home/home-insights";
@@ -36,7 +35,6 @@ export default function Home() {
       <HomeEvents />
       <HomeInsights />
       <HomeAbout />
-      <HomeCta />
     </main>
   );
 }
