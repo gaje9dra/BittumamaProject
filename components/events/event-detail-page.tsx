@@ -37,7 +37,7 @@ export function EventDetailPage({ event }: { event?: Event }) {
           <Link href="/workshops" className="type-caption text-muted-foreground underline underline-offset-4 hover:text-foreground">Workshops &amp; Events</Link>
           <p className="type-label mt-8 text-primary">{event.category}</p>
           <h1 className="type-h1 mt-2 max-w-[22ch]">{event.title}</h1>
-          <p className="type-body-large mt-5 max-w-3xl text-muted-foreground">{event.shortDescription}</p>
+          <p className="type-body-lg mt-5 max-w-3xl text-muted-foreground">{event.shortDescription}</p>
           <div className="mt-8"><EventFacts event={event} /></div>
           {(event.registrationHref && event.registrationLabel) || event.registrationStatus ? (
             <div className="mt-7 flex flex-wrap items-center gap-3">
