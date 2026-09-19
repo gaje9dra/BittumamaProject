@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceCategoryAnchor, getServicesByCategory, serviceCategories } from "@/data/services";
+import { getServiceCategoryAnchor, getServiceHref, getServicesByCategory, serviceCategories } from "@/data/services";
 
 export function ServicesDirectory() {
   return (
@@ -33,7 +33,7 @@ export function ServicesDirectory() {
                   {categoryServices.map((service, index) => (
                     <li key={service.id} className="border-b border-border">
                       <Link
-                        href={service.href}
+                        href={getServiceHref(service)}
                         className="group grid gap-5 px-0 py-6 transition-colors duration-[var(--motion-fast)] hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1.25fr)_minmax(12rem,.7fr)_minmax(9rem,.55fr)_auto] sm:items-start sm:gap-6 sm:px-5"
                       >
                         <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
