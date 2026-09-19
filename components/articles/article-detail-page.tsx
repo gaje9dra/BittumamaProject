@@ -3,8 +3,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceBySlug } from "@/data/services";
-import { getResearchBySlug } from "@/data/research";
+import { getServiceBySlug, getServiceHref } from "@/data/services";
+import { getResearchBySlug, getResearchHref } from "@/data/research";
 import { getRelatedArticles, type Article } from "@/data/articles";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
@@ -111,8 +111,8 @@ export function ArticleDetailPage({ article }: { article: Article }) {
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
               <div className="lg:col-span-8 lg:col-start-3 space-y-10">
                 <RelatedList title="Related articles" items={relatedArticles.map((item) => ({ title: item.title, href: "/articles/" + item.slug, description: item.excerpt }))} />
-                <RelatedList title="Related research" items={relatedResearch.map((item) => ({ title: item.title, href: item.href, description: item.summary ?? item.shortDescription }))} />
-                <RelatedList title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: item.href, description: item.shortDescription }))} />
+                <RelatedList title="Related research" items={relatedResearch.map((item) => ({ title: item.title, href: getResearchHref(item), description: item.summary ?? item.shortDescription }))} />
+                <RelatedList title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: getServiceHref(item), description: item.shortDescription }))} />
               </div>
             </div>
           </Container>
