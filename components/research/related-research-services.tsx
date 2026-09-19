@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceBySlug } from "@/data/services";
+import { getServiceBySlug, getServiceHref } from "@/data/services";
 import type { ResearchEntry } from "@/data/research";
 
 export function RelatedResearchServices({ research }: { research: ResearchEntry }) {
@@ -26,7 +26,7 @@ export function RelatedResearchServices({ research }: { research: ResearchEntry 
           <ol className="border-t border-border lg:col-span-8 lg:col-start-5">
             {related.map((service, index) => (
               <li key={service.id} className="border-b border-border">
-                <Link href={service.href} className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-5 py-6 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:gap-6">
+                <Link href={getServiceHref(service)} className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-5 py-6 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:gap-6">
                   <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                   <div>
                     <Heading level={3} className="max-w-[28ch]">{service.title}</Heading>
