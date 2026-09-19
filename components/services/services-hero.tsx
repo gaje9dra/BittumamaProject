@@ -4,7 +4,7 @@ import { Heading } from "@/components/ui/heading";
 export function ServicesHero() {
   return (
     <section aria-labelledby="services-page-title" className="border-b border-border bg-background">
-      <Container size="wide" className="py-8 sm:py-10 lg:py-12">
+      <Container size="wide" className="py-10 sm:py-14 lg:py-16">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
             <p className="type-label text-muted-foreground">Services</p>
