@@ -20,14 +20,12 @@ export type Article = {
   image?: string;
   featured?: boolean;
   tags?: string[];
-  relatedArticleIds?: string[];
-  relatedResearchIds?: string[];
-  relatedServiceIds?: string[];
-  relatedExpertIds?: string[];
+  relatedArticles?: string[];
+  relatedResearch?: string[];
+  relatedServices?: string[];
   seo?: {
     title?: string;
     description?: string;
-    image?: string;
   };
 };
 
@@ -50,8 +48,16 @@ export function getFeaturedArticles() {
 }
 
 export function getRelatedArticles(article: Article) {
-  const relatedIds = new Set(article.relatedArticleIds ?? []);
+  if (article.relatedArticles?.length) {
+    return article.relatedArticles
+      .map((slug) => getArticleBySlug(slug))
+      .filter((item): item is Article => Boolean(item));
+  }
+
   return articles.filter(
-    (candidate) => candidate.id !== article.id && relatedIds.has(candidate.id),
+    (candidate) =>
+      candidate.id !== article.id &&
+      candidate.category === article.category &&
+      Boolean(article.tags?.some((tag) => candidate.tags?.includes(tag))),
   );
 }
