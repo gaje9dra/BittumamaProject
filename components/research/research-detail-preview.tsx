@@ -14,7 +14,7 @@ import {
   ResearchContents,
 } from "@/components/research/research-detail-content";
 import { ResearchDetailCta } from "@/components/research/research-detail-cta";
-import type { ResearchEntry } from "@/data/research";
+import { getResearchHref, type ResearchEntry } from "@/data/research";
 
 const previewResearch: ResearchEntry = {
   id: "development-preview",
@@ -44,7 +44,6 @@ const previewResearch: ResearchEntry = {
   relatedServiceIds: ["research-paper", "data-analysis"],
   date: "Development reference",
   status: "Published",
-  href: "/research/development-preview",
   tags: ["research-detail-preview"],
   sections: [
     {
@@ -69,7 +68,6 @@ const previewRelated: ResearchEntry[] = [
     slug: "development-related",
     title: "Development related-item preview",
     shortDescription: "Development-only related research row.",
-    href: "/research/development-related",
     tags: ["research-detail-preview"],
   },
 ];
@@ -99,7 +97,7 @@ export default function ResearchDetailPreview() {
             <ol className="border-t border-border lg:col-span-8 lg:col-start-5">
               {previewRelated.map((item) => (
                 <li key={item.id} className="border-b border-border">
-                  <Link href={item.href} className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-5 py-6 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:gap-6">
+                  <Link href={getResearchHref(item)} className="group grid grid-cols-[3rem_minmax(0,1fr)_auto] gap-5 py-6 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:gap-6">
                     <span className="type-caption text-muted-foreground">01</span>
                     <div>
                       <Heading level={3}>{item.title}</Heading>
