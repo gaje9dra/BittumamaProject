@@ -3,7 +3,9 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getRelatedArticles, getResearchByIds, getServicesByIds, type Article } from "@/lib/content";
+import { getServiceBySlug } from "@/data/services";
+import { getResearchBySlug } from "@/data/research";
+import { getRelatedArticles, type Article } from "@/data/articles";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
   if (!items.length) return null;
@@ -30,8 +32,12 @@ function RelatedList({ title, items }: { title: string; items: { title: string; 
 
 export function ArticleDetailPage({ article }: { article: Article }) {
   const relatedArticles = getRelatedArticles(article);
-  const relatedResearch = getResearchByIds(article.relatedResearchIds ?? []);
-  const relatedServices = getServicesByIds(article.relatedServiceIds ?? []);
+  const relatedResearch = (article.relatedResearch ?? [])
+    .map(getResearchBySlug)
+    .filter((item): item is NonNullable<ReturnType<typeof getResearchBySlug>> => Boolean(item));
+  const relatedServices = (article.relatedServices ?? [])
+    .map(getServiceBySlug)
+    .filter((item): item is NonNullable<ReturnType<typeof getServiceBySlug>> => Boolean(item));
 
   const author = article.author;
 
