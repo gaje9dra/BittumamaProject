@@ -19,10 +19,7 @@ const displayFont = Literata({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = {
-  title: site.name + " — Research, Intelligence & Expertise",
-  description: site.description,
-};
+export const metadata: Metadata = site.defaultSeo;
 
 export default function RootLayout({
   children,
