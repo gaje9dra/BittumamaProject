@@ -60,8 +60,8 @@ export const homepageContent = {
         description: "Support for researchers and students working on papers and data analysis.",
         services: ["research-paper", "data-analysis"]
           .map((id) => getServiceById(id))
-          .filter((service) => Boolean(service))
-          .map((service) => ({ label: service!.title, href: getServiceHref(service!) })),
+          .filter((service): service is Service => Boolean(service))
+          .map((service) => ({ label: service.title, href: getServiceHref(service) })),
       },
     ],
   },
