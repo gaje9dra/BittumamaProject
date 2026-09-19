@@ -10,8 +10,7 @@ export const metadata: Metadata = {
   description: contactData.seo.description,
 };
 
-export default async function ContactPage({ searchParams }: { searchParams: Promise<{ service?: string }> }) {
-  const { service } = await searchParams;
+export default function ContactPage() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
