@@ -1,7 +1,10 @@
-import { about } from "@/data/about";
-
 export const site = {
-  name: about.name,
-  description: about.description,
-  defaultSeo: about.seo,
+  name: "Bittumama",
+  description:
+    "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
+  defaultSeo: {
+    title: "Bittumama — Research, Intelligence & Expertise",
+    description:
+      "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
+  },
 } as const;
