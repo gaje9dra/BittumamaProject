@@ -29,8 +29,15 @@ function LinkedRows({ title, items, resolve }: { title: string; items: string[];
 }
 
 export function ExpertDetailContent({ expert }: { expert: Expert }) {
-  const services = expert.serviceIds?.map(getServiceBySlug).filter((item): item is NonNullable<ReturnType<typeof getServiceBySlug>> => Boolean(item)) ?? [];
-  const research = expert.researchIds?.map(getResearchBySlug).filter((item): item is NonNullable<ReturnType<typeof getResearchBySlug>> => Boolean(item)) ?? [];
+  const hasContent =
+    Boolean(expert.expertise?.length) ||
+    Boolean(expert.qualifications?.length) ||
+    Boolean(expert.researchInterests?.length) ||
+    Boolean(expert.bio) ||
+    Boolean(expert.serviceIds?.length) ||
+    Boolean(expert.researchIds?.length);
+
+  if (!hasContent) return null;
 
   return (
     <Container size="wide" className="layout-section-lg">
