@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ResearchDetailPage } from "@/components/research/research-detail-page";
-import { getResearchBySlug, researchEntries } from "@/data/research";
+import { getAllResearch, getResearchBySlug, getResearchHref } from "@/data/research";
 
 type ResearchDetailRouteProps = {
   params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams() {
-  return researchEntries.map((research) => ({ slug: research.slug }));
+  return getAllResearch().map((research) => ({ slug: research.slug }));
 }
 
 export async function generateMetadata({ params }: ResearchDetailRouteProps): Promise<Metadata> {
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: ResearchDetailRouteProps): Pr
     title: research.title + " | Research | Bittumama",
     description: research.shortDescription,
     alternates: {
-      canonical: research.href,
+      canonical: getResearchHref(research),
     },
   };
 }
