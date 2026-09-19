@@ -14,7 +14,7 @@ export function HomeServiceDiscovery() {
       <Container size="wide" className="layout-section">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">05 / Service discovery</p>
+            <p className="type-label text-muted-foreground">Service discovery</p>
             <Heading
               id="home-service-discovery-title"
               level={2}
@@ -26,7 +26,7 @@ export function HomeServiceDiscovery() {
 
           <div className="lg:col-span-8 lg:col-start-5">
             <div className="border-t border-border">
-              {services.map((service, index) => (
+              {services.slice(0, 4).map((service, index) => (
                 <Link
                   key={service.id}
                   href={service.href}
