@@ -5,6 +5,7 @@ import { Heading } from "@/components/ui/heading";
 import {
   getAllResearch,
   getResearchCategoryAnchor,
+  getResearchHref,
   researchCategories as canonicalCategories,
   type ResearchEntry,
 } from "@/data/research";
