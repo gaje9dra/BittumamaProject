@@ -7,16 +7,13 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { services } from "@/data/services";
 
-const needs = [
-  "Thesis or dissertation support",
-  "Methodology support",
-  "Literature review support",
-  "Statistical or data analysis",
-  "Publication support",
-  "Ongoing research guidance",
-  "Broader research support",
-  "AI-assisted research capabilities",
-];
+const needs = Array.from(
+  new Set(
+    services
+      .map((service) => service.need)
+      .filter((need): need is string => Boolean(need)),
+  ),
+);
 
 export function ServiceFinder() {
   const [selectedNeed, setSelectedNeed] = useState(needs[0]);
