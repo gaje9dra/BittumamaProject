@@ -5,7 +5,7 @@ import { Text } from "@/components/ui/text";
 export function EventsIntroduction() {
   return (
     <section className="border-b border-border">
-      <Container size="default" className="py-12 sm:py-16">
+      <Container size="default" className="py-10 sm:py-14 lg:py-16">
         <div className="max-w-3xl">
           <p className="type-label text-primary">Workshops &amp; Events</p>
           <Heading level={1} className="mt-3 max-w-[24ch]">
