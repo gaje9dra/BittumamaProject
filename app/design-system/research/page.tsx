@@ -17,7 +17,7 @@ export default function ResearchPlaygroundPage() {
             Research &amp; Intelligence
           </Heading>
           <p className="type-body-sm mt-3 max-w-[56ch] text-muted-foreground">
-            Preview of the research directory foundation, category navigation and empty-state behavior.
+            Preview of the research directory, category navigation and empty-state behavior using the canonical research data.
           </p>
         </Container>
       </section>
