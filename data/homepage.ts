@@ -290,11 +290,5 @@ export const homepageContent = {
       { label: "Research Guide", meta: "Data Analysis", href: "/insights" },
     ],
   },
-  cta: {
-    eyebrow: "14 / Contact",
-    title: "Discuss Your Research Requirement",
-    description:
-      "Tell us about your thesis, dissertation, research paper or data analysis requirement.",
-    action: { label: "Request Research Support", href: "/contact" },
-  },
+
 } as const;
