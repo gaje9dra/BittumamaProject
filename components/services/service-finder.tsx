@@ -5,7 +5,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getAllServices } from "@/data/services";
+import { getAllServices, getServiceHref } from "@/data/services";
 
 const needs = Array.from(
   new Set(
@@ -69,7 +69,7 @@ export function ServiceFinder() {
                   {matches.map((service) => (
                     <Link
                       key={service.id}
-                      href={service.href}
+                      href={getServiceHref(service)}
                       className="group flex min-h-11 items-center justify-between gap-5"
                     >
                       <span>
