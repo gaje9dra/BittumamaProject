@@ -34,7 +34,7 @@ export function EventDetailPage({ event }: { event?: Event }) {
     <main className="min-h-screen bg-background text-foreground">
       <section className="border-b border-border">
         <Container size="standard" className="py-12 sm:py-16">
-          <Link href="/workshops" className="type-caption text-muted-foreground underline underline-offset-4 hover:text-foreground">Workshops &amp; Events</Link>
+          <Link href="/workshops" className="type-caption text-muted-foreground underline decoration-border underline-offset-4 transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2">Workshops &amp; Events</Link>
           <p className="type-label mt-8 text-primary">{event.category}</p>
           <h1 className="type-h1 mt-2 max-w-[22ch]">{event.title}</h1>
           <p className="type-body-lg mt-5 max-w-3xl text-muted-foreground">{event.shortDescription}</p>
@@ -42,7 +42,7 @@ export function EventDetailPage({ event }: { event?: Event }) {
           {(event.registrationHref && event.registrationLabel) || event.registrationStatus ? (
             <div className="mt-7 flex flex-wrap items-center gap-3">
               {event.registrationHref && event.registrationLabel ? (
-                <a href={event.registrationHref} className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] bg-primary px-5 type-button text-primary-foreground hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3">{event.registrationLabel}</a>
+                <a href={event.registrationHref} className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] bg-primary px-5 type-button text-primary-foreground transition-[background-color,transform] duration-[var(--motion-fast)] hover:bg-primary-700 active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-3">{event.registrationLabel}</a>
               ) : event.registrationStatus ? (
                 <span className="type-button rounded-[var(--radius-md)] border border-border px-5 py-3 text-muted-foreground">{event.registrationStatus}</span>
               ) : null}
@@ -87,7 +87,7 @@ export function EventDetailPage({ event }: { event?: Event }) {
             <h2 className="type-h3">Related Events</h2>
             <div className="mt-6 divide-y divide-border border-y border-border">
               {related.map((item) => (
-                <Link key={item.id} href={"/workshops/" + item.slug} className="flex min-h-16 items-center justify-between gap-5 py-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
+                <Link key={item.id} href={"/workshops/" + item.slug} className="group flex min-h-16 items-center justify-between gap-5 py-4 text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
                   <span><span className="type-label block text-muted-foreground">{item.date}</span><span className="type-h4 mt-1 block">{item.title}</span></span>
                   <span className="type-button shrink-0">View Event</span>
                 </Link>
@@ -104,7 +104,7 @@ export function EventDetailPage({ event }: { event?: Event }) {
               <p className="type-label text-muted-foreground">Workshops &amp; Events</p>
               <h2 className="type-h3 mt-2">Explore upcoming events.</h2>
             </div>
-            <Link href="/workshops" className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-primary bg-primary px-5 type-button text-primary-foreground hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3">Explore Upcoming Events</Link>
+            <Link href="/workshops" className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-primary bg-primary px-5 type-button text-primary-foreground transition-[background-color,transform] duration-[var(--motion-fast)] hover:bg-primary-700 active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-3">Explore Upcoming Events</Link>
           </div>
         </Container>
       </section>
