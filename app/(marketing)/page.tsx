@@ -5,12 +5,9 @@ import { HomePositioning } from "@/components/home/home-positioning";
 import { HomeProcess } from "@/components/home/home-process";
 import { HomeServiceDiscovery } from "@/components/home/home-service-discovery";
 import type { Metadata } from "next";
+import { site } from "@/data/site";
 
-export const metadata: Metadata = {
-  title: "Bittumama — Research, Intelligence & Expertise",
-  description:
-    "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
-};
+export const metadata: Metadata = site.defaultSeo;
 
 export default function Home() {
   return (
