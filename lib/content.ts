@@ -8,6 +8,8 @@ import {
   events,
   eventCategories,
   getEventBySlug as getCanonicalEventBySlug,
+  getFeaturedEvents,
+  getUpcomingEvents,
   type Event,
 } from "@/data/events";
 import {
@@ -53,13 +55,8 @@ export const getLatestArticles = (limit?: number) => {
 
 export const getAllWorkshops = () => events;
 export const getWorkshopBySlug = (slug: string) => getCanonicalEventBySlug(slug);
-export const getFeaturedWorkshops = () => events.filter((event) => event.featured);
-export const getUpcomingWorkshops = () => {
-  const today = new Date().toISOString().slice(0, 10);
-  return events
-    .filter((event) => event.registrationStatus !== "Completed" && event.date >= today)
-    .sort((a, b) => a.date.localeCompare(b.date));
-};
+export const getFeaturedWorkshops = () => getFeaturedEvents();
+export const getUpcomingWorkshops = () => getUpcomingEvents();
 
 export const getServicesByIds = (ids: readonly string[]) => ids.map((id) => services.find((service) => service.id === id)).filter((service): service is Service => Boolean(service));
 export const getResearchByIds = (ids: readonly string[]) => ids.map((id) => researchEntries.find((entry) => entry.id === id)).filter((entry): entry is ResearchEntry => Boolean(entry));
