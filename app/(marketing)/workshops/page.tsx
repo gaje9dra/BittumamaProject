@@ -21,7 +21,7 @@ export default function WorkshopsPage() {
       <EventFeatured event={featured} />
       <EventCategories categories={eventCategories} />
       <EventsDiscovery events={upcoming} />
-      <EventsCta />
+      {upcoming.length > 0 && <EventsCta />}
     </main>
   );
 }
