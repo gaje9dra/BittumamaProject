@@ -344,7 +344,7 @@ The audit environment could not run a local Node installation or dev server, so 
 
 ## Stop condition
 
-Stop at Phase 7.1. Do not begin Phase 7.2, backend/database work, PostgreSQL, Prisma, authentication, admin, CMS, SEO refactoring or performance work from this document alone.
+Phase 7.1 concluded with the audit above. Phase 7.2 is documented separately below; no later Phase 7 work is implied.
 
 
 ## Phase 7.2 implementation — canonical Services
