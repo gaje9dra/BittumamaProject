@@ -47,8 +47,6 @@ export function ServiceHero({ service }: ServiceHeroProps) {
             </Button>
           </div>
         </div>
-
-
       </Container>
     </section>
   );
