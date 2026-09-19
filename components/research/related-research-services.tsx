@@ -2,15 +2,15 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceBySlug, getServiceHref } from "@/data/services";
+import { getServiceById, getServiceHref } from "@/data/services";
 import type { ResearchEntry } from "@/data/research";
 
 export function RelatedResearchServices({ research }: { research: ResearchEntry }) {
   if (!research.relatedServiceIds?.length) return null;
 
   const related = research.relatedServiceIds
-    .map((slug) => getServiceBySlug(slug))
-    .filter((service): service is NonNullable<ReturnType<typeof getServiceBySlug>> => Boolean(service));
+    .map((id) => getServiceById(id))
+    .filter((service): service is NonNullable<ReturnType<typeof getServiceById>> => Boolean(service));
 
   if (!related.length) return null;
 
