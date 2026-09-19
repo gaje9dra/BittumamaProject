@@ -3,7 +3,6 @@ import { IBM_Plex_Sans, Literata } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { site } from "@/data/site";
 
 const bodyFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -19,7 +18,11 @@ const displayFont = Literata({
   weight: ["400", "500", "600", "700"],
 });
 
-export const metadata: Metadata = site.defaultSeo;
+export const metadata: Metadata = {
+  title: "Bittumama — Research, Intelligence & Expertise",
+  description:
+    "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
+};
 
 export default function RootLayout({
   children,
