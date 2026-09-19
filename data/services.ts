@@ -50,3 +50,12 @@ export const services: Service[] = [
     href: "/services/data-analysis",
   },
 ];
+
+
+export const serviceCategories = Array.from(
+  new Set(services.map((service) => service.category).filter(Boolean)),
+);
+
+export function getServicesByCategory(category: string) {
+  return services.filter((service) => service.category === category);
+}
