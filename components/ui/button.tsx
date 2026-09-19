@@ -8,11 +8,11 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const variantClasses = {
-  primary: "bg-primary text-primary-foreground hover:bg-primary-700 active:bg-primary-800",
-  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-700 active:bg-secondary-800",
-  outline: "border border-border bg-transparent text-foreground hover:bg-surface-muted active:bg-surface-interactive",
-  ghost: "bg-transparent text-foreground hover:bg-surface-muted active:bg-surface-interactive",
-  text: "bg-transparent px-0 text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary active:text-primary-800",
+  primary: "bg-primary text-primary-foreground hover:bg-primary-700 active:bg-primary-800 active:translate-y-px",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-700 active:bg-secondary-800 active:translate-y-px",
+  outline: "border border-border bg-transparent text-foreground hover:bg-surface-muted active:bg-surface-interactive active:translate-y-px",
+  ghost: "bg-transparent text-foreground hover:bg-surface-muted active:bg-surface-interactive active:translate-y-px",
+  text: "bg-transparent px-0 text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary active:text-primary-800 active:translate-y-px",
 } as const;
 
 const sizeClasses = {
@@ -31,7 +31,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   const classes = cn(
-    "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] type-button transition-[background-color,color,border-color] duration-200 focus-visible:outline-2 focus-visible:outline-offset-3 disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:border-border",
+    "inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] type-button transition-[background-color,color,border-color,box-shadow,transform] duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground disabled:border-border",
     variantClasses[variant],
     sizeClasses[size],
     className,
