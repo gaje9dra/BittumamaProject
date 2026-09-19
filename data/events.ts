@@ -18,6 +18,7 @@ export type Event = {
   image?: string;
   registrationLabel?: string;
   registrationHref?: string;
+  href?: string;
   registrationStatus?: EventRegistrationStatus;
   featured?: boolean;
   relatedEventIds?: string[];
