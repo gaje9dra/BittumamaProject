@@ -6,7 +6,7 @@ export function ContactMethods() {
 
   return (
     <section className="border-b border-border">
-      <Container width="standard" className="py-12">
+      <Container size="default" className="py-12">
         <p className="type-label text-primary">Direct contact</p>
         <h2 className="type-h3 mt-2">Choose a contact method.</h2>
         <div className="mt-6 divide-y divide-border border-y border-border">
