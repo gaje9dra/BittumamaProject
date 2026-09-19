@@ -4,8 +4,7 @@ import { EventFeatured } from "@/components/events/event-featured";
 import { EventsCta } from "@/components/events/events-cta";
 import { EventsDiscovery } from "@/components/events/events-discovery";
 import { EventsIntroduction } from "@/components/events/events-introduction";
-import { eventCategories } from "@/data/events";
-import { getFeaturedWorkshops, getUpcomingWorkshops } from "@/lib/content";
+import { eventCategories, getFeaturedEvents, getUpcomingEvents } from "@/data/events";
 
 export const metadata: Metadata = {
   title: "Workshops & Events | Bittumama",
@@ -13,8 +12,8 @@ export const metadata: Metadata = {
 };
 
 export default function WorkshopsPage() {
-  const upcoming = getUpcomingWorkshops();
-  const featured = getFeaturedWorkshops()[0];
+  const upcoming = getUpcomingEvents();
+  const featured = getFeaturedEvents()[0];
 
   return (
     <main className="min-h-screen bg-background text-foreground">
