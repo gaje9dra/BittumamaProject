@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleDetailPage } from "@/components/articles/article-detail-page";
-import { articles, getArticleBySlug } from "@/data/articles";
+import { getAllArticles, getArticleBySlug } from "@/data/articles";
 
 type ArticleDetailRouteProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return articles.map((article) => ({ slug: article.slug }));
+  return getAllArticles().map((article) => ({ slug: article.slug }));
 }
 
 export async function generateMetadata({ params }: ArticleDetailRouteProps): Promise<Metadata> {
