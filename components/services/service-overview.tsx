@@ -21,7 +21,7 @@ export function ServiceOverview({ service }: ServiceOverviewProps) {
               level={2}
               className="mt-4 max-w-[18ch]"
             >
-              What this service covers.
+              Service overview.
             </Heading>
           </div>
 
