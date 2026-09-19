@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getArticleAuthor, getRelatedArticles, getResearchByIds, getServicesByIds, type Article } from "@/lib/content";
+import { getRelatedArticles, getResearchByIds, getServicesByIds, type Article } from "@/lib/content";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
   if (!items.length) return null;
@@ -34,7 +34,6 @@ export function ArticleDetailPage({ article }: { article: Article }) {
   const relatedServices = getServicesByIds(article.relatedServiceIds ?? []);
 
   const author = article.author;
-  const authorProfile = getArticleAuthor(article);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
