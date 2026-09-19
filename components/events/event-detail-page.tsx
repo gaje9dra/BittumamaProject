@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Event } from "@/data/events";
-import { getEventRelatedWorkshops } from "@/lib/content";
+import { getRelatedEvents } from "@/data/events";
 import { Container } from "@/components/ui/container";
 
 function EventFacts({ event }: { event: Event }) {
@@ -28,7 +28,7 @@ function EventFacts({ event }: { event: Event }) {
 export function EventDetailPage({ event }: { event?: Event }) {
   if (!event) notFound();
 
-  const related = getEventRelatedWorkshops(event);
+  const related = getRelatedEvents(event);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
