@@ -125,6 +125,9 @@
 
   .motion-interactive{transition-duration:var(--motion-standard);transition-timing-function:var(--motion-ease-standard);transition-property:color,background-color,border-color,opacity,box-shadow,transform}
   .motion-interactive:hover{transition-duration:var(--motion-fast)}
+  .motion-press:active{transform:translateY(1px)}
+  .motion-arrow{transition:transform var(--motion-fast) var(--motion-ease-standard),opacity var(--motion-fast) var(--motion-ease-standard)}
+  .motion-arrow:hover,.group:hover .motion-arrow,.group:focus-visible .motion-arrow{transform:translate(2px,-1px)}
   .motion-lift:hover{transform:translateY(calc(var(--motion-distance-sm) * -1))}
   .motion-image{transition:transform var(--motion-emphasis) var(--motion-ease-standard)}
   .motion-image:hover{transform:scale(var(--motion-scale-hover))}
