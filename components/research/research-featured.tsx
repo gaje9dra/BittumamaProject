@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getFeaturedResearch, type ResearchEntry } from "@/data/research";
+import { getFeaturedResearch, getResearchHref, type ResearchEntry } from "@/data/research";
 
 type ResearchFeaturedProps = {
   entries?: ResearchEntry[];
@@ -49,7 +49,7 @@ export function ResearchFeatured({ entries }: ResearchFeaturedProps) {
               </div>
               <div className="sm:self-end">
                 <Link
-                  href={entry.href}
+                  href={getResearchHref(entry)}
                   className="group inline-flex min-h-11 items-center gap-2 type-button text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3"
                 >
                   View research
