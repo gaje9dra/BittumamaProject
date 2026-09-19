@@ -1439,3 +1439,36 @@ The finder uses native buttons with `aria-pressed`, an `aria-live` result region
 
 ### Scope constraints
 No backend, database, CMS, authentication, payments, admin, advanced search, AI assistant, booking flow or analytics were introduced. Locked project versions remain unchanged.
+
+
+## Research Support Dedicated Experience Rebuild — Phase 6.7
+
+### Page purpose
+The Research route is the dedicated research and knowledge hub. It answers what research, analysis, studies and research resources exist at Bittumama rather than what a visitor can engage as a service. The homepage remains a concise preview and Services remains the separate engagement catalogue.
+
+### Research-specific information architecture
+The production page uses a compact research positioning block, a conditional thematic index, conditional featured research, the central indexed research directory, and a research-specific enquiry action. Sections with no verified content are omitted instead of being filled with artificial categories or records.
+
+### Thematic navigation
+Research themes are derived from canonical research entries. When real categories exist, the theme index uses numbered editorial links and semantic anchors into the research index. With no categories, the theme navigation is omitted. No artificial taxonomy is introduced.
+
+### Featured research
+Featured research is rendered only from canonical entries with featured status. The treatment presents one editorial lead with summary and verified metadata; no item is promoted merely to fill the layout. The production collection currently contains no featured records, so the section is omitted.
+
+### Research discovery
+The research index is an editorial list grouped by canonical category. Each item exposes only canonical title, type, category, short description and optional date, with a direct research route. The current production dataset is empty, so the page shows a concise verified-content archive state. Existing lightweight category discovery remains in place; no advanced search, sorting or query-string filters are introduced.
+
+### Research/service relationship
+Research remains separate from Services. Individual research detail pages may expose services only when relatedServiceIds explicitly connects the canonical research record to canonical service data. The directory does not append service sales content to every research item.
+
+### Visual language
+The page uses a compact editorial positioning block, indexed thematic navigation, optional featured research, numbered research rows, subtle rules, controlled reading measures and restrained metadata. It avoids the Services need-finder structure, generic blog cards, dashboard styling, large empty hero space, decorative gradients and unsupported research claims.
+
+### Mobile behavior
+The positioning block remains compact; theme navigation becomes a readable indexed list when real themes exist; research rows collapse to readable title, summary and metadata stacks; focus states remain visible and page-level horizontal overflow is avoided. Existing motion and reduced-motion tokens remain authoritative.
+
+### Development preview
+The development-only Research preview uses isolated fixture entries passed into the same production components to inspect themes, featured research, indexed discovery and production empty-state behavior without changing the canonical production dataset.
+
+### Content accuracy and scope
+Production research content remains empty because no verified research records have been supplied. No authors, findings, statistics, publication counts, affiliations, dates, awards, partnerships or credentials are invented. Phase 6.7 adds no backend, database, CMS, authentication, payments, admin panel, AI assistant, advanced search, analytics or research submission system.
