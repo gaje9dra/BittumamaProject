@@ -1,8 +1,12 @@
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
+type HeadingTag = "h1" | "h2" | "h3" | "h4" | "h5";
+
 type HeadingProps = HTMLAttributes<HTMLHeadingElement> & {
   level?: 1 | 2 | 3 | 4 | 5;
+  /** Optional semantic tag override for existing consumers. */
+  as?: HeadingTag;
 };
 
 const levelClasses = {
@@ -25,9 +29,10 @@ export function Heading({
   children,
   className,
   level = 2,
+  as,
   ...props
 }: HeadingProps) {
-  const Tag = headingTags[level];
+  const Tag = as ?? headingTags[level];
 
   return (
     <Tag className={cn(levelClasses[level], className)} {...props}>
