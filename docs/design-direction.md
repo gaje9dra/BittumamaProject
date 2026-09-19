@@ -1264,3 +1264,48 @@ Discovery uses the existing hover/focus transitions and small directional arrow 
 
 ### Integration
 The existing global Header and homepage Research links remain unchanged. Their existing `/research` destinations continue to resolve to the refined directory. No unrelated navigation or homepage redesign was introduced.
+
+
+## Research Detail Page Architecture — Phase 6.3
+
+### Route and canonical data
+Individual research pages use `/research/[slug]` and resolve entries exclusively through `data/research.ts`. Static params are derived from the canonical dataset, valid slugs render the shared detail-page composition, and unknown slugs use the standard Next.js not-found flow. No route-specific research records are hardcoded.
+
+### Detail data model
+The existing `ResearchEntry` model was extended only with an optional structured `sections` collection and a canonical slug lookup. Each section contains an ID, title, and concise content string; no rich-text editor or separate content source was introduced. Related research is derived from canonical entries using category plus shared tags, excluding the current item.
+
+### Page hierarchy
+The detail composition follows:
+1. breadcrumb back to Research;
+2. editorial research hero;
+3. verified metadata;
+4. concise research summary;
+5. optional structured content sections;
+6. optional related research;
+7. contextual return to the Research directory.
+
+Sections render only when their data exists. There are no empty visual blocks.
+
+### Hero and metadata
+The hero uses the existing editorial grid with the research title as the dominant element, concise supporting copy, and compact metadata for category, topic, date, and status when supplied. An optional research image is rendered only when the canonical entry contains one and uses Next.js Image handling. No visual is inserted to fill missing content.
+
+### Related research
+Related research is intentionally narrow: entries must exclude the current item, share the current category, and share at least one canonical tag. This prevents generic same-category filler from appearing as a relationship. If no meaningful relationship exists, the section is omitted.
+
+### CTA and internal linking
+The detail CTA returns visitors to `/research`, which is the established research discovery route. Breadcrumbs provide the reverse connection from detail to directory. No service relationship is created unless future canonical research data establishes one.
+
+### Responsive behavior
+Desktop uses a wide editorial split between research context and metadata/visuals. Tablet compresses the relationship while retaining hierarchy. Mobile stacks breadcrumb, title, summary, metadata, content, related research, and CTA with comfortable reading width and no page-level horizontal overflow.
+
+### Accessibility and motion
+Breadcrumbs use semantic navigation/list structure. Research content uses semantic sections and heading hierarchy. Indexed related research uses an ordered list and semantic links with visible focus. Image alt text uses the research title. Existing hover/focus transitions consume the global motion tokens and reduced-motion rules; no client-side interaction is required.
+
+### Server/client boundary
+The detail route and all production detail components remain Server Components. No client-side data fetching or interactive state is introduced in Phase 6.3.
+
+### Development preview
+`/design-system/research-detail` is development-only and uses isolated preview data so the production research dataset remains empty and free of fabricated customer-facing research. The preview covers hero, metadata, summary, structured sections, related-item presentation, CTA, and responsive composition.
+
+### SEO and integration
+Detail metadata is generated from the canonical research title and short description. The global Header remains unchanged and its existing route matcher keeps Research active for `/research/[slug]`. Homepage and Services systems are not redesigned.
