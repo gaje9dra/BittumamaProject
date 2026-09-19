@@ -5,7 +5,6 @@ import { ServiceCta } from "@/components/services/service-cta";
 import { ServiceHero } from "@/components/services/service-hero";
 import { ServiceHighlights } from "@/components/services/service-highlights";
 import { ServiceFAQ } from "@/components/services/service-faq";
-import { ServiceOverview } from "@/components/services/service-overview";
 
 type ServiceDetailPageProps = {
   service: Service;
@@ -15,7 +14,6 @@ export function ServiceDetailPage({ service }: ServiceDetailPageProps) {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <ServiceHero service={service} />
-      <ServiceOverview service={service} />
       <ServiceHighlights service={service} />
       <ServiceAudience service={service} />
       <ServiceFAQ service={service} />
