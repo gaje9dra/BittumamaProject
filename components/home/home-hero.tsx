@@ -116,7 +116,7 @@ Research framework
 
         <div
           aria-hidden="true"
-          className="mt-12 border-t border-border sm:mt-14 lg:mt-16"
+          className="mt-12 border-t border-foreground/30 sm:mt-14 lg:mt-16"
         />
       </Container>
     </section>
