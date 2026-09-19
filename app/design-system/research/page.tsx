@@ -48,7 +48,7 @@ export default function ResearchPlaygroundPage() {
             Research &amp; Intelligence
           </Heading>
           <p className="type-body-sm mt-3 max-w-[56ch] text-muted-foreground">
-            Preview of the research directory, category navigation and empty-state behavior using the canonical research data.
+            Development-only preview for research themes, featured research, indexed discovery and production empty-state behavior. Preview records never enter the production research dataset.
           </p>
         </Container>
       </section>
