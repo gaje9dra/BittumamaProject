@@ -2,10 +2,23 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getResearchCategoryAnchor, getResearchByCategory, researchCategories, researchEntries } from "@/data/research";
+import {
+  getResearchCategoryAnchor,
+  researchCategories as canonicalCategories,
+  researchEntries as canonicalEntries,
+  type ResearchEntry,
+} from "@/data/research";
 
-export function ResearchDirectory() {
-  const hasEntries = researchEntries.length > 0;
+type ResearchDirectoryProps = {
+  entries?: ResearchEntry[];
+  categories?: string[];
+};
+
+export function ResearchDirectory({
+  entries = canonicalEntries,
+  categories = canonicalCategories,
+}: ResearchDirectoryProps) {
+  const hasEntries = entries.length > 0;
 
   return (
     <section id="research-directory" aria-labelledby="research-directory-title" className="scroll-anchor bg-background">
