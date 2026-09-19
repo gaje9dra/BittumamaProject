@@ -18,7 +18,7 @@ export function RelatedServices({ service }: RelatedServicesProps) {
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">04 / Related services</p>
+            <p className="type-label text-muted-foreground">Related services</p>
             <Heading id="related-services-title" level={2} className="mt-4 max-w-[18ch]">
               Related research support.
             </Heading>
