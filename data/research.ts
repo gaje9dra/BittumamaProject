@@ -58,6 +58,10 @@ export function getResearchByCategory(category: string) {
   return researchEntries.filter((entry) => entry.category === category);
 }
 
+export function getFeaturedResearch() {
+  return researchEntries.filter((entry) => entry.featured);
+}
+
 export function getResearchCategoryAnchor(category: string) {
   const slug = category
     .toLowerCase()
