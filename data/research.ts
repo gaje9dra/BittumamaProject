@@ -34,6 +34,8 @@ export type ResearchEntry = {
   audience?: string[];
   highlights?: string[];
   relatedServiceIds?: string[];
+  relatedArticleIds?: string[];
+  relatedExpertIds?: string[];
   date?: string;
   status?: ResearchStatus;
   type?: string;
@@ -42,6 +44,10 @@ export type ResearchEntry = {
   href: string;
   featured?: boolean;
   tags?: string[];
+  seo?: {
+    title?: string;
+    description?: string;
+  };
 };
 
 export const researchEntries: ResearchEntry[] = [];
@@ -76,11 +82,9 @@ export function getResearchBySlug(slug: string) {
 }
 
 export function getRelatedResearch(entry: ResearchEntry) {
-  return researchEntries.filter((candidate) => {
-    if (candidate.id === entry.id || candidate.slug === entry.slug) return false;
-    if (candidate.category !== entry.category) return false;
-    if (!entry.tags?.length || !candidate.tags?.length) return false;
-
-    return entry.tags.some((tag) => candidate.tags?.includes(tag));
-  });
+  const relatedIds = new Set(entry.relatedArticleIds ?? []);
+  return researchEntries.filter(
+    (candidate) =>
+      candidate.id !== entry.id && relatedIds.has(candidate.id),
+  );
 }
