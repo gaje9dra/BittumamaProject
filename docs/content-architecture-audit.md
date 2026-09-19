@@ -597,3 +597,106 @@ Future Expert records must be added only to `data/expertise.ts`. Page components
 ### Phase boundary
 
 Phase 7.4 does not migrate Articles or Workshops, build a complete cross-content relationship engine, centralize navigation or metadata, or introduce backend/database/CMS/authentication/payment/search/SEO/deployment work.
+
+
+
+## Phase 7.5 implementation — canonical Articles
+
+Phase 7.5 keeps `data/articles.ts` as the single authoritative frontend Article source. The existing production Article collection is empty because the project currently contains no verified Article records. No article content, authors, dates, imagery, findings, citations or publication claims were invented.
+
+### Canonical model
+
+The Article model is limited to fields required by the current Articles experience:
+
+- `id`, `title`, `slug`, `category`
+- optional `date`, `author`, `authorId`, `authorRole`, `authorSlug`
+- optional `excerpt`, `content`, `sections`, `image`, `featured`, `tags`
+- optional `relatedArticles`, `relatedResearch`, `relatedServices`
+- optional `seo.title`, `seo.description`, `seo.image`
+
+No separate Article interface or duplicate production dataset was introduced.
+
+### Canonical access layer
+
+`data/articles.ts` exposes the small access helpers required by current consumers:
+
+- `getAllArticles()`
+- `getArticleById(id)`
+- `getArticleBySlug(slug)`
+- `getFeaturedArticles()`
+- `getArticlesByCategory(category)`
+- `getArticleCategoryAnchor(category)`
+- `getRelatedArticles(article)`
+- `validateArticles(records)`
+
+Invalid ID/slug lookups return `undefined`. No helper falls back to an unrelated Article.
+
+### IDs, slugs and validation
+
+Article IDs remain stable canonical identifiers and are never generated during rendering. Article slugs must be unique, URL-safe, lower-case hyphen-separated values. Module-load validation checks required identity fields, duplicate IDs, duplicate slugs and malformed slugs.
+
+The current production dataset is empty, so no existing Article ID or slug was changed.
+
+### Current consumers
+
+The production Articles directory and Article detail route consume the canonical source/access layer:
+
+- `/articles` reads `getAllArticles()`
+- `/articles/[slug]` uses `getAllArticles()` for static params and `getArticleBySlug()` for lookup
+- Article metadata is derived from the resolved canonical record
+- invalid Article slugs continue to use `notFound()`
+- Article category navigation and archive anchors derive from canonical category data
+- Article detail related Research and Services resolve through the canonical Research and Services datasets
+- related Article references resolve through canonical Article IDs/slugs
+
+No page-local production Article catalogue exists.
+
+### Author relationships
+
+The Article model supports `authorId` and `authorSlug` without duplicating an Expert profile. If a future verified Article has an Expert relationship, consumers must resolve that relationship through the canonical Experts source. Plain-text authors remain plain text when no verified Expert relationship exists.
+
+No Expert relationship was fabricated because the current Article dataset is empty.
+
+### Research and Service relationships
+
+Existing Article relationship fields remain lightweight identifiers rather than embedded Research or Service objects. Current Article records are empty, so no new relationships were invented. Future relationships must resolve against:
+
+- Research → `data/research.ts`
+- Services → `data/services.ts`
+
+The canonical Research and Services systems were not modified by Phase 7.5.
+
+### Related Articles
+
+Explicit `relatedArticles` references resolve through the canonical Article dataset and may use a stable Article ID or slug. Existing category/tag-based related behavior is retained for compatibility with the current Articles experience; no unrelated Article records are fabricated.
+
+### Empty-state and development previews
+
+The production Article dataset remains empty and the existing intentional empty state is preserved.
+
+The design-system Articles page contains development-only preview fixtures for visual inspection. These are not production Article records and do not populate `data/articles.ts`. They remain isolated from production routes and canonical content.
+
+### Visual preservation
+
+No Articles UI redesign was performed. The existing directory, featured treatment, category navigation, archive structure, detail layout, related-content areas, responsive behavior and empty states remain intact.
+
+The removed Phase 6 homepage sections remain absent.
+
+### Duplicate-definition rule
+
+Future verified Article records must be added only to `data/articles.ts`. Production pages and content components must reference canonical Article records through the dataset/access helpers rather than defining duplicate Article objects.
+
+### Validation
+
+The Phase 7.5 implementation was checked statically against the project architecture and route consumers. The repository exposes `npm run lint` and `npm run build`; no separate typecheck script exists.
+
+Fresh local browser/server execution is not claimed from the GitHub connector environment. The required local validation remains:
+
+- `npm run lint`
+- `npm run build`
+- development server inspection of `/`, `/articles` and a valid/invalid `/articles/[slug]`
+- verification of legitimate Article references and absence of duplicate production Article data
+
+### Phase boundary
+
+Phase 7.5 does not migrate Workshops, build the complete cross-content relationship engine, refactor global navigation, centralize the full metadata framework, or introduce PostgreSQL, Prisma, backend, CMS, admin, authentication, payments, advanced search, SEO implementation or deployment work.
