@@ -24,6 +24,7 @@ export async function generateMetadata({
   return {
     title: `${service.title} | Bittumama`,
     description: service.shortDescription,
+    alternates: { canonical: service.href },
   };
 }
 
