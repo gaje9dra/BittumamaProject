@@ -12,6 +12,7 @@ export type ResearchEntry = {
   slug: string;
   category: string;
   shortDescription: string;
+  summary?: string;
   sections?: ResearchSection[];
   date?: string;
   status?: ResearchStatus;
