@@ -3,9 +3,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceBySlug, getServiceHref } from "@/data/services";
-import { getResearchBySlug, getResearchHref } from "@/data/research";
+import { getResearchHref } from "@/data/research";
+import { getServiceHref } from "@/data/services";
 import { getRelatedArticles, type Article } from "@/data/articles";
+import { getExpertForArticle, getResearchForArticle, getServicesForArticle } from "@/lib/content/relationships";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
   if (!items.length) return null;
@@ -32,14 +33,10 @@ function RelatedList({ title, items }: { title: string; items: { title: string; 
 
 export function ArticleDetailPage({ article }: { article: Article }) {
   const relatedArticles = getRelatedArticles(article);
-  const relatedResearch = (article.relatedResearch ?? [])
-    .map(getResearchBySlug)
-    .filter((item): item is NonNullable<ReturnType<typeof getResearchBySlug>> => Boolean(item));
-  const relatedServices = (article.relatedServices ?? [])
-    .map(getServiceBySlug)
-    .filter((item): item is NonNullable<ReturnType<typeof getServiceBySlug>> => Boolean(item));
-
+  const relatedResearch = getResearchForArticle(article);
+  const relatedServices = getServicesForArticle(article);
   const author = article.author;
+  const expertAuthor = getExpertForArticle(article);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -100,7 +97,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                 <p className="type-label text-muted-foreground">Author</p>
                 <p className="type-body-sm mt-3">{article.author}</p>
                 {article.authorRole && <p className="type-caption mt-1 text-muted-foreground">{article.authorRole}</p>}
-                {article.authorSlug && <Link href={"/experts/" + article.authorSlug} className="mt-3 inline-flex min-h-11 items-center gap-2 type-button text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-3">View expert profile <ArrowUpRight aria-hidden="true" className="size-4" /></Link>}
+                {expertAuthor && <Link href={"/experts/" + expertAuthor.slug} className="mt-3 inline-flex min-h-11 items-center gap-2 type-button text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-3">View expert profile <ArrowUpRight aria-hidden="true" className="size-4" /></Link>}
               </section>
             ) : null}
           </aside>
