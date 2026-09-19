@@ -1,39 +1,23 @@
 import Link from "next/link";
-import {
-  getResearchCategoryAnchor,
-  researchCategories,
-} from "@/data/research";
+import { getResearchCategoryAnchor, researchCategories } from "@/data/research";
 
 export function ResearchCategoryIndex() {
-  if (researchCategories.length <= 1) return null;
-
   return (
-    <nav
-      aria-label="Research categories"
-      className="border-b border-border bg-background"
-    >
+    <nav aria-label="Research themes" className="border-b border-border bg-surface-muted">
       <div className="mx-auto w-full max-w-[var(--container-wide)] px-[var(--page-gutter)]">
-        <div className="overflow-x-auto">
-          <ul className="flex min-w-max items-center gap-6 py-4">
-            <li>
-              <Link
-                href="#research-directory"
-                className="inline-flex min-h-10 items-center type-label text-foreground underline decoration-border underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3"
-              >
-                All research
-              </Link>
-            </li>
-            {researchCategories.map((category) => (
-              <li key={category}>
-                <Link
-                  href={`#${getResearchCategoryAnchor(category)}`}
-                  className="inline-flex min-h-10 items-center type-label text-muted-foreground underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3"
-                >
-                  {category}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <div className="flex items-center gap-6 overflow-x-auto py-4">
+          <span className="type-label shrink-0 text-muted-foreground">Themes</span>
+          <Link href="#research-directory" className="type-label shrink-0 underline decoration-border underline-offset-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
+            All research
+          </Link>
+          {researchCategories.map((category) => (
+            <Link key={category} href={"#" + getResearchCategoryAnchor(category)} className="type-label shrink-0 text-muted-foreground underline decoration-transparent underline-offset-4 hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3">
+              {category}
+            </Link>
+          ))}
+          {!researchCategories.length && (
+            <span className="type-caption shrink-0 text-muted-foreground">Themes will appear with published research.</span>
+          )}
         </div>
       </div>
     </nav>
