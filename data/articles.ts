@@ -23,9 +23,11 @@ export type Article = {
   relatedArticles?: string[];
   relatedResearch?: string[];
   relatedServices?: string[];
+  relatedExperts?: string[];
   seo?: {
     title?: string;
     description?: string;
+    image?: string;
   };
 };
 
@@ -48,16 +50,8 @@ export function getFeaturedArticles() {
 }
 
 export function getRelatedArticles(article: Article) {
-  if (article.relatedArticles?.length) {
-    return article.relatedArticles
-      .map((slug) => getArticleBySlug(slug))
-      .filter((item): item is Article => Boolean(item));
-  }
-
-  return articles.filter(
-    (candidate) =>
-      candidate.id !== article.id &&
-      candidate.category === article.category &&
-      Boolean(article.tags?.some((tag) => candidate.tags?.includes(tag))),
-  );
+  const relatedSlugs = article.relatedArticles ?? [];
+  return relatedSlugs
+    .map((slug) => getArticleBySlug(slug))
+    .filter((item): item is Article => Boolean(item));
 }
