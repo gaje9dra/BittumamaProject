@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 export function ContactServiceContext() {
   return (
     <section className="border-b border-border">
-      <Container width="standard" className="py-10 sm:py-12">
+      <Container size="default" className="py-10 sm:py-12">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="type-label text-muted-foreground">Not sure which service fits?</p>
