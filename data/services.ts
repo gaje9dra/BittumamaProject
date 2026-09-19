@@ -59,3 +59,12 @@ export const serviceCategories = Array.from(
 export function getServicesByCategory(category: string) {
   return services.filter((service) => service.category === category);
 }
+
+export function getServiceCategoryAnchor(category: string) {
+  const slug = category
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+
+  return `service-category-${slug}`;
+}
