@@ -31,7 +31,7 @@ export function ResearchDirectory({
           <div className="lg:col-span-3">
             <p className="type-label text-muted-foreground">Research index</p>
             <Heading id="research-directory-title" level={2} className="mt-4 max-w-[16ch]">
-              Knowledge archive.
+              Research work and resources.
             </Heading>
           </div>
           <div className="lg:col-span-9 lg:col-start-4">
@@ -40,9 +40,9 @@ export function ResearchDirectory({
                 <div className="grid gap-6 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-8">
                   <p className="type-label text-muted-foreground">Archive</p>
                   <div>
-                    <p className="type-h4 max-w-[28ch]">Published research will appear here.</p>
+                    <p className="type-h4 max-w-[28ch]">No research entries are published yet.</p>
                     <p className="type-body-sm mt-3 max-w-[52ch] text-muted-foreground">
-                      The directory is ready for verified studies, reports, analyses and other research resources.
+                      The index is ready for verified studies, analyses, reports and other research resources as they are published.
                     </p>
                   </div>
                 </div>
@@ -50,15 +50,15 @@ export function ResearchDirectory({
             ) : (
               <div className="border-t border-border">
                 {categories.map((category) => {
-                  const entries = entriesByCategory(entries, category);
+                  const categoryEntries = entriesByCategory(entries, category);
                   return (
                     <section key={category} id={getResearchCategoryAnchor(category)} className="scroll-anchor">
                       <div className="grid gap-2 border-b border-border py-4 sm:grid-cols-[minmax(0,1fr)_auto]">
                         <p className="type-label text-muted-foreground">{category}</p>
-                        <span className="type-caption text-muted-foreground">{String(entries.length).padStart(2, "0")} entries</span>
+                        <span className="type-caption text-muted-foreground">{String(categoryEntries.length).padStart(2, "0")} entries</span>
                       </div>
                       <ol>
-                        {entries.map((entry, index) => (
+                        {categoryEntries.map((entry, index) => (
                           <li key={entry.id} className="border-b border-border">
                             <Link href={entry.href} className="group grid gap-4 py-6 sm:grid-cols-[3rem_minmax(0,1fr)_8rem_auto] sm:items-start sm:gap-6">
                               <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
