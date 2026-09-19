@@ -21,7 +21,6 @@ export type Service = {
   audience?: string;
   highlights?: ServiceHighlight[];
   faq?: ServiceFaq[];
-  href: string;
   featured?: boolean;
   status?: ServiceStatus;
 };
@@ -36,7 +35,6 @@ export const services: Service[] = [
     need: "Broader research support",
     focus: "Research planning and guidance",
     audience: "Students and researchers",
-    href: "/services/research-support",
     status: "Coming Soon",
   },
   {
@@ -48,7 +46,6 @@ export const services: Service[] = [
     need: "Methodology support",
     focus: "Methodology and study design",
     audience: "Students and researchers",
-    href: "/services/research-methodology",
     status: "Coming Soon",
   },
   {
@@ -60,7 +57,6 @@ export const services: Service[] = [
     need: "Literature review support",
     focus: "Literature search and synthesis",
     audience: "Students and researchers",
-    href: "/services/literature-review",
     status: "Coming Soon",
   },
   {
@@ -72,7 +68,6 @@ export const services: Service[] = [
     need: "Thesis support",
     focus: "Thesis research and academic work",
     audience: "Students and researchers",
-    href: "/services/thesis-support",
   },
   {
     id: "dissertation-support",
@@ -83,7 +78,6 @@ export const services: Service[] = [
     need: "Dissertation support",
     focus: "Dissertation research and academic work",
     audience: "Students and researchers",
-    href: "/services/dissertation-support",
   },
   {
     id: "research-paper",
@@ -94,7 +88,6 @@ export const services: Service[] = [
     need: "Research paper support",
     focus: "Research paper preparation and review",
     audience: "Students and researchers",
-    href: "/services/research-paper",
   },
   {
     id: "mentoring",
@@ -105,7 +98,6 @@ export const services: Service[] = [
     need: "Ongoing research guidance",
     focus: "Research guidance",
     audience: "Students and researchers",
-    href: "/services/mentoring",
     status: "Coming Soon",
   },
   {
@@ -117,7 +109,6 @@ export const services: Service[] = [
     need: "Statistical or data analysis",
     focus: "Statistical analysis and visualization",
     audience: "Students and researchers",
-    href: "/services/data-analysis",
   },
   {
     id: "analytical-services",
@@ -128,7 +119,6 @@ export const services: Service[] = [
     need: "Analytical support",
     focus: "Research data and interpretation",
     audience: "Students and researchers",
-    href: "/services/analytical-services",
     status: "Coming Soon",
   },
   {
@@ -140,7 +130,6 @@ export const services: Service[] = [
     need: "Publication support",
     focus: "Research publication preparation",
     audience: "Researchers",
-    href: "/services/publication-services",
     status: "Coming Soon",
   },
   {
@@ -152,10 +141,29 @@ export const services: Service[] = [
     need: "AI-assisted research capabilities",
     focus: "AI-assisted research workflows",
     audience: "Researchers",
-    href: "/services/ai-research-engine",
     status: "Coming Soon",
   },
 ];
+
+export function getAllServices() {
+  return services;
+}
+
+export function getServiceHref(service: Pick<Service, "slug">) {
+  return "/services/" + service.slug;
+}
+
+export function getServiceById(id: string) {
+  return services.find((service) => service.id === id);
+}
+
+export function getServiceBySlug(slug: string) {
+  return services.find((service) => service.slug === slug);
+}
+
+export function getFeaturedServices() {
+  return services.filter((service) => service.featured);
+}
 
 export const serviceCategories = Array.from(
   new Set(services.map((service) => service.category).filter(Boolean)),
@@ -174,10 +182,6 @@ export function getServiceCategoryAnchor(category: string) {
   return `service-category-${slug}`;
 }
 
-export function getServiceBySlug(slug: string) {
-  return services.find((service) => service.slug === slug);
-}
-
 export function getRelatedServices(service: Service) {
   return services.filter(
     (candidate) =>
@@ -185,3 +189,33 @@ export function getRelatedServices(service: Service) {
       candidate.category === service.category,
   );
 }
+
+
+export function validateServices(records: readonly Service[] = services) {
+  const ids = new Set<string>();
+  const slugs = new Set<string>();
+
+  for (const service of records) {
+    if (!service.id || !service.title || !service.slug) {
+      throw new Error("Every service must have an id, title and slug.");
+    }
+
+    if (ids.has(service.id)) {
+      throw new Error(`Duplicate service id: ${service.id}`);
+    }
+    ids.add(service.id);
+
+    if (slugs.has(service.slug)) {
+      throw new Error(`Duplicate service slug: ${service.slug}`);
+    }
+    slugs.add(service.slug);
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(service.slug)) {
+      throw new Error(`Invalid service slug: ${service.slug}`);
+    }
+  }
+
+  return true;
+}
+
+validateServices();
