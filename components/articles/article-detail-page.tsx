@@ -95,7 +95,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                 </ul>
               </section>
             ) : null}
-            {article.author && (
+            {article.author ? (
               <section className="border-t border-border pt-7">
                 <p className="type-label text-muted-foreground">Author</p>
                 <p className="type-body-sm mt-3">{article.author}</p>
