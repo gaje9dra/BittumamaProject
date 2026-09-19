@@ -863,7 +863,7 @@ This is a permanent website-wide content requirement. Every heading, navigation 
 Before changing established copy, inspect its intended role and preserve accurate terminology. Replace generic or unsupported wording selectively rather than rewriting unrelated content. Newly added copy must pass a relevance, specificity, factual-support, terminology, user-intent, and consistency check.
 
 ### Homepage application
-The homepage content model remains centralized in `data/homepage.ts`. Provisional content explicitly identifies areas where verified organizational information is still required. Service and research structures are designed to accept verified content later without changing the presentation architecture.
+The homepage content model remains centralized in `data/homepage.ts`, while the reusable service directory is centralized in `data/services.ts`. Provisional content explicitly identifies areas where verified organizational information is still required. Service and research structures are designed to accept verified content later without changing the presentation architecture.
 
 ## Homepage Service Discovery — Phase 4.7
 
@@ -871,7 +871,7 @@ The homepage content model remains centralized in `data/homepage.ts`. Provisiona
 The Service Discovery layer follows Services as a compact navigation step from service awareness to a specific destination. It keeps the homepage action-oriented without adding another card grid or long explanation.
 
 ### Information hierarchy
-The section uses a small section label, a short task-focused heading, a numbered service index, one-line service descriptions, and a single View All Services action. Service names and descriptions reuse the existing centralized services.items data rather than duplicating the taxonomy.
+The section uses a small section label, a short task-focused heading, a numbered service index, one-line service descriptions, and a single View All Services action. Service names and descriptions reuse the centralized `data/services.ts` source rather than duplicating the taxonomy.
 
 ### Service terminology
 Discovery uses the same service names and destinations as the homepage Services section. No additional service categories are introduced solely to fill the section.
