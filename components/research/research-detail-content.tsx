@@ -185,7 +185,8 @@ function contentNavigationItems(research: ResearchEntry) {
 
 export function ResearchContents({ research }: { research: ResearchEntry }) {
   const items = contentNavigationItems(research);
-  const longEnough = items.length >= 4 || (research.sections?.reduce((total, section) => total + section.content.length, 0) ?? 0) > 1800);
+  const contentLength = research.sections?.reduce((total, section) => total + section.content.length, 0) ?? 0;
+  const longEnough = items.length >= 4 || contentLength > 1800;
   if (!longEnough) return null;
 
   return (
