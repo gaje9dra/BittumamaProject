@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { getResearchCategoryAnchor } from "@/data/research";
 import { expertDisciplines as canonicalDisciplines } from "@/data/expertise";
 
 type ExpertiseIndexProps = { disciplines?: string[] };
