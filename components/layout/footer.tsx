@@ -151,8 +151,8 @@ export function Footer() {
             </section>
 
             <div className="grid gap-9 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1 xl:grid-cols-2">
-              <FooterLinkGroup title="Research & Insights" links={researchLinks} />
-              <FooterLinkGroup title="Company & People" links={companyLinks} />
+              <FooterLinkGroup title="Explore" links={researchLinks} />
+              <FooterLinkGroup title="Organization" links={companyLinks} />
             </div>
           </div>
         </div>
