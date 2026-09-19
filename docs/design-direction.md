@@ -1149,3 +1149,23 @@ The page preserves the established editorial grid and intentionally stacks conte
 ### Content rules
 Service data remains centralized in `data/services.ts`. Optional content is omitted when unavailable. No placeholder, temporary, development, fabricated, or unsupported customer-facing content is introduced.
 \n
+
+## Service Detail Conversion, FAQ & Related Content — Phase 5.5
+
+### FAQ behavior
+Service records support an optional `faq` collection containing concise question/answer pairs. The customer-facing FAQ section renders only when verified FAQ data exists; current approved services have no FAQ records, so no empty FAQ section is shown. The interactive item uses a native button, `aria-expanded`, `aria-controls`, visible focus, independent open state, restrained disclosure motion, and global reduced-motion behavior.
+
+### Related-content hierarchy
+Related services remain the only active related-content type because they are supported by the current centralized service data. They remain same-category editorial rows and exclude the current service. Homepage article data is currently empty and no service-to-article relationship is invented. Workshops/events are also unavailable as related detail content, so no related-content section is added for them.
+
+### Final conversion
+The final service CTA remains the single conversion destination after informational content and points to `/contact`. Its wording is service-specific: `Discuss This Service`. The supporting line remains concise and describes the existing enquiry workflow without promising outcomes, response times, pricing, or availability.
+
+### Conversion hierarchy
+Service pages retain the primary CTA near the hero, contextual service/related links through the page, and one final primary CTA after the information architecture. No repeated CTA buttons or generic card-grid conversion layer is introduced.
+
+### Responsive and accessibility
+FAQ questions use full-width comfortable tap targets and remain readable on mobile. Expanded answers are contained within the editorial column and do not rely on hover. Native buttons provide keyboard Enter/Space behavior, visible focus, and screen-reader state. The service page remains server-rendered except for the small FAQ disclosure component.
+
+### Content rules
+No FAQ content is fabricated when verified answers are unavailable. No pricing, delivery times, guarantees, refund policies, availability, success rates, testimonials, credentials, partnerships, or outcomes are introduced. Related content is omitted when real source data does not exist.
