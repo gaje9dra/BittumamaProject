@@ -189,7 +189,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
             )}
             <button
               type="submit"
-              className="min-h-12 shrink-0 border-l border-input bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-[-3px]"
+              className="min-h-12 shrink-0 border-l border-input bg-primary px-5 type-button text-primary-foreground transition-[background-color,transform] duration-[var(--motion-fast)] hover:bg-primary-700 active:translate-y-px focus-visible:outline-2 focus-visible:outline-offset-[-3px]"
             >
               Search
             </button>
@@ -200,7 +200,7 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
           <Link
             href="/search"
             onClick={() => onClose(false)}
-            className="type-caption text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary"
+            className="type-caption text-primary underline decoration-primary/40 underline-offset-4 transition-colors duration-[var(--motion-fast)] hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-2"
           >
             View search page
           </Link>
