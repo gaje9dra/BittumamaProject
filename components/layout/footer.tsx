@@ -111,7 +111,7 @@ export function Footer() {
 
                 <Link
                   href="/contact"
-                  className="group inline-flex min-h-12 shrink-0 items-center gap-3 border-b border-primary-foreground/60 pb-2 type-button text-primary-foreground transition-[border-color,transform] duration-[var(--motion-fast)] hover:-translate-x-0.5 hover:border-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground"
+                  className="group inline-flex min-h-12 shrink-0 items-center gap-3 border-b border-primary-foreground/60 pb-2 type-button text-primary-foreground transition-[border-color,color] duration-[var(--motion-fast)] hover:border-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground"
                 >
                   Start an Enquiry
                   <ArrowUpRight
