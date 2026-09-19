@@ -14,23 +14,15 @@ export function RelatedServices({ service }: RelatedServicesProps) {
   if (!relatedServices.length) return null;
 
   return (
-    <section
-      aria-labelledby="related-services-title"
-      className="bg-surface-muted"
-    >
+    <section aria-labelledby="related-services-title" className="bg-surface-muted">
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">03 / Related services</p>
-            <Heading
-              id="related-services-title"
-              level={2}
-              className="mt-4 max-w-[18ch]"
-            >
+            <p className="type-label text-muted-foreground">04 / Related services</p>
+            <Heading id="related-services-title" level={2} className="mt-4 max-w-[18ch]">
               Related research support.
             </Heading>
           </div>
-
           <ol className="border-t border-border lg:col-span-8 lg:col-start-5">
             {relatedServices.map((relatedService, index) => (
               <li key={relatedService.id} className="border-b border-border">
@@ -42,20 +34,14 @@ export function RelatedServices({ service }: RelatedServicesProps) {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                   <div>
-                    <Heading
-                      level={3}
-                      className="max-w-[28ch] transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5"
-                    >
+                    <Heading level={3} className="max-w-[28ch] transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5">
                       {relatedService.title}
                     </Heading>
                     <p className="type-body-sm mt-2 max-w-[48ch] text-muted-foreground">
                       {relatedService.shortDescription}
                     </p>
                   </div>
-                  <ArrowUpRight
-                    aria-hidden="true"
-                    className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
+                  <ArrowUpRight aria-hidden="true" className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                 </Link>
               </li>
             ))}
