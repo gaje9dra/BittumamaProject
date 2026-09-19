@@ -5,7 +5,6 @@ import { Heading } from "@/components/ui/heading";
 import { ResearchDetailHero } from "@/components/research/research-detail-hero";
 import { ResearchDetailSummary } from "@/components/research/research-detail-summary";
 import { ResearchDetailContent } from "@/components/research/research-detail-content";
-import { RelatedResearch } from "@/components/research/related-research";
 import { ResearchDetailCta } from "@/components/research/research-detail-cta";
 import type { ResearchEntry } from "@/data/research";
 
