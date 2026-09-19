@@ -18,6 +18,9 @@ export async function generateMetadata({ params }: ResearchDetailRouteProps): Pr
   return {
     title: research.title + " | Research & Intelligence | Bittumama",
     description: research.shortDescription,
+    alternates: {
+      canonical: research.href,
+    },
   };
 }
 
