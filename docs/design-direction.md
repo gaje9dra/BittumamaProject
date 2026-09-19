@@ -1049,3 +1049,27 @@ Desktop uses controlled asymmetry and wide editorial composition; tablet compres
 
 ### Content and visual rules
 Homepage copy stays short and specific. Unsupported claims, fabricated people/events/research, generic marketing language, and customer-visible development language are excluded. Abstract visuals are treated as supporting composition rather than organizational evidence.
+
+
+## Services Directory — Phase 5.1
+
+### Purpose
+The `/services` route is the directory and discovery layer for the service ecosystem. It helps visitors identify the available service, understand its scope and audience, and move toward the future service-detail route without presenting full service pages in this phase.
+
+### Service taxonomy and data
+The current verified service scope is grouped under **Research & Academic Support** and contains Thesis Support, Dissertation Support, Research Paper, and Data Analysis. Service records are centralized in `data/services.ts`; the homepage service section reuses this source rather than duplicating service names, descriptions, or destinations.
+
+### Directory composition
+The page uses a compact editorial introduction, a numbered service directory, concise audience guidance, and a single research-support CTA. A single current category does not receive a separate tab/filter control because that would add interaction without improving discovery.
+
+### Service-item hierarchy
+Each directory row presents the service index, service name, short description, optional audience, and a direct link to `/services/[slug]`. No service is artificially featured or ranked.
+
+### Responsive and interaction behavior
+Desktop uses an asymmetric editorial layout with a wide numbered index. Tablet compresses metadata while preserving the hierarchy. Mobile becomes a vertical service index with comfortable touch targets and no horizontal overflow. Row hover, focus, and arrow movement use existing motion tokens and remain understandable without animation; reduced-motion behavior is inherited globally.
+
+### Content rules
+Service copy is specific and concise. No pricing, delivery guarantees, credentials, outcomes, testimonials, client counts, or unsupported service categories are introduced. Future detail pages are represented only by meaningful `/services/[slug]` destinations.
+
+### Future compatibility
+The directory is a Server Component with no client-side filtering, database, CMS, authentication, payments, or backend. `data/services.ts` is the reusable source for the directory, homepage service references, navigation, future detail pages, and future search/filtering.
