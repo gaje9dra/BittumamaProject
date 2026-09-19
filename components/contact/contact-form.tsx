@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { services } from "@/data/services";
+import { getAllServices } from "@/data/services";
 import { cn } from "@/lib/utils";
 
 type FormValues = {
@@ -51,7 +51,7 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "failure">("idle");
 
   const selectedService = useMemo(
-    () => services.find((service) => service.slug === values.service),
+    () => getAllServices().find((service) => service.slug === values.service),
     [values.service],
   );
 
@@ -118,7 +118,7 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
           <label htmlFor="contact-service" className="type-label">What do you need help with? <span aria-hidden="true">*</span></label>
           <select id="contact-service" name="service" value={values.service} onChange={(e) => update("service", e.target.value)} onBlur={() => handleBlur("service")} aria-invalid={Boolean(errorFor("service"))} aria-describedby={errorFor("service") ? "contact-service-error" : undefined} className={fieldClass}>
             <option value="">Select a requirement</option>
-            {services.map((service) => (
+            {getAllServices().map((service) => (
               <option key={service.id} value={service.slug}>
                 {service.title}{service.status === "Coming Soon" ? " — Coming Soon" : ""}
               </option>
