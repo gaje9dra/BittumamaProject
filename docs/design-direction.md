@@ -1093,3 +1093,33 @@ Service rows retain restrained hover, focus, and arrow feedback. Category naviga
 
 ### Responsive behavior
 The current small service set remains compact on desktop, tablet, and mobile. If additional categories are approved later, the category index will remain lightweight on desktop and become a practical horizontal index on mobile. No filter-heavy or dashboard-style UI is introduced.
+
+## Service Detail Page Foundation — Phase 5.3
+
+### Architecture
+The dynamic `/services/[slug]` route is driven entirely by the centralized service records in `data/services.ts`. Static params are generated from the current service dataset, while unknown slugs use the standard Next.js not-found flow.
+
+### Page hierarchy
+Each service detail page uses the same editorial structure: semantic breadcrumb, asymmetric service hero, concise overview, optional verified highlights, related services from the same category, and a final service-specific contact prompt. The structure is intentionally shallow so later service-detail phases can add depth without rebuilding the route architecture.
+
+### Hero and overview
+The service category provides context, the service title is the dominant element, and the existing short description supplies the concise service statement. Audience metadata is shown only when present. No fabricated imagery, statistics, claims, pricing, or guarantees are introduced.
+
+### Highlights
+Highlights are optional service data. The highlights section renders only when verified highlight records exist, so services without approved highlights do not receive empty or invented content.
+
+### Related services
+Related services are derived from the centralized service data using the current service's category and exclude the current service. They use the existing editorial numbered-row treatment rather than a generic card grid.
+
+### CTA
+The primary service action routes to the existing `/contact` destination and uses `Discuss Your Requirement`. Service-specific wording is limited to the requirement context already supported by the service record; no consultation, response-time, result, or pricing claims are added.
+
+### Metadata
+Page title and meta description are generated from the service record. The metadata remains concise and service-specific without keyword stuffing or a separate SEO content layer.
+
+### Responsive, accessibility, and motion
+The page reuses the existing container, typography, spacing, border, color, button, focus, and motion tokens. Desktop uses controlled asymmetry; mobile stacks the hierarchy and preserves readable titles and comfortable tap targets. Semantic breadcrumb navigation, heading hierarchy, visible focus, and reduced-motion behavior are maintained without client-side interaction.
+
+### Data architecture
+Service records remain the single source of truth for the directory and detail routes. Optional `highlights` are supported without requiring every service to populate them. No database, CMS, authentication, payment system, API, or service-specific backend logic is introduced.
+
