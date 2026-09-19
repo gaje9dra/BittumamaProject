@@ -73,7 +73,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
                 <div className="min-w-0">
                   <p className="type-label text-muted-foreground">{event.category}</p>
                   <h3 className="type-h4 mt-2">
-                    <Link href={event.href ?? "/workshops/" + event.slug} className="hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
+                    <Link href={"/workshops/" + event.slug} className="hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
                       {event.title}
                     </Link>
                   </h3>
