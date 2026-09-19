@@ -1365,3 +1365,39 @@ Dynamic metadata remains derived from canonical research data, with a canonical 
 
 ### Content accuracy
 The production research dataset remains empty because no verified research records have been supplied. The architecture is ready for approved content without manufacturing research substance. No database, CMS, authentication, backend API, AI research functionality, advanced search, analytics, or future-phase systems were introduced.
+
+
+## Dedicated Page Identity & Information Architecture Rebuild — Phase 6.5
+
+Phase 6.5 corrects page-level composition rather than extending the homepage pattern. The homepage remains the broad organization introduction; internal destinations now use purpose-specific hierarchy and rhythm.
+
+### Services
+The Services route is customer-need driven. Its hierarchy is:
+1. practical service introduction;
+2. service category index;
+3. need-based service discovery;
+4. editorial service directory;
+5. requirement-focused contact action.
+
+The canonical service data now represents the established service areas supplied for this phase, including Research & Thesis, Analysis, Publication, Mentoring and Research Technology. Existing detailed services remain available, while newly established areas without implemented detail content are explicitly marked Coming Soon rather than being presented as fully available.
+
+### Research & Intelligence
+The Research route is a knowledge hub rather than a service directory. Its hierarchy is:
+1. concise research/knowledge introduction;
+2. research theme index;
+3. knowledge archive;
+4. research enquiry action.
+
+The production research dataset remains empty. The page therefore uses an explicit archive state and does not invent studies, reports, findings, researchers, dates or statistics.
+
+### Composition rule
+Services and Research share the global design system but do not share the same page composition. Services emphasizes practical needs, categories and actions; Research emphasizes themes, publication-style indexing and knowledge discovery.
+
+### Existing destinations
+This phase does not manufacture expert, article, workshop or organization records where dedicated production routes/data are not yet present. Existing global navigation is preserved. Future dedicated destinations should follow the same rule: distinct purpose and information architecture, canonical content models, verified content only, and no homepage-template reuse.
+
+### Responsive behavior
+Service discovery and service lists remain scan-oriented on mobile. Research themes and archive metadata remain horizontally usable or stacked according to content. Desktop editorial columns collapse intentionally rather than simply mirroring the desktop grid.
+
+### Architecture constraints
+Server Components remain the default. The phase adds no backend, CMS, authentication, payment, admin, analytics, AI implementation or unnecessary dependencies. Locked project versions remain unchanged.
