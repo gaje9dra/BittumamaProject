@@ -164,21 +164,13 @@ export function getArticlesForExpert(expertId: string): Article[] {
   const expert = getExpertById(expertId) ?? getExpertBySlug(expertId);
   if (!expert) return [];
 
-  const references = new Set([expert.id, expert.slug]);
-
   return getAllArticles().filter(
     (article) =>
       article.authorId === expert.id ||
       article.authorSlug === expert.slug ||
       article.authorId === expert.slug ||
       article.authorSlug === expert.id ||
-      article.relatedServices?.some((reference) => references.has(reference)) === false,
-  ).filter((article) =>
-    article.authorId === expert.id ||
-    article.authorSlug === expert.slug ||
-    article.authorId === expert.slug ||
-    article.authorSlug === expert.id ||
-    expert.articleIds?.includes(article.id) === true,
+      expert.articleIds?.includes(article.id) === true,
   );
 }
 
