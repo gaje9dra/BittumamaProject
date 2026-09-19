@@ -7,7 +7,7 @@ import { ResearchHero } from "@/components/research/research-hero";
 export const metadata: Metadata = {
   title: "Research & Intelligence | Bittumama",
   description:
-    "Research, analysis and knowledge resources for academic research work.",
+    "Research, analysis, studies and knowledge resources from Bittumama.",
 };
 
 export default function ResearchPage() {
