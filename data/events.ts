@@ -1,8 +1,4 @@
-export type EventRegistrationStatus =
-  | "Registration Open"
-  | "Registration Closed"
-  | "Coming Soon"
-  | "Completed";
+export type EventRegistrationStatus = "Registration Open" | "Registration Closed" | "Coming Soon" | "Completed";
 
 export type Event = {
   id: string;
@@ -31,7 +27,6 @@ export type Event = {
   seo?: {
     title?: string;
     description?: string;
-    image?: string;
   };
 };
 
@@ -42,13 +37,7 @@ export const eventCategories = Array.from(
 );
 
 export function getUpcomingEvents() {
-  const today = new Date().toISOString().slice(0, 10);
-  return events
-    .filter(
-      (event) =>
-        event.registrationStatus !== "Completed" && event.date >= today,
-    )
-    .sort((a, b) => a.date.localeCompare(b.date));
+  return events.filter((event) => event.registrationStatus !== "Completed");
 }
 
 export function getFeaturedEvents() {
@@ -66,6 +55,9 @@ export function getEventBySlug(slug: string) {
 export function getRelatedEvents(event: Event) {
   const relatedIds = new Set(event.relatedEventIds ?? []);
   return events.filter(
-    (candidate) => candidate.id !== event.id && relatedIds.has(candidate.id),
+    (candidate) =>
+      candidate.id !== event.id &&
+      (relatedIds.has(candidate.id) ||
+        (candidate.category === event.category && Boolean(event.category))),
   );
 }
