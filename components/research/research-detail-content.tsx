@@ -145,9 +145,10 @@ export function ResearchDetailContent({ research }: { research: ResearchEntry })
         <Heading id="research-content-title" level={2} className="mt-4 max-w-[22ch]">Main research sections.</Heading>
         <div className="mt-10 space-y-14">
           {research.sections.map((item, index) => {
-            const headingId = `research-section-${item.id}`;
+            const sectionId = `research-section-${item.id}`;
+            const headingId = `${sectionId}-title`;
             return (
-              <section key={item.id} id={headingId} aria-labelledby={headingId} className="scroll-anchor">
+              <section key={item.id} id={sectionId} aria-labelledby={headingId} className="scroll-anchor">
                 <div className="grid gap-5 sm:grid-cols-[3rem_minmax(0,1fr)] sm:gap-6">
                   <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                   <div>
