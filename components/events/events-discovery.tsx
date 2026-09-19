@@ -62,7 +62,15 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
           </div>
         </div>
         <div className="divide-y divide-border border-y border-border">
-          {events.map((event) => {
+          {Array.from(new Set(events.map((event) => event.category))).map((category) => {
+            const categoryEvents = events.filter((event) => event.category === category);
+            const categoryId = "event-category-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+            return (
+              <section key={category} id={categoryId} className="scroll-anchor">
+                <div className="border-b border-border bg-surface-muted px-4 py-3 sm:px-5">
+                  <p className="type-label text-muted-foreground">{category}</p>
+                </div>
+                {categoryEvents.map((event) => {
             const date = formatDate(event.date);
             return (
               <article key={event.id} className="group grid min-w-0 gap-5 py-6 sm:grid-cols-[7rem_minmax(0,1fr)_auto] sm:items-start sm:gap-7">
@@ -94,6 +102,9 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
                   </Link>
                 </div>
               </article>
+            );
+                })}
+              </section>
             );
           })}
         </div>
