@@ -18,7 +18,7 @@ export function ResearchCta() {
             </p>
           </div>
           <Link href="/contact" className="group inline-flex min-h-11 items-center gap-2 type-button text-primary underline decoration-primary/30 underline-offset-4 hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3">
-            Contact Bittumama
+            Discuss a research requirement
             <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
           </Link>
         </div>
