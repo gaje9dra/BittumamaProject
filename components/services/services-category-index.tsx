@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { serviceCategories } from "@/data/services";
+import { getServiceCategoryAnchor, serviceCategories } from "@/data/services";
 
 export function ServicesCategoryIndex() {
   if (serviceCategories.length <= 1) return null;
@@ -15,7 +15,7 @@ export function ServicesCategoryIndex() {
             {serviceCategories.map((category) => (
               <li key={category}>
                 <Link
-                  href={`#service-category-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`}
+                  href={`#${getServiceCategoryAnchor(category)}`}
                   className="inline-flex min-h-10 items-center type-label text-muted-foreground underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3"
                 >
                   {category}
