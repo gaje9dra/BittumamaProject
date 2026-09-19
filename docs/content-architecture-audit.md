@@ -700,3 +700,88 @@ Fresh local browser/server execution is not claimed from the GitHub connector en
 ### Phase boundary
 
 Phase 7.5 does not migrate Workshops, build the complete cross-content relationship engine, refactor global navigation, centralize the full metadata framework, or introduce PostgreSQL, Prisma, backend, CMS, admin, authentication, payments, advanced search, SEO implementation or deployment work.
+
+
+
+## Phase 7.6 implementation — canonical Workshops & Events
+
+Phase 7.6 keeps `data/events.ts` as the single authoritative frontend Workshop/Event dataset. The existing production event collection is empty because the project currently contains no verified Workshop/Event records. No event, speaker, date, venue, registration URL, price or relationship was invented.
+
+### Canonical model
+
+The existing `Event` model was refined only for current architectural needs:
+
+- `id`, `title`, `slug`, `date`
+- optional `endDate`, `time`, `category`, `location`, `format`
+- `shortDescription` and optional `description`, `audience`
+- optional speaker display fields plus `speakerId` / `speakerSlug`
+- optional `image`, registration fields and `featured`
+- typed related event, Research and Service identifiers
+- typed SEO metadata
+
+No second Workshops/Event interface or duplicate dataset was introduced.
+
+### Canonical access layer
+
+`data/events.ts` exposes the small helpers needed by current consumers:
+
+- `getAllEvents()`
+- `getEventById(id)`
+- `getEventBySlug(slug)`
+- `getFeaturedEvents()`
+- `getUpcomingEvents()`
+- `getPastEvents()`
+- `getEventsByCategory(category)`
+- `getEventCategoryAnchor(category)`
+- `getRelatedEvents(event)`
+- `validateEvents(records)`
+
+Date classification uses the event date, or end date when present, without changing stored event data. Invalid lookups return `undefined`; no helper substitutes another event.
+
+### IDs, slugs and validation
+
+Event IDs must be stable and unique. Event slugs must be unique, URL-safe, lower-case hyphen-separated values. Module-load validation checks required identity fields, duplicate IDs/slugs, malformed slugs, invalid dates and end dates earlier than the event date.
+
+The production dataset is currently empty, so no existing event IDs, slugs or dates were changed.
+
+### Current consumers
+
+The canonical event source/access layer powers:
+
+- `/workshops` directory
+- `/workshops/[slug]` static params, lookup and event-specific metadata
+- Workshop/Event detail related-event rendering
+- featured-event selection
+- upcoming/past classification
+- category navigation and archive anchors
+- the development Workshops preview
+
+The existing visual Workshops/Event experience remains unchanged.
+
+### Relationships
+
+The event model preserves lightweight identifier-based relationships:
+
+- `relatedResearchIds` → canonical Research source
+- `relatedServiceIds` → canonical Services source
+- `speakerId` / `speakerSlug` → canonical Expert source when a verified relationship exists
+- `relatedEventIds` → canonical event source
+
+No relationships were fabricated because the production event collection is empty.
+
+### Registration, location and imagery
+
+Existing registration, location and image fields remain optional. No payment, registration backend, venue, URL, price or image was invented.
+
+### Empty state
+
+The production event collection remains empty. The existing Workshops page therefore continues to show its intentional empty-state behavior rather than fabricated events.
+
+### Duplicate-definition rule
+
+Future verified Workshop/Event records must be added only to `data/events.ts`. Pages and components must consume canonical records through the event access layer rather than defining duplicate event objects, slug maps, date maps or registration maps.
+
+### Phase boundary
+
+Phase 7.6 does not implement the complete cross-content relationship engine, navigation migration, complete metadata framework, PostgreSQL, Prisma, backend, CMS, admin, authentication, payments, advanced search, SEO implementation, performance optimization, security hardening or deployment.
+
