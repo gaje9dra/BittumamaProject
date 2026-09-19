@@ -53,8 +53,9 @@ export default function ResearchPlaygroundPage() {
         </Container>
       </section>
       <ResearchHero />
-      <ResearchCategoryIndex />
-      <ResearchDirectory />
+      <ResearchCategoryIndex categories={previewCategories} />
+      <ResearchFeatured entries={previewEntries} />
+      <ResearchDirectory entries={previewEntries} categories={previewCategories} />
     </main>
   );
 }
