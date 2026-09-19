@@ -1502,3 +1502,47 @@ The development-only Experts preview uses isolated fixture profiles to inspect t
 
 ### Scope constraints
 Phase 6.8 adds no backend, database, CMS, authentication, payments, booking, admin, AI assistant, advanced search, analytics or future-phase systems. Locked project versions remain unchanged.
+
+## Articles / Insights Dedicated Editorial Experience — Phase 6.9
+
+### Page purpose
+The Articles route is the dedicated publication and reading experience. It answers what useful knowledge, analysis and insights can be read. Services remains the engagement catalogue, Research remains the research/knowledge hub, and Experts remains the people-and-expertise directory.
+
+### Canonical article data
+data/articles.ts is the single source of truth for article identity, title, slug, category, verified metadata, content, editorial relationships and SEO metadata. Production articles are currently empty because no verified article content is available in the project. No authors, dates, reading times, findings, citations, institutions, publication counts or relationships are fabricated.
+
+### Publication architecture
+The production /articles route uses a compact publication introduction, conditional topic navigation, conditional featured reading, a central typography-led archive and a contextual editorial CTA. Empty optional sections are omitted. The archive remains intentionally minimal while the verified catalogue is empty.
+
+### Topic discovery
+Article categories are derived exclusively from canonical article records. Topic navigation is typographic and compact, with intentional horizontal overflow on narrow screens only when real categories exist. No artificial categories, dashboard filters, query-string state, date sliders or advanced search are introduced.
+
+### Featured reading
+Featured status comes only from canonical article data. A publication-style featured article is rendered when a real record has featured: true; otherwise the section is omitted.
+
+### Article archive
+The archive is the central publication index. Articles are grouped by their real categories and presented as numbered editorial rows. Titles are visually dominant, while category, date and author metadata remain secondary. The layout avoids three-column cards, oversized rounded containers and repetitive thumbnail treatments.
+
+### Article detail reading experience
+/articles/[slug] resolves only canonical articles and uses Next.js not-found handling for invalid slugs. The detail route supports title, category, verified author/date metadata, excerpt, structured sections or body content, optional real imagery, tags, related articles, contextual related research, contextual related services and a final article action.
+
+### Author relationships
+Author identity is shown only when canonical article data provides it. authorSlug may link to /experts/[slug] only when the article explicitly establishes that relationship. No author profiles are created solely to populate the publication.
+
+### Research and service relationships
+Research and services remain secondary to the article. Related research uses canonical research records and explicit article relationships. Related services use canonical service records and explicit article relationships. No generic service CTA is appended to every article.
+
+### Homepage relationship
+The homepage remains a small Articles/Insights preview. Its existing article links now route to /articles; the dedicated Articles route owns the complete publication archive and reading experience. No homepage redesign is included in Phase 6.9.
+
+### Visual language
+Articles uses publication rhythm rather than homepage or service-directory composition: compact editorial introduction, topic index, featured reading when available, numbered archive rows, readable detail typography, subtle dividers, restrained metadata and controlled whitespace. No gradients, glassmorphism, glowing effects, fake publication logos, generic AI visuals, stock-photo-heavy presentation or three-column blog grid are used.
+
+### Mobile and accessibility
+Article titles remain prominent on mobile; metadata remains readable; category navigation is intentional when horizontally scrollable; archive rows collapse without page-level horizontal overflow; reading width remains comfortable. Semantic article/heading/list structures, visible focus states, meaningful image alt text, contrast and reduced-motion behavior use the existing design system.
+
+### Development preview
+/design-system/articles is development-only and uses isolated fixture articles to inspect topic navigation, featured reading, archive grouping, article detail, related content and mobile-oriented composition. Preview content never enters the production article dataset.
+
+### Scope constraints
+Phase 6.9 adds no backend, database, CMS, authentication, payments, admin panel, article editor, AI writing system, advanced search, analytics or newsletter backend. Locked project versions remain unchanged.
