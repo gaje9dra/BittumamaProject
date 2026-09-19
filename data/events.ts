@@ -78,6 +78,11 @@ export function getFeaturedEvents(now = new Date()) {
   return getUpcomingEvents(now).filter((event) => event.featured);
 }
 
+export function getEventCategoryAnchor(category: string) {
+  const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return "event-category-" + slug;
+}
+
 export function getEventsByCategory(category: string) {
   return events.filter((event) => event.category === category);
 }
