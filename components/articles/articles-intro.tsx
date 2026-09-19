@@ -6,7 +6,7 @@ import { Heading } from "@/components/ui/heading";
 export function ArticlesIntro() {
   return (
     <section aria-labelledby="articles-title" className="border-b border-border bg-background">
-      <Container size="wide" className="py-7 sm:py-9 lg:py-10">
+      <Container size="wide" className="py-10 sm:py-14 lg:py-16">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
           <div>
             <p className="type-label text-muted-foreground">Articles &amp; Insights</p>
