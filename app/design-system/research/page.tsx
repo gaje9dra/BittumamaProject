@@ -3,7 +3,9 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ResearchCategoryIndex } from "@/components/research/research-category-index";
 import { ResearchDirectory } from "@/components/research/research-directory";
+import { ResearchFeatured } from "@/components/research/research-featured";
 import { ResearchHero } from "@/components/research/research-hero";
+import type { ResearchEntry } from "@/data/research";
 
 export default function ResearchPlaygroundPage() {
   if (process.env.NODE_ENV === "production") notFound();
