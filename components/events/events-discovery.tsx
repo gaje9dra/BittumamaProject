@@ -23,7 +23,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
   if (!events.length) {
     return (
       <section aria-labelledby="events-empty-title" className="border-b border-border">
-        <Container width="standard" className="py-16 sm:py-20">
+        <Container size="default" className="py-16 sm:py-20">
           <div className="max-w-2xl border-l-2 border-primary pl-5 sm:pl-7">
             <p className="type-label text-muted-foreground">Upcoming events</p>
             <h2 id="events-empty-title" className="type-h3 mt-2">
@@ -54,7 +54,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
 
   return (
     <section aria-labelledby="upcoming-events-title" className="border-b border-border">
-      <Container width="wide" className="py-14 sm:py-18">
+      <Container size="wide" className="py-14 sm:py-18">
         <div className="mb-7 flex items-end justify-between gap-6 border-b border-border pb-4">
           <div>
             <p className="type-label text-muted-foreground">Upcoming</p>
