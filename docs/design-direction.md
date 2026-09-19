@@ -1593,3 +1593,41 @@ The page uses semantic headings and lists, visible focus states, accessible inte
 
 ### Scope
 Phase 6.10 changes only the About experience. No backend, database, CMS, authentication, payments, analytics, organization-management system or other future-phase work is included.
+
+
+## Phase 6.11 — Workshops & Events
+
+The Workshops & Events experience is a dedicated event-discovery and registration-oriented section at `/workshops`, with individual events at `/workshops/[slug]`.
+
+### Purpose
+- Help visitors discover workshops, learning sessions, training, seminars/webinars, and research-focused events when verified event data exists.
+- Keep event discovery distinct from Services, Research, Experts, and Articles.
+- Prioritize date, event metadata, format/location, registration state, and event detail access.
+
+### Canonical event data
+`data/events.ts` is the single production source for event records. It supports event metadata, registration states, optional audience/speaker information, featured events, relationships, and factual SEO metadata. Production event data is currently empty, so no event, date, speaker, venue, registration URL, price, sponsor, partnership, or outcome is fabricated.
+
+The homepage event preview derives from this canonical dataset rather than maintaining duplicate event records.
+
+### Page architecture
+- Compact Workshops & Events introduction.
+- Upcoming event discovery with date-first editorial rows.
+- Optional featured event, shown only when a real featured event exists.
+- Optional category navigation, shown only when meaningful categories exist.
+- Contextual final links to existing Research and Articles experiences.
+- Event detail pages expose only verified fields and use `notFound()` for unknown slugs.
+
+### Registration states
+Registration is represented as data, not a backend workflow. A registration action is rendered only when a canonical registration URL and label exist; otherwise a supported registration status may be displayed.
+
+### Speaker and related content
+Speaker/facilitator, research, service, and related-event relationships are optional and must be backed by canonical IDs/data. No speaker profile or relationship is invented.
+
+### Empty state
+When there are no upcoming events, the production page presents a dedicated empty state and links to existing Research and Articles pages. It does not create placeholder events or unsupported “Coming Soon” promises.
+
+### Visual and responsive behavior
+The page uses date-first typography, editorial event rows, restrained dividers, clear status hierarchy, and compact metadata. It avoids generic event-card grids, oversized empty heroes, gradients, glassmorphism, glow, and decorative event photography. Mobile prioritizes date, title, format, status, and the event action without horizontal overflow.
+
+### Development preview
+`/design-system/workshops` is development-only and uses the canonical dataset without injecting test events.
