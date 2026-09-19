@@ -26,7 +26,7 @@ export function EventFeatured({ event }: { event?: Event }) {
                 {event.registrationLabel}
               </a>
             )}
-            <Link href={event.href ?? "/workshops/" + event.slug} className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-border px-5 type-button hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-3">
+            <Link href={"/workshops/" + event.slug} className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-border px-5 type-button hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-3">
               View Details
             </Link>
           </div>
