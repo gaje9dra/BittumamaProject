@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ServiceHero } from "@/components/services/service-hero";
-import { ServiceOverview } from "@/components/services/service-overview";
 import { ServiceHighlights } from "@/components/services/service-highlights";
 import { ServiceFAQ } from "@/components/services/service-faq";
 import { ServiceAudience } from "@/components/services/service-audience";
@@ -91,7 +90,6 @@ export default function ServiceDetailPlaygroundPage() {
       {previewServices.map((service) => (
         <div key={service.id} className="border-b border-border">
           <ServiceHero service={service} />
-          <ServiceOverview service={service} />
           <ServiceHighlights service={service} />
           <ServiceAudience service={service} />
           <ServiceFAQ service={service} />
