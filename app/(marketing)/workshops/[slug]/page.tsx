@@ -19,6 +19,7 @@ export async function generateMetadata({
   return {
     title: event.seo?.title ?? event.title + " | Bittumama Workshops & Events",
     description: event.seo?.description ?? event.shortDescription,
+    alternates: { canonical: "/workshops/" + event.slug },
   };
 }
 
