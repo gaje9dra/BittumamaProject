@@ -1,4 +1,5 @@
 import { services as serviceDirectory } from "@/data/services";
+import { experts as expertDirectory } from "@/data/expertise";
 
 export type HomepageLink = {
   label: string;
@@ -244,7 +245,12 @@ export const homepageContent = {
     title: "Meet Our Experts",
     description:
       "Subject expertise, research experience and academic support.",
-    experts: [] satisfies HomepageExpert[],
+    experts: expertDirectory.slice(0, 3).map((expert) => ({
+      id: expert.id,
+      name: expert.name,
+      specialization: expert.discipline ?? expert.role ?? "Expertise",
+      href: "/experts/" + expert.slug,
+    })) satisfies HomepageExpert[],
     action: { label: "Meet Our Experts", href: "/experts" },
   },
   events: {
