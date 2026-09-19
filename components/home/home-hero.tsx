@@ -9,7 +9,7 @@ export function HomeHero() {
   return (
     <section
       aria-labelledby="home-hero-title"
-      className="relative overflow-hidden border-b border-border"
+      className="relative overflow-hidden"
     >
       <Container size="wide" className="layout-section-lg pt-10 sm:pt-14 lg:pt-16">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
