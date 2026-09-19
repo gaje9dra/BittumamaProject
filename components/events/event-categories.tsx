@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
+import { getEventCategoryAnchor } from "@/data/events";
 
 export function EventCategories({ categories }: { categories: string[] }) {
   if (categories.length < 2) return null;
@@ -12,7 +13,7 @@ export function EventCategories({ categories }: { categories: string[] }) {
           {categories.map((category) => (
             <Link
               key={category}
-              href={"#event-category-" + category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+              href="#" + getEventCategoryAnchor(category)
               className="type-button text-foreground underline decoration-border underline-offset-4 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3"
             >
               {category}
