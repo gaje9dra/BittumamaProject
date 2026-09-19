@@ -228,19 +228,7 @@ export const homepageContent = {
     title: "Research Workshops & Events",
     description: "Upcoming sessions for research, methodology and academic support.",
   },
-  about: {
-    eyebrow: "13 / About the Organization",
-    title: "Research-led academic support.",
-    description: "Research, methodology, analysis and technology-focused support for academic work.",
-    focusAreas: [
-      { title: "Research", description: "Research papers, thesis and dissertation support." },
-      { title: "Methodology", description: "Research design and methodology support." },
-      { title: "Analysis", description: "Data analysis, interpretation and visualization." },
-      { title: "Technology", description: "Digital tools and solutions where relevant to the work." },
-    ] satisfies HomepageAboutFocus[],
-    ctaLabel: "About Us",
-    ctaHref: "/about",
-  },
+
   insights: {
     eyebrow: "12 / Articles",
     title: "Research Articles & Resources",
