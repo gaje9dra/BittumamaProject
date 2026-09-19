@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ResearchDetailHero } from "@/components/research/research-detail-hero";
-import { ResearchDetailSummary } from "@/components/research/research-detail-summary";
+import { ResearchDetailOverview, ResearchDetailScope, ResearchDetailTopics, ResearchDetailMethodology, ResearchDetailAudience, ResearchDetailHighlights, ResearchContents, ResearchDetailContent } from "@/components/research/research-detail-content";
 import { ResearchDetailContent } from "@/components/research/research-detail-content";
 import { ResearchDetailCta } from "@/components/research/research-detail-cta";
 import type { ResearchEntry } from "@/data/research";
@@ -16,6 +16,24 @@ const previewResearch: ResearchEntry = {
   type: "Preview",
   topic: "Research detail architecture",
   shortDescription: "Development-only content used to inspect the research detail hierarchy and responsive composition.",
+  summary: "A concise development fixture for checking how overview content sits before deeper research structure.",
+  scope: [
+    { title: "Content architecture", description: "Checks the relationship between overview, scope, themes and structured sections." },
+    { title: "Reading behavior", description: "Checks readable measures and responsive stacking for longer research content." },
+  ],
+  topics: [
+    { title: "Information hierarchy", description: "Demonstrates indexed research themes without turning tags into decorative cards." },
+    { title: "Content navigation", description: "Demonstrates a contents layer when the page has enough meaningful sections." },
+  ],
+  methodology: {
+    approach: "Development-only methodology content used to inspect the conditional methodology section.",
+    methods: ["Structured content fixture"],
+    sources: ["Development reference"],
+    framework: "Conditional section architecture",
+  },
+  audience: ["Development review", "Responsive QA"],
+  highlights: ["Sections render only when canonical content is present."],
+  relatedServiceIds: ["research-paper", "data-analysis"],
   date: "Development reference",
   status: "Published",
   href: "/research/development-preview",
@@ -24,7 +42,9 @@ const previewResearch: ResearchEntry = {
     {
       id: "section-one",
       title: "Structured content",
+      intro: "A short introductory statement can establish the purpose of a section before its supporting content.",
       content: "This development-only section demonstrates how concise research content can be rendered without introducing a rich-text editor.",
+      keyPoints: ["Indexed sections create visual rhythm.", "Key points remain optional and compact."],
     },
     {
       id: "section-two",
@@ -50,8 +70,14 @@ export default function ResearchDetailPreview() {
   return (
     <div className="space-y-0">
       <ResearchDetailHero research={previewResearch} />
-      <ResearchDetailSummary research={previewResearch} />
+      <ResearchContents research={previewResearch} />
+      <ResearchDetailOverview research={previewResearch} />
+      <ResearchDetailScope research={previewResearch} />
+      <ResearchDetailTopics research={previewResearch} />
       <ResearchDetailContent research={previewResearch} />
+      <ResearchDetailMethodology research={previewResearch} />
+      <ResearchDetailAudience research={previewResearch} />
+      <ResearchDetailHighlights research={previewResearch} />
 
       <section aria-labelledby="preview-related-title" className="bg-surface-muted">
         <Container size="wide" className="layout-section-lg">
