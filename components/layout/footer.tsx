@@ -28,7 +28,7 @@ function FooterLink({
   return (
     <Link
       href={href}
-      className="group inline-flex min-h-9 items-center gap-2 type-body-sm text-primary-foreground/85 transition-[color,transform] duration-[var(--motion-fast)] hover:-translate-x-0.5 hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-foreground"
+      className="group inline-flex min-h-9 items-center gap-2 type-body-sm text-primary-foreground/85 transition-colors duration-[var(--motion-fast)] hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary-foreground"
     >
       <span>{children}</span>
       <ArrowUpRight
