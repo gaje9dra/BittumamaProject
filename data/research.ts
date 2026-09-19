@@ -1,11 +1,18 @@
 export type ResearchStatus = "Published" | "Coming Soon";
 
+export type ResearchSection = {
+  id: string;
+  title: string;
+  content: string;
+};
+
 export type ResearchEntry = {
   id: string;
   title: string;
   slug: string;
   category: string;
   shortDescription: string;
+  sections?: ResearchSection[];
   date?: string;
   status?: ResearchStatus;
   type?: string;
@@ -37,4 +44,19 @@ export function getResearchCategoryAnchor(category: string) {
     .replace(/(^-|-$)/g, "");
 
   return `research-category-${slug}`;
+}
+
+export function getResearchBySlug(slug: string) {
+  return researchEntries.find((entry) => entry.slug === slug);
+}
+
+export function getRelatedResearch(entry: ResearchEntry) {
+  return researchEntries.filter((candidate) => {
+    if (candidate.id === entry.id || candidate.slug === entry.slug) return false;
+    if (candidate.category !== entry.category) return false;
+
+    if (!entry.tags?.length || !candidate.tags?.length) return false;
+
+    return entry.tags.some((tag) => candidate.tags?.includes(tag));
+  });
 }
