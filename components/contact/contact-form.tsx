@@ -88,7 +88,7 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
   }
 
   const fieldClass =
-    "mt-2 min-h-12 w-full rounded-[var(--radius-md)] border border-input-border bg-surface px-4 type-body-sm text-foreground outline-none transition-[border-color,box-shadow] duration-[var(--motion-fast)] placeholder:text-muted-foreground/80 focus:border-primary focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:bg-surface-muted";
+    "mt-2 min-h-12 w-full rounded-[var(--radius-md)] border border-input bg-surface px-4 type-body-sm text-foreground outline-none transition-[border-color,box-shadow] duration-[var(--motion-fast)] placeholder:text-muted-foreground/80 focus:border-primary focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:bg-surface-muted";
 
   const errorFor = (field: keyof FormValues) => errors[field];
 
