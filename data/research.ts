@@ -39,12 +39,27 @@ export type ResearchEntry = {
   type?: string;
   topic?: string;
   image?: string;
-  href: string;
   featured?: boolean;
   tags?: string[];
 };
 
 export const researchEntries: ResearchEntry[] = [];
+
+export function getAllResearch() {
+  return researchEntries;
+}
+
+export function getResearchHref(research: Pick<ResearchEntry, "slug">) {
+  return "/research/" + research.slug;
+}
+
+export function getResearchById(id: string) {
+  return researchEntries.find((entry) => entry.id === id);
+}
+
+export function getResearchBySlug(slug: string) {
+  return researchEntries.find((entry) => entry.slug === slug);
+}
 
 export const researchCategories = Array.from(
   new Set(
@@ -71,10 +86,6 @@ export function getResearchCategoryAnchor(category: string) {
   return `research-category-${slug}`;
 }
 
-export function getResearchBySlug(slug: string) {
-  return researchEntries.find((entry) => entry.slug === slug);
-}
-
 export function getRelatedResearch(entry: ResearchEntry) {
   return researchEntries.filter((candidate) => {
     if (candidate.id === entry.id || candidate.slug === entry.slug) return false;
@@ -84,3 +95,32 @@ export function getRelatedResearch(entry: ResearchEntry) {
     return entry.tags.some((tag) => candidate.tags?.includes(tag));
   });
 }
+
+export function validateResearch(records: readonly ResearchEntry[] = researchEntries) {
+  const ids = new Set<string>();
+  const slugs = new Set<string>();
+
+  for (const research of records) {
+    if (!research.id || !research.title || !research.slug) {
+      throw new Error("Every research entry must have an id, title and slug.");
+    }
+
+    if (ids.has(research.id)) {
+      throw new Error(`Duplicate research id: ${research.id}`);
+    }
+    ids.add(research.id);
+
+    if (slugs.has(research.slug)) {
+      throw new Error(`Duplicate research slug: ${research.slug}`);
+    }
+    slugs.add(research.slug);
+
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(research.slug)) {
+      throw new Error(`Invalid research slug: ${research.slug}`);
+    }
+  }
+
+  return true;
+}
+
+validateResearch();
