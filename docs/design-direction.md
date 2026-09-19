@@ -1631,3 +1631,53 @@ The page uses date-first typography, editorial event rows, restrained dividers, 
 
 ### Development preview
 `/design-system/workshops` is development-only and uses the canonical dataset without injecting test events.
+
+
+## Phase 6.12 — Contact / Enquiry Dedicated Experience
+
+### Purpose
+The Contact route is the dedicated requirement-intake experience. It answers how a visitor can tell Bittumama what they need without repeating the homepage, About page, Services directory, or Research hub.
+
+### Canonical contact data
+`data/contact.ts` centralizes Contact-specific SEO metadata, enquiry guidance, and verified direct-contact methods. The direct-contact collection is currently empty because no verified email address, phone number, WhatsApp number, address, office, opening hours, or other contact channel exists in the project data. No contact detail is fabricated.
+
+The requirement selector consumes the canonical `data/services.ts` service dataset. It does not maintain a duplicate service list.
+
+### Information architecture
+The production page uses:
+1. compact contact/enquiry introduction;
+2. requirement selector and enquiry form;
+3. verified direct-contact methods when available;
+4. concise guidance on useful enquiry context;
+5. secondary service discovery.
+
+The form is the visual and functional center of the page.
+
+### Form architecture
+The frontend form collects only the information needed to understand an enquiry: full name, email, optional phone, service context, and requirement details. Required fields are labelled explicitly and validated locally. Email format, message length, service selection, and optional phone format receive accessible inline errors.
+
+The form supports default, focused, invalid, disabled, submitting, and failure states. A success state is represented architecturally but is not shown after submission because there is no real submission mechanism. A valid submit currently stops at a non-success failure state explaining that backend integration is not connected.
+
+### Service context
+Service detail CTAs route to `/contact?service=<canonical-slug>`, allowing the Contact form to preselect the relevant canonical service without making query parameters necessary for normal use. The Contact page remains fully usable at `/contact`.
+
+### Direct contact methods
+Only verified contact methods are rendered. With no verified methods currently available, the direct-contact section is omitted rather than populated with placeholders.
+
+### Empty and secondary states
+The page does not add a generic bottom CTA banner. Visitors who are unsure of the service can use the secondary Explore Services action. Research requirements can be described directly through the requirement message; no separate research-submission system is introduced.
+
+### Visual and responsive behavior
+The page uses a compact introduction, a two-column desktop composition with contextual guidance beside the form, restrained dividers, strong form hierarchy, comfortable controls, and purposeful whitespace. Mobile prioritizes introduction, requirement selection, form, direct contact methods when verified, and service discovery. No decorative hero, stock imagery, gradients, glassmorphism, or excessive animation is used.
+
+### Accessibility
+The form uses semantic labels, native controls, accessible error messages, `aria-invalid`, `aria-describedby`, `role="alert"`, keyboard-operable controls, visible focus states, required indicators, and an `aria-live` status region. Existing reduced-motion and design-system focus tokens remain authoritative.
+
+### Backend boundary
+Phase 6.12 is frontend only. No email sending, persistence, database, API endpoint, spam protection, CAPTCHA, CRM, authentication, analytics, or secrets are introduced. The form is structured so a future real submission mechanism can be integrated without changing the core information architecture.
+
+### Development preview
+`/design-system/contact` is development-only. It exposes the form architecture and empty-state/direct-contact behavior without sending or storing data. No fake successful submission is exposed publicly.
+
+### Scope
+Phase 6.12 changes only the Contact/enquiry experience and the service-to-contact context handoff. Locked project versions remain unchanged.
