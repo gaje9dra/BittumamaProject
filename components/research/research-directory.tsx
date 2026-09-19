@@ -2,103 +2,63 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import {
-  getResearchCategoryAnchor,
-  getResearchByCategory,
-  researchCategories,
-  researchEntries,
-} from "@/data/research";
+import { getResearchCategoryAnchor, getResearchByCategory, researchCategories, researchEntries } from "@/data/research";
 
 export function ResearchDirectory() {
   const hasEntries = researchEntries.length > 0;
 
   return (
-    <section
-      id="research-directory"
-      aria-labelledby="research-directory-title"
-      className="scroll-anchor bg-surface-muted"
-    >
+    <section id="research-directory" aria-labelledby="research-directory-title" className="scroll-anchor bg-background">
       <Container size="wide" className="layout-section-xl">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
-          <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">01 / Research directory</p>
-            <Heading id="research-directory-title" level={2} className="mt-4 max-w-[18ch]">
-              Explore research.
+          <div className="lg:col-span-3">
+            <p className="type-label text-muted-foreground">Research index</p>
+            <Heading id="research-directory-title" level={2} className="mt-4 max-w-[16ch]">
+              Knowledge archive.
             </Heading>
-            <p className="type-body-sm mt-5 max-w-[38ch] text-muted-foreground">
-              Browse research by category when published content is available.
-            </p>
           </div>
-
-          <div className="lg:col-span-8 lg:col-start-5">
+          <div className="lg:col-span-9 lg:col-start-4">
             {!hasEntries ? (
-              <div className="border-y border-border py-8">
-                <p className="type-h4">No research entries yet.</p>
-                <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">
-                  Research titles, categories and summaries will appear here as research content is published.
-                </p>
+              <div className="border-y border-border py-8 sm:py-10">
+                <div className="grid gap-6 sm:grid-cols-[8rem_minmax(0,1fr)] sm:gap-8">
+                  <p className="type-label text-muted-foreground">Archive</p>
+                  <div>
+                    <p className="type-h4 max-w-[28ch]">Published research will appear here.</p>
+                    <p className="type-body-sm mt-3 max-w-[52ch] text-muted-foreground">
+                      The directory is ready for verified studies, reports, analyses and other research resources.
+                    </p>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="border-t border-border">
                 {researchCategories.map((category) => {
-                  const categoryEntries = getResearchByCategory(category);
-
+                  const entries = getResearchByCategory(category);
                   return (
-                    <div
-                      key={category}
-                      id={getResearchCategoryAnchor(category)}
-                      className="scroll-anchor"
-                    >
-                      <div className="flex items-baseline justify-between gap-6 border-b border-border py-4">
+                    <section key={category} id={getResearchCategoryAnchor(category)} className="scroll-anchor">
+                      <div className="grid gap-2 border-b border-border py-4 sm:grid-cols-[minmax(0,1fr)_auto]">
                         <p className="type-label text-muted-foreground">{category}</p>
-                        <span className="type-caption text-muted-foreground">
-                          {String(categoryEntries.length).padStart(2, "0")} entries
-                        </span>
+                        <span className="type-caption text-muted-foreground">{String(entries.length).padStart(2, "0")} entries</span>
                       </div>
-
                       <ol>
-                        {categoryEntries.map((entry, index) => (
-                          <li
-                            key={`${entry.id}-${entry.slug}-${index}`}
-                            className="border-b border-border"
-                          >
-                            <Link
-                              href={entry.href}
-                              className="group grid gap-5 py-7 transition-colors duration-[var(--motion-fast)] hover:bg-background/70 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(11rem,.45fr)_auto] sm:items-start sm:gap-6 sm:py-8"
-                            >
-                              <span className="type-caption text-muted-foreground">
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
+                        {entries.map((entry, index) => (
+                          <li key={entry.id} className="border-b border-border">
+                            <Link href={entry.href} className="group grid gap-4 py-6 sm:grid-cols-[3rem_minmax(0,1fr)_8rem_auto] sm:items-start sm:gap-6">
+                              <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                               <div>
-                                <Heading level={3} className="max-w-[24ch]">
-                                  {entry.title}
-                                </Heading>
-                                <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">
-                                  {entry.shortDescription}
-                                </p>
+                                <Heading level={3} className="max-w-[30ch]">{entry.title}</Heading>
+                                <p className="type-body-sm mt-2 max-w-[56ch] text-muted-foreground">{entry.shortDescription}</p>
                               </div>
-                              <div className="sm:border-l sm:border-border sm:pl-6">
-                                <p className="type-caption text-muted-foreground">
-                                  {entry.type ?? category}
-                                </p>
-                                {entry.topic && (
-                                  <p className="type-body-sm mt-1">{entry.topic}</p>
-                                )}
-                                {entry.date && (
-                                  <p className="type-caption mt-2 text-muted-foreground">
-                                    {entry.date}
-                                  </p>
-                                )}
+                              <div className="sm:border-l sm:border-border sm:pl-5">
+                                <p className="type-caption text-muted-foreground">{entry.type ?? "Research"}</p>
+                                {entry.date && <p className="type-caption mt-2 text-muted-foreground">{entry.date}</p>}
                               </div>
-                              <ArrowUpRight
-                                aria-hidden="true"
-                                className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                              />
+                              <ArrowUpRight aria-hidden="true" className="mt-1 size-5 text-muted-foreground transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                             </Link>
                           </li>
                         ))}
                       </ol>
-                    </div>
+                    </section>
                   );
                 })}
               </div>
