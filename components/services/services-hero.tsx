@@ -4,16 +4,16 @@ import { Heading } from "@/components/ui/heading";
 export function ServicesHero() {
   return (
     <section aria-labelledby="services-page-title" className="border-b border-border bg-background">
-      <Container size="wide" className="py-10 sm:py-14 lg:py-16">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-x-8 xl:gap-x-12">
-          <div className="lg:col-span-7">
+      <Container size="wide" className="py-8 sm:py-10 lg:py-12">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
+          <div>
             <p className="type-label text-muted-foreground">Services</p>
-            <Heading id="services-page-title" level={1} className="mt-4 max-w-[15ch]">
-              Research support, from methodology to publication.
+            <Heading id="services-page-title" level={1} className="mt-3 max-w-[18ch]">
+              Research support you can engage for.
             </Heading>
           </div>
-          <p className="type-body-sm max-w-[42ch] text-muted-foreground lg:col-span-4 lg:col-start-9">
-            Practical support for thesis, research, analysis, publication and ongoing research work.
+          <p className="type-body-sm max-w-[48ch] text-muted-foreground sm:pb-1">
+            Thesis, research, analysis, publication, mentoring and research technology services.
           </p>
         </div>
       </Container>
