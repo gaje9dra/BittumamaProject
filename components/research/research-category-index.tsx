@@ -15,6 +15,14 @@ export function ResearchCategoryIndex() {
       <div className="mx-auto w-full max-w-[var(--container-wide)] px-[var(--page-gutter)]">
         <div className="overflow-x-auto">
           <ul className="flex min-w-max items-center gap-6 py-4">
+            <li>
+              <Link
+                href="#research-directory"
+                className="inline-flex min-h-10 items-center type-label text-foreground underline decoration-border underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3"
+              >
+                All research
+              </Link>
+            </li>
             {researchCategories.map((category) => (
               <li key={category}>
                 <Link
