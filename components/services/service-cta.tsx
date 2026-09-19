@@ -25,7 +25,7 @@ export function ServiceCta({ service }: ServiceCtaProps) {
               Tell us what you need and the context of your research work.
             </p>
             <Button asChild className="group mt-7 bg-background text-foreground hover:bg-surface-muted active:bg-surface-interactive">
-              <Link href={"/contact?service=" + service.slug}>
+              <Link href="/contact">
                 Discuss This Service
                 <ArrowUpRight aria-hidden="true" className="size-4 transition-transform duration-[var(--motion-fast)] group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Link>
