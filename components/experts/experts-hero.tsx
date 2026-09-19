@@ -6,7 +6,7 @@ import { Heading } from "@/components/ui/heading";
 export function ExpertsHero() {
   return (
     <section aria-labelledby="experts-title" className="border-b border-border bg-background">
-      <Container size="wide" className="py-8 sm:py-10 lg:py-12">
+      <Container size="wide" className="py-10 sm:py-14 lg:py-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-7">
             <p className="type-label text-muted-foreground">Experts</p>
