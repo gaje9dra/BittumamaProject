@@ -3,8 +3,16 @@ import Link from "next/link";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ResearchDetailHero } from "@/components/research/research-detail-hero";
-import { ResearchDetailOverview, ResearchDetailScope, ResearchDetailTopics, ResearchDetailMethodology, ResearchDetailAudience, ResearchDetailHighlights, ResearchContents, ResearchDetailContent } from "@/components/research/research-detail-content";
-import { ResearchDetailContent } from "@/components/research/research-detail-content";
+import {
+  ResearchDetailAudience,
+  ResearchDetailContent,
+  ResearchDetailHighlights,
+  ResearchDetailMethodology,
+  ResearchDetailOverview,
+  ResearchDetailScope,
+  ResearchDetailTopics,
+  ResearchContents,
+} from "@/components/research/research-detail-content";
 import { ResearchDetailCta } from "@/components/research/research-detail-cta";
 import type { ResearchEntry } from "@/data/research";
 
