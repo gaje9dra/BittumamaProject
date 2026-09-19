@@ -113,6 +113,11 @@ Research framework
             </figure>
           </div>
         </div>
+
+        <div
+          aria-hidden="true"
+          className="mt-12 border-t border-border sm:mt-14 lg:mt-16"
+        />
       </Container>
     </section>
   );
