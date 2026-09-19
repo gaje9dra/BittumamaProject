@@ -1229,3 +1229,38 @@ The page uses existing transition and focus tokens only. No new client-side inte
 
 ### Content rule
 Only verified research content may populate the directory. No authors, findings, datasets, publications, dates, institutions, awards, counts or authority claims are invented.
+
+
+## Research Directory Discovery & UX Refinement — Phase 6.2
+
+### Discovery model
+The current canonical research dataset is empty, so client-side filtering is not justified yet. The production directory therefore remains server-rendered and uses the simplest useful discovery architecture: a canonical research directory with a lightweight category index that appears only when more than one real category exists.
+
+No artificial categories, counts, filter states, query-string state, sorting, date ranges, or faceted controls are introduced.
+
+### Category behavior
+Research categories are derived directly from `data/research.ts`. When multiple real categories exist, the category index provides semantic anchor links plus an **All research** link back to the directory start. With zero or one category, the index remains hidden because it would not materially improve discovery.
+
+### Research item hierarchy
+Research entries remain typography-led numbered rows rather than large cards. The row hierarchy is title → concise description → type/category → optional topic/date → direct route. Optional metadata is rendered only when the canonical record supplies it.
+
+### Empty-state behavior
+The empty production directory uses a concise state with no fabricated research records, publications, counts, or filler. It explains what the directory contains and keeps the page visually stable until real research content is available.
+
+### Responsive behavior
+Desktop preserves the editorial split between the directory introduction and research list. Tablet compresses metadata without introducing a filter dashboard. Mobile keeps category navigation horizontally usable when multiple categories exist, preserves title hierarchy, and avoids page-level horizontal overflow.
+
+### Interaction and accessibility
+Category navigation uses semantic links rather than client-side state because the current content does not justify filtering. Links retain visible focus states and comfortable touch targets. Research rows remain semantic links, with optional metadata that does not compete with titles.
+
+### Client/server boundary
+No new client component is required in Phase 6.2. The canonical research dataset remains server-side, and the directory does not duplicate data into a client filtering layer. A future client discovery control can be isolated if the approved dataset grows enough to justify it.
+
+### Motion
+Discovery uses the existing hover/focus transitions and small directional arrow movement already established by the design system. No filter animation or layout choreography is added while there is no real filtered state to communicate. Reduced-motion behavior continues to come from the global motion system.
+
+### SEO and routing
+`/research` remains the only production research directory route. Filter or category states do not receive query-string URLs or separate metadata. Research detail routes remain out of scope for this phase.
+
+### Integration
+The existing global Header and homepage Research links remain unchanged. Their existing `/research` destinations continue to resolve to the refined directory. No unrelated navigation or homepage redesign was introduced.
