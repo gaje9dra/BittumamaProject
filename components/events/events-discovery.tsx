@@ -87,7 +87,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
                     </span>
                   )}
                   <Link
-                    href={event.href ?? "/workshops/" + event.slug}
+                    href={"/workshops/" + event.slug}
                     className="type-button inline-flex min-h-11 items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3"
                   >
                     View Event
