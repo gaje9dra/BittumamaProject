@@ -2,8 +2,9 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceById, getServiceHref } from "@/data/services";
-import { getResearchById, getResearchHref } from "@/data/research";
+import { getServiceHref } from "@/data/services";
+import { getResearchHref } from "@/data/research";
+import { getServicesForExpert, getResearchForExpert, getArticlesForExpert } from "@/lib/content/relationships";
 import type { Expert } from "@/data/expertise";
 
 function LinkedRows({ title, items, resolve }: { title: string; items: string[]; resolve: (id: string) => { title: string; href: string } | undefined }) {
@@ -35,7 +36,8 @@ export function ExpertDetailContent({ expert }: { expert: Expert }) {
     Boolean(expert.researchInterests?.length) ||
     Boolean(expert.bio) ||
     Boolean(expert.serviceIds?.length) ||
-    Boolean(expert.researchIds?.length);
+    Boolean(expert.researchIds?.length) ||
+    Boolean(expert.articleIds?.length);
 
   if (!hasContent) return null;
 
@@ -71,8 +73,9 @@ export function ExpertDetailContent({ expert }: { expert: Expert }) {
           ) : null}
           {expert.bio ? <section className="mt-10 border-t border-border pt-7"><p className="type-label text-muted-foreground">Professional background</p><p className="type-body mt-4 max-w-[66ch] whitespace-pre-line">{expert.bio}</p></section> : null}
           <div className="mt-10">
-            <LinkedRows title="Related services" items={expert.serviceIds ?? []} resolve={(id) => { const item = getServiceById(id); return item ? { title: item.title, href: getServiceHref(item) } : undefined; }} />
-            <LinkedRows title="Related research" items={expert.researchIds ?? []} resolve={(id) => { const item = getResearchById(id); return item ? { title: item.title, href: getResearchHref(item) } : undefined; }} />
+            <LinkedRows title="Related services" items={getServicesForExpert(expert.id).map((item) => item.id)} resolve={(id) => { const item = getServicesForExpert(expert.id).find((service) => service.id === id); return item ? { title: item.title, href: getServiceHref(item) } : undefined; }} />
+            <LinkedRows title="Related research" items={getResearchForExpert(expert.id).map((item) => item.id)} resolve={(id) => { const item = getResearchForExpert(expert.id).find((research) => research.id === id); return item ? { title: item.title, href: getResearchHref(item) } : undefined; }} />
+            <LinkedRows title="Related articles" items={getArticlesForExpert(expert.id).map((item) => item.id)} resolve={(id) => { const item = getArticlesForExpert(expert.id).find((article) => article.id === id); return item ? { title: item.title, href: "/articles/" + item.slug } : undefined; }} />
           </div>
         </div>
       </div>
