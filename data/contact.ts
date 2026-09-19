@@ -1,9 +1,9 @@
 import { services } from "@/data/services";
 
 export type ContactMethod = {
-  label: string;
-  action: string;
-  href: string;
+  label?: string;
+  action?: string;
+  href?: string;
   external?: boolean;
 };
 
