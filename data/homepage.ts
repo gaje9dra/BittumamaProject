@@ -1,4 +1,4 @@
-import { services as serviceDirectory } from "@/data/services";
+import { getServiceById, getServiceHref } from "@/data/services";
 
 export const homepageContent = {
   hero: {
@@ -50,18 +50,18 @@ export const homepageContent = {
         title: "Thesis & Dissertation",
         description: "Support for students working on thesis and dissertation requirements.",
         services: ["thesis-support", "dissertation-support"]
-          .map((id) => serviceDirectory.find((service) => service.id === id))
-          .filter((service): service is (typeof serviceDirectory)[number] => Boolean(service))
-          .map((service) => ({ label: service.title, href: service.href })),
+          .map((id) => getServiceById(id))
+          .filter((service) => Boolean(service))
+          .map((service) => ({ label: service!.title, href: getServiceHref(service!) })),
       },
       {
         index: "02",
         title: "Research Papers & Analysis",
         description: "Support for researchers and students working on papers and data analysis.",
         services: ["research-paper", "data-analysis"]
-          .map((id) => serviceDirectory.find((service) => service.id === id))
-          .filter((service): service is (typeof serviceDirectory)[number] => Boolean(service))
-          .map((service) => ({ label: service.title, href: service.href })),
+          .map((id) => getServiceById(id))
+          .filter((service) => Boolean(service))
+          .map((service) => ({ label: service!.title, href: getServiceHref(service!) })),
       },
     ],
   },
