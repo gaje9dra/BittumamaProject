@@ -26,16 +26,16 @@ export function ResearchDirectory() {
               Explore research.
             </Heading>
             <p className="type-body-sm mt-5 max-w-[38ch] text-muted-foreground">
-              Research entries will be listed here when verified content is available.
+              Browse research by category when published content is available.
             </p>
           </div>
 
           <div className="lg:col-span-8 lg:col-start-5">
             {!hasEntries ? (
               <div className="border-y border-border py-8">
-                <p className="type-h4">Research directory</p>
+                <p className="type-h4">No research entries yet.</p>
                 <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">
-                  Research titles, categories and summaries will appear here when approved content is available.
+                  Research titles, categories and summaries will appear here as research content is published.
                 </p>
               </div>
             ) : (
@@ -83,6 +83,11 @@ export function ResearchDirectory() {
                                 </p>
                                 {entry.topic && (
                                   <p className="type-body-sm mt-1">{entry.topic}</p>
+                                )}
+                                {entry.date && (
+                                  <p className="type-caption mt-2 text-muted-foreground">
+                                    {entry.date}
+                                  </p>
                                 )}
                               </div>
                               <ArrowUpRight
