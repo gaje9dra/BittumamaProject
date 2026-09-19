@@ -11,7 +11,9 @@ export const metadata: Metadata = {
   description: contactData.seo.description,
 };
 
-export default function ContactPage() {
+export default async function ContactPage({ searchParams }: { searchParams: Promise<{ service?: string }> }) {
+  const { service } = await searchParams;
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <ContactIntroduction />
@@ -25,7 +27,7 @@ export default function ContactPage() {
             </p>
           </div>
           <div className="lg:col-span-8">
-            <ContactForm />
+            <ContactForm initialService={service} />
           </div>
         </div>
       </section>
