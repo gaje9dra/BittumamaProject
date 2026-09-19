@@ -16,6 +16,7 @@ export default function ResearchPage() {
     <main className="min-h-screen bg-background text-foreground">
       <ResearchHero />
       <ResearchCategoryIndex />
+      <ResearchFeatured />
       <ResearchDirectory />
       <ResearchCta />
     </main>
