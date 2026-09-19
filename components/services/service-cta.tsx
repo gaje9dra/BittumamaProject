@@ -15,7 +15,7 @@ export function ServiceCta({ service }: ServiceCtaProps) {
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-8">
-            <p className="type-label text-primary-100">05 / Next step</p>
+            <p className="type-label text-primary-100">Next step</p>
             <Heading id="service-cta-title" level={2} className="mt-5 max-w-[18ch] text-primary-foreground">
               Discuss your {service.title.toLowerCase()} requirement.
             </Heading>
