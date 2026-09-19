@@ -30,14 +30,14 @@ export function HomeServiceDiscovery() {
 
           <div className="lg:col-span-8 lg:col-start-5">
             <div className="border-t border-border">
-              {services.items.map((service) => (
+              {services.items.map((service, index) => (
                 <Link
-                  key={service.index}
+                  key={service.id}
                   href={service.href}
                   className="group grid min-h-20 items-center gap-4 border-b border-border py-5 transition-colors duration-[var(--motion-fast)] hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(10rem,.5fr)_auto] sm:gap-6"
                 >
                   <span className="type-caption text-muted-foreground">
-                    {service.index}
+                    {String(index + 1).padStart(2, "0")}
                   </span>
 
                   <span className="type-h4 max-w-[24ch] transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5">
@@ -45,7 +45,7 @@ export function HomeServiceDiscovery() {
                   </span>
 
                   <span className="type-body-sm text-muted-foreground">
-                    {service.description}
+                    {service.shortDescription}
                   </span>
 
                   <ArrowUpRight
