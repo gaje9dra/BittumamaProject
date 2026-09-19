@@ -20,10 +20,10 @@ export type Article = {
   image?: string;
   featured?: boolean;
   tags?: string[];
-  relatedArticles?: string[];
-  relatedResearch?: string[];
-  relatedServices?: string[];
-  relatedExperts?: string[];
+  relatedArticleIds?: string[];
+  relatedResearchIds?: string[];
+  relatedServiceIds?: string[];
+  relatedExpertIds?: string[];
   seo?: {
     title?: string;
     description?: string;
@@ -50,8 +50,8 @@ export function getFeaturedArticles() {
 }
 
 export function getRelatedArticles(article: Article) {
-  const relatedSlugs = article.relatedArticles ?? [];
-  return relatedSlugs
-    .map((slug) => getArticleBySlug(slug))
-    .filter((item): item is Article => Boolean(item));
+  const relatedIds = new Set(article.relatedArticleIds ?? []);
+  return articles.filter(
+    (candidate) => candidate.id !== article.id && relatedIds.has(candidate.id),
+  );
 }
