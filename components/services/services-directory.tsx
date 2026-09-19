@@ -47,7 +47,7 @@ export function ServicesDirectory() {
 
                     <ol>
                       {categoryServices.map((service, index) => (
-                        <li key={service.id} className="border-b border-border">
+                        <li key={`${service.id}-${service.slug}-${index}`} className="border-b border-border">
                           <Link
                             href={service.href}
                             className="group grid gap-5 py-7 transition-colors duration-[var(--motion-fast)] hover:bg-background/70 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(11rem,.45fr)_auto] sm:items-start sm:gap-6 sm:py-8"
