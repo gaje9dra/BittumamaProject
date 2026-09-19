@@ -6,7 +6,7 @@ export function EventCategories({ categories }: { categories: string[] }) {
 
   return (
     <section aria-labelledby="event-categories-title" className="border-b border-border">
-      <Container width="standard" className="py-10">
+      <Container size="default" className="py-10">
         <div className="flex flex-wrap items-baseline gap-x-7 gap-y-3">
           <h2 id="event-categories-title" className="type-label text-muted-foreground">Browse by format</h2>
           {categories.map((category) => (
