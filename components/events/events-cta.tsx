@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 export function EventsCta() {
   return (
     <section className="border-b border-border">
-      <Container width="standard" className="py-12 sm:py-14">
+      <Container size="default" className="py-12 sm:py-14">
         <div className="flex flex-col gap-5 border-t border-primary pt-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="type-label text-muted-foreground">Workshops &amp; Events</p>
