@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 
