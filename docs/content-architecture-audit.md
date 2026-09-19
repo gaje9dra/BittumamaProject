@@ -345,3 +345,77 @@ The audit environment could not run a local Node installation or dev server, so 
 ## Stop condition
 
 Stop at Phase 7.1. Do not begin Phase 7.2, backend/database work, PostgreSQL, Prisma, authentication, admin, CMS, SEO refactoring or performance work from this document alone.
+
+
+## Phase 7.2 implementation — canonical Services
+
+The Phase 7.2 migration keeps `data/services.ts` as the single authoritative Service dataset.
+
+### Canonical model
+
+The existing `Service` model remains intentionally small and factual:
+
+- `id` — stable service identifier
+- `title` — canonical display name
+- `slug` — stable URL-safe identifier
+- `category`
+- `shortDescription`
+- optional `need`, `focus`, `audience`
+- optional `highlights`, `faq`
+- optional `featured`, `status`
+
+The former per-record `href` field is not retained. Service URLs are derived from the canonical slug through `getServiceHref()`, preventing URL drift when a slug is intentionally changed.
+
+### Canonical access helpers
+
+`data/services.ts` now exposes only the small helpers needed by current consumers:
+
+- `getAllServices()`
+- `getServiceById(id)`
+- `getServiceBySlug(slug)`
+- `getServiceHref(service)`
+- `getFeaturedServices()`
+- `getServicesByCategory(category)`
+- `getServiceCategoryAnchor(category)`
+- `getRelatedServices(service)`
+- `validateServices(records)`
+
+Invalid lookups return `undefined`. No lookup falls back to another service.
+
+### IDs and slugs
+
+Every canonical service has a stable unique ID. Existing IDs were preserved.
+
+Service slugs are lower-case, URL-safe, hyphen-separated values and remain the route contract for `/services/[slug]`. Existing slugs were preserved.
+
+Module-load validation checks for missing ID/title/slug, duplicate IDs, duplicate slugs and invalid slug syntax.
+
+### Categories and order
+
+Service category values and category order continue to derive from the canonical dataset. The existing service array order remains the canonical display order; consumers do not independently sort or redefine the service catalogue.
+
+### Current consumers
+
+The following legitimate service consumers now resolve from the canonical dataset/access helpers:
+
+- `/services` directory and category navigation
+- `/services/[slug]` static params, lookup and canonical metadata URL
+- service finder
+- homepage service discovery
+- homepage audience service references
+- Contact service options and the development/reference Contact form
+- premium footer service links
+- service-to-service related-content links
+- research-to-service links
+
+The design-system service detail preview intentionally derives its preview fixtures from canonical services as well.
+
+No page component contains an independent service record catalogue.
+
+### Relationship boundary
+
+Phase 7.2 does not introduce a cross-content relationship engine. Existing service-to-service category-based related behavior and existing research-to-service references remain within their current scope.
+
+### Future rule
+
+New service references must resolve by canonical service ID or slug and must not repeat service names, descriptions, categories or URLs in page-local data. Future relationship/content migrations must build on this source rather than create another Services dataset.
