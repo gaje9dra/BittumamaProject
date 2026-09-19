@@ -1401,3 +1401,41 @@ Service discovery and service lists remain scan-oriented on mobile. Research the
 
 ### Architecture constraints
 Server Components remain the default. The phase adds no backend, CMS, authentication, payment, admin, analytics, AI implementation or unnecessary dependencies. Locked project versions remain unchanged.
+
+
+## Services Dedicated Experience — Phase 6.6
+
+### Page purpose
+The Services route is a dedicated service product directory. Its job is to answer what a visitor can engage Bittumama for, what requirement each service addresses, what is known about its scope/relevance, and where to go next. It does not reuse the homepage or Research page composition.
+
+### Canonical service data
+The canonical service dataset remains the single service source of truth. Phase 6.6 adds only service-discovery fields needed by the directory: `need` and `focus`. Established services are represented by their canonical names. Services without implemented offering detail are explicitly marked `Coming Soon`; no price, timeline, guarantee, success metric or client claim is introduced.
+
+### Service discovery
+The page begins with a compact service introduction followed by a client-side need finder. The finder uses selectable requirement rows rather than generic cards. Selecting a need reveals the mapped canonical service and links directly to `/services/[slug]`.
+
+### Category architecture
+Services are grouped into practical categories: Research, Thesis & Academic Work, Mentoring, Analysis, Publication and Research Technology. Category navigation anchors into the main catalogue. Categories are based on the established service dataset rather than visual balancing.
+
+### Main catalogue
+The central service catalogue uses indexed rows. Each row exposes the service name, concise description, need addressed, relevant audience, category context and a direct service route. `Coming Soon` status is visible without inventing availability claims.
+
+### Detail relationship
+`/services` is discovery and selection. `/services/[slug]` is service-specific understanding, relevance, related services and enquiry. The detail route continues to use canonical service data and Next.js `notFound()` for invalid slugs.
+
+### Service detail refinement
+Service detail pages now surface the requirement addressed, focus and audience when those fields are known. The hero uses service-specific actions and distinguishes Coming Soon services. Related-service language is service-oriented rather than research-directory language.
+
+### Conversion hierarchy
+The primary conversion path is:
+Need → relevant service → service detail → enquiry.
+The final Services CTA asks visitors who are unsure which service they need to discuss their requirement rather than using a generic startup CTA.
+
+### Responsive and accessibility
+The finder uses native buttons with `aria-pressed`, an `aria-live` result region, visible focus states and keyboard-operable controls. The catalogue becomes stacked indexed rows on smaller screens and avoids horizontal overflow. Existing motion tokens and reduced-motion rules remain in use.
+
+### Development preview
+`/design-system/services` is development-only and renders the same Services composition used by production, allowing inspection of selection states, category anchors, service statuses and responsive behavior. It is unavailable in production.
+
+### Scope constraints
+No backend, database, CMS, authentication, payments, admin, advanced search, AI assistant, booking flow or analytics were introduced. Locked project versions remain unchanged.
