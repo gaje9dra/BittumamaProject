@@ -14,9 +14,9 @@ export function ServiceAudience({ service }: ServiceAudienceProps) {
       <Container size="wide" className="layout-section-lg">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
-            <p className="type-label text-muted-foreground">03 / Who it is for</p>
+            <p className="type-label text-muted-foreground">Who it is for</p>
             <Heading id="service-audience-title" level={2} className="mt-4 max-w-[18ch]">
-              Relevant to your research work.
+              Who this service is for.
             </Heading>
           </div>
           <div className="lg:col-span-7 lg:col-start-6">
