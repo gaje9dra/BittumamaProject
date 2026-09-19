@@ -1169,3 +1169,29 @@ FAQ questions use full-width comfortable tap targets and remain readable on mobi
 
 ### Content rules
 No FAQ content is fabricated when verified answers are unavailable. No pricing, delivery times, guarantees, refund policies, availability, success rates, testimonials, credentials, partnerships, or outcomes are introduced. Related content is omitted when real source data does not exist.
+
+## Services System Final Integration & Production Readiness — Phase 5.6
+
+### Final information hierarchy
+The service-detail hero now carries the concise service statement and primary CTA. The redundant standalone overview section was removed because it repeated the same `shortDescription`. Optional highlights, audience, FAQ, related services, and the final CTA remain conditional/content-driven.
+
+### Discovery and navigation
+The current four-service dataset remains a single **Research & Academic Support** category, so no unnecessary filter UI is rendered. The directory remains the canonical discovery route, while each service links directly to its dynamic `/services/[slug]` page. Breadcrumbs provide Home → Services → Current Service context on detail pages.
+
+### Data architecture
+`data/services.ts` remains the single source of truth for service identity, taxonomy, descriptions, audience, optional highlights, optional FAQ data, and routes. Related services are derived by category and exclude the current slug. Current service records contain unique IDs and slugs; no duplicate service definitions were introduced.
+
+### FAQ and related content
+FAQ remains optional and renders only when service data contains verified question/answer records. The interactive item is the only client component in the FAQ layer. Related services use canonical service data; articles and events are omitted because no verified service-related relationship currently exists.
+
+### CTA hierarchy
+The hero provides the primary service action. Related-service rows provide secondary discovery. The page closes with one contextual `Discuss This Service` CTA routed to `/contact`. No repeated conversion buttons or unsupported offers are used.
+
+### Copy and duplication
+Service copy was audited for paragraph-heavy or generic marketing language. Customer-facing development terms and generic marketing phrases are absent. Repeated audience metadata was removed from the hero because the dedicated audience section already communicates that information.
+
+### Responsive, accessibility, and motion
+The existing editorial grid, typography, dividers, focus styles, tap targets, and reduced-motion tokens remain the foundation. The FAQ uses a native button with `aria-expanded` and `aria-controls`, while service and breadcrumb navigation remain semantic links. No hover-only information or new animation system was introduced.
+
+### Production cleanup
+The unused standalone service overview component was removed after its content was consolidated into the hero. The development service-detail playground now reflects the final page composition and continues to cover optional content and long-content states without being exposed in production.
