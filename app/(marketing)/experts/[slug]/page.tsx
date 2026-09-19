@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ExpertDetailPage } from "@/components/experts/expert-detail-page";
-import { experts, getExpertBySlug } from "@/data/expertise";
+import { getAllExperts, getExpertBySlug, getExpertHref } from "@/data/expertise";
 
 type ExpertDetailRouteProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return experts.map((expert) => ({ slug: expert.slug }));
+  return getAllExperts().map((expert) => ({ slug: expert.slug }));
 }
 
 export async function generateMetadata({ params }: ExpertDetailRouteProps): Promise<Metadata> {
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: ExpertDetailRouteProps): Prom
   return {
     title: expert.seo?.title ?? expert.name + " | Experts | Bittumama",
     description: expert.seo?.description ?? expert.shortBio,
-    alternates: { canonical: "/experts/" + expert.slug },
+    alternates: { canonical: getExpertHref(expert) },
   };
 }
 
