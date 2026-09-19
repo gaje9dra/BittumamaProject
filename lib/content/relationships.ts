@@ -45,7 +45,7 @@ function resolveByIdOrSlug<T extends { id: string; slug: string }>(
   return getById(reference) ?? getBySlug(reference);
 }
 
-export function getResearchForService(serviceId: string): ResearchEntry[] {
+export function getServicesForResearch(research: ResearchEntry): Service[] {\n  return (research.relatedServiceIds ?? [])\n    .map((reference) => resolveByIdOrSlug(reference, getServiceById, getServiceBySlug))\n    .filter((item): item is Service => Boolean(item));\n}\n\nexport function getResearchForService(serviceId: string): ResearchEntry[] {
   const service = getServiceById(serviceId);
   if (!service) return [];
 
