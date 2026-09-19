@@ -14,6 +14,10 @@ type ResearchDirectoryProps = {
   categories?: string[];
 };
 
+function entriesByCategory(entries: ResearchEntry[], category: string) {
+  return entries.filter((entry) => entry.category === category);
+}
+
 export function ResearchDirectory({
   entries = canonicalEntries,
   categories = canonicalCategories,
