@@ -1,3 +1,5 @@
+import { services as serviceDirectory } from "@/data/services";
+
 export type HomepageLink = {
   label: string;
   href: string;
@@ -157,12 +159,7 @@ export const homepageContent = {
     title: "Research Services",
     description:
       "Academic support for writing, editing, methodology and research analysis.",
-    items: [
-      { index: "01", title: "Thesis Support", description: "Thesis assistance, editing and proofreading.", category: "Thesis", audience: "Students and researchers", format: "Research support", href: "/services/thesis-support" },
-      { index: "02", title: "Dissertation Support", description: "Dissertation assistance, editing and research support.", category: "Dissertation", audience: "Students and researchers", format: "Research support", href: "/services/dissertation-support" },
-      { index: "03", title: "Research Paper", description: "Research paper writing, review and editing support.", category: "Research Paper", audience: "Students and researchers", format: "Research support", href: "/services/research-paper" },
-      { index: "04", title: "Data Analysis", description: "Statistical analysis, interpretation and visualization.", category: "Analysis", audience: "Students and researchers", format: "Analysis support", href: "/services/data-analysis" },
-    ],
+    items: serviceDirectory,
     action: { label: "View All Services", href: "/services" },
   },
   audience: {
@@ -175,8 +172,8 @@ export const homepageContent = {
         title: "Thesis & Dissertation",
         description: "Support for students working on thesis and dissertation requirements.",
         services: [
-          { label: "Thesis Support", href: "/services/thesis-support" },
-          { label: "Dissertation Support", href: "/services/dissertation-support" },
+          { label: serviceDirectory[0].title, href: serviceDirectory[0].href },
+          { label: serviceDirectory[1].title, href: serviceDirectory[1].href },
         ],
       },
       {
@@ -184,8 +181,8 @@ export const homepageContent = {
         title: "Research Papers & Analysis",
         description: "Support for researchers and students working on papers and data analysis.",
         services: [
-          { label: "Research Paper", href: "/services/research-paper" },
-          { label: "Data Analysis", href: "/services/data-analysis" },
+          { label: serviceDirectory[2].title, href: serviceDirectory[2].href },
+          { label: serviceDirectory[3].title, href: serviceDirectory[3].href },
         ],
       },
     ],
