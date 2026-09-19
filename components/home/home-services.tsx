@@ -24,12 +24,12 @@ export function HomeServices() {
 
           <div className="lg:col-span-8 lg:col-start-5">
             <div className="border-t border-border">
-              {services.items.map((service) => (
-                <Link key={service.index} href={service.href} className="group grid min-h-32 gap-5 border-b border-border py-7 transition-colors duration-[var(--motion-fast)] hover:bg-background/70 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(12rem,.45fr)_auto] sm:items-start sm:gap-6 sm:py-8">
-                  <span className="type-caption text-muted-foreground">{service.index}</span>
+              {services.items.map((service, index) => (
+                <Link key={service.id} href={service.href} className="group grid min-h-32 gap-5 border-b border-border py-7 transition-colors duration-[var(--motion-fast)] hover:bg-background/70 focus-visible:bg-background/70 focus-visible:outline-2 focus-visible:outline-offset-[-2px] sm:grid-cols-[3rem_minmax(0,1fr)_minmax(12rem,.45fr)_auto] sm:items-start sm:gap-6 sm:py-8">
+                  <span className="type-caption text-muted-foreground">{String(index + 1).padStart(2, "0")}</span>
                   <div>
                     <p className="type-h4 max-w-[22ch] transition-transform duration-[var(--motion-fast)] group-hover:translate-x-0.5">{service.title}</p>
-                    <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">{service.description}</p>
+                    <p className="type-body-sm mt-3 max-w-[48ch] text-muted-foreground">{service.shortDescription}</p>
                   </div>
                   <dl className="grid grid-cols-2 gap-x-5 gap-y-2 sm:block sm:border-l sm:border-border sm:pl-6">
                     <div><dt className="type-caption text-muted-foreground/80">Audience</dt><dd className="type-body-sm mt-1">{service.audience}</dd></div>
