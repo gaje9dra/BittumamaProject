@@ -3,9 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceBySlug } from "@/data/services";
-import { getResearchBySlug } from "@/data/research";
-import { getRelatedArticles, type Article } from "@/data/articles";
+import { getArticleAuthor, getRelatedArticles, getResearchByIds, getServicesByIds, type Article } from "@/lib/content";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
   if (!items.length) return null;
@@ -32,14 +30,11 @@ function RelatedList({ title, items }: { title: string; items: { title: string; 
 
 export function ArticleDetailPage({ article }: { article: Article }) {
   const relatedArticles = getRelatedArticles(article);
-  const relatedResearch = (article.relatedResearch ?? [])
-    .map(getResearchBySlug)
-    .filter((item): item is NonNullable<ReturnType<typeof getResearchBySlug>> => Boolean(item));
-  const relatedServices = (article.relatedServices ?? [])
-    .map(getServiceBySlug)
-    .filter((item): item is NonNullable<ReturnType<typeof getServiceBySlug>> => Boolean(item));
+  const relatedResearch = getResearchByIds(article.relatedResearchIds ?? []);
+  const relatedServices = getServicesByIds(article.relatedServiceIds ?? []);
 
   const author = article.author;
+  const authorProfile = getArticleAuthor(article);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
