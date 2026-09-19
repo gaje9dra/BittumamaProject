@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { EventDetailPage } from "@/components/events/event-detail-page";
-import { events, getEventBySlug } from "@/data/events";
+import { getAllEvents, getEventBySlug } from "@/data/events";
 
 export function generateStaticParams() {
-  return events.map((event) => ({ slug: event.slug }));
+  return getAllEvents().map((event) => ({ slug: event.slug }));
 }
 
 export async function generateMetadata({
