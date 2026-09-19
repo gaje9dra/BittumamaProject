@@ -24,7 +24,7 @@ export const contactData = {
     "What support do you need?",
     "Any relevant deadline or specific research/data requirement?",
   ],
-  contactMethods: [] satisfies ContactMethod[],
+  contactMethods: [] as ContactMethod[],
 };
 
 export const contactServiceOptions = services;
