@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { getServiceBySlug } from "@/data/services";
 import { getResearchBySlug } from "@/data/research";
-import { getArticleBySlug, getRelatedArticles, type Article } from "@/data/articles";
+import { getRelatedArticles, type Article } from "@/data/articles";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
   if (!items.length) return null;
@@ -39,7 +39,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
     .map(getServiceBySlug)
     .filter((item): item is NonNullable<ReturnType<typeof getServiceBySlug>> => Boolean(item));
 
-  const author = article.authorSlug ? undefined : article.author;
+  const author = article.author;
 
   return (
     <main className="min-h-screen bg-background text-foreground">
