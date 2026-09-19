@@ -22,8 +22,15 @@ export type Service = {
   highlights?: ServiceHighlight[];
   faq?: ServiceFaq[];
   href: string;
+  relatedResearchIds?: string[];
+  relatedArticleIds?: string[];
+  relatedExpertIds?: string[];
   featured?: boolean;
   status?: ServiceStatus;
+  seo?: {
+    title?: string;
+    description?: string;
+  };
 };
 
 export const services: Service[] = [
@@ -179,9 +186,9 @@ export function getServiceBySlug(slug: string) {
 }
 
 export function getRelatedServices(service: Service) {
+  const relatedIds = new Set(service.relatedArticleIds ?? []);
   return services.filter(
     (candidate) =>
-      candidate.slug !== service.slug &&
-      candidate.category === service.category,
+      candidate.id !== service.id && relatedIds.has(candidate.id),
   );
 }
