@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
-import { ServicesAudience } from "@/components/services/services-audience";
 import { ServicesCategoryIndex } from "@/components/services/services-category-index";
 import { ServicesCta } from "@/components/services/services-cta";
 import { ServicesDirectory } from "@/components/services/services-directory";
 import { ServicesHero } from "@/components/services/services-hero";
+import { ServicesNeedIndex } from "@/components/services/services-need-index";
 
 export const metadata: Metadata = {
   title: "Services | Bittumama",
-  description:
-    "Thesis, dissertation, research paper and data analysis support.",
+  description: "Research, thesis, analysis, publication, mentoring and research technology services.",
 };
 
 export default function ServicesPage() {
@@ -16,8 +15,8 @@ export default function ServicesPage() {
     <main className="min-h-screen bg-background text-foreground">
       <ServicesHero />
       <ServicesCategoryIndex />
+      <ServicesNeedIndex />
       <ServicesDirectory />
-      <ServicesAudience />
       <ServicesCta />
     </main>
   );
