@@ -45,8 +45,8 @@ export function ResearchDirectory({
               </div>
             ) : (
               <div className="border-t border-border">
-                {researchCategories.map((category) => {
-                  const entries = getResearchByCategory(category);
+                {categories.map((category) => {
+                  const entries = entriesByCategory(entries, category);
                   return (
                     <section key={category} id={getResearchCategoryAnchor(category)} className="scroll-anchor">
                       <div className="grid gap-2 border-b border-border py-4 sm:grid-cols-[minmax(0,1fr)_auto]">
