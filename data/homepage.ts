@@ -8,7 +8,6 @@ export const homepageContent = {
       "Thesis, dissertation, research paper, literature review, methodology and data analysis support.",
     primaryAction: { label: "View Research Services", href: "/services" },
     secondaryAction: { label: "Meet Our Experts", href: "/experts" },
-    meta: "Academic research support",
   },
 
   positioning: {
