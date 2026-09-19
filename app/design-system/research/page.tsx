@@ -5,7 +5,7 @@ import { ResearchCategoryIndex } from "@/components/research/research-category-i
 import { ResearchDirectory } from "@/components/research/research-directory";
 import { ResearchFeatured } from "@/components/research/research-featured";
 import { ResearchHero } from "@/components/research/research-hero";
-import type { ResearchEntry } from "@/data/research";
+import { getResearchHref, type ResearchEntry } from "@/data/research";
 
 const previewEntries: ResearchEntry[] = [
   {
@@ -17,7 +17,6 @@ const previewEntries: ResearchEntry[] = [
     shortDescription: "Development-only preview content for the research index and featured treatment.",
     summary: "A preview record used to inspect research discovery without adding development content to the production dataset.",
     date: "Development reference",
-    href: "/research/preview-methodology",
     featured: true,
     tags: ["development-preview"],
   },
@@ -29,7 +28,6 @@ const previewEntries: ResearchEntry[] = [
     type: "Research note",
     shortDescription: "Development-only indexed research content with a secondary theme.",
     date: "Development reference",
-    href: "/research/preview-analysis",
     tags: ["development-preview"],
   },
 ];
