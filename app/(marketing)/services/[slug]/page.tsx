@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServiceDetailPage } from "@/components/services/service-detail-page";
 import { getAllServices, getServiceBySlug, getServiceHref } from "@/data/services";
+import { createContentMetadata } from "@/lib/metadata";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
@@ -21,11 +22,11 @@ export async function generateMetadata({
     return {};
   }
 
-  return {
-    title: `${service.title} | Bittumama`,
+  return createContentMetadata({
+    title: service.title,
     description: service.shortDescription,
-    alternates: { canonical: getServiceHref(service) },
-  };
+    canonical: getServiceHref(service),
+  });
 }
 
 export default async function ServicePage({ params }: ServicePageProps) {
