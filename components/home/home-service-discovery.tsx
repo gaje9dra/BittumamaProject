@@ -3,9 +3,9 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
-import { getAllServices, getServiceHref } from "@/data/services";
+import { getPublishedServices } from "@/lib/services/repository";\nimport { getServiceHref } from "@/lib/services/paths";
 
-export function HomeServiceDiscovery() {
+export async function HomeServiceDiscovery() {\n  const services = await getPublishedServices();
   return (
     <section
       id="home-service-discovery"
@@ -29,7 +29,7 @@ export function HomeServiceDiscovery() {
             
                       <div className="lg:col-span-8 lg:col-start-5">
                         <div className="border-t border-border">
-                          {getAllServices().slice(0, 4).map((service, index) => (
+                          {services.slice(0, 4).map((service, index) => (
                             <Link
                               key={service.id}
                               href={getServiceHref(service)}
