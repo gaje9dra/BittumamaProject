@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
+import { ScrollHeading } from "@/components/ui/scroll-heading";
 
 export function ExpertsHero() {
   return (
@@ -10,9 +10,9 @@ export function ExpertsHero() {
         <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-7">
             <p className="type-label text-muted-foreground">Experts</p>
-            <Heading id="experts-title" level={1} className="mt-3 max-w-[20ch]">
+            <ScrollHeading id="experts-title" level={1} className="mt-3 max-w-[20ch]">
               People with expertise across research, analysis and academic work.
-            </Heading>
+            </ScrollHeading>
           </div>
           <div className="lg:col-span-4 lg:col-start-9">
             <p className="type-body-sm max-w-[44ch] text-muted-foreground">
