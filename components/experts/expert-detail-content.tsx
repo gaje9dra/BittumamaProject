@@ -29,7 +29,7 @@ function LinkedRows({ title, items }: { title: string; items: { title: string; h
   );
 }
 
-export function ExpertDetailContent({ expert }: { expert: Expert }) {
+export async function ExpertDetailContent({ expert }: { expert: Expert }) {
   const hasContent =
     Boolean(expert.expertise?.length) ||
     Boolean(expert.qualifications?.length) ||
@@ -40,6 +40,8 @@ export function ExpertDetailContent({ expert }: { expert: Expert }) {
     Boolean(expert.articleIds?.length);
 
   if (!hasContent) return null;
+
+  const relatedServices = await getServicesForExpert(expert.id);
 
   return (
     <Container size="wide" className="layout-section-lg">
@@ -73,7 +75,7 @@ export function ExpertDetailContent({ expert }: { expert: Expert }) {
           ) : null}
           {expert.bio ? <section className="mt-10 border-t border-border pt-7"><p className="type-label text-muted-foreground">Professional background</p><p className="type-body mt-4 max-w-[66ch] whitespace-pre-line">{expert.bio}</p></section> : null}
           <div className="mt-10">
-            <LinkedRows title="Related services" items={getServicesForExpert(expert.id).map((item) => ({ title: item.title, href: getServiceHref(item) }))} />
+            <LinkedRows title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: getServiceHref(item) }))} />
             <LinkedRows title="Related research" items={getResearchForExpert(expert.id).map((item) => ({ title: item.title, href: getResearchHref(item) }))} />
             <LinkedRows title="Related articles" items={getArticlesForExpert(expert.id).map((item) => ({ title: item.title, href: "/articles/" + item.slug }))} />
           </div>
