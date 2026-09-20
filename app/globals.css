@@ -181,12 +181,12 @@
   }
 
   .mobile-menu-trigger-closed {
-    background: var(--menu-accent);
-    color: var(--menu-text);
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
 
   .mobile-menu-trigger-closed:hover {
-    background: color-mix(in srgb, var(--menu-accent) 88%, black);
+    background: color-mix(in srgb, var(--primary) 88%, black);
   }
 
   .mobile-menu-trigger-open {
