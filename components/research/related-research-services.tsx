@@ -6,10 +6,10 @@ import { getServiceHref } from "@/data/services";
 import type { ResearchEntry } from "@/data/research";
 import { getServicesForResearch } from "@/lib/content/relationships";
 
-export function RelatedResearchServices({ research }: { research: ResearchEntry }) {
+export async function RelatedResearchServices({ research }: { research: ResearchEntry }) {
   if (!research.relatedServiceIds?.length) return null;
 
-  const related = getServicesForResearch(research);
+  const related = await getServicesForResearch(research);
 
   if (!related.length) return null;
 
