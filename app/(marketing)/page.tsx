@@ -15,7 +15,9 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default async function Home() {
-  const services = await getPublishedServices();\n\n  return (
+  const services = await getPublishedServices();
+
+  return (
     <main className="min-h-screen bg-background text-foreground">
       <HomeHero />
       <HomePositioning />
