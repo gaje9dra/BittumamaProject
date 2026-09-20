@@ -1,8 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 
 type ScrollDirection = "down" | "up";
 
@@ -13,14 +13,22 @@ type ScrollTransitionProps = {
   threshold?: number;
 };
 
-function useScrollDirection(): ScrollDirection {
+export function ScrollTransition({
+  children,
+  className,
+  distance = 64,
+  threshold = 0.28,
+}: ScrollTransitionProps) {
+  const reducedMotion = useReducedMotion();
+  const [isActive, setIsActive] = useState(true);
   const directionRef = useRef<ScrollDirection>("down");
+  const viewportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let frame = 0;
     let previousY = window.scrollY;
 
-    const update = () => {
+    const updateDirection = () => {
       const currentY = window.scrollY;
 
       if (currentY !== previousY) {
@@ -33,7 +41,7 @@ function useScrollDirection(): ScrollDirection {
 
     const onScroll = () => {
       if (frame === 0) {
-        frame = window.requestAnimationFrame(update);
+        frame = window.requestAnimationFrame(updateDirection);
       }
     };
 
@@ -46,29 +54,6 @@ function useScrollDirection(): ScrollDirection {
       }
     };
   }, []);
-
-  return directionRef.current;
-}
-
-export function ScrollTransition({
-  children,
-  className,
-  distance = 64,
-  threshold = 0.28,
-}: ScrollTransitionProps) {
-  const reducedMotion = useReducedMotion();
-  const direction = useScrollDirection();
-  const [isActive, setIsActive] = useState(true);
-  const viewportRef = useRef<HTMLDivElement>(null);
-  const directionRef = useRef<ScrollDirection>("down");
-
-  useEffect(() => {
-    const updateDirection = () => {
-      directionRef.current = direction;
-    };
-
-    updateDirection();
-  }, [direction]);
 
   useEffect(() => {
     const element = viewportRef.current;
@@ -93,16 +78,20 @@ export function ScrollTransition({
     return () => observer.disconnect();
   }, [reducedMotion, threshold]);
 
-  const offset = reducedMotion
-    ? 0
-    : isActive
+  const maxDistance = Math.min(distance, 90);
+  const offset =
+    reducedMotion || isActive
       ? 0
       : directionRef.current === "down"
-        ? -Math.min(distance, 90)
-        : Math.min(distance, 90);
+        ? -maxDistance
+        : maxDistance;
 
   return (
-    <div ref={viewportRef} className={className} style={{ overflow: "hidden" }}>
+    <div
+      ref={viewportRef}
+      className={className}
+      style={{ overflow: "hidden" }}
+    >
       <motion.div
         initial={false}
         animate={{
