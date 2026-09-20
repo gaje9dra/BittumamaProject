@@ -1008,3 +1008,65 @@ Repository searches found no current matches for the removed Phase 6 phrases. No
 Phase 7.10 does not implement keyword strategy, sitemap, robots optimization, structured data, search targeting, internal-link strategy, performance SEO, local SEO, Search Console, backend, database, CMS, admin, authentication, payments, advanced search, security hardening or deployment.
 
 The existing canonical content systems, navigation, relationships and dynamic route architecture remain the sources of truth.
+
+
+## Phase 7.11 implementation — content integrity and safe error handling
+
+Phase 7.11 adds a lightweight validation entry point at `lib/content/validation.ts`. It consumes the existing canonical datasets and Phase 7.7 relationship layer; it does not create duplicate lookup maps or mutate content.
+
+### Validation layers
+
+The validation layer checks:
+
+- required identity fields, IDs and slug uniqueness/format
+- content-specific required and optional field constraints
+- dates and event end-date ordering
+- event registration status/URL and format values
+- boolean flags such as `featured`
+- optional metadata structure, canonical URLs and images
+- cross-content relationship references
+- canonical Site Configuration/navigation validation
+
+Existing per-dataset validators remain the authoritative low-level checks and are reused rather than replaced.
+
+### Severity and behavior
+
+Critical integrity failures are reported as `error` and fail the validation entry point. Unusual but user-safe conditions, such as a missing optional local image, are reported as `warning`.
+
+Developer diagnostics use a structured format containing content type, record, severity and issue. They are not rendered into public UI.
+
+Broken optional cross-content references are not substituted with another record. Existing relationship accessors continue to omit unresolved targets, preserving safe public rendering.
+
+### Runtime/build integration
+
+The root server layout invokes `runContentIntegrityValidation()`, keeping validation server-side and outside Client Components. Empty Research, Expert, Article and Event collections remain valid states.
+
+The existing canonical dataset validators continue to reject duplicate IDs/slugs and malformed required identity data. Relationship validation reports broken references without introducing fallback records.
+
+### Metadata and assets
+
+Phase 7.10 metadata remains the canonical metadata source. Phase 7.11 validates optional SEO title/description/canonical/image/noIndex structure and reports missing local assets as warnings rather than generating replacements.
+
+### Safety boundaries
+
+No production content is mutated during validation. No IDs, slugs or relationships are auto-generated or rewritten. No fake records are added for testing.
+
+The removed Phase 6 sections remain absent. No UI redesign, backend, database, CMS, authentication, payments, advanced search, full SEO, performance, security or deployment work was introduced.
+
+### Validation entry point
+
+The frontend now has one shared content-integrity entry point:
+
+`runContentIntegrityValidation()`
+
+It reuses:
+
+- Services → `data/services.ts`
+- Research → `data/research.ts`
+- Experts → `data/expertise.ts`
+- Articles → `data/articles.ts`
+- Workshops → `data/events.ts`
+- Relationships → `lib/content/relationships.ts`
+- Site configuration → `data/site-config.ts`
+
+The public application continues to use the existing canonical routes and safe `notFound()` behavior for invalid dynamic slugs.
