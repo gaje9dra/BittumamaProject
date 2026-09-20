@@ -4,12 +4,12 @@ import { ResearchCta } from "@/components/research/research-cta";
 import { ResearchDirectory } from "@/components/research/research-directory";
 import { ResearchFeatured } from "@/components/research/research-featured";
 import { ResearchHero } from "@/components/research/research-hero";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Research | Bittumama",
-  description:
-    "Research, analysis, studies and knowledge resources from Bittumama.",
-};
+  description: "Research, analysis, studies and knowledge resources from Bittumama.",
+});
 
 export default function ResearchPage() {
   return (
