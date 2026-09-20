@@ -160,6 +160,7 @@ function readForm(formData: FormData) {
     registrationStatus: value(formData, "registrationStatus"),
     speakerRole: value(formData, "speakerRole"),
     speakerId: value(formData, "speakerId"),
+    speakerSlug: "",
     featured: formData.get("featured") === "on" ? "true" : "false",
     seoNoIndex: formData.get("seoNoIndex") === "on" ? "true" : "false",
   };
@@ -237,7 +238,7 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
         endDate: parseDate(fields.endDate) ?? null, time: fields.time || null, location: fields.location || null,
         format: ["ONLINE", "IN_PERSON", "HYBRID"].includes(fields.format) ? fields.format : null,
         shortDescription: fields.shortDescription, description: fields.description || null, audience: json.audience ?? null,
-        speakerId: fields.speakerId || null, speakerRole: fields.speakerRole || null, image: fields.image || null,
+        speakerId: fields.speakerId || null, speakerSlug: fields.speakerSlug || null, speakerRole: fields.speakerRole || null, image: fields.image || null,
         registrationLabel: fields.registrationLabel || null, registrationHref: fields.registrationHref || null,
         registrationStatus: ["REGISTRATION_OPEN", "REGISTRATION_CLOSED", "COMING_SOON", "COMPLETED"].includes(fields.registrationStatus) ? fields.registrationStatus : null,
         seoTitle: fields.seoTitle || null, seoDescription: fields.seoDescription || null, seoImage: fields.seoImage || null,
@@ -362,8 +363,9 @@ export async function saveContent(
   await validateRelationsExist(parsed.relationIds, errors);
 
   if (domain === "workshops" && parsed.fields.speakerId) {
-    const speaker = await prisma.client.expert.findUnique({ where: { id: parsed.fields.speakerId }, select: { id: true } });
+    const speaker = await prisma.client.expert.findUnique({ where: { id: parsed.fields.speakerId }, select: { id: true, slug: true } });
     if (!speaker) errors.speakerId = "Selected speaker no longer exists.";
+    else parsed.fields.speakerSlug = speaker.slug;
   }
 
   if (Object.keys(errors).length) return { message: "Fix the highlighted fields.", fieldErrors: errors };
