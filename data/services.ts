@@ -1,3 +1,5 @@
+// Migration-only Phase 7.2 canonical snapshot. Production Service reads come from PostgreSQL via lib/services/repository.ts.
+
 export type ServiceSeo = {
   title?: string;
   description?: string;
