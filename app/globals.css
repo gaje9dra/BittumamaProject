@@ -289,10 +289,10 @@
     clip-path: inset(0 round 999px);
     transform-origin: top right;
     transition:
-      width 620ms var(--motion-ease-emphasis),
-      height 620ms var(--motion-ease-emphasis),
-      border-radius 620ms var(--motion-ease-emphasis),
-      clip-path 620ms var(--motion-ease-emphasis);
+      width 560ms var(--motion-ease-emphasis),
+      height 560ms var(--motion-ease-emphasis),
+      border-radius 560ms var(--motion-ease-emphasis),
+      clip-path 560ms var(--motion-ease-emphasis);
     will-change: width, height, border-radius, clip-path;
   }
 
