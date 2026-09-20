@@ -53,10 +53,10 @@ const record = await prisma.client.contactInquiry.create({
 try {
   const stored = await prisma.client.contactInquiry.findUnique({
     where: { id: record.id },
-    select: { id: true, name: true, email: true, phone: true, message: true, status: true, submittedAt: true, createdAt: true, updatedAt: true },
+    select: { id: true, name: true, email: true, phone: true, userId: true, message: true, status: true, submittedAt: true, createdAt: true, updatedAt: true },
   });
 
-  if (!stored || stored.status !== "NEW" || stored.email !== synthetic.email || stored.name !== synthetic.name) {
+  if (!stored || stored.status !== "NEW" || stored.email !== synthetic.email || stored.name !== synthetic.name || stored.userId !== null) {
     console.error(JSON.stringify({ ok: false, stage: "database-write", stored }, null, 2));
     process.exit(1);
   }
