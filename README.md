@@ -69,9 +69,9 @@ See `docs/content-architecture.md` for the current content ownership, relationsh
 
 ## Current Phase
 
-**Phase 8.4 — Canonical Experts Database Migration.**
+**Phase 8.5 — Canonical Experts Database Migration.**
 
-Phase 8.4 moves the canonical Phase 7 Experts dataset into PostgreSQL and routes the existing Experts experience through the server-side Prisma repository without changing the public UI, routes, or interaction design. Services and Research remain database-backed from Phases 8.2 and 8.3.
+Phase 8.5 moves the canonical Phase 7 Experts dataset into PostgreSQL and routes the existing Experts experience through the server-side Prisma repository without changing the public UI, routes, or interaction design. Services and Research remain database-backed from Phases 8.2 and 8.3.
 
 The current frontend architecture preserves the canonical Services, Research, Experts, Articles, Workshops/Events, Relationships, Navigation, Metadata and Validation systems. Research and Services now use PostgreSQL repositories; Experts, Articles and Workshops remain on their Phase 7 canonical snapshots until their dedicated migrations. Backend, CMS, authentication, payments, advanced search, full SEO, dedicated performance, security hardening and deployment work remain outside the current phase.
 
@@ -265,7 +265,7 @@ There is no Research admin/editor or CMS in Phase 8.3. Update the canonical migr
 Phase 8.3 does not migrate Experts, Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
 
 
-## Phase 8.4 — Canonical Experts Database Migration
+## Phase 8.5 — Canonical Experts Database Migration
 
 Experts now follow:
 
@@ -319,8 +319,65 @@ Public queries filter to `PUBLISHED` records. Unknown or unpublished detail slug
 
 `npm run experts:verify` compares the database against the Phase 7.4 canonical Expert snapshot and checks count, unexpected records, stable IDs/slugs, ordering, profile information, structured expertise, publication state, image references, SEO metadata and Service/Research relationships.
 
-There is no Expert admin/editor or CMS in Phase 8.4. Update the canonical migration snapshot and rerun the deterministic import and verification until future content-editing functionality is explicitly introduced.
+There is no Expert admin/editor or CMS in Phase 8.5. Update the canonical migration snapshot and rerun the deterministic import and verification until future content-editing functionality is explicitly introduced.
 
 ### Phase boundary
 
-Phase 8.4 does not migrate Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
+Phase 8.5 does not migrate Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
+
+
+## Phase 8.5 — Canonical Articles Database Migration
+
+Articles now follow:
+
+```text
+Articles UI
+  ↓
+lib/articles/repository.ts
+  ↓
+Prisma
+  ↓
+PostgreSQL
+```
+
+### Article ownership
+
+- PostgreSQL owns persistent Article content at runtime.
+- `lib/articles/repository.ts` is the production Article access layer.
+- `data/articles.ts` is the Phase 7.5 migration/verification snapshot only.
+- Existing Article UI components continue to consume the Article domain type rather than Prisma-generated types.
+- Published Article listing and detail queries filter to `PUBLISHED`.
+- Canonical array order is persisted in `Article.order`.
+- Article ↔ Research, Service, Expert and Article ↔ Article relationships use the existing Phase 8.1 join tables.
+- Workshop/Event relationships are deferred until that domain is migrated.
+
+### Canonical Article migration
+
+Run against a configured PostgreSQL database after applying migrations:
+
+```bash
+npm run prisma:migrate
+npm run articles:seed
+npm run articles:verify
+```
+
+The import is idempotent and uses the canonical slug as its upsert key while preserving the canonical ID. It does not reset PostgreSQL or delete unrelated records.
+
+### Public Article queries
+
+The repository exposes:
+
+- `getPublishedArticles()`
+- `getPublishedArticleById()`
+- `getPublishedArticleBySlug()`
+- `getPublishedArticleCategories()`
+- `getFeaturedPublishedArticles()`
+- `getRelatedPublishedArticles()`
+
+### Current canonical content state
+
+The actual Phase 7.5 Article snapshot currently contains zero Article records. Phase 8.5 therefore imports zero Articles rather than fabricating editorial content. The database schema and import/verification path are nevertheless complete for the canonical Article structure.
+
+### Phase boundary
+
+Phase 8.5 does not migrate Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS, analytics infrastructure or public APIs.
