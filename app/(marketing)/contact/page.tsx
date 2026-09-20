@@ -4,11 +4,12 @@ import { ContactIntroduction } from "@/components/contact/contact-introduction";
 import { ContactMethods } from "@/components/contact/contact-methods";
 import { ContactServiceContext } from "@/components/contact/contact-service-context";
 import { contactData } from "@/data/contact";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: contactData.seo.title,
   description: contactData.seo.description,
-};
+});
 
 export default function ContactPage() {
 
