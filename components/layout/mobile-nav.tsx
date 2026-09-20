@@ -11,12 +11,12 @@ import { cn } from "@/lib/utils";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 import { announceHeaderSurface } from "@/lib/header-surface";
 
-const MENU_TRANSITION_MS = 150;
+const MENU_TRANSITION_MS = 420;
 
 export function MobileNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState(false);\n  const [closing, setClosing] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<NavigationItem | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
@@ -153,7 +153,7 @@ export function MobileNav({ className }: { className?: string }) {
   };
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative", className)} data-mobile-menu-state={open ? "open" : closing ? "closing" : "closed"}>
       <button
         ref={triggerRef}
         type="button"
@@ -180,10 +180,10 @@ export function MobileNav({ className }: { className?: string }) {
           ref={panelRef}
           className={cn(
             "fixed inset-x-0 bottom-0 top-[var(--header-height)] z-[var(--layer-modal)] overflow-y-auto border-t border-border bg-background px-[var(--page-gutter)] py-8 lg:hidden",
-            open ? "animate-[mobile-menu-enter_var(--motion-micro)_var(--motion-ease-standard)_both]" : "animate-[mobile-menu-exit_var(--motion-micro)_var(--motion-ease-exit)_both]",
+            open ? "mobile-menu-panel mobile-menu-panel-open" : "mobile-menu-panel mobile-menu-panel-closing",
           )}
         >
-          <nav aria-label="Mobile primary navigation" className="mx-auto flex min-h-full max-w-[var(--container-content)] flex-col">
+          <nav aria-label="Mobile primary navigation" className="mobile-menu-content mx-auto flex min-h-full max-w-[var(--container-content)] flex-col">
             <div className="flex-1">
               {!activeSubmenu ? (
                 <>
@@ -232,7 +232,7 @@ export function MobileNav({ className }: { className?: string }) {
                   })}
                 </>
               ) : (
-                <div className="motion-fade">
+                <div className="mobile-menu-submenu">
                   <button
                     ref={submenuBackRef}
                     type="button"
