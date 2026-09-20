@@ -143,7 +143,7 @@ export function validateSiteConfig(config: SiteConfig = siteConfig) {
         seenRoutes.add(href);
       }
 
-      if (item.external && !/^https?:\\/\\//.test(href)) {
+      if (item.external && !/^https?:\/\//.test(href)) {
         issues.push(location + " > " + label + ": external links must use an absolute URL.");
       }
 
