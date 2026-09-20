@@ -3,7 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { getServiceHref } from "@/lib/services/paths";
-import { getResearchHref } from "@/data/research";
+import { getResearchHref } from "@/lib/research/paths";
 import { getServicesForExpert, getResearchForExpert, getArticlesForExpert } from "@/lib/content/relationships";
 import type { Expert } from "@/data/expertise";
 
@@ -76,7 +76,7 @@ export async function ExpertDetailContent({ expert }: { expert: Expert }) {
           {expert.bio ? <section className="mt-10 border-t border-border pt-7"><p className="type-label text-muted-foreground">Professional background</p><p className="type-body mt-4 max-w-[66ch] whitespace-pre-line">{expert.bio}</p></section> : null}
           <div className="mt-10">
             <LinkedRows title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: getServiceHref(item) }))} />
-            <LinkedRows title="Related research" items={getResearchForExpert(expert.id).map((item) => ({ title: item.title, href: getResearchHref(item) }))} />
+            <LinkedRows title="Related research" items={(await getResearchForExpert(expert.id)).map((item) => ({ title: item.title, href: getResearchHref(item) }))} />
             <LinkedRows title="Related articles" items={getArticlesForExpert(expert.id).map((item) => ({ title: item.title, href: "/articles/" + item.slug }))} />
           </div>
         </div>
