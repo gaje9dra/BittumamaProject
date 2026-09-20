@@ -156,7 +156,7 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
             {errors[name] && <p className="mt-1 text-sm text-destructive" role="alert">{errors[name]}</p>}
           </div>
         ))}
-        {domain === "workshops" && <RelationshipPicker name="speakerId" label="Speaker" initial={values.speakerId ? relationOptions.experts.filter((option) => option.id === values.speakerId) : []} multiple={false} />}
+        {domain === "workshops" && <RelationshipPicker name="speakerId" label="Speaker" initial={values.speakerId ? relationOptions.experts.filter((option) => option.id === values.speakerId) : []} multiple={false} domain="experts" />}
       </section>
 
       <div className="grid gap-6 lg:grid-cols-2">
