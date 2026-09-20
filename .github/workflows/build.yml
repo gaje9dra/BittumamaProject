@@ -57,6 +57,12 @@ jobs:
       - name: Verify canonical Research
         run: npm run research:verify
 
+      - name: Seed canonical Experts
+        run: npm run experts:seed
+
+      - name: Verify canonical Experts
+        run: npm run experts:verify
+
       - name: Lint
         run: npm run lint
 
