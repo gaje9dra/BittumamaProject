@@ -61,6 +61,7 @@ model Service {
   researchLinks    ResearchService[]
   articleLinks     ArticleService[]
   workshopLinks    WorkshopService[]
+  expertLinks      ExpertService[]
 
   @@index([status])
   @@index([category])
