@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { notFound } from "next/navigation";
 import { EventDetailPage } from "@/components/events/event-detail-page";
 import { getAllEvents, getEventBySlug, getEventHref } from "@/data/events";
 
