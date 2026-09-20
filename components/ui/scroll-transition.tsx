@@ -55,7 +55,7 @@ export function ScrollTransition({
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 78%", "end 22%"],
+    offset: ["start 72%", "end 28%"],
   });
 
   // One continuous mask state:
@@ -65,12 +65,12 @@ export function ScrollTransition({
   // Reversing scroll automatically reverses the reveal direction.
   const clipPath = useTransform(scrollYProgress, (value) => {
     if (value <= 0.5) {
-      const progress = easeOut(value / 0.5);
+      const progress = easeOut(Math.min(value / 0.42, 1));
       const topInset = 100 - progress * 100;
       return `inset(${topInset}% 0 0 0)`;
     }
 
-    const progress = easeOut((value - 0.5) / 0.5);
+    const progress = easeOut(Math.min((value - 0.5) / 0.42, 1));
     const bottomInset = progress * 100;
     return `inset(0 0 ${bottomInset}% 0)`;
   });
