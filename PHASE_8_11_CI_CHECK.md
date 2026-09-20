@@ -1,0 +1,1 @@
+Temporary CI verification marker for Phase 8.11. This file is not part of the product architecture and is only used to exercise the pull-request build workflow.
