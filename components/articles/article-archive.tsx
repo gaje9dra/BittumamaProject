@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getArticleCategoryAnchor, type Article } from "@/data/articles";
+import { getArticleCategoryAnchor } from "@/lib/articles/paths";
+import type { Article } from "@/data/articles";
 
 type ArticleArchiveProps = { articles?: Article[]; categories?: string[] };
 
