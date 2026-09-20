@@ -86,8 +86,8 @@ export function BittumamaHero() {
           <div
             className="bittumama-hero-stack"
             style={{
-              "--hero-pointer-x": \`\${pointer.x * 4}px\`,
-              "--hero-pointer-y": \`\${pointer.y * 3}px\`,
+              "--hero-pointer-x": `${pointer.x * 4}px`,
+              "--hero-pointer-y": `${pointer.y * 3}px`,
             } as CSSProperties}
             aria-label="Bittumama research, intelligence and expertise visual archive"
           >
@@ -100,11 +100,11 @@ export function BittumamaHero() {
                   className={visible ? "bittumama-hero-card is-visible" : "bittumama-hero-card"}
                   style={{
                     "--hero-depth": distance,
-                    "--hero-x": \`\${activeState.x + distance * 10}px\`,
-                    "--hero-y": \`\${activeState.y + distance * 12}px\`,
-                    "--hero-scale": \`\${activeState.scale - distance * 0.035}\`,
-                    "--hero-rotate": \`\${activeState.rotate - distance * 1.2}deg\`,
-                    "--hero-delay": \`\${distance * 55}ms\`,
+                    "--hero-x": `${activeState.x + distance * 10}px`,
+                    "--hero-y": `${activeState.y + distance * 12}px`,
+                    "--hero-scale": `${activeState.scale - distance * 0.035}`,
+                    "--hero-rotate": `${activeState.rotate - distance * 1.2}deg`,
+                    "--hero-delay": `${distance * 55}ms`,
                   } as CSSProperties}
                 >
                   <Image src={image.src} alt={image.alt} fill sizes="(max-width: 767px) 68vw, 32vw" priority={index === 0} />
