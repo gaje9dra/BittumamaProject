@@ -69,6 +69,7 @@ function toDomainArticle(record: ArticleWithRelations): Article {
     ...(record.relatedFrom.length ? { relatedArticles: record.relatedFrom.map((item) => item.targetArticleId) } : {}),
     ...(record.researchLinks.length ? { relatedResearch: record.researchLinks.map((item) => item.researchId) } : {}),
     ...(record.serviceLinks.length ? { relatedServices: record.serviceLinks.map((item) => item.serviceId) } : {}),
+    ...(record.expertLinks.length ? { expertIds: record.expertLinks.map((item) => item.expertId) } : {}),
     ...(seo ? { seo } : {}),
   };
 }
