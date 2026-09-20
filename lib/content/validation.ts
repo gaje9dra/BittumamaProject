@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { getAllArticles, validateArticles, type Article } from "@/data/articles";
 import { getAllEvents, validateEvents, type Event } from "@/data/events";
 import { siteConfig, validateSiteConfig } from "@/data/site-config";
 import { validateContentRelationships } from "@/lib/content/relationships";
@@ -92,37 +91,6 @@ function validateOptionalImage(
   }
 }
 
-function validateArticleSpecific(records: readonly Article[], issues: ContentValidationIssue[]) {
-  for (const record of records) {
-    if (!record.title.trim()) addIssue(issues, "error", "Article", record.id, "Missing title.");
-    if (!record.category.trim()) addIssue(issues, "error", "Article", record.id, "Missing category.");
-    validateDate(issues, "Article", record.id, "date", record.date);
-    validateBoolean(issues, "Article", record.id, "featured", record.featured);
-    validateOptionalImage(issues, "Article", record.id, "image", record.image);
-    validateSeo(issues, "Article", record.id, record.seo);
-  }
-}
-
-function validateSeo(
-  issues: ContentValidationIssue[],
-  contentType: string,
-  record: string,
-  seo: { title?: string; description?: string; image?: string; canonical?: string; noIndex?: boolean } | undefined,
-) {
-  if (!seo) return;
-  if (seo.title !== undefined && typeof seo.title !== "string") addIssue(issues, "error", contentType, record, "SEO title must be a string.");
-  if (seo.description !== undefined && typeof seo.description !== "string") addIssue(issues, "error", contentType, record, "SEO description must be a string.");
-  if (seo.title !== undefined && !seo.title.trim()) addIssue(issues, "warning", contentType, record, "SEO title is empty.");
-  if (seo.description !== undefined && !seo.description.trim()) addIssue(issues, "warning", contentType, record, "SEO description is empty.");
-  if (seo.canonical) {
-    if (!seo.canonical.startsWith("/")) {
-      try { new URL(seo.canonical); } catch { addIssue(issues, "error", contentType, record, "SEO canonical URL is malformed."); }
-    }
-  }
-  validateOptionalImage(issues, contentType, record, "seo.image", seo.image);
-  validateBoolean(issues, contentType, record, "seo.noIndex", seo.noIndex);
-}
-
 function validateEventSpecific(records: readonly Event[], issues: ContentValidationIssue[]) {
   const statuses = new Set(["Registration Open", "Registration Closed", "Coming Soon", "Completed"]);
   const formats = new Set(["Online", "In Person", "Hybrid"]);
@@ -157,13 +125,10 @@ function validateEventSpecific(records: readonly Event[], issues: ContentValidat
 
 export function validateContentIntegrity(): ContentValidationIssue[] {
   const issues: ContentValidationIssue[] = [];
-  const articles = getAllArticles();
   const events = getAllEvents();
 
-  validateUniqueRecords(articles, "Article", issues);
   validateUniqueRecords(events, "Workshop", issues);
 
-  validateArticleSpecific(articles, issues);
   validateEventSpecific(events, issues);
 
   for (const issue of validateContentRelationships()) {
@@ -208,7 +173,6 @@ export function formatContentValidationIssues(issues: readonly ContentValidation
 }
 
 export function runContentIntegrityValidation() {
-  validateArticles();
   validateEvents();
 
   const issues = validateContentIntegrity();
