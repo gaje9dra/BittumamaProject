@@ -16,7 +16,8 @@ const MENU_TRANSITION_MS = 420;
 export function MobileNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);\n  const [closing, setClosing] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [closing, setClosing] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<NavigationItem | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
