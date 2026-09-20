@@ -173,7 +173,7 @@ model Article {
   seoImage       String?
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
-  author         Expert?           @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  authorExpert   Expert?           @relation(fields: [authorId], references: [id], onDelete: SetNull)
   researchLinks  ArticleResearch[]
   serviceLinks   ArticleService[]
   relatedFrom    ArticleRelation[] @relation("ArticleRelationSource")
