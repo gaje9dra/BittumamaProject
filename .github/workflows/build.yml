@@ -26,6 +26,9 @@ jobs:
       - name: Prisma schema validation
         run: npm run prisma:validate
 
+      - name: Prisma migration consistency
+        run: npm run prisma:migration:check
+
       - name: Lint
         run: npm run lint
 
