@@ -14,7 +14,8 @@ import {
   ResearchContents,
 } from "@/components/research/research-detail-content";
 import { ResearchDetailCta } from "@/components/research/research-detail-cta";
-import { getResearchHref, type ResearchEntry } from "@/data/research";
+import { getResearchHref } from "@/lib/research/paths";
+import type { ResearchEntry } from "@/data/research";
 
 const previewResearch: ResearchEntry = {
   id: "development-preview",
