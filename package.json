@@ -27,7 +27,7 @@
     "articles:verify": "tsx prisma/verify-articles.ts",
     "events:seed": "tsx prisma/seed-events.ts",
     "events:verify": "tsx prisma/verify-events.ts",
-    "content:verify": "tsx prisma/verify-content-integrity.ts",
+    "content:verify": "tsx prisma/verify-content-integrity.ts && tsx prisma/verify-contact.ts",
     "contact:verify": "tsx prisma/verify-contact.ts"
   },
   "dependencies": {
