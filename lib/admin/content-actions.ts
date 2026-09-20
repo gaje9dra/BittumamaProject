@@ -273,7 +273,7 @@ async function syncRelations(tx: Prisma.TransactionClient, domain: ContentDomain
       await tx.researchService.deleteMany({ where: { serviceId: id } });
       await tx.articleService.deleteMany({ where: { serviceId: id } });
       await tx.workshopService.deleteMany({ where: { serviceId: id } });
-      await tx.expertService.deleteMany({ where: { expertId: id } });
+      await tx.expertService.deleteMany({ where: { serviceId: id } });
       await tx.researchService.createMany({ data: clean(relationIds.research).map((researchId) => ({ serviceId: id, researchId })) });
       await tx.articleService.createMany({ data: clean(relationIds.articles).map((articleId) => ({ serviceId: id, articleId })) });
       await tx.workshopService.createMany({ data: clean(relationIds.workshops).map((eventId) => ({ serviceId: id, eventId })) });
