@@ -154,7 +154,7 @@ export async function getPublishedResearchById(id: string) {
   return runResearchQuery(async () => {
     const record = await getPrismaClient().researchItem.findFirst({
       where: { id, status: "PUBLISHED" },
-      include: { serviceLinks: { select: { serviceId: true } } },
+      include: { serviceLinks: { select: { serviceId: true } }, expertLinks: { select: { expertId: true } }, articleLinks: { select: { articleId: true } }, workshopLinks: { select: { eventId: true } } },
     });
     return record ? toDomainResearch(record) : undefined;
   });
@@ -164,7 +164,7 @@ export async function getPublishedResearchBySlug(slug: string) {
   return runResearchQuery(async () => {
     const record = await getPrismaClient().researchItem.findFirst({
       where: { slug, status: "PUBLISHED" },
-      include: { serviceLinks: { select: { serviceId: true } } },
+      include: { serviceLinks: { select: { serviceId: true } }, expertLinks: { select: { expertId: true } }, articleLinks: { select: { articleId: true } }, workshopLinks: { select: { eventId: true } } },
     });
     return record ? toDomainResearch(record) : undefined;
   });
