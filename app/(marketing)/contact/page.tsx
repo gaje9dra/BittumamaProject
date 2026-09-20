@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/contact-form";
-import { ContactGuidance } from "@/components/contact/contact-guidance";
 import { Container } from "@/components/ui/container";
 import { contactData } from "@/data/contact";
 import { createPageMetadata } from "@/lib/metadata";
@@ -45,7 +44,14 @@ export default async function ContactPage() {
             </p>
 
             <div className="mt-8 border-t border-border pt-6">
-              <ContactGuidance />
+              <p className="type-label text-muted-foreground">What to include</p>
+              <ul className="mt-4 divide-y divide-border border-y border-border">
+                {contactData.enquiryGuidance.map((item) => (
+                  <li key={item} className="type-body-sm py-3.5">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
