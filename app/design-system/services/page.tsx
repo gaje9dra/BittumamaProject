@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getPublishedServices } from "@/lib/services/repository";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ServiceFinder } from "@/components/services/service-finder";
@@ -7,7 +8,9 @@ import { ServicesDirectory } from "@/components/services/services-directory";
 import { ServicesHero } from "@/components/services/services-hero";
 import { ServicesCta } from "@/components/services/services-cta";
 
-export default function ServicesPlaygroundPage() {
+export default async function ServicesPlaygroundPage() {
+  const services = await getPublishedServices();
+  const categories = Array.from(new Set(services.map((service) => service.category)));
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
@@ -22,9 +25,9 @@ export default function ServicesPlaygroundPage() {
         </Container>
       </section>
       <ServicesHero />
-      <ServiceFinder />
-      <ServicesCategoryIndex />
-      <ServicesDirectory />
+      <ServiceFinder services={services} />
+      <ServicesCategoryIndex categories={categories} />
+      <ServicesDirectory services={services} />
       <ServicesCta />
     </main>
   );
