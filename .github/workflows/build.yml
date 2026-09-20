@@ -51,7 +51,13 @@ jobs:
       - name: Verify canonical Services
         run: npm run services:verify
 
-      - name: Seed canonical Research\n        run: npm run research:seed\n\n      - name: Verify canonical Research\n        run: npm run research:verify\n\n      - name: Lint
+      - name: Seed canonical Research
+        run: npm run research:seed
+
+      - name: Verify canonical Research
+        run: npm run research:verify
+
+      - name: Lint
         run: npm run lint
 
       - name: Production build
