@@ -425,3 +425,24 @@ The current domain stores event dates as date-level values plus an optional disp
 ### Phase boundary
 
 Phase 8.6 does not migrate About, Contact submissions, users, authentication, admin, CMS, payments, wallet, analytics infrastructure, public APIs or registration processing.
+
+
+## Phase 8.7 — Global Content Integration
+
+The five canonical content domains use a shared server-side relationship/query convention:
+
+- Services → PostgreSQL
+- Research → PostgreSQL
+- Experts → PostgreSQL
+- Articles → PostgreSQL
+- Workshops/Events → PostgreSQL
+
+Public relationship helpers resolve only published target records and avoid per-related-record lookup loops. Cross-content integrity verification is available through:
+
+```bash
+npm run content:verify
+```
+
+The verifier checks canonical relationship structures, missing references, duplicate relationship keys, self-relations, and Workshop/Event speaker references. Public visibility checks report relationships from published parents to non-published targets so those records can remain stored without becoming publicly queryable.
+
+Phase 8.7 does not add authentication, admin, CMS, payments, event registration, Contact backend infrastructure, or new search infrastructure.
