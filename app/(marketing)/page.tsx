@@ -5,12 +5,13 @@ import { HomePositioning } from "@/components/home/home-positioning";
 import { HomeProcess } from "@/components/home/home-process";
 import { HomeServiceDiscovery } from "@/components/home/home-service-discovery";
 import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/metadata";
+import { siteConfig } from "@/data/site-config";
 
-export const metadata: Metadata = {
-  title: "Bittumama — Research, Intelligence & Expertise",
-  description:
-    "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
-};
+export const metadata: Metadata = createPageMetadata({
+  title: siteConfig.defaultMetadata.title,
+  description: siteConfig.defaultMetadata.description,
+});
 
 export default function Home() {
   return (
