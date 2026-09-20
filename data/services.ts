@@ -1,3 +1,11 @@
+export type ServiceSeo = {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noIndex?: boolean;
+};
+
 export type ServiceStatus = "Available" | "Coming Soon";
 
 export type ServiceHighlight = {
@@ -23,6 +31,7 @@ export type Service = {
   faq?: ServiceFaq[];
   featured?: boolean;
   status?: ServiceStatus;
+  seo?: ServiceSeo;
 };
 
 export const services: Service[] = [
