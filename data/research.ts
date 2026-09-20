@@ -1,3 +1,11 @@
+export type ResearchSeo = {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonical?: string;
+  noIndex?: boolean;
+};
+
 export type ResearchStatus = "Published" | "Coming Soon";
 
 export type ResearchPoint = {
