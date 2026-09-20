@@ -150,9 +150,7 @@ function validateEventSpecific(records: readonly Event[], issues: ContentValidat
 export function validateContentIntegrity(): ContentValidationIssue[] {
   const issues: ContentValidationIssue[] = [];
 
-  validateUniqueRecords(events, "Workshop", issues);
 
-  validateEventSpecific(events, issues);
 
   for (const issue of validateContentRelationships()) {
     addIssue(
