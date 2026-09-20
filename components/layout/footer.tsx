@@ -3,20 +3,9 @@ import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { about } from "@/data/about";
 import { getAllServices, getServiceHref } from "@/data/services";
+import { footerNavigation, globalActions, siteConfig } from "@/data/site-config";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Container } from "@/components/ui/container";
-
-const researchLinks = [
-  { label: "Research", href: "/research" },
-  { label: "Articles", href: "/articles" },
-  { label: "Workshops & Events", href: "/workshops" },
-];
-
-const companyLinks = [
-  { label: "About", href: "/about" },
-  { label: "Experts", href: "/experts" },
-  { label: "Contact", href: "/contact" },
-];
 
 function FooterLink({
   href,
@@ -80,7 +69,7 @@ export function Footer() {
 
         <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-x-12">
           <div className="lg:col-span-5">
-            <p className="type-label text-primary-100">Bittumama</p>
+            <p className="type-label text-primary-100">{siteConfig.siteName}</p>
             <h2
               id="footer-title"
               className="mt-5 max-w-[11ch] font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-5xl lg:text-[clamp(3rem,4.2vw,4.5rem)]"
@@ -110,7 +99,7 @@ export function Footer() {
                 </div>
 
                 <Link
-                  href="/contact"
+                  href={globalActions.contact.href}
                   className="group inline-flex min-h-12 shrink-0 items-center gap-3 border-b border-primary-foreground/60 pb-2 type-button text-primary-foreground transition-[border-color,color] duration-[var(--motion-fast)] hover:border-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary-foreground"
                 >
                   Start an Enquiry
@@ -151,8 +140,8 @@ export function Footer() {
             </section>
 
             <div className="grid gap-9 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1 xl:grid-cols-2">
-              <FooterLinkGroup title="Explore" links={researchLinks} />
-              <FooterLinkGroup title="Organization" links={companyLinks} />
+              <FooterLinkGroup title="Explore" links={footerNavigation.explore} />
+              <FooterLinkGroup title="Organization" links={footerNavigation.organization} />
             </div>
           </div>
         </div>
