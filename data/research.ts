@@ -49,6 +49,7 @@ export type ResearchEntry = {
   image?: string;
   featured?: boolean;
   tags?: string[];
+  seo?: ResearchSeo;
 };
 
 export const researchEntries: ResearchEntry[] = [];
