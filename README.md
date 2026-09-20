@@ -135,3 +135,75 @@ Manually test the Contact page with:
 No admin UI, authentication, CMS, payment, email provider, inquiry listing/search API, or inquiry dashboard is part of Phase 8.8. Data retention/deletion policy is also deferred to a future governance phase.
 
 The homepage hero remains removed, and previously removed content remains removed.
+
+
+## Phase 8.9 — Authentication & Authorization Foundation
+
+Authentication uses the current Auth.js/NextAuth-compatible Next.js integration with the Prisma adapter. The locked Next.js, React, TypeScript and database stack remains unchanged.
+
+Architecture:
+
+Google OAuth → Auth.js → Prisma Adapter → User/Account/Session in PostgreSQL → USER/ADMIN role → server-side authorization helpers.
+
+The initial provider surface is intentionally limited to Google. No password login, magic link, GitHub, Facebook, Apple or Microsoft provider was added.
+
+### Authentication schema
+
+- `User` — stable identity, optional profile fields and controlled `UserRole`.
+- `Account` — provider identity and adapter-managed provider data.
+- `Session` — database-backed sessions.
+- `VerificationToken` — adapter-compatible verification-token storage.
+- `UserRole` — `USER` or `ADMIN`.
+- `ContactInquiry.userId` — optional trusted relation for authenticated submissions.
+
+New users default to `USER`. Browser input cannot assign `ADMIN`.
+
+### Server-side helpers
+
+`lib/auth/guards.ts` provides `getCurrentSession()`, `getCurrentUser()`, `requireAuthenticatedUser()`, and `requireAdmin()`. Identity and role are derived from the trusted Auth.js server session; URL parameters, localStorage, hidden fields and browser-supplied user IDs are not trusted.
+
+### Minimal test surfaces
+
+- `/login` — concise Google sign-in entry point.
+- `/auth-test` — authenticated-session verification surface.
+- `/auth-test/admin` — server-side admin-guard verification surface.
+
+These are foundation/test surfaces, not user or admin dashboards. Public routes remain public, including Home, Services, Research, Experts, Articles, Workshops/Events, About and Contact. The homepage hero remains removed.
+
+### Environment
+
+Configure `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, and `AUTH_GOOGLE_SECRET` from `.env.example`. Never use `NEXT_PUBLIC_` for authentication secrets.
+
+Generate a strong Auth.js secret with `npx auth secret`.
+
+For local Google OAuth, configure the provider with the callback URL `http://localhost:3000/api/auth/callback/google`. For production, configure the exact deployed origin as `https://YOUR-PRODUCTION-DOMAIN/api/auth/callback/google`; no production domain is hardcoded by this phase.
+
+### Development
+
+1. Configure PostgreSQL and `DATABASE_URL`.
+2. Configure `AUTH_SECRET`.
+3. Configure the Google OAuth application and credentials.
+4. Run `npm run prisma:generate`, `npm run prisma:validate`, and `npm run prisma:migrate`.
+5. Run `npm run dev`.
+6. Open `/login` and complete a real Google sign-in.
+7. Verify `/auth-test` and test that `/auth-test/admin` is denied for a normal `USER`.
+
+A real OAuth login is only considered tested when the provider credentials are available and the full Google → callback → User → Account → Session flow has actually completed.
+
+### Admin bootstrap
+
+There is no admin UI and no automatic first-user promotion. To intentionally promote an existing authenticated user for development, set `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_CONFIRM=YES`, then run `npm run auth:bootstrap-admin`. The script only updates an existing database User; it never creates a user or reads a role from the browser.
+
+### Verification
+
+`npm run auth:verify` uses synthetic development data to check the default `USER` role, provider-account uniqueness, Account persistence, Session persistence, and the optional ContactInquiry user relation. It does not claim to perform a real Google OAuth login.
+
+### Contact integration
+
+Contact remains anonymous-capable. For an authenticated submission, the server may associate `ContactInquiry.userId` with the current Auth.js session user. The browser cannot submit or override `userId`.
+
+### Phase 8.9 security boundaries
+
+Implemented: Auth.js-managed OAuth/session handling, database sessions, server-side role checks, controlled roles, same-origin redirect validation, no public User/Account/Session API, server-only secrets/Prisma, and additive migration only.
+
+Not implemented: admin dashboard, CMS, content editing, inquiry management UI, payments, subscriptions, event registration, analytics dashboard, user account dashboard, or role-management UI.
