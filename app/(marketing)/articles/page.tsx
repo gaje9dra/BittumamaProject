@@ -4,12 +4,13 @@ import { ArticleArchive } from "@/components/articles/article-archive";
 import { ArticleCategoryNav } from "@/components/articles/article-category-nav";
 import { ArticleFeatured } from "@/components/articles/article-featured";
 import { ArticlesIntro } from "@/components/articles/articles-intro";
+import { createPageMetadata } from "@/lib/metadata";
 import { articleCategories, getAllArticles } from "@/data/articles";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Articles & Insights | Bittumama",
   description: "Research, ideas and practical insight from Bittumama.",
-};
+});
 
 export default function ArticlesPage() {
   const articles = getAllArticles();
