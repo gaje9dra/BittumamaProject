@@ -45,21 +45,6 @@ function notifyScrollDirection() {
   if (typeof window === "undefined" || listening) return;
   listening = true;
   previousScrollY = window.scrollY;
-
-  const handleScroll = () => {
-    if (scrollFrame !== null) return;
-
-    scrollFrame = window.requestAnimationFrame(() => {
-      const currentScrollY = window.scrollY;
-      if (currentScrollY !== previousScrollY) {
-        scrollDirection = currentScrollY > previousScrollY ? "down" : "up";
-        previousScrollY = currentScrollY;
-        subscribers.forEach((subscriber) => subscriber(scrollDirection));
-      }
-      scrollFrame = null;
-    });
-  };
-
   window.addEventListener("scroll", handleScroll, { passive: true });
 }
 
