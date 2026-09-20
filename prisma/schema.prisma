@@ -37,9 +37,12 @@ model Service {
   title            String
   category         String
   shortDescription String
+  order            Int               @default(0)
   need             String?
   focus            String?
   audience         String?
+  highlights       Json?
+  faq              Json?
   featured         Boolean             @default(false)
   availability     ServiceAvailability @default(AVAILABLE)
   status           ContentStatus       @default(PUBLISHED)
