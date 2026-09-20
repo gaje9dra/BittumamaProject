@@ -91,6 +91,31 @@ function validateOptionalImage(
   }
 }
 
+function validateSeo(
+  issues: ContentValidationIssue[],
+  contentType: string,
+  record: string,
+  seo: { title?: string; description?: string; image?: string; canonical?: string; noIndex?: boolean } | undefined,
+) {
+  if (!seo) return;
+  if (seo.title !== undefined && !seo.title.trim()) {
+    addIssue(issues, "error", contentType, record, "SEO title must not be empty.");
+  }
+  if (seo.description !== undefined && !seo.description.trim()) {
+    addIssue(issues, "error", contentType, record, "SEO description must not be empty.");
+  }
+  if (seo.image) validateOptionalImage(issues, contentType, record, "seo.image", seo.image);
+  if (seo.canonical) {
+    try {
+      const url = new URL(seo.canonical);
+      if (!["http:", "https:"].includes(url.protocol)) throw new Error();
+    } catch {
+      addIssue(issues, "error", contentType, record, "Invalid SEO canonical URL.");
+    }
+  }
+  validateBoolean(issues, contentType, record, "seo.noIndex", seo.noIndex);
+}
+
 function validateEventSpecific(records: readonly Event[], issues: ContentValidationIssue[]) {
   const statuses = new Set(["Registration Open", "Registration Closed", "Coming Soon", "Completed"]);
   const formats = new Set(["Online", "In Person", "Hybrid"]);
