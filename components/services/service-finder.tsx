@@ -5,7 +5,7 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceHref } from "@/data/services";
+import { getServiceHref } from "@/lib/services/paths";
 import type { Service } from "@/data/services";
 
 export function ServiceFinder({ services }: { services: Service[] }) {
