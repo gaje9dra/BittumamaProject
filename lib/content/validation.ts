@@ -115,38 +115,6 @@ function validateSeo(
   validateBoolean(issues, contentType, record, "seo.noIndex", seo.noIndex);
 }
 
-function validateEventSpecific(records: readonly Event[], issues: ContentValidationIssue[]) {
-  const statuses = new Set(["Registration Open", "Registration Closed", "Coming Soon", "Completed"]);
-  const formats = new Set(["Online", "In Person", "Hybrid"]);
-
-  for (const record of records) {
-    if (!record.title.trim()) addIssue(issues, "error", "Workshop", record.id, "Missing title.");
-    if (!record.category.trim()) addIssue(issues, "error", "Workshop", record.id, "Missing category.");
-    validateDate(issues, "Workshop", record.id, "date", record.date);
-    validateDate(issues, "Workshop", record.id, "endDate", record.endDate);
-    if (record.endDate && new Date(record.endDate) < new Date(record.date)) {
-      addIssue(issues, "error", "Workshop", record.id, "endDate is earlier than date.");
-    }
-    if (record.registrationStatus && !statuses.has(record.registrationStatus)) {
-      addIssue(issues, "error", "Workshop", record.id, "Invalid registrationStatus: " + record.registrationStatus);
-    }
-    if (record.format && !formats.has(record.format)) {
-      addIssue(issues, "error", "Workshop", record.id, "Invalid format: " + record.format);
-    }
-    if (record.registrationHref) {
-      try {
-        const url = new URL(record.registrationHref);
-        if (!["http:", "https:"].includes(url.protocol)) throw new Error();
-      } catch {
-        addIssue(issues, "error", "Workshop", record.id, "Invalid registrationHref.");
-      }
-    }
-    validateBoolean(issues, "Workshop", record.id, "featured", record.featured);
-    validateOptionalImage(issues, "Workshop", record.id, "image", record.image);
-    validateSeo(issues, "Workshop", record.id, record.seo);
-  }
-}
-
 export function validateContentIntegrity(): ContentValidationIssue[] {
   const issues: ContentValidationIssue[] = [];
 
