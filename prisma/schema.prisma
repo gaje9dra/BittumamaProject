@@ -1,0 +1,284 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum ServiceAvailability {
+  AVAILABLE
+  COMING_SOON
+}
+
+enum EventRegistrationStatus {
+  REGISTRATION_OPEN
+  REGISTRATION_CLOSED
+  COMING_SOON
+  COMPLETED
+}
+
+enum EventFormat {
+  ONLINE
+  IN_PERSON
+  HYBRID
+}
+
+model Service {
+  id               String              @id @default(cuid())
+  slug             String              @unique
+  title            String
+  category         String
+  shortDescription String
+  need             String?
+  focus            String?
+  audience         String?
+  featured         Boolean             @default(false)
+  availability     ServiceAvailability @default(AVAILABLE)
+  status           ContentStatus       @default(PUBLISHED)
+  seoTitle         String?
+  seoDescription   String?
+  seoImage         String?
+  seoCanonical     String?
+  seoNoIndex       Boolean             @default(false)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  researchLinks    ResearchService[]
+  workshopLinks    WorkshopService[]
+
+  @@index([status])
+  @@index([category])
+}
+
+model ResearchItem {
+  id               String              @id @default(cuid())
+  slug             String              @unique
+  title            String
+  category         String
+  shortDescription String
+  summary          String?
+  date             DateTime?
+  status           ContentStatus       @default(DRAFT)
+  type             String?
+  topic            String?
+  image            String?
+  featured         Boolean             @default(false)
+  tags             Json?
+  audience         Json?
+  scope            Json?
+  topics           Json?
+  sections         Json?
+  methodology     Json?
+  seoTitle         String?
+  seoDescription   String?
+  seoImage         String?
+  seoCanonical     String?
+  seoNoIndex       Boolean             @default(false)
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+  serviceLinks     ResearchService[]
+  expertLinks      ExpertResearch[]
+  articleLinks     ArticleResearch[]
+  workshopLinks    WorkshopResearch[]
+
+  @@index([status])
+  @@index([category])
+  @@index([date])
+}
+
+model Expert {
+  id                String           @id @default(cuid())
+  slug              String           @unique
+  name              String
+  role              String?
+  discipline        String?
+  shortBio          String?
+  bio               String?
+  image             String?
+  expertise         Json?
+  qualifications    Json?
+  researchInterests Json?
+  featured          Boolean          @default(false)
+  status            ContentStatus    @default(PUBLISHED)
+  seoTitle          String?
+  seoDescription    String?
+  seoImage          String?
+  seoCanonical      String?
+  seoNoIndex        Boolean          @default(false)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  researchLinks     ExpertResearch[]
+  authoredArticles  Article[]
+  workshopEvents    Event[]
+  articleLinks      ArticleExpert[]
+
+  @@index([status])
+  @@index([discipline])
+}
+
+model Article {
+  id             String            @id @default(cuid())
+  slug           String            @unique
+  title          String
+  category       String
+  date           DateTime?
+  excerpt        String?
+  content        String?
+  sections       Json?
+  image          String?
+  featured       Boolean           @default(false)
+  tags           Json?
+  status         ContentStatus     @default(DRAFT)
+  authorId       String?
+  seoTitle       String?
+  seoDescription String?
+  seoImage       String?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  author         Expert?           @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  researchLinks  ArticleResearch[]
+  serviceLinks   ArticleService[]
+  relatedFrom    ArticleRelation[] @relation("ArticleRelationSource")
+  relatedTo      ArticleRelation[] @relation("ArticleRelationTarget")
+  expertLinks    ArticleExpert[]
+
+  @@index([status])
+  @@index([category])
+  @@index([date])
+  @@index([authorId])
+}
+
+model Event {
+  id                 String                   @id @default(cuid())
+  slug               String                   @unique
+  title              String
+  date               DateTime
+  endDate            DateTime?
+  time               String?
+  category           String
+  location           String?
+  format             EventFormat?
+  shortDescription   String
+  description        String?
+  audience           Json?
+  speakerId          String?
+  speakerRole        String?
+  image              String?
+  registrationLabel  String?
+  registrationHref   String?
+  registrationStatus EventRegistrationStatus?
+  featured           Boolean                  @default(false)
+  status             ContentStatus            @default(DRAFT)
+  seoTitle           String?
+  seoDescription     String?
+  seoImage           String?
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  speaker            Expert?                  @relation(fields: [speakerId], references: [id], onDelete: SetNull)
+  researchLinks      WorkshopResearch[]
+  serviceLinks       WorkshopService[]
+  relatedFrom        EventRelation[]          @relation("EventRelationSource")
+  relatedTo          EventRelation[]          @relation("EventRelationTarget")
+
+  @@index([status])
+  @@index([category])
+  @@index([date])
+  @@index([speakerId])
+}
+
+model ResearchService {
+  researchId String
+  serviceId  String
+  research   ResearchItem @relation(fields: [researchId], references: [id], onDelete: Cascade)
+  service    Service      @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([researchId, serviceId])
+  @@index([serviceId])
+}
+
+model ExpertResearch {
+  expertId   String
+  researchId String
+  expert     Expert       @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  research   ResearchItem @relation(fields: [researchId], references: [id], onDelete: Cascade)
+
+  @@id([expertId, researchId])
+  @@index([researchId])
+}
+
+model ArticleResearch {
+  articleId  String
+  researchId String
+  article    Article      @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  research   ResearchItem @relation(fields: [researchId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, researchId])
+  @@index([researchId])
+}
+
+model ArticleService {
+  articleId String
+  serviceId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, serviceId])
+  @@index([serviceId])
+}
+
+model ArticleExpert {
+  articleId String
+  expertId  String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  expert    Expert  @relation(fields: [expertId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, expertId])
+  @@index([expertId])
+}
+
+model ArticleRelation {
+  sourceArticleId String
+  targetArticleId String
+  sourceArticle   Article @relation("ArticleRelationSource", fields: [sourceArticleId], references: [id], onDelete: Cascade)
+  targetArticle   Article @relation("ArticleRelationTarget", fields: [targetArticleId], references: [id], onDelete: Cascade)
+
+  @@id([sourceArticleId, targetArticleId])
+  @@index([targetArticleId])
+}
+
+model WorkshopResearch {
+  eventId    String
+  researchId String
+  event      Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  research   ResearchItem @relation(fields: [researchId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, researchId])
+  @@index([researchId])
+}
+
+model WorkshopService {
+  eventId   String
+  serviceId String
+  event     Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, serviceId])
+  @@index([serviceId])
+}
+
+model EventRelation {
+  sourceEventId String
+  targetEventId String
+  sourceEvent   Event @relation("EventRelationSource", fields: [sourceEventId], references: [id], onDelete: Cascade)
+  targetEvent   Event @relation("EventRelationTarget", fields: [targetEventId], references: [id], onDelete: Cascade)
+
+  @@id([sourceEventId, targetEventId])
+  @@index([targetEventId])
+}
