@@ -9,6 +9,17 @@ import type {
   ServiceSeo,
 } from "@/data/services";
 
+async function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
+  try {
+    return await query();
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Service database query failed:", error);
+    }
+    throw new Error("Unable to load Services from the database.");
+  }
+}
+
 function asHighlights(value: PrismaService["highlights"]): ServiceHighlight[] | undefined {
   if (!Array.isArray(value)) return undefined;
 
@@ -69,10 +80,10 @@ function toDomainService(record: PrismaService): Service {
 }
 
 export async function getPublishedServices(): Promise<Service[]> {
-  const records = await prisma.client.service.findMany({
+  const records = await runServiceQuery(() => prisma.client.service.findMany({
     where: { status: "PUBLISHED" },
     orderBy: [{ order: "asc" }, { id: "asc" }],
-  });
+  }));
 
   return records.map(toDomainService);
 }
@@ -80,9 +91,9 @@ export async function getPublishedServices(): Promise<Service[]> {
 export async function getPublishedServiceById(
   id: string,
 ): Promise<Service | undefined> {
-  const record = await prisma.client.service.findFirst({
+  const record = await runServiceQuery(() => prisma.client.service.findFirst({
     where: { id, status: "PUBLISHED" },
-  });
+  }));
 
   return record ? toDomainService(record) : undefined;
 }
@@ -90,23 +101,23 @@ export async function getPublishedServiceById(
 export async function getPublishedServiceBySlug(
   slug: string,
 ): Promise<Service | undefined> {
-  const record = await prisma.client.service.findFirst({
+  const record = await runServiceQuery(() => prisma.client.service.findFirst({
     where: {
       slug,
       status: "PUBLISHED",
     },
-  });
+  }));
 
   return record ? toDomainService(record) : undefined;
 }
 
 export async function getPublishedServiceCategories(): Promise<string[]> {
-  const records = await prisma.client.service.findMany({
+  const records = await runServiceQuery(() => prisma.client.service.findMany({
     where: { status: "PUBLISHED" },
     select: { category: true },
     distinct: ["category"],
     orderBy: { category: "asc" },
-  });
+  }));
 
   const ordered = await getPublishedServices();
   const orderByCategory = new Map<string, number>();
@@ -129,14 +140,14 @@ export async function getPublishedServiceCategories(): Promise<string[]> {
 export async function getRelatedPublishedServices(
   service: Service,
 ): Promise<Service[]> {
-  const records = await prisma.client.service.findMany({
+  const records = await runServiceQuery(() => prisma.client.service.findMany({
     where: {
       status: "PUBLISHED",
       category: service.category,
       NOT: { id: service.id },
     },
     orderBy: [{ order: "asc" }, { id: "asc" }],
-  });
+  }));
 
   return records.map(toDomainService);
 }
