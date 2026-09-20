@@ -848,3 +848,61 @@ The current canonical Research, Expert, Article and Event collections are empty,
 Canonical content records contain references, not complete related records. Future relationships must resolve through `lib/content/relationships.ts` or the appropriate canonical accessor. Broken references must never fall back to another record.
 
 Phase 7.7 does not implement the later navigation, site configuration, metadata, backend, database, CMS, admin, authentication, payments, search, SEO, performance, security or deployment work.
+
+
+
+## Phase 7.8 implementation — global site configuration and navigation
+
+Phase 7.8 establishes `data/site-config.ts` as the canonical frontend Site Configuration source. It contains:
+
+- site name and existing site description
+- canonical top-level route definitions
+- primary navigation
+- footer navigation groups
+- shared Contact action
+- existing default metadata values
+
+The existing `data/navigation.ts` module is retained only as a compatibility re-export and does not define a second navigation dataset.
+
+### Navigation consumers
+
+The existing presentation components now consume the canonical configuration without changing their visual behavior:
+
+- Desktop header → `primaryNavigation`
+- Mobile header → `primaryNavigation` plus the shared Contact action
+- Header Contact action → shared Contact action
+- Footer Explore/Organization groups → `footerNavigation`
+- Footer enquiry CTA → shared Contact action
+- Header brand label → `siteConfig.siteName`
+- Root metadata → `siteConfig.defaultMetadata`
+- Service and Research breadcrumbs → canonical route definitions
+
+Existing dropdown/mega-menu components remain data-driven through the same typed NavigationItem model and were not visually redesigned.
+
+### Dynamic content navigation
+
+Services continue to derive their actual service links from the canonical `data/services.ts` dataset. No duplicate service navigation records were introduced.
+
+The site configuration provides `getServiceNavigation()` for future navigation surfaces that legitimately need dynamic Service links.
+
+Research, Experts, Articles and Workshops retain their canonical datasets from Phases 7.3–7.6. No records were added solely to populate navigation.
+
+### Routes and shared actions
+
+The canonical route map currently covers the established public routes:
+
+`/`, `/services`, `/research`, `/experts`, `/articles`, `/workshops`, `/about`, and `/contact`.
+
+The shared global Contact action resolves to `/contact`, matching the existing header, mobile menu and footer behavior.
+
+### Validation
+
+`validateSiteConfig()` checks navigation labels, hrefs, duplicate entries within each navigation surface, child/group structure, and external-link classification. Validation runs only during development.
+
+No social URLs, contact details, legal routes, or other placeholders were invented.
+
+No breadcrumb database was introduced. Breadcrumbs continue to derive from their current route/content context while using canonical shared route definitions.
+
+### Scope
+
+No visual redesign, new website sections, backend, database, CMS, authentication, payments, search, SEO implementation, performance work, security hardening, deployment work, Phase 7.9 work, or dynamic-route architecture migration was introduced.
