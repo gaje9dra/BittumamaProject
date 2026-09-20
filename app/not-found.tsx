@@ -1,6 +1,11 @@
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+
 export default function NotFound() {
   return (
-    <main className="min-h-screen px-[var(--page-gutter)] py-16">
+    <>
+      <Header />
+      <main className="min-h-screen px-[var(--page-gutter)] py-16">
       <div className="mx-auto w-full max-w-[var(--container-content)]">
         <h1 className="text-[length:var(--font-size-h1)] font-semibold tracking-tight">
           Page not found
@@ -9,6 +14,8 @@ export default function NotFound() {
           The page you requested could not be found.
         </p>
       </div>
-    </main>
+      </main>
+      <Footer />
+    </>
   );
 }
