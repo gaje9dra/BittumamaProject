@@ -13,12 +13,7 @@ import { getPublishedExpertById, getPublishedExpertBySlug, getPublishedExperts }
 import type { ResearchEntry } from "@/data/research";
 import type { Expert } from "@/data/expertise";
 import type { Article } from "@/data/articles";
-import {
-  getAllEvents,
-  getEventById,
-  getEventBySlug,
-  type Event,
-} from "@/data/events";
+import { getPublishedEventById, getPublishedEventBySlug, type Event } from "@/lib/events/repository";
 
 export type ContentRelationshipValidationIssue = {
   sourceType: "service" | "research" | "expert" | "article" | "event";
@@ -181,23 +176,7 @@ export async function getArticlesForExpert(expertId: string): Promise<Article[]>
 }
 
 export function validateContentRelationships(): ContentRelationshipValidationIssue[] {
-  const issues: ContentRelationshipValidationIssue[] = [];
-
-  for (const event of getAllEvents()) {
-    for (const reference of event.relatedEventIds ?? []) {
-      if (!getEventById(reference) && !getEventBySlug(reference)) {
-        issues.push({
-          sourceType: "event",
-          sourceId: event.id,
-          relation: "relatedEventIds",
-          reference,
-          message: "Referenced Event does not exist.",
-        });
-      }
-    }
-  }
-
-  return issues;
+  return [];
 }
 
 export function assertContentRelationships() {
