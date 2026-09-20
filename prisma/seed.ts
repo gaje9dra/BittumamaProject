@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
-import { canonicalServices } from "../data/canonicalServices";
+import { canonicalServices } from "../data/services";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -75,5 +75,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-    await adapter.dispose();
   });
