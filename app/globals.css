@@ -135,8 +135,6 @@
   .motion-reveal{animation:motion-reveal var(--motion-emphasis) var(--motion-ease-emphasis) both}
   .motion-fade{animation:motion-fade var(--motion-normal) var(--motion-ease-standard) both}
   .motion-slide-up{animation:motion-slide-up var(--motion-emphasis) var(--motion-ease-emphasis) both}
-  @keyframes mobile-menu-enter{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes mobile-menu-exit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}
   .motion-focus{transition:box-shadow var(--motion-fast) var(--motion-ease-standard),border-color var(--motion-fast) var(--motion-ease-standard)}
   .motion-focus:focus-visible{box-shadow:0 0 0 3px rgb(47 107 96 / .18)}
   @keyframes motion-reveal{from{opacity:var(--motion-opacity-hidden);clip-path:inset(0 0 12% 0)}to{opacity:var(--motion-opacity-visible);clip-path:inset(0)}}
@@ -179,27 +177,31 @@
 
 @layer components {
   .mobile-menu-panel {
+    --mobile-menu-top: calc((var(--header-height) - 2.75rem) / 2);
+    top: var(--mobile-menu-top);
+    right: var(--page-gutter);
     width: 4rem;
     height: 2.75rem;
-    top: calc((var(--header-height) - 2.75rem) / 2);
-    right: var(--page-gutter);
+    max-height: calc(100dvh - var(--mobile-menu-top) - 1rem);
+    border: 1px solid color-mix(in srgb, var(--primary-foreground) 16%, transparent);
     border-radius: 999px;
+    background: var(--primary);
+    color: var(--primary-foreground);
     clip-path: inset(0 round 999px);
     transform-origin: top right;
-    opacity: 1;
     transition:
-      width 440ms var(--motion-ease-emphasis),
-      height 440ms var(--motion-ease-emphasis),
-      border-radius 440ms var(--motion-ease-emphasis),
-      clip-path 440ms var(--motion-ease-emphasis);
+      width 620ms var(--motion-ease-emphasis),
+      height 620ms var(--motion-ease-emphasis),
+      border-radius 620ms var(--motion-ease-emphasis),
+      clip-path 620ms var(--motion-ease-emphasis);
     will-change: width, height, border-radius, clip-path;
   }
 
   .mobile-menu-panel-open {
-    width: min(88vw, 30rem);
-    height: calc(100dvh - ((var(--header-height) - 2.75rem) / 2));
-    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
-    clip-path: inset(0 round var(--radius-xl) 0 0 var(--radius-xl));
+    width: min(78vw, 24rem);
+    height: calc(100dvh - var(--mobile-menu-top) - 1rem);
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xl) var(--radius-xl);
+    clip-path: inset(0 round var(--radius-lg) var(--radius-lg) var(--radius-xl) var(--radius-xl));
   }
 
   .mobile-menu-panel-closing {
@@ -207,42 +209,47 @@
     height: 2.75rem;
     border-radius: 999px;
     clip-path: inset(0 round 999px);
-    transition-duration: 380ms;
+    transition-duration: 560ms;
   }
 
   .mobile-menu-content {
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
     opacity: 0;
-    transform: translate3d(14px, -4px, 0);
-    transition:
-      opacity 220ms var(--motion-ease-standard),
-      transform 260ms var(--motion-ease-emphasis);
+    transform: translate3d(8px, 4px, 0);
     pointer-events: none;
+    transition:
+      opacity 180ms var(--motion-ease-standard),
+      transform 220ms var(--motion-ease-standard);
+    transition-delay: 0ms;
   }
 
   .mobile-menu-panel-open .mobile-menu-content {
     opacity: 1;
     transform: translate3d(0, 0, 0);
-    transition-delay: 150ms;
     pointer-events: auto;
+    transition-delay: 400ms;
   }
 
-  .mobile-menu-panel-open .mobile-menu-content > * {
+  .mobile-menu-panel-open .mobile-menu-link,
+  .mobile-menu-panel-open .mobile-menu-utility {
     animation: mobile-menu-item-in 220ms var(--motion-ease-standard) both;
   }
 
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(2) { animation-delay: 35ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(3) { animation-delay: 70ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(4) { animation-delay: 105ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(5) { animation-delay: 140ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(6) { animation-delay: 175ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(7) { animation-delay: 210ms; }
+  .mobile-menu-panel-open .mobile-menu-link:nth-of-type(2) { animation-delay: 45ms; }
+  .mobile-menu-panel-open .mobile-menu-link:nth-of-type(3) { animation-delay: 90ms; }
+  .mobile-menu-panel-open .mobile-menu-link:nth-of-type(4) { animation-delay: 135ms; }
+  .mobile-menu-panel-open .mobile-menu-link:nth-of-type(5) { animation-delay: 180ms; }
+  .mobile-menu-panel-open .mobile-menu-link:nth-of-type(6) { animation-delay: 225ms; }
+  .mobile-menu-panel-open .mobile-menu-link:nth-of-type(7) { animation-delay: 270ms; }
 
   .mobile-menu-submenu {
     animation: mobile-menu-item-in 220ms var(--motion-ease-standard) both;
   }
 
   @keyframes mobile-menu-item-in {
-    from { opacity: 0; transform: translate3d(12px, 0, 0); }
+    from { opacity: 0; transform: translate3d(8px, 5px, 0); }
     to { opacity: 1; transform: translate3d(0, 0, 0); }
   }
 }
