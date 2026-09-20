@@ -10,7 +10,10 @@ type AdminIdentity = {
   role: string;
 };
 
-const navItems = [{ href: "/admin", label: "Overview" }];
+const navItems = [
+  { href: "/admin", label: "Overview" },
+  { href: "/admin/content", label: "Content" },
+];
 
 export function AdminShell({ admin, children }: { admin: AdminIdentity; children: ReactNode }) {
   const displayName = admin.name?.trim() || admin.email || "Administrator";
@@ -31,7 +34,6 @@ export function AdminShell({ admin, children }: { admin: AdminIdentity; children
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    aria-current="page"
                     className="block rounded-[var(--radius-md)] bg-surface-interactive px-3 py-2.5 type-nav text-foreground"
                   >
                     {item.label}
