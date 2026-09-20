@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ExpertDetailPage } from "@/components/experts/expert-detail-page";
-import { getAllExperts, getExpertBySlug, getExpertHref } from "@/data/expertise";
+import { getExpertHref } from "@/lib/experts/paths";
+import { getPublishedExpertBySlug } from "@/lib/experts/repository";
 import { createContentMetadata } from "@/lib/metadata";
+
+export const dynamic = "force-dynamic";
 
 type ExpertDetailRouteProps = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getAllExperts().map((expert) => ({ slug: expert.slug }));
-}
-
 export async function generateMetadata({ params }: ExpertDetailRouteProps): Promise<Metadata> {
   const { slug } = await params;
-  const expert = getExpertBySlug(slug);
+  const expert = await getPublishedExpertBySlug(slug);
   if (!expert) return { title: "Expert not found | Bittumama" };
+
   return createContentMetadata({
     seo: expert.seo,
     title: expert.name,
@@ -25,7 +25,8 @@ export async function generateMetadata({ params }: ExpertDetailRouteProps): Prom
 
 export default async function ExpertDetailRoute({ params }: ExpertDetailRouteProps) {
   const { slug } = await params;
-  const expert = getExpertBySlug(slug);
+  const expert = await getPublishedExpertBySlug(slug);
   if (!expert) notFound();
+
   return <ExpertDetailPage expert={expert} />;
 }
