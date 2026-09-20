@@ -46,7 +46,7 @@
     --secondary-500:#927b5f; --secondary-600:#806b53; --secondary-700:#695846; --secondary-800:#574a3d; --secondary-900:#483e34; --secondary-950:#29241e;
     --data-1:#173f3a; --data-2:#386779; --data-3:#7b5b8a; --data-4:#a34f3f; --data-5:#9a6a20; --data-6:#58724f;
     --dark-background:#17211f; --dark-foreground:#f5f3ec; --dark-surface:#22302c; --dark-surface-muted:#2a3733;
-    --dark-border:#43514c; --dark-muted-foreground:#b9c1bc;
+    --dark-border:#43514c; --dark-muted-foreground:#b9c1bc;\n    --menu-surface:#202724; --menu-surface-elevated:#2a302d; --menu-text:#f3f0e8; --menu-text-muted:#aeb7b0; --menu-border:rgb(174 183 176 / .22); --menu-accent:var(--accent); --menu-control-surface:#313a36;
     --font-display-family:var(--font-display), Georgia, serif;
     --text-display:clamp(3.25rem,7vw,6.5rem); --text-h1:clamp(2.5rem,5.2vw,4.75rem);
     --text-h2:clamp(2rem,3.8vw,3.25rem); --text-h3:clamp(1.5rem,2.5vw,2.25rem); --text-h4:clamp(1.25rem,1.8vw,1.5rem);
@@ -176,7 +176,7 @@
 }
 
 @layer components {
-  .mobile-menu-panel {
+  .mobile-menu-trigger {\n    border-color: transparent;\n  }\n\n  .mobile-menu-trigger-closed {\n    background: var(--menu-accent);\n    color: var(--menu-text);\n  }\n\n  .mobile-menu-trigger-closed:hover {\n    background: color-mix(in srgb, var(--menu-accent) 88%, black);\n  }\n\n  .mobile-menu-trigger-open {\n    background: var(--menu-text);\n    color: var(--menu-surface);\n    border-color: transparent;\n  }\n\n  .mobile-menu-trigger-open:hover {\n    background: #e9e5db;\n  }\n\n  .mobile-menu-utility {\n    background: var(--menu-surface-elevated);\n    color: var(--menu-text);\n    border-color: var(--menu-border);\n  }\n\n  .mobile-menu-utility:hover {\n    background: var(--menu-control-surface);\n  }\n\n  .mobile-menu-search-trigger {\n    border-color: var(--menu-border) !important;\n    background: var(--menu-surface-elevated) !important;\n    color: var(--menu-text-muted) !important;\n  }\n\n  .mobile-menu-search-trigger:hover,\n  .mobile-menu-search-trigger[aria-expanded="true"] {\n    background: var(--menu-control-surface) !important;\n    color: var(--menu-text) !important;\n    border-color: var(--menu-border) !important;\n  }\n\n  .mobile-menu-search {\n    color: var(--menu-text);\n  }\n\n  .mobile-menu-search > div {\n    border-color: var(--menu-border);\n    background: var(--menu-surface-elevated);\n  }\n\n  .mobile-menu-search .text-muted-foreground,\n  .mobile-menu-search .text-primary {\n    color: var(--menu-text-muted);\n  }\n\n  .mobile-menu-search input {\n    color: var(--menu-text);\n  }\n\n  .mobile-menu-search input::placeholder {\n    color: var(--menu-text-muted);\n    opacity: 1;\n  }\n\n  .mobile-menu-search button {\n    color: var(--menu-text-muted);\n  }\n\n  .mobile-menu-search button:hover {\n    background: var(--menu-control-surface);\n    color: var(--menu-text);\n  }\n\n  .mobile-menu-search form > div > button[type="submit"] {\n    background: var(--menu-accent);\n    color: var(--menu-text);\n    border-color: var(--menu-border);\n  }\n\n  .mobile-menu-search form > div > button[type="submit"]:hover {\n    background: color-mix(in srgb, var(--menu-accent) 88%, black);\n  }\n\n  .mobile-menu-search a {\n    color: var(--menu-text-muted);\n    text-decoration-color: var(--menu-border);\n  }\n\n  .mobile-menu-search a:hover {\n    color: var(--menu-text);\n  }\n\n  .mobile-menu-panel {
     --mobile-menu-top: calc((var(--header-height) - 2.75rem) / 2);
     top: var(--mobile-menu-top);
     right: var(--page-gutter);
