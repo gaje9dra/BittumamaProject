@@ -347,16 +347,26 @@ export async function getRelationOptions(domain: ContentDomain, q: string) {
   if (value.length < 2) return [];
   const mode = "insensitive" as const;
   switch (domain) {
-    case "services":
-      return prisma.client.service.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
-    case "research":
-      return prisma.client.researchItem.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
-    case "experts":
-      return prisma.client.expert.findMany({ where: { OR: [{ name: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, name: true, slug: true }, take: 20 });
-    case "articles":
-      return prisma.client.article.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
-    case "workshops":
-      return prisma.client.event.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
+    case "services": {
+      const rows = await prisma.client.service.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
+      return rows.map((row) => ({ id: row.id, label: row.title, slug: row.slug }));
+    }
+    case "research": {
+      const rows = await prisma.client.researchItem.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
+      return rows.map((row) => ({ id: row.id, label: row.title, slug: row.slug }));
+    }
+    case "experts": {
+      const rows = await prisma.client.expert.findMany({ where: { OR: [{ name: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, name: true, slug: true }, take: 20 });
+      return rows.map((row) => ({ id: row.id, label: row.name, slug: row.slug }));
+    }
+    case "articles": {
+      const rows = await prisma.client.article.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
+      return rows.map((row) => ({ id: row.id, label: row.title, slug: row.slug }));
+    }
+    case "workshops": {
+      const rows = await prisma.client.event.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
+      return rows.map((row) => ({ id: row.id, label: row.title, slug: row.slug }));
+    }
   }
 }
 
