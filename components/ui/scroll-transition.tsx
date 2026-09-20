@@ -1,108 +1,77 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-
-type ScrollDirection = "down" | "up";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { useRef } from "react";
 
 type ScrollTransitionProps = {
   children: ReactNode;
   className?: string;
   distance?: number;
   threshold?: number;
+  mode?: "content" | "heading" | "visual";
 };
+
+const modeConfig = {
+  content: { distanceScale: 1, opacityFloor: 0.58 },
+  heading: { distanceScale: 1.2, opacityFloor: 0.68 },
+  visual: { distanceScale: 0.48, opacityFloor: 0.78 },
+} as const;
 
 export function ScrollTransition({
   children,
   className,
   distance = 64,
-  threshold = 0.28,
+  threshold: _threshold,
+  mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
-  const [isActive, setIsActive] = useState(true);
-  const directionRef = useRef<ScrollDirection>("down");
   const viewportRef = useRef<HTMLDivElement>(null);
+  const config = modeConfig[mode];
+  const movement = Math.min(distance * config.distanceScale, 90);
 
-  useEffect(() => {
-    let frame = 0;
-    let previousY = window.scrollY;
+  const { scrollYProgress } = useScroll({
+    target: viewportRef,
+    offset: ["start 92%", "end 8%"],
+  });
 
-    const updateDirection = () => {
-      const currentY = window.scrollY;
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 120,
+    damping: 30,
+    mass: 0.35,
+  });
 
-      if (currentY !== previousY) {
-        directionRef.current = currentY > previousY ? "down" : "up";
-        previousY = currentY;
-      }
-
-      frame = 0;
-    };
-
-    const onScroll = () => {
-      if (frame === 0) {
-        frame = window.requestAnimationFrame(updateDirection);
-      }
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", onScroll);
-      if (frame !== 0) {
-        window.cancelAnimationFrame(frame);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    const element = viewportRef.current;
-
-    if (!element || reducedMotion) {
-      setIsActive(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsActive(entry.isIntersecting);
-      },
-      {
-        threshold,
-        rootMargin: "-12% 0px -12% 0px",
-      },
-    );
-
-    observer.observe(element);
-
-    return () => observer.disconnect();
-  }, [reducedMotion, threshold]);
-
-  const maxDistance = Math.min(distance, 90);
-  const offset =
-    reducedMotion || isActive
-      ? 0
-      : directionRef.current === "down"
-        ? -maxDistance
-        : maxDistance;
+  const y = useTransform(progress, [0, 0.5, 1], [movement, 0, -movement]);
+  const opacity = useTransform(
+    progress,
+    [0, 0.22, 0.5, 0.78, 1],
+    [config.opacityFloor, 0.94, 1, 0.94, config.opacityFloor],
+  );
+  const scale = useTransform(
+    progress,
+    [0, 0.5, 1],
+    [mode === "visual" ? 0.992 : 0.998, 1, mode === "visual" ? 0.992 : 0.998],
+  );
 
   return (
     <div
       ref={viewportRef}
       className={className}
       style={{ overflow: "hidden" }}
+      data-scroll-transition={mode}
     >
       <motion.div
-        initial={false}
-        animate={{
-          opacity: reducedMotion || isActive ? 1 : 0,
-          y: offset,
-        }}
-        transition={{
-          duration: reducedMotion ? 0.01 : isActive ? 0.56 : 0.48,
-          ease: isActive ? [0.16, 1, 0.3, 1] : [0.7, 0, 0.84, 0],
-        }}
-        style={{ willChange: reducedMotion ? "auto" : "transform, opacity" }}
+        style={
+          reducedMotion
+            ? undefined
+            : { y, opacity, scale, willChange: "transform, opacity" }
+        }
       >
         {children}
       </motion.div>
