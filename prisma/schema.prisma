@@ -112,6 +112,7 @@ model Expert {
   name              String
   role              String?
   discipline        String?
+  order             Int              @default(0)
   shortBio          String?
   bio               String?
   image             String?
@@ -128,12 +129,24 @@ model Expert {
   createdAt         DateTime         @default(now())
   updatedAt         DateTime         @updatedAt
   researchLinks     ExpertResearch[]
+  serviceLinks      ExpertService[]
   authoredArticles  Article[]
   workshopEvents    Event[]
   articleLinks      ArticleExpert[]
 
   @@index([status])
   @@index([discipline])
+  @@index([order])
+}
+
+model ExpertService {
+  expertId  String
+  serviceId String
+  expert    Expert  @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  service   Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@id([expertId, serviceId])
+  @@index([serviceId])
 }
 
 model Article {
