@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { getEventCategoryAnchor } from "@/data/events";
+import { getEventCategoryAnchor } from "@/lib/events/paths";
 
 export function EventCategories({ categories }: { categories: string[] }) {
   if (categories.length < 2) return null;
