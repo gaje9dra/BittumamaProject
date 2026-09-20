@@ -388,17 +388,15 @@ export async function saveContent(
 
   const data = buildData(domain, parsed.fields, parsed.json, status);
 
+  let result: { id: string; previousSlug?: string } | undefined;
   try {
-    const result = await prisma.client.$transaction(async (tx) => {
+    result = await prisma.client.$transaction(async (tx) => {
       const record = id
         ? await updateRecord(tx, domain, id, data)
         : await createRecord(tx, domain, data);
       await syncRelations(tx, domain, record.id, parsed.relationIds);
       return { id: record.id, previousSlug: current?.slug };
     });
-
-    revalidateDomain(domain, parsed.fields.slug, result.previousSlug);
-    redirect(contentBasePath(domain) + "/" + result.id + "/edit?saved=1");
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       return { message: "That slug is already in use.", fieldErrors: { slug: "Choose a unique slug." } };
@@ -409,4 +407,8 @@ export async function saveContent(
     console.error("Admin content mutation failed:", error);
     return { message: "The content could not be saved. Please try again.", fieldErrors: {} };
   }
+
+  if (!result) return { message: "The content could not be saved. Please try again.", fieldErrors: {} };
+  revalidateDomain(domain, parsed.fields.slug, result.previousSlug);
+  redirect(contentBasePath(domain) + "/" + result.id + "/edit?saved=1");
 }
