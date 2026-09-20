@@ -138,6 +138,7 @@ export async function getPublishedResearch() {
     const records = await getPrismaClient().researchItem.findMany({
       where: { status: "PUBLISHED" },
       orderBy: [{ order: "asc" }, { id: "asc" }],
+      include: { serviceLinks: { select: { serviceId: true } } },
     });
     return records.map(toDomainResearch);
   });
@@ -147,6 +148,7 @@ export async function getPublishedResearchById(id: string) {
   return runResearchQuery(async () => {
     const record = await getPrismaClient().researchItem.findFirst({
       where: { id, status: "PUBLISHED" },
+      include: { serviceLinks: { select: { serviceId: true } } },
     });
     return record ? toDomainResearch(record) : undefined;
   });
@@ -156,6 +158,7 @@ export async function getPublishedResearchBySlug(slug: string) {
   return runResearchQuery(async () => {
     const record = await getPrismaClient().researchItem.findFirst({
       where: { slug, status: "PUBLISHED" },
+      include: { serviceLinks: { select: { serviceId: true } } },
     });
     return record ? toDomainResearch(record) : undefined;
   });
