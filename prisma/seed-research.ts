@@ -38,7 +38,11 @@ async function resolveServiceId(reference: string) {
   return service.id;
 }
 
-function jsonValue(value: unknown) {\n  return value === undefined ? Prisma.JsonNull : value;\n}\n\nasync function main() {
+function jsonValue(value: unknown) {
+  return value === undefined ? Prisma.JsonNull : value;
+}
+
+async function main() {
   validateResearch();
   for (const [index, research] of canonicalResearchEntries.entries()) {
     const serviceIds = [];
