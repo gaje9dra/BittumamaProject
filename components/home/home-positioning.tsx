@@ -16,8 +16,8 @@ export function HomePositioning() {
       className="layout-section-lg scroll-anchor"
     >
       <Container size="wide">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
-          <ScrollTransition distance={56}>
+        <ScrollTransition distance={56}>
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
 
                       <div className="lg:col-span-2">
                         <p className="type-label text-muted-foreground">{positioning.eyebrow}</p>
@@ -49,8 +49,8 @@ export function HomePositioning() {
                           />
                         </Link>
                       </div>
-          </ScrollTransition>
-        </div>
+          </div>
+        </ScrollTransition>        </div>
 
       </Container>
     </section>
