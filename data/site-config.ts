@@ -76,7 +76,7 @@ const routes = {
   contact: { label: "Contact", href: "/contact" },
 } satisfies SiteConfig["routes"];
 
-const primaryNavigation: NavigationItem[] = [
+const primaryNavigationItems: NavigationItem[] = [
   routes.services,
   routes.research,
   routes.workshops,
@@ -85,7 +85,7 @@ const primaryNavigation: NavigationItem[] = [
   routes.about,
 ];
 
-const footerNavigation = {
+const footerNavigationItems = {
   explore: [
     routes.research,
     routes.articles,
@@ -102,8 +102,8 @@ export const siteConfig: SiteConfig = {
   siteName: "Bittumama",
   siteDescription,
   routes,
-  primaryNavigation,
-  footerNavigation,
+  primaryNavigation: primaryNavigationItems,
+  footerNavigation: footerNavigationItems,
   globalActions: {
     contact: routes.contact,
   },
