@@ -235,3 +235,20 @@ The public Experts listing and detail route use published database records only.
 Article and Workshop/Event relationships are intentionally not imported in Phase 8.4 because those domains are not yet database-backed. The existing schema relation points remain available for their future migrations; no placeholder Article/Event records are created.
 
 No Expert admin/editor, CMS, authentication, payments, users or other backend domain is introduced in Phase 8.4.
+
+
+## Phase 8.5 Article ownership
+
+The Phase 7.5 canonical Article snapshot in `data/articles.ts` is migration/verification-only. Production Article reads go through `lib/articles/repository.ts` and Prisma/PostgreSQL.
+
+The Article database preserves the canonical title, slug, category, ordering, publication date, author display fields, excerpt, body, structured sections, image reference, featured state, tags and SEO metadata. Article publication is represented by the existing `ContentStatus` enum; the current Phase 7.5 snapshot has no separate lifecycle field, so canonical imported records are published to preserve the existing public Articles behavior.
+
+The existing Phase 8.1 relationship tables are used for Article ↔ Research, Article ↔ Service, Article ↔ Expert and Article ↔ Article relationships. Expert references are resolved against the already-migrated Expert records. No Workshop/Event relationship is fabricated.
+
+The deterministic Article import is `prisma/seed-articles.ts`, exposed as `npm run articles:seed`. It validates the canonical snapshot, upserts by canonical slug while preserving the canonical ID, persists the curated array order, resolves existing related records, and rebuilds only relationship rows belonging to imported Articles.
+
+`prisma/verify-articles.ts`, exposed as `npm run articles:verify`, compares PostgreSQL against the Phase 7.5 snapshot and checks count, stable identity, slug integrity, editorial fields, ordering, status, dates, metadata and all currently modeled Article relationships.
+
+The public Articles listing and detail route use published database records only. Unknown or unpublished Article slugs use the existing Next.js not-found behavior. The current canonical Article snapshot is empty, so this migration intentionally imports zero Article records rather than inventing editorial content.
+
+No Article editor, CMS, authentication, payments, admin or Workshop/Event migration is introduced in Phase 8.5.
