@@ -67,7 +67,7 @@ export function HomeServiceDiscovery() {
                         </Link>
                       </div>
           </div>
-        </ScrollTransition>        </div>
+        </ScrollTransition>
       </Container>
     </section>
   );
