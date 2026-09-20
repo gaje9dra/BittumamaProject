@@ -17,7 +17,11 @@ function availabilityFor(status: string | undefined): "COMING_SOON" | "AVAILABLE
   return status === "Coming Soon" ? "COMING_SOON" : "AVAILABLE";
 }
 
-function jsonValue(value: unknown) {\n  return value === undefined ? Prisma.JsonNull : value;\n}\n\nasync function main() {
+function jsonValue(value: unknown) {
+  return value === undefined ? Prisma.JsonNull : value;
+}
+
+async function main() {
   for (const [index, service] of canonicalServices.entries()) {
     await prisma.service.upsert({
       where: { slug: service.slug },
