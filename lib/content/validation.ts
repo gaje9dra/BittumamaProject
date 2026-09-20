@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { getAllServices, validateServices, type Service } from "@/data/services";
 import { getAllResearch, validateResearch, type ResearchEntry } from "@/data/research";
 import { getAllExperts, validateExperts, type Expert } from "@/data/expertise";
@@ -87,7 +89,10 @@ function validateOptionalImage(
     addIssue(issues, "error", contentType, record, field + " must be a public asset path or absolute HTTP(S) URL.");
     return;
   }
-  addIssue(issues, "warning", contentType, record, field + " references a local asset; verify the file exists before publishing.");
+  const publicPath = path.join(process.cwd(), "public", value.replace(/^\//, ""));
+  if (!existsSync(publicPath)) {
+    addIssue(issues, "warning", contentType, record, field + " references a missing local asset: " + value);
+  }
 }
 
 function validateServiceSpecific(records: readonly Service[], issues: ContentValidationIssue[]) {
@@ -99,7 +104,7 @@ function validateServiceSpecific(records: readonly Service[], issues: ContentVal
     if (record.status && record.status !== "Available" && record.status !== "Coming Soon") {
       addIssue(issues, "error", "Service", record.id, "Invalid status: " + record.status);
     }
-    validateOptionalImage(issues, "Service", record.id, "seo.image", record.seo?.image);
+    validateSeo(issues, "Service", record.id, record.seo);
   }
 }
 
@@ -114,7 +119,7 @@ function validateResearchSpecific(records: readonly ResearchEntry[], issues: Con
       addIssue(issues, "error", "Research", record.id, "Invalid status: " + record.status);
     }
     validateOptionalImage(issues, "Research", record.id, "image", record.image);
-    validateOptionalImage(issues, "Research", record.id, "seo.image", record.seo?.image);
+    validateSeo(issues, "Research", record.id, record.seo);
   }
 }
 
@@ -123,7 +128,7 @@ function validateExpertSpecific(records: readonly Expert[], issues: ContentValid
     if (!record.name.trim()) addIssue(issues, "error", "Expert", record.id, "Missing name.");
     validateOptionalImage(issues, "Expert", record.id, "image", record.image);
     validateBoolean(issues, "Expert", record.id, "featured", record.featured);
-    validateOptionalImage(issues, "Expert", record.id, "seo.image", record.seo?.image);
+    validateSeo(issues, "Expert", record.id, record.seo);
   }
 }
 
@@ -134,8 +139,28 @@ function validateArticleSpecific(records: readonly Article[], issues: ContentVal
     validateDate(issues, "Article", record.id, "date", record.date);
     validateBoolean(issues, "Article", record.id, "featured", record.featured);
     validateOptionalImage(issues, "Article", record.id, "image", record.image);
-    validateOptionalImage(issues, "Article", record.id, "seo.image", record.seo?.image);
+    validateSeo(issues, "Article", record.id, record.seo);
   }
+}
+
+function validateSeo(
+  issues: ContentValidationIssue[],
+  contentType: string,
+  record: string,
+  seo: { title?: string; description?: string; image?: string; canonical?: string; noIndex?: boolean } | undefined,
+) {
+  if (!seo) return;
+  if (seo.title !== undefined && typeof seo.title !== "string") addIssue(issues, "error", contentType, record, "SEO title must be a string.");
+  if (seo.description !== undefined && typeof seo.description !== "string") addIssue(issues, "error", contentType, record, "SEO description must be a string.");
+  if (seo.title !== undefined && !seo.title.trim()) addIssue(issues, "warning", contentType, record, "SEO title is empty.");
+  if (seo.description !== undefined && !seo.description.trim()) addIssue(issues, "warning", contentType, record, "SEO description is empty.");
+  if (seo.canonical) {
+    if (!seo.canonical.startsWith("/")) {
+      try { new URL(seo.canonical); } catch { addIssue(issues, "error", contentType, record, "SEO canonical URL is malformed."); }
+    }
+  }
+  validateOptionalImage(issues, contentType, record, "seo.image", seo.image);
+  validateBoolean(issues, contentType, record, "seo.noIndex", seo.noIndex);
 }
 
 function validateEventSpecific(records: readonly Event[], issues: ContentValidationIssue[]) {
@@ -166,7 +191,7 @@ function validateEventSpecific(records: readonly Event[], issues: ContentValidat
     }
     validateBoolean(issues, "Workshop", record.id, "featured", record.featured);
     validateOptionalImage(issues, "Workshop", record.id, "image", record.image);
-    validateOptionalImage(issues, "Workshop", record.id, "seo.image", record.seo?.image);
+    validateSeo(issues, "Workshop", record.id, record.seo);
   }
 }
 
