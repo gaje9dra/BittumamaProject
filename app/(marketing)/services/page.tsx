@@ -7,6 +7,8 @@ import { ServiceFinder } from "@/components/services/service-finder";
 import { createPageMetadata } from "@/lib/metadata";
 import { getPublishedServices } from "@/lib/services/repository";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = createPageMetadata({
   title: "Research & Academic Services | Bittumama",
   description: "Thesis, research, analysis, publication, mentoring and research technology services.",
