@@ -63,6 +63,12 @@ jobs:
       - name: Verify canonical Experts
         run: npm run experts:verify
 
+      - name: Seed canonical Articles
+        run: npm run articles:seed
+
+      - name: Verify canonical Articles
+        run: npm run articles:verify
+
       - name: Lint
         run: npm run lint
 
