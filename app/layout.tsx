@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { siteConfig } from "@/data/site-config";
+import { runContentIntegrityValidation } from "@/lib/content/validation";
 
 const bodyFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -28,6 +29,8 @@ export const metadata: Metadata = {
     siteName: siteConfig.siteName,
   },
 };
+
+runContentIntegrityValidation();
 
 export default function RootLayout({
   children,
