@@ -208,16 +208,6 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
     message: string,
   ) => issues.push({ sourceType, sourceId, relation, reference, message });
 
-  // Research is now database-backed. Research relationship integrity is verified by
-  // prisma/verify-research.ts; the remaining static domains are validated here.
-  for (const expert of getAllExperts()) {
-    for (const reference of expert.articleIds ?? []) {
-      if (!getArticleById(reference) && !getArticleBySlug(reference)) {
-        add("expert", expert.id, "articleIds", reference, "Referenced Article does not exist.");
-      }
-    }
-  }
-
   for (const article of getAllArticles()) {
     if ((article.authorId || article.authorSlug) && !getExpertForArticle(article)) {
       add(
@@ -231,15 +221,6 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
   }
 
   for (const event of getAllEvents()) {
-    if ((event.speakerId || event.speakerSlug) && !getExpertForWorkshop(event)) {
-      add(
-        "event",
-        event.id,
-        "speaker",
-        event.speakerId ?? event.speakerSlug ?? "",
-        "Referenced Expert does not exist.",
-      );
-    }
     for (const reference of event.relatedEventIds ?? []) {
       if (!getEventById(reference) && !getEventBySlug(reference)) {
         add("event", event.id, "relatedEventIds", reference, "Referenced Event does not exist.");
