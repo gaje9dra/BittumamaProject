@@ -9,11 +9,13 @@ export function RelationshipPicker({
   label,
   initial,
   multiple = true,
+  domain,
 }: {
   name: string;
   label: string;
   initial: Option[];
   multiple?: boolean;
+  domain?: string;
 }) {
   const [selected, setSelected] = useState<Option[]>(initial);
   const [query, setQuery] = useState("");
@@ -28,7 +30,7 @@ export function RelationshipPicker({
     }
     setLoading(true);
     try {
-      const response = await fetch("/api/admin/content/search?domain=" + encodeURIComponent(domainForName(name)) + "&q=" + encodeURIComponent(value));
+      const response = await fetch("/api/admin/content/search?domain=" + encodeURIComponent(domain ?? domainForName(name)) + "&q=" + encodeURIComponent(value));
       const payload = (await response.json()) as { results?: Option[] };
       setResults(payload.results ?? []);
     } finally {
