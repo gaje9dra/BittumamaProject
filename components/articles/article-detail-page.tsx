@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { getResearchHref } from "@/lib/research/paths";
-import { getExpertHref } from "@/data/expertise";
+import { getExpertHref } from "@/lib/experts/paths";
 import { getServiceHref } from "@/data/services";
 import { getArticleHref, getRelatedArticles, type Article } from "@/data/articles";
 import { getExpertForArticle, getResearchForArticle, getServicesForArticle } from "@/lib/content/relationships";
@@ -37,7 +37,7 @@ export async function ArticleDetailPage({ article }: { article: Article }) {
   const relatedResearch = await getResearchForArticle(article);
   const relatedServices = await getServicesForArticle(article);
   const author = article.author;
-  const expertAuthor = getExpertForArticle(article);
+  const expertAuthor = await getExpertForArticle(article);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
