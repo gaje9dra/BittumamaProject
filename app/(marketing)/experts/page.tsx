@@ -3,11 +3,12 @@ import { ExpertiseIndex } from "@/components/experts/expertise-index";
 import { ExpertDirectory } from "@/components/experts/expert-directory";
 import { ExpertsCta } from "@/components/experts/experts-cta";
 import { ExpertsHero } from "@/components/experts/experts-hero";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "Experts | Bittumama",
   description: "Explore Bittumama experts, disciplines and areas of expertise.",
-};
+});
 
 export default function ExpertsPage() {
   return (
