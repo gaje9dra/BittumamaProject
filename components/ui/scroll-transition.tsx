@@ -55,7 +55,7 @@ export function ScrollTransition({
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 82%", "end 42%"],
+    offset: ["start 92%", "end 38%"],
   });
 
   // One continuous mask state:
@@ -64,53 +64,46 @@ export function ScrollTransition({
   // 100%: hidden from the bottom
   // Reversing scroll automatically reverses the reveal direction.
   const clipPath = useTransform(scrollYProgress, (value) => {
-    if (value <= 0.5) {
-      const progress = easeOut(Math.min(value / 0.32, 1));
-      const topInset = Math.min(82, 100 - progress * 82);
-      return `inset(${topInset}% 0 0 0)`;
-    }
-
-    const progress = easeOut(Math.min((value - 0.5) / 0.32, 1));
-    const bottomInset = Math.min(82, progress * 82);
-    return `inset(0 0 ${bottomInset}% 0)`;
+    const progress = easeOut(Math.min(Math.max(value, 0) / 0.55, 1));
+    const topInset = 100 - progress * 100;
+    return `inset(${topInset}% 0 0 0)`;
   });
 
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.16, 0.38, 0.5, 0.62, 0.84, 1],
+    [0, 0.2, 0.42, 0.6, 0.8, 1],
     [
       config.opacityFloor,
-      config.opacityFloor + 0.08,
+      config.opacityFloor + 0.02,
       0.99,
       1,
-      0.99,
-      config.opacityFloor + 0.08,
-      config.opacityFloor,
+      1,
+      1,
     ],
   );
 
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.28, 0.5, 0.72, 1],
+    [0, 0.3, 0.55, 0.8, 1],
     [
       config.scaleFrom,
-      config.scaleFrom + (1 - config.scaleFrom) * 0.65,
+      config.scaleFrom + (1 - config.scaleFrom) * 0.5,
       1,
-      config.scaleFrom + (1 - config.scaleFrom) * 0.65,
-      config.scaleFrom,
-    ],
+      1,
+      1,
+    ]
   );
 
   const y = useTransform(
     scrollYProgress,
     [0, 0.28, 0.5, 0.72, 1],
-    [microShift, microShift * 0.25, 0, -microShift * 0.25, -microShift],
+    [microShift, microShift * 0.25, 0, 0, 0],
   );
 
   const subtleEchoOpacity = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.42, 0.5, 0.58, 0.8, 1],
-    [0, 0.015, 0.02, 0, 0.02, 0.015, 0],
+    [0, 0.2, 0.42, 0.55, 0.7, 1],
+    [0, 0.008, 0.015, 0.01, 0, 0],
   );
 
   return (
