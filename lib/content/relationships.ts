@@ -10,12 +10,7 @@ import {
 } from "@/lib/research/repository";
 import { getPublishedExpertById, getPublishedExpertBySlug } from "@/lib/experts/repository";
 import type { ResearchEntry } from "@/data/research";
-import {
-  getAllExperts,
-  getExpertById,
-  getExpertBySlug,
-  type Expert,
-} from "@/data/expertise";
+import type { Expert } from "@/data/expertise";
 import {
   getAllArticles,
   getArticleById,
@@ -80,7 +75,8 @@ export async function getExpertsForService(serviceId: string): Promise<Expert[]>
     (await getPublishedServiceBySlug(serviceId));
   if (!service) return [];
 
-  return getAllExperts().filter((expert) => expert.serviceIds?.includes(service.id));
+  const experts = await import("@/lib/experts/repository").then((module) => module.getPublishedExperts());
+  return experts.filter((expert) => expert.serviceIds?.includes(service.id));
 }
 
 export async function getArticlesForResearch(researchId: string): Promise<Article[]> {
@@ -103,17 +99,16 @@ export async function getExpertsForResearch(researchId: string): Promise<Expert[
     (await getPublishedResearchBySlug(researchId));
   if (!research) return [];
 
-  return getAllExperts().filter((expert) =>
-    expert.researchIds?.includes(research.id),
-  );
+  const experts = await import("@/lib/experts/repository").then((module) => module.getPublishedExperts());
+  return experts.filter((expert) => expert.researchIds?.includes(research.id));
 }
 
-export function getExpertForArticle(article: Article): Expert | undefined {
+export async function getExpertForArticle(article: Article): Promise<Expert | undefined> {
   if (article.authorId) {
-    const expert = getExpertById(article.authorId);
+    const expert = await getPublishedExpertById(article.authorId);
     if (expert) return expert;
   }
-  if (article.authorSlug) return getExpertBySlug(article.authorSlug);
+  if (article.authorSlug) return getPublishedExpertBySlug(article.authorSlug);
   return undefined;
 }
 
@@ -138,9 +133,9 @@ export async function getServicesForArticle(article: Article): Promise<Service[]
   return services.filter((item): item is Service => Boolean(item));
 }
 
-export function getExpertForWorkshop(event: Event): Expert | undefined {
-  if (event.speakerId) return getExpertById(event.speakerId);
-  if (event.speakerSlug) return getExpertBySlug(event.speakerSlug);
+export async function getExpertForWorkshop(event: Event): Promise<Expert | undefined> {
+  if (event.speakerId) return getPublishedExpertById(event.speakerId);
+  if (event.speakerSlug) return getPublishedExpertBySlug(event.speakerSlug);
   return undefined;
 }
 
@@ -187,7 +182,9 @@ export async function getResearchForExpert(expertId: string): Promise<ResearchEn
 }
 
 export function getArticlesForExpert(expertId: string): Article[] {
-  const expert = getExpertById(expertId) ?? getExpertBySlug(expertId);
+  const expert =
+    (await getPublishedExpertById(expertId)) ??
+    (await getPublishedExpertBySlug(expertId));
   if (!expert) return [];
 
   return getAllArticles().filter(
