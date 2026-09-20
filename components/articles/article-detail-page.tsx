@@ -5,8 +5,10 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { getResearchHref } from "@/lib/research/paths";
 import { getExpertHref } from "@/lib/experts/paths";
-import { getServiceHref } from "@/data/services";
-import { getArticleHref, getRelatedArticles, type Article } from "@/data/articles";
+import { getServiceHref } from "@/lib/services/paths";
+import { getArticleHref } from "@/lib/articles/paths";
+import type { Article } from "@/data/articles";
+import { getRelatedPublishedArticles } from "@/lib/articles/repository";
 import { getExpertForArticle, getResearchForArticle, getServicesForArticle } from "@/lib/content/relationships";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
@@ -33,7 +35,7 @@ function RelatedList({ title, items }: { title: string; items: { title: string; 
 }
 
 export async function ArticleDetailPage({ article }: { article: Article }) {
-  const relatedArticles = getRelatedArticles(article);
+  const relatedArticles = await getRelatedPublishedArticles(article);
   const relatedResearch = await getResearchForArticle(article);
   const relatedServices = await getServicesForArticle(article);
   const author = article.author;
