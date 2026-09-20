@@ -11,12 +11,13 @@ import { cn } from "@/lib/utils";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 import { announceHeaderSurface } from "@/lib/header-surface";
 
-const MENU_TRANSITION_MS = 420;
+const MENU_TRANSITION_MS = 560;
 
 export function MobileNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [panelOpen, setPanelOpen] = useState(false);
   const [closing, setClosing] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<NavigationItem | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -33,6 +34,7 @@ export function MobileNav({ className }: { className?: string }) {
   const closeMenu = useCallback(() => {
     setActiveSubmenu(null);
     setSearchOpen(false);
+    setPanelOpen(false);
     setClosing(true);
     setOpen(false);
   }, []);
@@ -116,9 +118,21 @@ export function MobileNav({ className }: { className?: string }) {
   }, [activeSubmenu, open]);
 
   useEffect(() => {
+    if (!open || !mounted) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      setPanelOpen(true);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [open, mounted]);
+
+  useEffect(() => {
     if (open || !mounted) return;
     const timer = window.setTimeout(() => {
       setMounted(false);
+      setPanelOpen(false);
+      setClosing(false);
       triggerRef.current?.focus();
     }, MENU_TRANSITION_MS);
     return () => window.clearTimeout(timer);
@@ -163,14 +177,15 @@ export function MobileNav({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls={mounted ? "mobile-primary-navigation" : undefined}
         className={cn(
-  "mobile-menu-trigger relative z-[var(--layer-toast)] inline-flex h-11 items-center justify-center gap-2 rounded-full border px-3 shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,color,transform,width] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3",
-  open ? "min-w-20 mobile-menu-trigger-open" : "min-w-16 mobile-menu-trigger-closed",
-)}
+          "mobile-menu-trigger relative z-[var(--layer-toast)] inline-flex h-11 items-center justify-center gap-2 rounded-full border px-3 shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,color,transform,width] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3",
+          open ? "min-w-20 mobile-menu-trigger-open" : "min-w-16 mobile-menu-trigger-closed",
+        )}
         onClick={() => {
           if (open) closeMenu();
           else {
             announceHeaderSurface("mobile");
             setClosing(false);
+            setPanelOpen(false);
             setMounted(true);
             setOpen(true);
           }
@@ -188,7 +203,7 @@ export function MobileNav({ className }: { className?: string }) {
           ref={panelRef}
           className={cn(
             "fixed z-[var(--layer-modal)] overflow-hidden border lg:hidden",
-            open ? "mobile-menu-panel mobile-menu-panel-open" : "mobile-menu-panel mobile-menu-panel-closing",
+            panelOpen ? "mobile-menu-panel mobile-menu-panel-open" : "mobile-menu-panel mobile-menu-panel-closing",
           )}
         >
           <nav aria-label="Mobile primary navigation" className="mobile-menu-content flex h-full min-h-0 flex-col overflow-y-auto px-[var(--page-gutter)] pb-8 pt-[calc(2.75rem+1.5rem)]">
