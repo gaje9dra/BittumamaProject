@@ -116,7 +116,7 @@ export function ScrollTransition({
   return (
     <div
       ref={viewportRef}
-      className={className}
+      className={className ? `relative ${className}` : "relative"}
       style={{ overflow: "hidden" }}
       data-scroll-transition={mode}
     >
