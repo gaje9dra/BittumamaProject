@@ -63,7 +63,7 @@ export function HomeProcess() {
                         </Link>
                       </div>
           </div>
-        </ScrollTransition>        </div>
+        </ScrollTransition>
       </Container>
     </section>
   );
