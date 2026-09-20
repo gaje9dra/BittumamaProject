@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client";
+import { Prisma, PrismaClient } from "../generated/prisma/client";
 import { canonicalResearchEntries, validateResearch } from "../data/research";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -38,7 +38,7 @@ async function resolveServiceId(reference: string) {
   return service.id;
 }
 
-async function main() {
+function jsonValue(value: unknown) {\n  return value === undefined ? Prisma.JsonNull : value;\n}\n\nasync function main() {
   validateResearch();
   for (const [index, research] of canonicalResearchEntries.entries()) {
     const serviceIds = [];
@@ -63,13 +63,13 @@ async function main() {
         topic: research.topic ?? null,
         image: research.image ?? null,
         featured: research.featured ?? false,
-        tags: research.tags ?? null,
-        highlights: research.highlights ?? null,
-        audience: research.audience ?? null,
-        scope: research.scope ?? null,
-        topics: research.topics ?? null,
-        sections: research.sections ?? null,
-        methodology: research.methodology ?? null,
+        tags: jsonValue(research.tags),
+        highlights: jsonValue(research.highlights),
+        audience: jsonValue(research.audience),
+        scope: jsonValue(research.scope),
+        topics: jsonValue(research.topics),
+        sections: jsonValue(research.sections),
+        methodology: jsonValue(research.methodology),
         seoTitle: research.seo?.title ?? null,
         seoDescription: research.seo?.description ?? null,
         seoImage: research.seo?.image ?? null,
@@ -90,13 +90,13 @@ async function main() {
         topic: research.topic ?? null,
         image: research.image ?? null,
         featured: research.featured ?? false,
-        tags: research.tags ?? null,
-        highlights: research.highlights ?? null,
-        audience: research.audience ?? null,
-        scope: research.scope ?? null,
-        topics: research.topics ?? null,
-        sections: research.sections ?? null,
-        methodology: research.methodology ?? null,
+        tags: jsonValue(research.tags),
+        highlights: jsonValue(research.highlights),
+        audience: jsonValue(research.audience),
+        scope: jsonValue(research.scope),
+        topics: jsonValue(research.topics),
+        sections: jsonValue(research.sections),
+        methodology: jsonValue(research.methodology),
         seoTitle: research.seo?.title ?? null,
         seoDescription: research.seo?.description ?? null,
         seoImage: research.seo?.image ?? null,
