@@ -129,8 +129,8 @@ export function ScrollHeading({
       ref={windowRef}
       className={cn(
         "scroll-heading-window",
-        active && "scroll-heading-window-active",
         direction === "up" ? "scroll-heading-direction-up" : "scroll-heading-direction-down",
+        className,
       )}
       style={style}
     >
