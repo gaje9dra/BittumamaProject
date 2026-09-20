@@ -18,19 +18,19 @@ type ScrollTransitionProps = {
 
 const modeConfig = {
   content: {
-    opacityFloor: 0.82,
-    scaleFrom: 0.995,
-    clipInset: 8,
+    opacityFloor: 0.84,
+    scaleFrom: 0.992,
+    clipInset: 6,
   },
   heading: {
-    opacityFloor: 0.72,
-    scaleFrom: 0.985,
+    opacityFloor: 0.78,
+    scaleFrom: 0.99,
     clipInset: 0,
   },
   visual: {
-    opacityFloor: 0.9,
-    scaleFrom: 0.992,
-    clipInset: 5,
+    opacityFloor: 0.92,
+    scaleFrom: 0.995,
+    clipInset: 4,
   },
 } as const;
 
@@ -42,7 +42,7 @@ const easeOut = (value: number) => {
 export function ScrollTransition({
   children,
   className,
-  distance = 8,
+  distance = 6,
   mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
@@ -50,12 +50,12 @@ export function ScrollTransition({
   const config = modeConfig[mode];
   const microShift = Math.min(
     Math.max(distance, 0),
-    mode === "heading" ? 12 : mode === "visual" ? 6 : 8,
+    mode === "heading" ? 9 : mode === "visual" ? 5 : 6,
   );
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 88%", "end 12%"],
+    offset: ["start 84%", "end 16%"],
   });
 
   // One continuous mask state:
@@ -81,9 +81,9 @@ export function ScrollTransition({
     [
       config.opacityFloor,
       config.opacityFloor + 0.08,
-      0.98,
+      0.99,
       1,
-      0.98,
+      0.99,
       config.opacityFloor + 0.08,
       config.opacityFloor,
     ],
@@ -94,9 +94,9 @@ export function ScrollTransition({
     [0, 0.28, 0.5, 0.72, 1],
     [
       config.scaleFrom,
-      config.scaleFrom + (1 - config.scaleFrom) * 0.7,
+      config.scaleFrom + (1 - config.scaleFrom) * 0.65,
       1,
-      config.scaleFrom + (1 - config.scaleFrom) * 0.7,
+      config.scaleFrom + (1 - config.scaleFrom) * 0.65,
       config.scaleFrom,
     ],
   );
@@ -110,7 +110,7 @@ export function ScrollTransition({
   const subtleEchoOpacity = useTransform(
     scrollYProgress,
     [0, 0.2, 0.42, 0.5, 0.58, 0.8, 1],
-    [0, 0.08, 0.13, 0, 0.13, 0.08, 0],
+    [0, 0.05, 0.08, 0, 0.08, 0.05, 0],
   );
 
   return (
