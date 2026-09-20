@@ -8,7 +8,7 @@ import {
   getPublishedResearchById,
   getPublishedResearchBySlug,
 } from "@/lib/research/repository";
-import { getPublishedExpertById, getPublishedExpertBySlug } from "@/lib/experts/repository";
+import { getPublishedExpertById, getPublishedExpertBySlug, getPublishedExperts } from "@/lib/experts/repository";
 import type { ResearchEntry } from "@/data/research";
 import type { Expert } from "@/data/expertise";
 import {
@@ -75,7 +75,7 @@ export async function getExpertsForService(serviceId: string): Promise<Expert[]>
     (await getPublishedServiceBySlug(serviceId));
   if (!service) return [];
 
-  const experts = await import("@/lib/experts/repository").then((module) => module.getPublishedExperts());
+  const experts = await getPublishedExperts();
   return experts.filter((expert) => expert.serviceIds?.includes(service.id));
 }
 
