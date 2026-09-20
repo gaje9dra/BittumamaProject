@@ -8,6 +8,7 @@ import {
   getPublishedResearchById,
   getPublishedResearchBySlug,
 } from "@/lib/research/repository";
+import { getPublishedExpertById, getPublishedExpertBySlug } from "@/lib/experts/repository";
 import type { ResearchEntry } from "@/data/research";
 import {
   getAllExperts,
@@ -164,7 +165,9 @@ export async function getServicesForWorkshop(event: Event): Promise<Service[]> {
 }
 
 export async function getServicesForExpert(expertId: string): Promise<Service[]> {
-  const expert = getExpertById(expertId) ?? getExpertBySlug(expertId);
+  const expert =
+    (await getPublishedExpertById(expertId)) ??
+    (await getPublishedExpertBySlug(expertId));
   if (!expert) return [];
 
   const services = await Promise.all(
@@ -174,7 +177,9 @@ export async function getServicesForExpert(expertId: string): Promise<Service[]>
 }
 
 export async function getResearchForExpert(expertId: string): Promise<ResearchEntry[]> {
-  const expert = getExpertById(expertId) ?? getExpertBySlug(expertId);
+  const expert =
+    (await getPublishedExpertById(expertId)) ??
+    (await getPublishedExpertBySlug(expertId));
   if (!expert) return [];
 
   const research = await getPublishedResearch();
