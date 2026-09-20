@@ -84,11 +84,14 @@ function asSeo(value: {
   };
 }
 
-type PrismaResearchWithServices = PrismaResearchItem & {
+type PrismaResearchWithRelations = PrismaResearchItem & {
   serviceLinks: Array<{ serviceId: string }>;
+  expertLinks: Array<{ expertId: string }>;
+  articleLinks: Array<{ articleId: string }>;
+  workshopLinks: Array<{ eventId: string }>;
 };
 
-function toDomainResearch(record: PrismaResearchWithServices): ResearchEntry {
+function toDomainResearch(record: PrismaResearchWithRelations): ResearchEntry {
   const seo = asSeo({
     title: record.seoTitle,
     description: record.seoDescription,
@@ -105,6 +108,9 @@ function toDomainResearch(record: PrismaResearchWithServices): ResearchEntry {
     shortDescription: record.shortDescription,
     ...(record.summary ? { summary: record.summary } : {}),
     ...(record.serviceLinks.length ? { relatedServiceIds: record.serviceLinks.map((link) => link.serviceId) } : {}),
+    ...(record.expertLinks.length ? { expertIds: record.expertLinks.map((link) => link.expertId) } : {}),
+    ...(record.articleLinks.length ? { relatedArticleIds: record.articleLinks.map((link) => link.articleId) } : {}),
+    ...(record.workshopLinks.length ? { relatedWorkshopIds: record.workshopLinks.map((link) => link.eventId) } : {}),
     ...(record.scope ? { scope: asResearchPoints(record.scope) } : {}),
     ...(record.topics ? { topics: asResearchPoints(record.topics) } : {}),
     ...(record.sections ? { sections: asResearchSections(record.sections) } : {}),
@@ -138,7 +144,7 @@ export async function getPublishedResearch() {
     const records = await getPrismaClient().researchItem.findMany({
       where: { status: "PUBLISHED" },
       orderBy: [{ order: "asc" }, { id: "asc" }],
-      include: { serviceLinks: { select: { serviceId: true } } },
+      include: { serviceLinks: { select: { serviceId: true } }, expertLinks: { select: { expertId: true } }, articleLinks: { select: { articleId: true } }, workshopLinks: { select: { eventId: true } } },
     });
     return records.map(toDomainResearch);
   });
