@@ -1,5 +1,6 @@
 import "server-only";
 
+import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db/prisma";
 
 export const CONTENT_DOMAINS = [
@@ -84,7 +85,7 @@ export function contentBasePath(domain: ContentDomain) {
 
 function statusWhere(status?: string) {
   return status === "DRAFT" || status === "PUBLISHED" || status === "ARCHIVED"
-    ? { status }
+    ? { status: status as "DRAFT" | "PUBLISHED" | "ARCHIVED" }
     : undefined;
 }
 
@@ -147,60 +148,60 @@ export async function listContent(
     case "services": {
       const [items, total] = await Promise.all([
         prisma.client.service.findMany({
-          where,
+          where: where as Prisma.ServiceWhereInput,
           select: { id: true, title: true, slug: true, category: true, status: true, updatedAt: true, order: true },
           orderBy: options.sort === "title" ? { title: "asc" } : options.sort === "date" ? { createdAt: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
-        prisma.client.service.count({ where }),
+        prisma.client.service.count({ where: where as Prisma.ServiceWhereInput }),
       ]);
       return { items, total, page, pageSize };
     }
     case "research": {
       const [items, total] = await Promise.all([
         prisma.client.researchItem.findMany({
-          where,
+          where: where as Prisma.ResearchItemWhereInput,
           select: { id: true, title: true, slug: true, category: true, status: true, updatedAt: true, date: true },
           orderBy: options.sort === "title" ? { title: "asc" } : options.sort === "date" ? { date: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
-        prisma.client.researchItem.count({ where }),
+        prisma.client.researchItem.count({ where: where as Prisma.ResearchItemWhereInput }),
       ]);
       return { items, total, page, pageSize };
     }
     case "experts": {
       const [items, total] = await Promise.all([
         prisma.client.expert.findMany({
-          where,
+          where: where as Prisma.ExpertWhereInput,
           select: { id: true, name: true, slug: true, discipline: true, status: true, updatedAt: true, order: true },
           orderBy: options.sort === "title" ? { name: "asc" } : options.sort === "date" ? { createdAt: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
-        prisma.client.expert.count({ where }),
+        prisma.client.expert.count({ where: where as Prisma.ExpertWhereInput }),
       ]);
       return { items, total, page, pageSize };
     }
     case "articles": {
       const [items, total] = await Promise.all([
         prisma.client.article.findMany({
-          where,
+          where: where as Prisma.ArticleWhereInput,
           select: { id: true, title: true, slug: true, category: true, status: true, updatedAt: true, date: true },
           orderBy: options.sort === "title" ? { title: "asc" } : options.sort === "date" ? { date: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
-        prisma.client.article.count({ where }),
+        prisma.client.article.count({ where: where as Prisma.ArticleWhereInput }),
       ]);
       return { items, total, page, pageSize };
     }
     case "workshops": {
       const [items, total] = await Promise.all([
         prisma.client.event.findMany({
-          where,
+          where: where as Prisma.EventWhereInput,
           select: { id: true, title: true, slug: true, category: true, status: true, updatedAt: true, date: true },
           orderBy: options.sort === "title" ? { title: "asc" } : options.sort === "date" ? { date: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
-        prisma.client.event.count({ where }),
+        prisma.client.event.count({ where: where as Prisma.EventWhereInput }),
       ]);
       return { items, total, page, pageSize };
     }
