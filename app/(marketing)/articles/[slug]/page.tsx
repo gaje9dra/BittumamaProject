@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleDetailPage } from "@/components/articles/article-detail-page";
-import { getAllArticles, getArticleBySlug } from "@/data/articles";
+import { getAllArticles, getArticleBySlug, getArticleHref } from "@/data/articles";
 
 type ArticleDetailRouteProps = { params: Promise<{ slug: string }> };
 
@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: ArticleDetailRouteProps): Pro
   return {
     title: article.seo?.title ?? article.title + " | Articles & Insights | Bittumama",
     description: article.seo?.description ?? article.excerpt,
-    alternates: { canonical: "/articles/" + article.slug },
+    alternates: { canonical: getArticleHref(article) },
   };
 }
 
