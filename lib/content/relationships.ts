@@ -174,3 +174,47 @@ export async function getRelatedWorkshops(event: Event): Promise<Event[]> {
       (referenceSet.has(candidate.id) || referenceSet.has(candidate.slug)),
   );
 }
+
+
+export async function getServicesForArticle(article: Article): Promise<Service[]> {
+  return getRelatedServicesForArticle(article);
+}
+
+export async function getResearchForArticle(article: Article): Promise<ResearchEntry[]> {
+  return getRelatedResearchForArticle(article);
+}
+
+export async function getExpertForArticle(article: Article): Promise<Expert | undefined> {
+  const experts = await getRelatedExpertsForArticle(article);
+  return experts[0];
+}
+
+export async function getServicesForExpert(expertId: string): Promise<Service[]> {
+  return getRelatedServicesForExpert(expertId);
+}
+
+export async function getResearchForExpert(expertId: string): Promise<ResearchEntry[]> {
+  return getRelatedResearchForExpert(expertId);
+}
+
+export async function getArticlesForExpert(expertId: string): Promise<Article[]> {
+  return getRelatedArticlesForExpert(expertId);
+}
+
+export async function getServicesForResearch(research: ResearchEntry): Promise<Service[]> {
+  return getRelatedServicesForResearch(research);
+}
+
+export type ContentRelationshipValidationIssue = {
+  sourceType: string;
+  sourceId: string;
+  relation: string;
+  reference: string;
+  message: string;
+};
+
+export function validateContentRelationships(): ContentRelationshipValidationIssue[] {
+  // Phase 7 migration snapshots are intentionally empty after canonical database migration.
+  // Runtime relationship integrity is verified against PostgreSQL by prisma/verify-content-integrity.ts.
+  return [];
+}
