@@ -225,6 +225,18 @@ export function validateContentIntegrity(): ContentValidationIssue[] {
     );
   }
 
+  if (!siteConfig.siteName.trim()) addIssue(issues, "error", "Site Config", "siteConfig", "siteName is required.");
+  if (!siteConfig.siteDescription.trim()) addIssue(issues, "error", "Site Config", "siteConfig", "siteDescription is required.");
+  if (!siteConfig.defaultMetadata.title.trim()) addIssue(issues, "error", "Site Config", "defaultMetadata", "Default metadata title is required.");
+  if (!siteConfig.defaultMetadata.description.trim()) addIssue(issues, "error", "Site Config", "defaultMetadata", "Default metadata description is required.");
+
+  for (const [routeName, route] of Object.entries(siteConfig.routes)) {
+    if (!route.label.trim()) addIssue(issues, "error", "Site Route", routeName, "Route label is required.");
+    if (!route.href.trim() || !route.href.startsWith("/")) {
+      addIssue(issues, "error", "Site Route", routeName, "Internal route must be a non-empty path.");
+    }
+  }
+
   for (const issue of validateSiteConfig(siteConfig)) {
     addIssue(issues, "error", "Site Config", "siteConfig", issue);
   }
