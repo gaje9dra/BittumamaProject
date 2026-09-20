@@ -2,11 +2,14 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getRelatedResearch, getResearchHref, type ResearchEntry } from "@/data/research";
+import { getResearchHref } from "@/lib/research/paths";
+import { getRelatedPublishedResearch } from "@/lib/research/repository";
+import type { ResearchEntry } from "@/data/research";
 
-export function RelatedResearch({ research }: { research: ResearchEntry }) {
-  const related = getRelatedResearch(research);
+export async function RelatedResearch({ research }: { research: ResearchEntry }) {
+  const related = await getRelatedPublishedResearch(research);
   if (!related.length) return null;
+
   return (
     <section aria-labelledby="related-research-title" className="bg-surface-muted">
       <Container size="wide" className="layout-section-lg">
