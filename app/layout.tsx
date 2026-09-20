@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Sans, Literata } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
 import { siteConfig } from "@/data/site-config";
 import { runContentIntegrityValidation } from "@/lib/content/validation";
 
@@ -42,9 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${bodyFont.variable} ${displayFont.variable}`}>
-        <Header />
         {children}
-        <Footer />
       </body>
     </html>
   );
