@@ -1,5 +1,3 @@
-import "server-only";
-
 export type ContactInquiryInput = {
   name: string;
   email: string;
