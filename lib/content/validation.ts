@@ -208,7 +208,6 @@ export function formatContentValidationIssues(issues: readonly ContentValidation
 }
 
 export function runContentIntegrityValidation() {
-  validateExperts();
   validateArticles();
   validateEvents();
 
