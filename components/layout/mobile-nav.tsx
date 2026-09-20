@@ -177,8 +177,7 @@ export function MobileNav({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls={mounted ? "mobile-primary-navigation" : undefined}
         className={cn(
-          "mobile-menu-trigger relative z-[var(--layer-toast)] inline-flex h-11 items-center justify-center gap-2 rounded-full border px-3 shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,color,transform,width] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3",
-          open ? "min-w-20 mobile-menu-trigger-open" : "min-w-16 mobile-menu-trigger-closed",
+          "mobile-menu-trigger relative z-[var(--layer-toast)] inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-transparent p-0 text-[var(--foreground)] transition-[background-color,border-color,color,transform] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] active:scale-[0.98] hover:bg-[var(--surface-muted)] focus-visible:outline-2 focus-visible:outline-offset-3",
         )}
         onClick={() => {
           if (open) closeMenu();
@@ -191,10 +190,22 @@ export function MobileNav({ className }: { className?: string }) {
           }
         }}
       >
-        <span className={cn("type-label transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-95 opacity-0")}>Menu</span>
-        <span className={cn("type-label absolute transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-95 opacity-0")}>Close</span>
-        <Menu aria-hidden="true" className={cn("transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-75 opacity-0")} size={17} />
-        <X aria-hidden="true" className={cn("transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-75 opacity-0")} size={18} />
+        <Menu
+          aria-hidden="true"
+          className={cn(
+            "transition-[opacity,transform] duration-[var(--motion-micro)]",
+            open && "scale-75 opacity-0",
+          )}
+          size={20}
+        />
+        <X
+          aria-hidden="true"
+          className={cn(
+            "absolute transition-[opacity,transform] duration-[var(--motion-micro)]",
+            !open && "scale-75 opacity-0",
+          )}
+          size={20}
+        />
       </button>
 
       {mounted && (
