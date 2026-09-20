@@ -906,3 +906,44 @@ No breadcrumb database was introduced. Breadcrumbs continue to derive from their
 ### Scope
 
 No visual redesign, new website sections, backend, database, CMS, authentication, payments, search, SEO implementation, performance work, security hardening, deployment work, Phase 7.9 work, or dynamic-route architecture migration was introduced.
+
+
+## Phase 7.9 implementation — dynamic content route architecture
+
+Phase 7.9 standardizes the five dynamic frontend route families around their existing canonical content datasets and lookup helpers:
+
+- Services → `/services/[slug]` → `getServiceBySlug(slug)`
+- Research → `/research/[slug]` → `getResearchBySlug(slug)`
+- Experts → `/experts/[slug]` → `getExpertBySlug(slug)`
+- Articles → `/articles/[slug]` → `getArticleBySlug(slug)`
+- Workshops / Events → `/workshops/[slug]` → `getEventBySlug(slug)`
+
+### Route resolution
+
+All five route families read Next.js 16 App Router `params.slug` server-side, resolve the record from the canonical dataset, and render only that resolved record. The Workshop/Event route now performs the same explicit `notFound()` check as the other dynamic routes before passing the typed record to its presentation component.
+
+Static params for every family are derived directly from the canonical dataset. No duplicate slug arrays or page-local content maps were introduced.
+
+### Canonical route generation
+
+Article and Workshop/Event datasets now expose `getArticleHref()` and `getEventHref()` alongside the existing Service, Research and Expert href helpers. Dynamic metadata and generated internal links use these canonical helpers instead of reconstructing content URLs from display values in page components.
+
+### Relationships
+
+Existing cross-content relationships continue to resolve through `lib/content/relationships.ts` where dynamic detail UI displays those relationships. No duplicate relationship logic or fallback record behavior was introduced.
+
+Workshop/Event related-event links remain based on the canonical Event dataset and now use the canonical event href helper. The event detail component receives an already-resolved `Event` record; route resolution is kept in the route layer.
+
+### Invalid and empty data behavior
+
+Missing dynamic records resolve to Next.js `notFound()` at the route layer. Canonical datasets remain unchanged and empty where they were empty; no fake content was added to make routes resolve.
+
+Broken cross-content references continue to be omitted by the Phase 7.7 relationship layer rather than substituted with unrelated records.
+
+### Phase 7.8 compatibility fix
+
+The existing site configuration's default metadata description was changed to use a predeclared `siteDescription` constant, avoiding self-reference during `siteConfig` initialization. This is a correctness fix within the existing Phase 7.8 architecture and does not change the rendered site content.
+
+### Scope boundary
+
+No UI redesign, new content, backend, database, CMS, authentication, payments, advanced search, SEO implementation, performance optimization, security hardening, deployment work or Phase 7.10 work was introduced.
