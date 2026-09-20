@@ -207,3 +207,116 @@ Contact remains anonymous-capable. For an authenticated submission, the server m
 Implemented: Auth.js-managed OAuth/session handling, database sessions, server-side role checks, controlled roles, same-origin redirect validation, no public User/Account/Session API, server-only secrets/Prisma, and additive migration only.
 
 Not implemented: admin dashboard, CMS, content editing, inquiry management UI, payments, subscriptions, event registration, analytics dashboard, user account dashboard, or role-management UI.
+
+## Phase 8.10 — Protected Admin Foundation & Admin Shell
+
+The protected admin foundation is now implemented on top of the Phase 8.9 authentication and authorization system.
+
+### Admin architecture
+
+```
+ADMIN USER
+  ↓
+Auth.js session
+  ↓
+server-side requireAdmin()
+  ↓
+/admin protected layout
+  ↓
+Admin shell
+  ↓
+future admin modules
+```
+
+The canonical admin entry point is `/admin`. The protected layout calls the existing `requireAdmin()` helper before rendering any admin shell content. Anonymous users are redirected into the existing `/login` flow with a safe `/admin` callback. Authenticated non-admin users receive a not-found response rather than an authorization detail. Administrators are allowed through.
+
+No client-side role check is used as the security boundary.
+
+### Admin shell
+
+The shell contains:
+
+- dedicated admin header/navigation
+- desktop sidebar
+- compact mobile navigation
+- trusted administrator name/email display
+- existing Auth.js sign-out action
+- main admin content region
+- accessible focus states and keyboard navigation
+- restrained operational styling
+
+Only the `Overview` destination is exposed because it is the only implemented admin module. No fake Content, Inquiries, Media or Settings links are presented as functional routes.
+
+### Overview data
+
+`/admin` shows only real PostgreSQL/Prisma counts for:
+
+- Services
+- Research
+- Experts
+- Articles
+- Workshops / Events
+- Contact inquiries
+
+The counts use direct Prisma `count()` operations and are executed server-side in parallel. Records are not loaded into memory merely to count them. No analytics, revenue, conversion, engagement, visitor or synthetic metrics were introduced.
+
+### Protected-route conventions
+
+Future routes under `/admin` inherit the protected admin layout. Any future admin Server Action, API route, or other protected server resource must independently enforce `requireAdmin()` before reading or mutating protected data. Entering `/admin` is not treated as authorization for unrelated endpoints.
+
+The current phase does not create public admin APIs, mutation Server Actions, CRUD screens, inquiry management, user management, media management, payments, registration or role-management UI.
+
+### Admin data and privacy
+
+The admin shell receives only the small authenticated identity context needed for its UI. It does not expose OAuth tokens, Account records, Session internals, database credentials or database metadata.
+
+Admin pages are dynamic and marked `noindex`, `nofollow`, `noarchive`, and `nocache`. The admin shell is not included in public navigation or public content architecture.
+
+### Public-shell preservation
+
+The public header/footer remain attached to the public marketing, authentication, search, design-system and authentication-test route groups. The root layout now provides only the global HTML/font foundation so `/admin` can have an isolated operational shell without rendering the public marketing navigation around it.
+
+No public content or homepage hero was recreated or changed as part of Phase 8.10. Contact remains anonymously accessible.
+
+### Access-control verification
+
+Verify with a configured PostgreSQL/Auth.js environment:
+
+1. Anonymous → `/admin` redirects to `/login?callbackUrl=%2Fadmin`.
+2. Authenticated `USER` → `/admin` is denied without revealing admin privilege details.
+3. Authenticated `ADMIN` → `/admin` renders the shell and real database counts.
+4. Admin sign-out → `/admin` is blocked again.
+5. Forged client role/query parameters do not affect server authorization.
+6. Public Home, Services, Research, Experts, Articles, Workshops/Events, About and Contact remain accessible without authentication.
+7. Anonymous Contact submission remains available.
+
+A real Google OAuth flow still requires configured provider credentials; source-level verification and CI build verification must not be described as a completed browser OAuth test unless that flow is actually exercised.
+
+### Phase 8.10 scope boundary
+
+Implemented:
+
+- protected `/admin`
+- server-side admin authorization
+- reusable admin shell
+- admin navigation foundation
+- safe administrator identity display
+- logout
+- loading/error/not-found behavior
+- real database-aware overview counts
+- admin non-indexing behavior
+- documentation
+
+Not implemented:
+
+- CMS/content CRUD
+- inquiry management
+- user management
+- media library
+- event registration
+- payments
+- analytics
+- role-management UI
+- audit-log system
+
+The phase stops at the protected admin foundation as specified.
