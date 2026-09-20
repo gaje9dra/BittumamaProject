@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
 import type { Event } from "@/data/events";
-import { getRelatedEvents } from "@/data/events";
+import { getEventHref, getRelatedEvents } from "@/data/events";
 import { Container } from "@/components/ui/container";
 
 function EventFacts({ event }: { event: Event }) {
@@ -25,8 +24,7 @@ function EventFacts({ event }: { event: Event }) {
   );
 }
 
-export function EventDetailPage({ event }: { event?: Event }) {
-  if (!event) notFound();
+export function EventDetailPage({ event }: { event: Event }) {
 
   const related = getRelatedEvents(event);
 
@@ -87,7 +85,7 @@ export function EventDetailPage({ event }: { event?: Event }) {
             <h2 className="type-h3">Related Events</h2>
             <div className="mt-6 divide-y divide-border border-y border-border">
               {related.map((item) => (
-                <Link key={item.id} href={"/workshops/" + item.slug} className="group flex min-h-16 items-center justify-between gap-5 py-4 text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
+                <Link key={item.id} href={getEventHref(item)} className="group flex min-h-16 items-center justify-between gap-5 py-4 text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
                   <span><span className="type-label block text-muted-foreground">{item.date}</span><span className="type-h4 mt-1 block">{item.title}</span></span>
                   <span className="type-button shrink-0">View Event</span>
                 </Link>
