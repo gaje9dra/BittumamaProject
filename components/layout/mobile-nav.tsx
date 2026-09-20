@@ -4,8 +4,8 @@ import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, ChevronRight, Menu, X } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import type { NavigationItem } from "@/data/navigation";
-import { mobileNavigation } from "@/data/navigation";
+import type { NavigationItem } from "@/data/site-config";
+import { globalActions, primaryNavigation } from "@/data/site-config";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
@@ -204,7 +204,7 @@ export function MobileNav({ className }: { className?: string }) {
                       restoreFocusRef={searchTriggerRef}
                     />
                   </div>
-                  {mobileNavigation.map((item, index) => {
+                  {primaryNavigation.map((item, index) => {
                     const hasNestedNavigation = Boolean(item.children?.length || item.groups?.length);
                     if (!hasNestedNavigation) {
                       return (
@@ -264,7 +264,7 @@ export function MobileNav({ className }: { className?: string }) {
             </div>
 
             <Link
-              href="/contact"
+              href={globalActions.contact.href}
               onClick={closeMenu}
               className="mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border border-primary bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-micro)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
             >
