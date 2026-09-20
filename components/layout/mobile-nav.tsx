@@ -187,11 +187,11 @@ export function MobileNav({ className }: { className?: string }) {
           id="mobile-primary-navigation"
           ref={panelRef}
           className={cn(
-            "fixed right-0 top-0 z-[var(--layer-modal)] h-[100dvh] overflow-hidden border border-border bg-background lg:hidden",
+            "fixed z-[var(--layer-modal)] overflow-hidden border border-border bg-background lg:hidden",
             open ? "mobile-menu-panel mobile-menu-panel-open" : "mobile-menu-panel mobile-menu-panel-closing",
           )}
         >
-          <nav aria-label="Mobile primary navigation" className="mobile-menu-content flex h-full min-h-0 flex-col overflow-y-auto px-[var(--page-gutter)] pb-8 pt-[calc(var(--header-height)+1.5rem)]">
+          <nav aria-label="Mobile primary navigation" className="mobile-menu-content flex h-full min-h-0 flex-col overflow-y-auto px-[var(--page-gutter)] pb-8 pt-[calc(2.75rem+1.5rem)]">
             <div className="flex-1">
               {!activeSubmenu ? (
                 <>
