@@ -34,7 +34,7 @@ export type Service = {
   seo?: ServiceSeo;
 };
 
-export const services: Service[] = [
+export const canonicalServices: Service[] = [
   {
     id: "research-support",
     title: "Research Support",
@@ -154,28 +154,8 @@ export const services: Service[] = [
   },
 ];
 
-export function getAllServices() {
-  return services;
-}
-
 export function getServiceHref(service: Pick<Service, "slug">) {
   return "/services/" + service.slug;
-}
-
-export function getServiceById(id: string) {
-  return services.find((service) => service.id === id);
-}
-
-export function getServiceBySlug(slug: string) {
-  return services.find((service) => service.slug === slug);
-}
-
-export const serviceCategories = Array.from(
-  new Set(services.map((service) => service.category).filter(Boolean)),
-);
-
-export function getServicesByCategory(category: string) {
-  return services.filter((service) => service.category === category);
 }
 
 export function getServiceCategoryAnchor(category: string) {
@@ -187,16 +167,7 @@ export function getServiceCategoryAnchor(category: string) {
   return `service-category-${slug}`;
 }
 
-export function getRelatedServices(service: Service) {
-  return services.filter(
-    (candidate) =>
-      candidate.slug !== service.slug &&
-      candidate.category === service.category,
-  );
-}
-
-
-export function validateServices(records: readonly Service[] = services) {
+export function validateServices(records: readonly Service[] = canonicalServices) {
   const ids = new Set<string>();
   const slugs = new Set<string>();
 
