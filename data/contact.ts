@@ -1,5 +1,3 @@
-import { getAllServices } from "@/data/services";
-
 export type ContactMethod = {
   label?: string;
   action?: string;
@@ -27,7 +25,3 @@ export const contactData = {
   contactMethods: [] as ContactMethod[],
 };
 
-export const contactServiceOptions = getAllServices();
-
-export const getContactService = (slug: string | null | undefined) =>
-  contactServiceOptions.find((service) => service.slug === slug);
