@@ -22,6 +22,11 @@ const displayFont = Literata({
 export const metadata: Metadata = {
   title: siteConfig.defaultMetadata.title,
   description: siteConfig.defaultMetadata.description,
+  openGraph: {
+    title: siteConfig.defaultMetadata.title,
+    description: siteConfig.defaultMetadata.description,
+    siteName: siteConfig.siteName,
+  },
 };
 
 export default function RootLayout({
