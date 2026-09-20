@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteRoutes } from "@/data/site-config";
 
 type ServiceBreadcrumbsProps = {
   serviceName: string;
@@ -12,7 +13,7 @@ export function ServiceBreadcrumbs({
       <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
         <li>
           <Link
-            href="/"
+            href={siteRoutes.home.href}
             className="underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3"
           >
             Home
@@ -21,7 +22,7 @@ export function ServiceBreadcrumbs({
         <li aria-hidden="true">/</li>
         <li>
           <Link
-            href="/services"
+            href={siteRoutes.services.href}
             className="underline decoration-transparent underline-offset-4 transition-[color,text-decoration-color] duration-[var(--motion-fast)] hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3"
           >
             Services
