@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Event } from "@/data/events";
-import { getEventHref, getRelatedEvents } from "@/data/events";
+import { getEventHref } from "@/lib/events/paths";
+import { getRelatedEvents } from "@/lib/events/repository";
 import { Container } from "@/components/ui/container";
 
 function EventFacts({ event }: { event: Event }) {
@@ -24,9 +25,9 @@ function EventFacts({ event }: { event: Event }) {
   );
 }
 
-export function EventDetailPage({ event }: { event: Event }) {
+export async function EventDetailPage({ event }: { event: Event }) {
 
-  const related = getRelatedEvents(event);
+  const related = await getRelatedEvents(event);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
