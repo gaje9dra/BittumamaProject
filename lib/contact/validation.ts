@@ -33,14 +33,14 @@ export function validateContactInquiryInput(
   const allowedKeys = new Set(["name", "email", "phone", "service", "message", "website", "formStartedAt"]);
   const unexpectedKey = Object.keys(value).find((key) => !allowedKeys.has(key));
   if (unexpectedKey) return { success: false, errors: { message: "Invalid request payload." } };
-  const website = typeof value.website === "string" ? value.website.trim() : "";
-  if (website) return { success: false, errors: { message: "Unable to process this submission." } };
   const name = typeof value.name === "string" ? value.name.trim() : "";
   const email = typeof value.email === "string" ? value.email.trim() : "";
   const phone = typeof value.phone === "string" ? value.phone.trim() : "";
   const service = typeof value.service === "string" ? value.service.trim() : "";
   const message = typeof value.message === "string" ? value.message.trim() : "";
   const website = typeof value.website === "string" ? value.website.trim() : "";
+  const website = typeof value.website === "string" ? value.website.trim() : "";
+  if (website) return { success: false, errors: { message: "Unable to process this submission." } };
   const formStartedAt =
     typeof value.formStartedAt === "string" ? value.formStartedAt.trim() : undefined;
 
