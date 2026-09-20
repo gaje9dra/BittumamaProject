@@ -350,6 +350,7 @@ export async function saveContent(
   _previous: ContentActionState = initialState,
   formData: FormData,
 ): Promise<ContentActionState> {
+  void _previous;
   await requireAdmin();
 
   const domainValue = value(formData, "domain");
