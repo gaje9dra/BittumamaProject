@@ -3,9 +3,11 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
-import { getPublishedServices } from "@/lib/services/repository";\nimport { getServiceHref } from "@/lib/services/paths";
+import { getPublishedServices } from "@/lib/services/repository";
+import { getServiceHref } from "@/lib/services/paths";
 
-export async function HomeServiceDiscovery() {\n  const services = await getPublishedServices();
+export async function HomeServiceDiscovery() {
+  const services = await getPublishedServices();
   return (
     <section
       id="home-service-discovery"
