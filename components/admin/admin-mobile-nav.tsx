@@ -42,15 +42,15 @@ export function AdminMobileNav({ displayName, email }: { displayName: string; em
             <p className="type-caption text-muted-foreground">Signed in as</p>
             <p className="mt-1 truncate type-body-sm font-medium">{displayName}</p>
             {email && <p className="mt-1 truncate type-caption text-muted-foreground">{email}</p>}
-            <ul className="mt-4 border-t border-border pt-3">
+            <ul className="mt-4 space-y-1 border-t border-border pt-3">
               <li>
-                <Link
-                  href="/admin"
-                  aria-current="page"
-                  onClick={() => setOpen(false)}
-                  className="block rounded-[var(--radius-md)] bg-surface-interactive px-3 py-2.5 type-nav"
-                >
+                <Link href="/admin" onClick={() => setOpen(false)} className="block rounded-[var(--radius-md)] px-3 py-2.5 type-nav hover:bg-surface-interactive">
                   Overview
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/content" onClick={() => setOpen(false)} className="block rounded-[var(--radius-md)] px-3 py-2.5 type-nav hover:bg-surface-interactive">
+                  Content
                 </Link>
               </li>
             </ul>
