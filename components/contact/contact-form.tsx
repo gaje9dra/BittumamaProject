@@ -78,12 +78,12 @@ export function ContactForm({ initialService = "", services }: { initialService?
     }
   }
 
-  const fieldClass = "mt-2 min-h-12 w-full rounded-[var(--radius-md)] border border-input bg-surface px-4 type-body-sm text-foreground outline-none transition-[border-color,box-shadow] duration-[var(--motion-fast)] placeholder:text-muted-foreground/80 focus:border-primary focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:bg-surface-muted";
+  const fieldClass = "mt-2 min-h-12 w-full rounded-[var(--radius-md)] border border-input bg-background px-4 type-body-sm text-foreground outline-none transition-[border-color,box-shadow,background-color] duration-[var(--motion-fast)] placeholder:text-muted-foreground/80 focus:border-primary focus:bg-surface focus:ring-2 focus:ring-ring/20 disabled:cursor-not-allowed disabled:bg-surface-muted";
   const errorFor = (field: keyof FormErrors) => errors[field];
 
   return (
-    <form noValidate onSubmit={handleSubmit} className="border-y border-border bg-background">
-      <div className="grid gap-7 p-5 sm:p-7">
+    <form noValidate onSubmit={handleSubmit} className="bg-transparent">
+      <div className="grid gap-6">
         <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
           <label htmlFor="contact-website">Website</label>
           <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={(e) => update("website", e.target.value)} />
@@ -93,7 +93,7 @@ export function ContactForm({ initialService = "", services }: { initialService?
           <input id="contact-name" name="name" autoComplete="name" value={values.name} onChange={(e) => update("name", e.target.value)} onBlur={() => handleBlur("name")} aria-invalid={Boolean(errorFor("name"))} aria-describedby={errorFor("name") ? "contact-name-error" : undefined} className={cn(fieldClass, errorFor("name") && "border-error")} disabled={status === "submitting"} />
           {errorFor("name") && <p id="contact-name-error" role="alert" className="type-caption mt-2 text-error">{errorFor("name")}</p>}
         </div>
-        <div className="grid gap-7 sm:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2">
           <div>
             <label htmlFor="contact-email" className="type-label">Email <span aria-hidden="true">*</span></label>
             <input id="contact-email" name="email" type="email" autoComplete="email" value={values.email} onChange={(e) => update("email", e.target.value)} onBlur={() => handleBlur("email")} aria-invalid={Boolean(errorFor("email"))} aria-describedby={errorFor("email") ? "contact-email-error" : undefined} className={cn(fieldClass, errorFor("email") && "border-error")} disabled={status === "submitting"} />
@@ -117,14 +117,14 @@ export function ContactForm({ initialService = "", services }: { initialService?
         </div>
         <div>
           <label htmlFor="contact-message" className="type-label">Tell us about your requirement <span aria-hidden="true">*</span></label>
-          <textarea id="contact-message" name="message" rows={7} maxLength={5000} value={values.message} onChange={(e) => update("message", e.target.value)} onBlur={() => handleBlur("message")} aria-invalid={Boolean(errorFor("message"))} aria-describedby={errorFor("message") ? "contact-message-error" : "contact-message-help"} className={cn(fieldClass, "resize-y py-3", errorFor("message") && "border-error")} disabled={status === "submitting"} />
+          <textarea id="contact-message" name="message" rows={6} maxLength={5000} value={values.message} onChange={(e) => update("message", e.target.value)} onBlur={() => handleBlur("message")} aria-invalid={Boolean(errorFor("message"))} aria-describedby={errorFor("message") ? "contact-message-error" : "contact-message-help"} className={cn(fieldClass, "resize-y py-3", errorFor("message") && "border-error")} disabled={status === "submitting"} />
           {errorFor("message") ? <p id="contact-message-error" role="alert" className="type-caption mt-2 text-error">{errorFor("message")}</p> : <p id="contact-message-help" className="type-caption mt-2 text-muted-foreground">Include the project stage, support needed, and any relevant deadline or research/data requirement.</p>}
         </div>
         <div ref={statusRef} tabIndex={-1} aria-live="polite" className="min-h-5 outline-none">
           {serverMessage && <p role={status === "success" ? "status" : "alert"} className={cn("type-caption", status === "success" ? "text-primary" : "text-error")}>{serverMessage}</p>}
         </div>
-        <button type="submit" disabled={status === "submitting"} className="inline-flex min-h-12 w-full items-center justify-center rounded-[var(--radius-md)] bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3 disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-muted-foreground">
-          {status === "submitting" ? "Sending…" : "Send Enquiry"}
+        <button type="submit" disabled={status === "submitting"} className="group inline-flex min-h-12 w-full items-center justify-center rounded-[var(--radius-md)] bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3 disabled:cursor-not-allowed disabled:bg-surface-muted disabled:text-muted-foreground">
+          <span>{status === "submitting" ? "Sending…" : "Send Enquiry"}</span><span aria-hidden="true" className="transition-transform duration-[var(--motion-fast)] group-hover:translate-x-1">↗</span>
         </button>
       </div>
     </form>
