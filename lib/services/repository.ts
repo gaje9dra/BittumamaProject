@@ -27,8 +27,8 @@ function asHighlights(value: PrismaService["highlights"]): ServiceHighlight[] | 
     (item): item is ServiceHighlight =>
       typeof item === "object" &&
       item !== null &&
-      typeof item.title === "string" &&
-      typeof item.description === "string",
+      typeof (item as Record<string, unknown>).title === "string" &&
+      typeof (item as Record<string, unknown>).description === "string",
   );
 }
 
@@ -39,8 +39,8 @@ function asFaq(value: PrismaService["faq"]): ServiceFaq[] | undefined {
     (item): item is ServiceFaq =>
       typeof item === "object" &&
       item !== null &&
-      typeof item.question === "string" &&
-      typeof item.answer === "string",
+      typeof (item as Record<string, unknown>).question === "string" &&
+      typeof (item as Record<string, unknown>).answer === "string",
   );
 }
 
