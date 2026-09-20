@@ -142,7 +142,8 @@ export function ScrollHeading({
           levelClasses[level],
           "scroll-heading-text",
           active && "scroll-heading-text-active",
-          className,
+          direction === "up" ? "scroll-heading-direction-up" : "scroll-heading-direction-down",
+          headingClassName,
         )}
         {...props}
       >
