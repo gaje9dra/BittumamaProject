@@ -18,7 +18,7 @@ export function HomeIntelligence() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-5">
             <p className="type-label text-primary-foreground/70">{intelligence.eyebrow}</p>
-            <Heading
+            <ScrollHeading
               id="home-intelligence-title"
               level={2}
               className="mt-5 max-w-[17ch] text-primary-foreground"
