@@ -171,7 +171,6 @@
   .motion-stagger > *:nth-child(6){animation-delay:300ms}
 }
 
-
 @layer components {
   .scroll-anchor { scroll-margin-top: var(--header-scroll-offset); }
 }
@@ -283,10 +282,10 @@
     width: 4rem;
     height: 2.75rem;
     max-height: calc(100dvh - var(--mobile-menu-top) - 1rem);
-    border: 1px solid color-mix(in srgb, var(--primary-foreground) 16%, transparent);
+    border: 1px solid var(--menu-border);
     border-radius: 999px;
-    background: var(--primary);
-    color: var(--primary-foreground);
+    background: var(--menu-surface);
+    color: var(--menu-text);
     clip-path: inset(0 round 999px);
     transform-origin: top right;
     transition:
