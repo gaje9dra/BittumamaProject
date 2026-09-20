@@ -1,62 +1,71 @@
 "use client";
 
 import type { ReactNode } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 type ScrollTransitionProps = {
   children: ReactNode;
   className?: string;
   distance?: number;
-  threshold?: number;
   mode?: "content" | "heading" | "visual";
 };
 
 const modeConfig = {
-  content: { distanceScale: 1, opacityFloor: 0.58 },
-  heading: { distanceScale: 1.2, opacityFloor: 0.68 },
-  visual: { distanceScale: 0.48, opacityFloor: 0.78 },
+  content: { distanceScale: 1, opacityFloor: 0.8 },
+  heading: { distanceScale: 1.12, opacityFloor: 0.84 },
+  visual: { distanceScale: 0.48, opacityFloor: 0.9 },
 } as const;
+
+const easeOut = (value: number) => {
+  const clamped = Math.max(0, Math.min(1, value));
+  return 1 - (1 - clamped) ** 3;
+};
+
+const mapMotion = (value: number, distance: number) => {
+  if (value <= 0.5) {
+    const progress = easeOut(value / 0.5);
+    return distance * (1 - progress);
+  }
+
+  const progress = easeOut((value - 0.5) / 0.5);
+  return -distance * progress;
+};
+
+const mapOpacity = (value: number, floor: number) => {
+  if (value <= 0.5) {
+    const progress = easeOut(value / 0.5);
+    return floor + (1 - floor) * progress;
+  }
+
+  const progress = easeOut((value - 0.5) / 0.5);
+  return 1 - (1 - floor) * progress;
+};
 
 export function ScrollTransition({
   children,
   className,
-  distance = 64,
-  threshold: _threshold,
+  distance = 52,
   mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const config = modeConfig[mode];
-  const movement = Math.min(distance * config.distanceScale, 90);
+  const movement = Math.min(distance * config.distanceScale, mode === "heading" ? 70 : 60);
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 92%", "end 8%"],
+    offset: ["start 88%", "end 12%"],
   });
 
-  const progress = useSpring(scrollYProgress, {
-    stiffness: 120,
-    damping: 30,
-    mass: 0.35,
-  });
-
-  const y = useTransform(progress, [0, 0.5, 1], [movement, 0, -movement]);
-  const opacity = useTransform(
-    progress,
-    [0, 0.22, 0.5, 0.78, 1],
-    [config.opacityFloor, 0.94, 1, 0.94, config.opacityFloor],
+  const y = useTransform(scrollYProgress, (value) => mapMotion(value, movement));
+  const opacity = useTransform(scrollYProgress, (value) =>
+    mapOpacity(value, config.opacityFloor),
   );
   const scale = useTransform(
-    progress,
+    scrollYProgress,
     [0, 0.5, 1],
-    [mode === "visual" ? 0.992 : 0.998, 1, mode === "visual" ? 0.992 : 0.998],
+    [mode === "visual" ? 0.996 : 0.999, 1, mode === "visual" ? 0.996 : 0.999],
   );
 
   return (
