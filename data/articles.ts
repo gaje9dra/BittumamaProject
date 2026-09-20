@@ -30,6 +30,7 @@ export type Article = {
   relatedArticles?: string[];
   relatedResearch?: string[];
   relatedServices?: string[];
+  expertIds?: string[];
   seo?: ArticleSeo;
 };
 
