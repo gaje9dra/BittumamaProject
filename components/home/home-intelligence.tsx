@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { ScrollHeading } from "@/components/ui/scroll-heading";
+import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { homepageContent } from "@/data/homepage";
 
@@ -18,13 +18,13 @@ export function HomeIntelligence() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-5">
             <p className="type-label text-primary-foreground/70">{intelligence.eyebrow}</p>
-            <ScrollHeading
+            <Heading
               id="home-intelligence-title"
               level={2}
               className="mt-5 max-w-[17ch] text-primary-foreground"
             >
               {intelligence.title}
-            </ScrollHeading>
+            </Heading>
             <Text size="lg" className="mt-7 max-w-[46ch] text-primary-foreground/80">
               {intelligence.description}
             </Text>
