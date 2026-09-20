@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { getAllEvents, validateEvents, type Event } from "@/data/events";
 import { siteConfig, validateSiteConfig } from "@/data/site-config";
 import { validateContentRelationships } from "@/lib/content/relationships";
 
@@ -150,7 +149,6 @@ function validateEventSpecific(records: readonly Event[], issues: ContentValidat
 
 export function validateContentIntegrity(): ContentValidationIssue[] {
   const issues: ContentValidationIssue[] = [];
-  const events = getAllEvents();
 
   validateUniqueRecords(events, "Workshop", issues);
 
@@ -198,7 +196,6 @@ export function formatContentValidationIssues(issues: readonly ContentValidation
 }
 
 export function runContentIntegrityValidation() {
-  validateEvents();
 
   const issues = validateContentIntegrity();
   const errors = issues.filter((issue) => issue.severity === "error");
