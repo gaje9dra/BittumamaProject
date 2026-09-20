@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceHref, type Service } from "@/data/services";
+import { getServiceHref } from "@/lib/services/paths";
+import type { Service } from "@/data/services";
 import { getRelatedPublishedServices } from "@/lib/services/repository";
 
 type RelatedServicesProps = {
