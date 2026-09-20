@@ -18,18 +18,18 @@ type ScrollTransitionProps = {
 
 const modeConfig = {
   content: {
-    opacityFloor: 0.84,
-    scaleFrom: 0.992,
+    opacityFloor: 0.93,
+    scaleFrom: 0.9968,
     clipInset: 6,
   },
   heading: {
-    opacityFloor: 0.78,
+    opacityFloor: 0.9,
     scaleFrom: 0.99,
     clipInset: 0,
   },
   visual: {
-    opacityFloor: 0.92,
-    scaleFrom: 0.995,
+    opacityFloor: 0.96,
+    scaleFrom: 0.998,
     clipInset: 4,
   },
 } as const;
@@ -42,7 +42,7 @@ const easeOut = (value: number) => {
 export function ScrollTransition({
   children,
   className,
-  distance = 6,
+  distance = 3,
   mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
@@ -50,12 +50,12 @@ export function ScrollTransition({
   const config = modeConfig[mode];
   const microShift = Math.min(
     Math.max(distance, 0),
-    mode === "heading" ? 9 : mode === "visual" ? 5 : 6,
+    mode === "heading" ? 5 : mode === "visual" ? 3 : 3,
   );
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 84%", "end 16%"],
+    offset: ["start 80%", "end 20%"],
   });
 
   // One continuous mask state:
@@ -110,7 +110,7 @@ export function ScrollTransition({
   const subtleEchoOpacity = useTransform(
     scrollYProgress,
     [0, 0.2, 0.42, 0.5, 0.58, 0.8, 1],
-    [0, 0.05, 0.08, 0, 0.08, 0.05, 0],
+    [0, 0.025, 0.035, 0, 0.035, 0.025, 0],
   );
 
   return (
