@@ -2,7 +2,7 @@ import "server-only";
 
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
-import type { UserRole } from "@/generated/prisma/client";
+import { UserRole } from "@/generated/prisma/client";
 
 export async function getCurrentSession() {
   return auth();
@@ -26,7 +26,7 @@ export async function requireAuthenticatedUser() {
 export async function requireAdmin() {
   const user = await requireAuthenticatedUser();
 
-  if (user.role !== ("ADMIN" satisfies UserRole)) {
+  if (user.role !== UserRole.ADMIN) {
     redirect("/login?error=AccessDenied");
   }
 
