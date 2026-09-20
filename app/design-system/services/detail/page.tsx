@@ -7,12 +7,12 @@ import { ServiceFAQ } from "@/components/services/service-faq";
 import { ServiceAudience } from "@/components/services/service-audience";
 import { ServiceCta } from "@/components/services/service-cta";
 import { RelatedServices } from "@/components/services/related-services";
-import { services, type Service } from "@/data/services";
+import { canonicalServices, type Service } from "@/data/services";
 
 export default function ServiceDetailPlaygroundPage() {
   if (process.env.NODE_ENV === "production") notFound();
 
-  const baseService = services[0];
+  const baseService = canonicalServices[0];
 
   const previewServices: Service[] = [
     {
@@ -45,7 +45,7 @@ export default function ServiceDetailPlaygroundPage() {
       ],
     },
     {
-      ...services[1],
+      ...canonicalServices[1],
       id: "preview-faq-one",
       title: "Dissertation Support",
       faq: [
@@ -58,7 +58,7 @@ export default function ServiceDetailPlaygroundPage() {
       audience: undefined,
     },
     {
-      ...services[2],
+      ...canonicalServices[2],
       id: "preview-faq-long",
       title: "Research Paper Support for Extended Academic Projects",
       shortDescription:
