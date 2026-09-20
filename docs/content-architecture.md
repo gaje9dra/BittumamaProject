@@ -216,3 +216,22 @@ Research public queries are limited to published records. Unknown or unpublished
 Only the Research ↔ Service relationship is migrated in this phase because Services already exist in PostgreSQL. Expert, Article and Workshop/Event relationships remain for their future domain migrations; no placeholder records are created.
 
 No Research admin/editor, CMS, authentication, payments, users or other backend domain is introduced in Phase 8.3.
+
+
+## Phase 8.4 Expert ownership
+
+The canonical Phase 7.4 Expert snapshot in `data/expertise.ts` is migration/verification-only. Production Expert reads go through `lib/experts/repository.ts` and Prisma/PostgreSQL.
+
+The Expert database preserves the canonical ID, slug, name, role, discipline, short biography, biography, expertise, qualifications, research interests, image reference, featured state, publication state, ordering and SEO metadata. `Expert.order` preserves the Phase 7.4 curated array ordering.
+
+The existing Phase 8.1 `ExpertResearch` relation is used for Expert ↔ Research relationships. Phase 8.4 adds the minimal `ExpertService` join model because the Phase 7.4 domain exposes `serviceIds` and Services are already database-backed.
+
+The deterministic Expert import is `prisma/seed-experts.ts`, exposed as `npm run experts:seed`. It validates the canonical snapshot, upserts by canonical slug while preserving the canonical ID, resolves Service and Research references against their existing database records, and rewrites only the Expert's relationship rows. It does not reset the database or delete unrelated records.
+
+`prisma/verify-experts.ts`, exposed as `npm run experts:verify`, compares the database against the canonical Phase 7.4 snapshot and checks count, unexpected records, stable IDs/slugs, ordering, profile fields, JSON expertise fields, publication state, image/SEO references and Expert ↔ Service/Research relationships.
+
+The public Experts listing and detail route use published database records only. Unknown or unpublished Expert slugs use the existing Next.js not-found behavior.
+
+Article and Workshop/Event relationships are intentionally not imported in Phase 8.4 because those domains are not yet database-backed. The existing schema relation points remain available for their future migrations; no placeholder Article/Event records are created.
+
+No Expert admin/editor, CMS, authentication, payments, users or other backend domain is introduced in Phase 8.4.
