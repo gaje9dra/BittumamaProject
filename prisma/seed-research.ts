@@ -38,8 +38,8 @@ async function resolveServiceId(reference: string) {
   return service.id;
 }
 
-function jsonValue(value: unknown) {
-  return value === undefined ? Prisma.JsonNull : value;
+function jsonValue(value: unknown): Prisma.InputJsonValue | typeof Prisma.JsonNull {
+  return value === undefined ? Prisma.JsonNull : (value as Prisma.InputJsonValue);
 }
 
 async function main() {
