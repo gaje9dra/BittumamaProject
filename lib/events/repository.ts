@@ -53,6 +53,8 @@ function toDomainEvent(record: EventWithRelations): Event {
     ...(registrationStatus ? { registrationStatus } : {}),
     ...(record.featured ? { featured: true } : {}),
     ...(record.relatedFrom.length ? { relatedEventIds: record.relatedFrom.map((item) => item.targetEventId) } : {}),
+    ...(record.researchLinks.length ? { relatedResearchIds: record.researchLinks.map((item) => item.researchId) } : {}),
+    ...(record.serviceLinks.length ? { relatedServiceIds: record.serviceLinks.map((item) => item.serviceId) } : {}),
     ...(record.seoTitle || record.seoDescription || record.seoImage
       ? {
           seo: {
