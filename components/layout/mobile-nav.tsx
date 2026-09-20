@@ -141,15 +141,15 @@ export function MobileNav({ className }: { className?: string }) {
         aria-current={active ? "page" : undefined}
         onClick={closeMenu}
         className={cn(
-          "mobile-menu-link type-h4 flex min-h-14 items-center justify-between border-b border-white/20 py-3 text-primary-foreground transition-[color,transform,opacity] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:translate-x-1 hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4",
-          active && "font-semibold text-primary-foreground",
+          "mobile-menu-link type-h4 flex min-h-14 items-center justify-between border-b border-[var(--menu-border)] py-3 text-[var(--menu-text)] transition-[color,transform,opacity] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:translate-x-1 hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-4",
+          active && "font-semibold text-[var(--menu-text)]",
         )}
       >
         <span>
           <span className="block">{item.label}</span>
-          {item.description && <span className="type-body-sm mt-1 block text-muted-foreground">{item.description}</span>}
+          {item.description && <span className="type-body-sm mt-1 block text-[var(--menu-text-muted)]">{item.description}</span>}
         </span>
-        <ArrowUpRight aria-hidden="true" size={20} className="shrink-0 text-muted-foreground" />
+        <ArrowUpRight aria-hidden="true" size={20} className="shrink-0 text-[var(--menu-text-muted)]" />
       </Link>
     );
   };
@@ -163,8 +163,8 @@ export function MobileNav({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls={mounted ? "mobile-primary-navigation" : undefined}
         className={cn(
-  "relative z-[var(--layer-toast)] inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-background px-3 text-foreground shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,transform,width] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:bg-surface-muted active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3",
-  open ? "min-w-20" : "min-w-16",
+  "mobile-menu-trigger relative z-[var(--layer-toast)] inline-flex h-11 items-center justify-center gap-2 rounded-full border px-3 shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,color,transform,width] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3",
+  open ? "min-w-20 mobile-menu-trigger-open" : "min-w-16 mobile-menu-trigger-closed",
 )}
         onClick={() => {
           if (open) closeMenu();
@@ -187,7 +187,7 @@ export function MobileNav({ className }: { className?: string }) {
           id="mobile-primary-navigation"
           ref={panelRef}
           className={cn(
-            "fixed z-[var(--layer-modal)] overflow-hidden border border-border bg-background lg:hidden",
+            "fixed z-[var(--layer-modal)] overflow-hidden border lg:hidden",
             open ? "mobile-menu-panel mobile-menu-panel-open" : "mobile-menu-panel mobile-menu-panel-closing",
           )}
         >
@@ -201,14 +201,14 @@ export function MobileNav({ className }: { className?: string }) {
                       controlsId={searchPanelId}
                       open={searchOpen}
                       onClick={() => setSearchOpen((value) => !value)}
-                      className="w-full justify-start border-white/20 bg-white/10 text-primary-foreground hover:bg-white/15"
+                      className="mobile-menu-search-trigger w-full justify-start"
                     />
                     <SearchPanel
                       id={searchPanelId}
                       open={searchOpen}
                       onClose={closeSearch}
                       variant="inline"
-                      className="mt-3"
+                      className="mobile-menu-search mt-3"
                       restoreFocusRef={searchTriggerRef}
                     />
                   </div>
@@ -228,13 +228,13 @@ export function MobileNav({ className }: { className?: string }) {
                         type="button"
                         onClick={() => enterSubmenu(item)}
                         className={cn(
-                          "mobile-menu-link type-h4 flex min-h-14 w-full items-center justify-between border-b border-white/20 py-3 text-left text-primary-foreground transition-[color,transform,opacity] duration-[var(--motion-micro)] hover:translate-x-1 hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4",
+                          "mobile-menu-link type-h4 flex min-h-14 w-full items-center justify-between border-b border-[var(--menu-border)] py-3 text-left text-[var(--menu-text)] transition-[color,transform,opacity] duration-[var(--motion-micro)] hover:translate-x-1 hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-4",
                           index === 0 && "border-t",
-                          isNavigationItemActive(pathname, item.href) && "font-semibold text-primary",
+                          isNavigationItemActive(pathname, item.href) && "font-semibold text-[var(--menu-text)]",
                         )}
                       >
                         <span>{item.label}</span>
-                        <ChevronRight aria-hidden="true" size={22} className="shrink-0 text-muted-foreground" />
+                        <ChevronRight aria-hidden="true" size={22} className="shrink-0 text-[var(--menu-text-muted)]" />
                       </button>
                     );
                   })}
@@ -245,24 +245,24 @@ export function MobileNav({ className }: { className?: string }) {
                     ref={submenuBackRef}
                     type="button"
                     onClick={leaveSubmenu}
-                    className="type-nav mb-6 inline-flex min-h-11 items-center gap-2 text-primary-foreground/70 transition-colors duration-[var(--motion-fast)] hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
+                    className="type-nav mb-6 inline-flex min-h-11 items-center gap-2 text-[var(--menu-text-muted)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-3"
                     aria-label={"Back to " + (activeSubmenu.label === "Services" ? "main menu" : "main navigation")}
                   >
                     <ArrowLeft aria-hidden="true" size={18} />
                     Back
                   </button>
 
-                  <div className="border-b border-white/20 pb-5">
-                    <p className="type-h3 text-primary-foreground">{activeSubmenu.label}</p>
-                    {activeSubmenu.description && <p className="type-body-sm mt-2 text-primary-foreground/70">{activeSubmenu.description}</p>}
+                  <div className="border-b border-[var(--menu-border)] pb-5">
+                    <p className="type-h3 text-[var(--menu-text)]">{activeSubmenu.label}</p>
+                    {activeSubmenu.description && <p className="type-body-sm mt-2 text-[var(--menu-text-muted)]">{activeSubmenu.description}</p>}
                   </div>
 
                   <div className="mt-2">
                     {(activeSubmenu.children ?? []).map(renderDestination)}
                     {(activeSubmenu.groups ?? []).map((group) => (
-                      <section key={group.label} className="border-b border-white/20 py-5">
-                        <p className="type-label text-primary-foreground/60">{group.label}</p>
-                        {group.description && <p className="type-caption mt-2 text-primary-foreground/70">{group.description}</p>}
+                      <section key={group.label} className="border-b border-[var(--menu-border)] py-5">
+                        <p className="type-label text-[var(--menu-text-muted)]">{group.label}</p>
+                        {group.description && <p className="type-caption mt-2 text-[var(--menu-text-muted)]">{group.description}</p>}
                         <div className="mt-2">{group.items.map(renderDestination)}</div>
                       </section>
                     ))}
@@ -274,7 +274,7 @@ export function MobileNav({ className }: { className?: string }) {
             <Link
               href={globalActions.contact.href}
               onClick={closeMenu}
-              className="mobile-menu-utility mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border border-background bg-background px-5 type-button text-foreground transition-[background-color,color,transform] duration-[var(--motion-micro)] hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-3"
+              className="mobile-menu-utility mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border px-5 type-button transition-[background-color,border-color,color,transform] duration-[var(--motion-micro)] hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-3"
             >
               {globalActions.contact.label}
             </Link>
