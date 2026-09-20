@@ -367,5 +367,11 @@ export async function getNamedRelations(ids: Record<ContentDomain, string[]>) {
     ids.articles.length ? prisma.client.article.findMany({ where: { id: { in: ids.articles } }, select: { id: true, title: true, slug: true } }) : [],
     ids.workshops.length ? prisma.client.event.findMany({ where: { id: { in: ids.workshops } }, select: { id: true, title: true, slug: true } }) : [],
   ]);
-  return { services, research, experts, articles, workshops };
+  return {
+    services: services.map((item) => ({ id: item.id, label: item.title, slug: item.slug })),
+    research: research.map((item) => ({ id: item.id, label: item.title, slug: item.slug })),
+    experts: experts.map((item) => ({ id: item.id, label: item.name, slug: item.slug })),
+    articles: articles.map((item) => ({ id: item.id, label: item.title, slug: item.slug })),
+    workshops: workshops.map((item) => ({ id: item.id, label: item.title, slug: item.slug })),
+  };
 }
