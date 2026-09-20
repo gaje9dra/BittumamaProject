@@ -77,7 +77,7 @@ export async function ExpertDetailContent({ expert }: { expert: Expert }) {
           <div className="mt-10">
             <LinkedRows title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: getServiceHref(item) }))} />
             <LinkedRows title="Related research" items={(await getResearchForExpert(expert.id)).map((item) => ({ title: item.title, href: getResearchHref(item) }))} />
-            <LinkedRows title="Related articles" items={getArticlesForExpert(expert.id).map((item) => ({ title: item.title, href: "/articles/" + item.slug }))} />
+            <LinkedRows title="Related articles" items={(await getArticlesForExpert(expert.id)).map((item) => ({ title: item.title, href: "/articles/" + item.slug }))} />
           </div>
         </div>
       </div>
