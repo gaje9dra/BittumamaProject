@@ -45,6 +45,12 @@ jobs:
       - name: Apply Prisma migrations
         run: npm run prisma:deploy
 
+      - name: Seed canonical Services
+        run: npm run prisma:seed
+
+      - name: Verify canonical Services
+        run: npm run services:verify
+
       - name: Lint
         run: npm run lint
 
