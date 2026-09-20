@@ -54,7 +54,11 @@ export function BittumamaHero() {
       const element = heroRef.current;
       if (!element) return;
       const rect = element.getBoundingClientRect();
-      const progress = Math.max(0, Math.min(1, (window.innerHeight * 0.8 - rect.top) / Math.max(rect.height, 1)));
+      const pageTop = window.scrollY + rect.top;
+      const progress = Math.max(
+        0,
+        Math.min(1, (window.scrollY - pageTop) / Math.max(element.offsetHeight * 0.9, 1)),
+      );
       const next = Math.min(HERO_STATES.length - 1, Math.floor(progress * HERO_STATES.length));
       if (next !== lastStep.current) {
         lastStep.current = next;
