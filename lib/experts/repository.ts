@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db/prisma";
 type PrismaExpertWithRelations = PrismaExpert & {
   researchLinks: Array<{ researchId: string }>;
   serviceLinks: Array<{ serviceId: string }>;
+  articleLinks: Array<{ articleId: string }>;
 };
 
 function asStringArray(value: unknown): string[] | undefined {
@@ -48,6 +49,7 @@ function toDomainExpert(record: PrismaExpertWithRelations): Expert {
     ...(researchInterests?.length ? { researchInterests } : {}),
     ...(record.serviceLinks.length ? { serviceIds: record.serviceLinks.map((link) => link.serviceId) } : {}),
     ...(record.researchLinks.length ? { researchIds: record.researchLinks.map((link) => link.researchId) } : {}),
+    ...(record.articleLinks.length ? { articleIds: record.articleLinks.map((link) => link.articleId) } : {}),
     ...(record.featured ? { featured: true } : {}),
     ...(seo ? { seo } : {}),
   };
@@ -67,6 +69,7 @@ async function runExpertQuery<T>(query: () => Promise<T>): Promise<T> {
 const relationInclude = {
   researchLinks: { select: { researchId: true } },
   serviceLinks: { select: { serviceId: true } },
+  articleLinks: { select: { articleId: true } },
 } as const;
 
 export async function getPublishedExperts(): Promise<Expert[]> {
