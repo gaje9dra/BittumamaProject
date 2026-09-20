@@ -2,7 +2,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { about } from "@/data/about";
-import { getPublishedServices } from "@/lib/services/repository";\nimport { getServiceHref } from "@/lib/services/paths";
+import { getPublishedServices } from "@/lib/services/repository";
+import { getServiceHref } from "@/lib/services/paths";
 import { footerNavigation, globalActions, siteConfig } from "@/data/site-config";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Container } from "@/components/ui/container";
@@ -53,7 +54,8 @@ function FooterLinkGroup({
   );
 }
 
-export async function Footer() {\n  const services = await getPublishedServices();
+export async function Footer() {
+  const services = await getPublishedServices();
   return (
     <footer
       className="border-t border-primary-foreground/10 bg-primary text-primary-foreground"
