@@ -1,6 +1,9 @@
 export type ExpertSeo = {
   title?: string;
   description?: string;
+  image?: string;
+  canonical?: string;
+  noIndex?: boolean;
 };
 
 export type Expert = {
