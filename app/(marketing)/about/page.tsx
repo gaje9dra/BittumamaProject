@@ -7,11 +7,12 @@ import { AboutPurpose } from "@/components/about/about-purpose";
 import { AboutRelationships } from "@/components/about/about-relationships";
 import { AboutApproach } from "@/components/about/about-approach";
 import { about } from "@/data/about";
+import { createPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: about.seo.title,
   description: about.seo.description,
-};
+});
 
 export default function AboutPage() {
   return <main className="min-h-screen bg-background text-foreground">
