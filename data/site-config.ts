@@ -63,6 +63,8 @@ export type SiteConfig = {
   };
 };
 
+const siteDescription = "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.";
+
 const routes = {
   home: { label: "Home", href: "/" },
   services: { label: "Services", href: "/services" },
@@ -98,8 +100,7 @@ const footerNavigation = {
 
 export const siteConfig: SiteConfig = {
   siteName: "Bittumama",
-  siteDescription:
-    "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
+  siteDescription,
   routes,
   primaryNavigation,
   footerNavigation,
@@ -108,7 +109,7 @@ export const siteConfig: SiteConfig = {
   },
   defaultMetadata: {
     title: "Bittumama — Research, Intelligence & Expertise",
-    description: siteConfig.siteDescription,
+    description: siteDescription,
   },
 };
 
