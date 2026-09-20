@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
-import { getEventCategoryAnchor, type Event } from "@/data/events";
+import type { Event } from "@/data/events";
+import { getEventCategoryAnchor, getEventHref } from "@/lib/events/paths";
 
 function formatDate(date: string) {
   const parsed = new Date(date + "T00:00:00");
@@ -81,7 +82,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
                 <div className="min-w-0">
                   <p className="type-label text-muted-foreground">{event.category}</p>
                   <h3 className="type-h4 mt-2">
-                    <Link href={"/workshops/" + event.slug} className="hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
+                    <Link href={getEventHref(event)} className="hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3">
                       {event.title}
                     </Link>
                   </h3>
@@ -95,7 +96,7 @@ export function EventsDiscovery({ events }: { events: Event[] }) {
                     </span>
                   )}
                   <Link
-                    href={"/workshops/" + event.slug}
+                    href={getEventHref(event)}
                     className="type-button inline-flex min-h-11 items-center text-primary underline decoration-primary/40 underline-offset-4 hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-3"
                   >
                     View Event
