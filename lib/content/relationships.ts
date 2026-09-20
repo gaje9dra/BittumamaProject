@@ -1,5 +1,5 @@
 import type { Service } from "@/data/services";
-import { getPublishedArticleById, getPublishedArticleBySlug, getPublishedArticles } from "@/lib/articles/repository";
+import { getPublishedArticles } from "@/lib/articles/repository";
 import {
   getPublishedServiceById,
   getPublishedServiceBySlug,
