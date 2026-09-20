@@ -1,0 +1,79 @@
+import "dotenv/config";
+
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../generated/prisma/client";
+import { services } from "../data/services";
+
+const databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL is required to seed Services.");
+}
+
+const adapter = new PrismaPg({ connectionString: databaseUrl });
+const prisma = new PrismaClient({ adapter });
+
+function availabilityFor(status: string | undefined) {
+  return status === "Coming Soon" ? "COMING_SOON" : "AVAILABLE";
+}
+
+async function main() {
+  for (const [index, service] of services.entries()) {
+    await prisma.service.upsert({
+      where: { slug: service.slug },
+      create: {
+        id: service.id,
+        slug: service.slug,
+        title: service.title,
+        category: service.category,
+        shortDescription: service.shortDescription,
+        order: index,
+        need: service.need ?? null,
+        focus: service.focus ?? null,
+        audience: service.audience ?? null,
+        highlights: service.highlights ?? null,
+        faq: service.faq ?? null,
+        featured: service.featured ?? false,
+        availability: availabilityFor(service.status),
+        status: "PUBLISHED",
+        seoTitle: service.seo?.title ?? null,
+        seoDescription: service.seo?.description ?? null,
+        seoImage: service.seo?.image ?? null,
+        seoCanonical: service.seo?.canonical ?? null,
+        seoNoIndex: service.seo?.noIndex ?? false,
+      },
+      update: {
+        id: service.id,
+        title: service.title,
+        category: service.category,
+        shortDescription: service.shortDescription,
+        order: index,
+        need: service.need ?? null,
+        focus: service.focus ?? null,
+        audience: service.audience ?? null,
+        highlights: service.highlights ?? null,
+        faq: service.faq ?? null,
+        featured: service.featured ?? false,
+        availability: availabilityFor(service.status),
+        status: "PUBLISHED",
+        seoTitle: service.seo?.title ?? null,
+        seoDescription: service.seo?.description ?? null,
+        seoImage: service.seo?.image ?? null,
+        seoCanonical: service.seo?.canonical ?? null,
+        seoNoIndex: service.seo?.noIndex ?? false,
+      },
+    });
+  }
+
+  console.log(`Seeded ${services.length} canonical Services.`);
+}
+
+main()
+  .catch((error) => {
+    console.error("Service seed failed:", error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+    await adapter.dispose();
+  });
