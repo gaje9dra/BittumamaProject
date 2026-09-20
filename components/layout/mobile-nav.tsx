@@ -162,7 +162,10 @@ export function MobileNav({ className }: { className?: string }) {
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={open}
         aria-controls={mounted ? "mobile-primary-navigation" : undefined}
-        className="relative z-[var(--layer-modal)] inline-flex h-11 min-w-16 items-center justify-center gap-2 rounded-full border border-border bg-background px-3 text-foreground shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,transform] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:bg-surface-muted active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3"
+        className={cn(
+  "relative z-[var(--layer-toast)] inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-background px-3 text-foreground shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,transform,width] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:bg-surface-muted active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3",
+  open ? "min-w-20" : "min-w-16",
+)}
         onClick={() => {
           if (open) closeMenu();
           else {
@@ -174,8 +177,9 @@ export function MobileNav({ className }: { className?: string }) {
         }}
       >
         <span className={cn("type-label transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-95 opacity-0")}>Menu</span>
+        <span className={cn("type-label absolute transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-95 opacity-0")}>Close</span>
         <Menu aria-hidden="true" className={cn("transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-75 opacity-0")} size={17} />
-        <X aria-hidden="true" className={cn("absolute right-3 transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-75 opacity-0")} size={18} />
+        <X aria-hidden="true" className={cn("transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-75 opacity-0")} size={18} />
       </button>
 
       {mounted && (
