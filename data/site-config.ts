@@ -127,9 +127,8 @@ export function getServiceNavigation(): NavigationItem[] {
 
 export function validateSiteConfig(config: SiteConfig = siteConfig) {
   const issues: string[] = [];
-  const seenRoutes = new Set<string>();
-
   const visit = (items: NavigationItem[], location: string) => {
+    const seenRoutes = new Set<string>();
     for (const item of items) {
       const label = item.label.trim();
       const href = item.href.trim();
