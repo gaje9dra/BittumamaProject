@@ -1070,3 +1070,46 @@ It reuses:
 - Site configuration → `data/site-config.ts`
 
 The public application continues to use the existing canonical routes and safe `notFound()` behavior for invalid dynamic slugs.
+
+
+## Phase 7.12 implementation — cleanup, documentation and maintainability
+
+The current architecture has been reviewed against the canonical Phase 7 systems. No confirmed duplicate production content datasets, duplicate canonical model definitions, or obsolete removed-section data were found that could be safely deleted without stronger usage evidence.
+
+### Current canonical ownership
+
+- Services → `data/services.ts`
+- Research → `data/research.ts`
+- Experts → `data/expertise.ts`
+- Articles → `data/articles.ts`
+- Workshops / Events → `data/events.ts`
+- Relationships → `lib/content/relationships.ts`
+- Site configuration/navigation → `data/site-config.ts`
+- Metadata → `lib/metadata.ts`
+- Validation → `lib/content/validation.ts`
+
+The existing `data/navigation.ts` is intentionally retained as a compatibility re-export of `data/site-config.ts`; it does not define a competing navigation model.
+
+### Documentation
+
+A current developer-facing guide was added at `docs/content-architecture.md`. It documents canonical sources, access helpers, relationships, navigation, metadata, validation, dynamic routes, future content rules, file responsibilities and the permanent removed-section boundary.
+
+The older `docs/content-architecture-audit.md` remains an historical phase audit rather than a competing current architecture guide.
+
+### Cleanup findings
+
+- No duplicate canonical Services, Research, Experts, Articles or Workshops datasets were confirmed.
+- No duplicate canonical type definitions were confirmed in the inspected architecture.
+- No safe deletion of existing design-system preview pages was justified; they are development-only reference surfaces and are guarded from production.
+- No removed Phase 6 section references were found in the targeted repository searches.
+- No fake production content was introduced.
+- No visual design or motion system was changed.
+- No technology versions were changed.
+
+### Maintainability rule
+
+Future pages/components must consume canonical data and existing access/relationship helpers rather than embedding duplicate records or independently resolving cross-content references.
+
+### Scope
+
+Phase 7.12 only reorganizes/documentates the current architecture where justified. No new backend, database, CMS, authentication, payments, advanced search, full SEO implementation, performance system, security hardening or deployment architecture was introduced.
