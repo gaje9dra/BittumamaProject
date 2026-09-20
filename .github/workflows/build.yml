@@ -75,6 +75,9 @@ jobs:
       - name: Verify canonical Workshops/Events
         run: npm run events:verify
 
+      - name: Verify cross-content relationships
+        run: npm run content:verify
+
       - name: Lint
         run: npm run lint
 
