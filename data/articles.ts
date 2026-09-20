@@ -37,6 +37,10 @@ export function getAllArticles() {
   return articles;
 }
 
+export function getArticleHref(article: Pick<Article, "slug">) {
+  return "/articles/" + article.slug;
+}
+
 export const articleCategories = Array.from(
   new Set(articles.map((article) => article.category).filter(Boolean)),
 );
