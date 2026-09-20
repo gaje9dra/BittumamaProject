@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { getResearchCategoryAnchor, researchCategories as canonicalCategories } from "@/data/research";
+import { getResearchCategoryAnchor } from "@/lib/research/paths";
 
 type ResearchCategoryIndexProps = {
-  categories?: string[];
+  categories: string[];
 };
 
-export function ResearchCategoryIndex({ categories = canonicalCategories }: ResearchCategoryIndexProps) {
+export function ResearchCategoryIndex({ categories }: ResearchCategoryIndexProps) {
   if (!categories.length) return null;
 
   return (
