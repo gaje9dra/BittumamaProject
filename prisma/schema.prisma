@@ -36,13 +36,21 @@ enum EventFormat {
   HYBRID
 }
 
+enum ContactInquiryStatus {
+  NEW
+  READ
+  IN_PROGRESS
+  RESOLVED
+  SPAM
+}
+
 model Service {
   id               String              @id @default(cuid())
   slug             String              @unique
   title            String
   category         String
   shortDescription String
-  order            Int               @default(0)
+  order            Int                 @default(0)
   need             String?
   focus            String?
   audience         String?
@@ -62,6 +70,7 @@ model Service {
   articleLinks     ArticleService[]
   workshopLinks    WorkshopService[]
   expertLinks      ExpertService[]
+  contactInquiries ContactInquiry[]
 
   @@index([status])
   @@index([category])
@@ -202,7 +211,7 @@ model Event {
   description        String?
   audience           Json?
   speakerId          String?
-  speakerSlug         String?
+  speakerSlug        String?
   speakerRole        String?
   image              String?
   registrationLabel  String?
@@ -316,4 +325,22 @@ model EventRelation {
 
   @@id([sourceEventId, targetEventId])
   @@index([targetEventId])
+}
+
+model ContactInquiry {
+  id          String              @id @default(cuid())
+  submittedAt DateTime            @default(now())
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  name        String
+  email       String
+  phone       String?
+  serviceId   String?
+  message     String
+  status      ContactInquiryStatus @default(NEW)
+  service     Service?            @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([submittedAt])
+  @@index([serviceId])
 }
