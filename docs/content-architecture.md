@@ -1,6 +1,6 @@
 # Bittumama Content Architecture
 
-This document describes the **current frontend architecture** after Phase 7.12. It is the maintainability guide for developers adding or changing content.
+This document describes the **current frontend architecture** after Phase 7.13. Phase 7 content architecture is complete. It is the maintainability guide for developers adding or changing content.
 
 ## Architecture map
 
@@ -189,4 +189,4 @@ Do not recreate renamed, hidden or responsive variants of these sections.
 
 ## Scope boundary
 
-Phase 7.12 is a cleanup and maintainability phase. The frontend does not introduce a database, ORM, CMS, API layer, authentication, payments, advanced search, full SEO implementation, dedicated performance system, security-hardening system or deployment architecture here.
+Phase 7.13 closes the Phase 7 frontend content-architecture work. No new architecture layer is introduced. The frontend does not introduce a database, ORM, CMS, API layer, authentication, payments, advanced search, full SEO implementation, dedicated performance system, security-hardening system or deployment architecture here.
