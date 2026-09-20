@@ -54,7 +54,7 @@ function TextArea({ name, value, rows = 5, error }: { name: string; value: strin
   );
 }
 
-function jsonOption(domain: ContentDomain, id: string, label: string, selectedIds: string[], options: Option[]) {
+function jsonOption(id: string, label: string, selectedIds: string[], options: Option[]) {
   const selected = options.filter((option) => selectedIds.includes(option.id));
   return <RelationshipPicker key={id} name={id} label={label} initial={selected} />;
 }
@@ -152,7 +152,7 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
         <div><h2 id="relationships-title" className="text-sm font-medium">Relationships</h2><p className="mt-1 text-sm text-muted-foreground">Search and select canonical records. IDs are validated again on the server.</p></div>
         {relationGroups.filter(([name]) => allowedRelations.includes(name)).map(([name, label, options, selected]) => (
           <div key={name}>
-            {jsonOption(domain, name, label, selected, options)}
+            {jsonOption(name, label, selected, options)}
             {errors[name] && <p className="mt-1 text-sm text-destructive" role="alert">{errors[name]}</p>}
           </div>
         ))}
