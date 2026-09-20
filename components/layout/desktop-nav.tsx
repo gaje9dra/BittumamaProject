@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { NavigationDropdown } from "@/components/layout/navigation-dropdown";
 import { NavigationMegaTrigger } from "@/components/layout/navigation-mega-trigger";
-import { primaryNavigation } from "@/data/navigation";
+import { primaryNavigation } from "@/data/site-config";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { announceHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
