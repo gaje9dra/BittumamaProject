@@ -17,8 +17,8 @@ function availabilityFor(status: string | undefined): "COMING_SOON" | "AVAILABLE
   return status === "Coming Soon" ? "COMING_SOON" : "AVAILABLE";
 }
 
-function jsonValue(value: unknown) {
-  return value === undefined ? Prisma.JsonNull : value;
+function jsonValue(value: unknown): Prisma.InputJsonValue | typeof Prisma.JsonNull {
+  return value === undefined ? Prisma.JsonNull : (value as Prisma.InputJsonValue);
 }
 
 async function main() {
