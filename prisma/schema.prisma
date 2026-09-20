@@ -18,6 +18,11 @@ enum ServiceAvailability {
   COMING_SOON
 }
 
+enum ResearchAvailability {
+  AVAILABLE
+  COMING_SOON
+}
+
 enum EventRegistrationStatus {
   REGISTRATION_OPEN
   REGISTRATION_CLOSED
@@ -67,14 +72,17 @@ model ResearchItem {
   title            String
   category         String
   shortDescription String
+  order            Int                 @default(0)
   summary          String?
   date             DateTime?
   status           ContentStatus       @default(DRAFT)
+  availability     ResearchAvailability @default(AVAILABLE)
   type             String?
   topic            String?
   image            String?
   featured         Boolean             @default(false)
   tags             Json?
+  highlights       Json?
   audience         Json?
   scope            Json?
   topics           Json?
@@ -95,6 +103,7 @@ model ResearchItem {
   @@index([status])
   @@index([category])
   @@index([date])
+  @@index([order])
 }
 
 model Expert {
