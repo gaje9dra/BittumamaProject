@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { getExpertDisciplineAnchor, expertDisciplines as canonicalDisciplines } from "@/data/expertise";
+import { getExpertDisciplineAnchor } from "@/lib/experts/paths";
 
 type ExpertiseIndexProps = { disciplines?: string[] };
 
-export function ExpertiseIndex({ disciplines = canonicalDisciplines }: ExpertiseIndexProps) {
+export function ExpertiseIndex({ disciplines = [] }: ExpertiseIndexProps) {
   if (!disciplines.length) return null;
 
   return (
