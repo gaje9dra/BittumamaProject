@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleDetailPage } from "@/components/articles/article-detail-page";
-import { getAllArticles, getArticleBySlug, getArticleHref } from "@/data/articles";
+import { getArticleHref } from "@/lib/articles/paths";
+import { getPublishedArticleBySlug } from "@/lib/articles/repository";
 import { createContentMetadata } from "@/lib/metadata";
+
+export const dynamic = "force-dynamic";
 
 type ArticleDetailRouteProps = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getAllArticles().map((article) => ({ slug: article.slug }));
-}
-
 export async function generateMetadata({ params }: ArticleDetailRouteProps): Promise<Metadata> {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getPublishedArticleBySlug(slug);
   if (!article) return { title: "Article not found | Bittumama" };
 
   return createContentMetadata({
@@ -26,7 +25,7 @@ export async function generateMetadata({ params }: ArticleDetailRouteProps): Pro
 
 export default async function ArticleDetailRoute({ params }: ArticleDetailRouteProps) {
   const { slug } = await params;
-  const article = getArticleBySlug(slug);
+  const article = await getPublishedArticleBySlug(slug);
   if (!article) notFound();
   return <ArticleDetailPage article={article} />;
 }
