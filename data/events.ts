@@ -44,6 +44,10 @@ export function getAllEvents() {
   return events;
 }
 
+export function getEventHref(event: Pick<Event, "slug">) {
+  return "/workshops/" + event.slug;
+}
+
 export const eventCategories = Array.from(
   new Set(events.map((event) => event.category).filter(Boolean)),
 );
