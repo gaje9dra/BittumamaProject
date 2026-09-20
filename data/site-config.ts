@@ -1,6 +1,3 @@
-import { getPublishedServices } from "@/lib/services/repository";
-import { getServiceHref } from "@/lib/services/paths";
-
 export type NavigationMetadata = {
   eyebrow?: string;
   badge?: string;
@@ -118,13 +115,6 @@ export const primaryNavigation = siteConfig.primaryNavigation;
 export const footerNavigation = siteConfig.footerNavigation;
 export const globalActions = siteConfig.globalActions;
 export const siteRoutes = siteConfig.routes;
-
-export function getServiceNavigation(): NavigationItem[] {
-  return getAllServices().map((service) => ({
-    label: service.title,
-    href: getServiceHref(service),
-  }));
-}
 
 export function validateSiteConfig(config: SiteConfig = siteConfig) {
   const issues: string[] = [];
