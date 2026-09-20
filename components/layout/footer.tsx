@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { about } from "@/data/about";
-import { getAllServices, getServiceHref } from "@/data/services";
+import { getPublishedServices } from "@/lib/services/repository";\nimport { getServiceHref } from "@/lib/services/paths";
 import { footerNavigation, globalActions, siteConfig } from "@/data/site-config";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { Container } from "@/components/ui/container";
@@ -53,7 +53,7 @@ function FooterLinkGroup({
   );
 }
 
-export function Footer() {
+export async function Footer() {\n  const services = await getPublishedServices();
   return (
     <footer
       className="border-t border-primary-foreground/10 bg-primary text-primary-foreground"
@@ -126,7 +126,7 @@ export function Footer() {
               </div>
 
               <ul className="mt-4 grid gap-x-8 gap-y-0 sm:grid-cols-2 xl:grid-cols-3">
-                {getAllServices().map((service, index) => (
+                {services.map((service, index) => (
                   <li key={service.id} className="border-b border-primary-foreground/10">
                     <FooterLink href={getServiceHref(service)}>
                       <span className="mr-2 tabular-nums text-primary-100/55">
