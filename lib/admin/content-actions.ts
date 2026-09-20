@@ -106,6 +106,8 @@ function parseForm(formData: FormData) {
     registrationLabel: text(formData, "registrationLabel"), registrationHref: text(formData, "registrationHref"),
     registrationStatus: text(formData, "registrationStatus"), speakerRole: text(formData, "speakerRole"),
     speakerId: text(formData, "speakerId"),
+    featured: formData.get("featured") === "on" ? "true" : "false",
+    seoNoIndex: formData.get("seoNoIndex") === "on" ? "true" : "false",
   };
   const jsonErrors: Record<string, string> = {};
   const json: Record<string, unknown> = {};
@@ -232,22 +234,15 @@ export async function saveContent(
   const data = buildData(domain, { ...fields, featured: fields.featured === "on" ? "true" : fields.featured }, json, status);
 
   try {
-    if (!id) {
-      const created = await createDomainRecord(domain, data);
-      await syncRelations(domain, created.id, ids, undefined);
-      revalidateDomain(domain, fields.slug);
-      redirect(`${contentBasePath(domain)}/${created.id}/edit?saved=1`);
-    }
-
-    const current = await getExistingForConflict(domain, id);
-    if (!current) return { message: "The content record no longer exists.", fieldErrors: {} };
-    if (current.updatedAt.getTime() !== Number(text(formData, "updatedAt"))) {
-      return { message: "This content changed while you were editing it. Reload the record and review the newer version before saving.", fieldErrors: {} };
-    }
-    await updateDomainRecord(domain, id, data);
-    await syncRelations(domain, id, ids, current);
-    revalidateDomain(domain, fields.slug, current.slug);
-    redirect(`${contentBasePath(domain)}/${id}/edit?saved=1`);
+    const result = await prisma.client.$transaction(async (tx) => {
+      const record = id
+        ? await updateDomainRecordWithClient(tx, domain, id, data)
+        : await createDomainRecordWithClient(tx, domain, data);
+      await syncRelationsWithClient(tx, domain, record.id, ids);
+      return { id: record.id, previousSlug: current?.slug };
+    });
+    revalidateDomain(domain, fields.slug, result.previousSlug);
+    redirect(contentBasePath(domain) + "/" + result.id + "/edit?saved=1");
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       return { message: "That slug is already in use.", fieldErrors: { slug: "Choose a unique slug." } };
@@ -288,79 +283,85 @@ async function slugConflict(domain: ContentDomain, slug: string, id?: string) {
   }
 }
 
-async function createDomainRecord(domain: ContentDomain, data: any) {
+type AdminTransaction = Parameters<Parameters<typeof prisma.client.$transaction>[0]>[0];
+
+async function createDomainRecordWithClient(tx: AdminTransaction, domain: ContentDomain, data: unknown) {
   switch (domain) {
-    case "services": return prisma.client.service.create({ data });
-    case "research": return prisma.client.researchItem.create({ data });
-    case "experts": return prisma.client.expert.create({ data });
-    case "articles": return prisma.client.article.create({ data });
-    case "workshops": return prisma.client.event.create({ data });
+    case "services": return tx.service.create({ data: data as Parameters<typeof tx.service.create>[0]["data"] });
+    case "research": return tx.researchItem.create({ data: data as Parameters<typeof tx.researchItem.create>[0]["data"] });
+    case "experts": return tx.expert.create({ data: data as Parameters<typeof tx.expert.create>[0]["data"] });
+    case "articles": return tx.article.create({ data: data as Parameters<typeof tx.article.create>[0]["data"] });
+    case "workshops": return tx.event.create({ data: data as Parameters<typeof tx.event.create>[0]["data"] });
   }
 }
 
-async function updateDomainRecord(domain: ContentDomain, id: string, data: any) {
+async function updateDomainRecordWithClient(tx: AdminTransaction, domain: ContentDomain, id: string, data: unknown) {
   switch (domain) {
-    case "services": return prisma.client.service.update({ where: { id }, data });
-    case "research": return prisma.client.researchItem.update({ where: { id }, data });
-    case "experts": return prisma.client.expert.update({ where: { id }, data });
-    case "articles": return prisma.client.article.update({ where: { id }, data });
-    case "workshops": return prisma.client.event.update({ where: { id }, data });
+    case "services": return tx.service.update({ where: { id }, data: data as Parameters<typeof tx.service.update>[0]["data"] });
+    case "research": return tx.researchItem.update({ where: { id }, data: data as Parameters<typeof tx.researchItem.update>[0]["data"] });
+    case "experts": return tx.expert.update({ where: { id }, data: data as Parameters<typeof tx.expert.update>[0]["data"] });
+    case "articles": return tx.article.update({ where: { id }, data: data as Parameters<typeof tx.article.update>[0]["data"] });
+    case "workshops": return tx.event.update({ where: { id }, data: data as Parameters<typeof tx.event.update>[0]["data"] });
   }
 }
 
-async function syncRelations(domain: ContentDomain, id: string, ids: ReturnType<typeof parseForm>["ids"], current: any) {
-  const tx = prisma.client;
-  await tx.$transaction(async (db) => {
-    switch (domain) {
-      case "services":
-        await db.researchService.deleteMany({ where: { serviceId: id } });
-        await db.articleService.deleteMany({ where: { serviceId: id } });
-        await db.workshopService.deleteMany({ where: { serviceId: id } });
-        await db.expertService.deleteMany({ where: { serviceId: id } });
-        await db.researchService.createMany({ data: cleanRelationIds(ids.research, id).map((researchId) => ({ serviceId: id, researchId })) });
-        await db.articleService.createMany({ data: cleanRelationIds(ids.articles, id).map((articleId) => ({ serviceId: id, articleId })) });
-        await db.workshopService.createMany({ data: cleanRelationIds(ids.workshops, id).map((eventId) => ({ serviceId: id, eventId })) });
-        await db.expertService.createMany({ data: cleanRelationIds(ids.experts, id).map((expertId) => ({ serviceId: id, expertId })) });
-        break;
-      case "research":
-        await db.researchService.deleteMany({ where: { researchId: id } });
-        await db.expertResearch.deleteMany({ where: { researchId: id } });
-        await db.articleResearch.deleteMany({ where: { researchId: id } });
-        await db.workshopResearch.deleteMany({ where: { researchId: id } });
-        await db.researchService.createMany({ data: cleanRelationIds(ids.services, id).map((serviceId) => ({ researchId: id, serviceId })) });
-        await db.expertResearch.createMany({ data: cleanRelationIds(ids.experts, id).map((expertId) => ({ researchId: id, expertId })) });
-        await db.articleResearch.createMany({ data: cleanRelationIds(ids.articles, id).map((articleId) => ({ researchId: id, articleId })) });
-        await db.workshopResearch.createMany({ data: cleanRelationIds(ids.workshops, id).map((eventId) => ({ researchId: id, eventId })) });
-        break;
-      case "experts":
-        await db.expertResearch.deleteMany({ where: { expertId: id } });
-        await db.expertService.deleteMany({ where: { expertId: id } });
-        await db.articleExpert.deleteMany({ where: { expertId: id } });
-        await db.expertResearch.createMany({ data: cleanRelationIds(ids.research, id).map((researchId) => ({ expertId: id, researchId })) });
-        await db.expertService.createMany({ data: cleanRelationIds(ids.services, id).map((serviceId) => ({ expertId: id, serviceId })) });
-        await db.articleExpert.createMany({ data: cleanRelationIds(ids.articles, id).map((articleId) => ({ expertId: id, articleId })) });
-        break;
-      case "articles":
-        await db.articleResearch.deleteMany({ where: { articleId: id } });
-        await db.articleService.deleteMany({ where: { articleId: id } });
-        await db.articleExpert.deleteMany({ where: { articleId: id } });
-        await db.articleRelation.deleteMany({ where: { sourceArticleId: id } });
-        await db.articleResearch.createMany({ data: cleanRelationIds(ids.research, id).map((researchId) => ({ articleId: id, researchId })) });
-        await db.articleService.createMany({ data: cleanRelationIds(ids.services, id).map((serviceId) => ({ articleId: id, serviceId })) });
-        await db.articleExpert.createMany({ data: cleanRelationIds(ids.experts, id).map((expertId) => ({ articleId: id, expertId })) });
-        await db.articleRelation.createMany({ data: cleanRelationIds(ids.articles, id).map((targetArticleId) => ({ sourceArticleId: id, targetArticleId })) });
-        break;
-      case "workshops":
-        await db.workshopResearch.deleteMany({ where: { eventId: id } });
-        await db.workshopService.deleteMany({ where: { eventId: id } });
-        await db.eventRelation.deleteMany({ where: { sourceEventId: id } });
-        await db.workshopResearch.createMany({ data: cleanRelationIds(ids.research, id).map((researchId) => ({ eventId: id, researchId })) });
-        await db.workshopService.createMany({ data: cleanRelationIds(ids.services, id).map((serviceId) => ({ eventId: id, serviceId })) });
-        await db.eventRelation.createMany({ data: cleanRelationIds(ids.workshops, id).map((targetEventId) => ({ sourceEventId: id, targetEventId })) });
-        break;
-    }
-  });
+async function syncRelationsWithClient(
+  tx: AdminTransaction,
+  domain: ContentDomain,
+  id: string,
+  ids: { services: string[]; research: string[]; experts: string[]; articles: string[]; workshops: string[] },
+) {
+  const clean = (values: string[]) => Array.from(new Set(values)).filter((value) => value !== id);
+  switch (domain) {
+    case "services":
+      await tx.researchService.deleteMany({ where: { serviceId: id } });
+      await tx.articleService.deleteMany({ where: { serviceId: id } });
+      await tx.workshopService.deleteMany({ where: { serviceId: id } });
+      await tx.expertService.deleteMany({ where: { expertId: id } });
+      await tx.researchService.createMany({ data: clean(ids.research).map((researchId) => ({ serviceId: id, researchId })) });
+      await tx.articleService.createMany({ data: clean(ids.articles).map((articleId) => ({ serviceId: id, articleId })) });
+      await tx.workshopService.createMany({ data: clean(ids.workshops).map((eventId) => ({ serviceId: id, eventId })) });
+      await tx.expertService.createMany({ data: clean(ids.experts).map((expertId) => ({ serviceId: id, expertId })) });
+      break;
+    case "research":
+      await tx.researchService.deleteMany({ where: { researchId: id } });
+      await tx.expertResearch.deleteMany({ where: { researchId: id } });
+      await tx.articleResearch.deleteMany({ where: { researchId: id } });
+      await tx.workshopResearch.deleteMany({ where: { researchId: id } });
+      await tx.researchService.createMany({ data: clean(ids.services).map((serviceId) => ({ researchId: id, serviceId })) });
+      await tx.expertResearch.createMany({ data: clean(ids.experts).map((expertId) => ({ researchId: id, expertId })) });
+      await tx.articleResearch.createMany({ data: clean(ids.articles).map((articleId) => ({ researchId: id, articleId })) });
+      await tx.workshopResearch.createMany({ data: clean(ids.workshops).map((eventId) => ({ researchId: id, eventId })) });
+      break;
+    case "experts":
+      await tx.expertResearch.deleteMany({ where: { expertId: id } });
+      await tx.expertService.deleteMany({ where: { expertId: id } });
+      await tx.articleExpert.deleteMany({ where: { expertId: id } });
+      await tx.expertResearch.createMany({ data: clean(ids.research).map((researchId) => ({ expertId: id, researchId })) });
+      await tx.expertService.createMany({ data: clean(ids.services).map((serviceId) => ({ expertId: id, serviceId })) });
+      await tx.articleExpert.createMany({ data: clean(ids.articles).map((articleId) => ({ articleId, expertId: id })) });
+      break;
+    case "articles":
+      await tx.articleResearch.deleteMany({ where: { articleId: id } });
+      await tx.articleService.deleteMany({ where: { articleId: id } });
+      await tx.articleExpert.deleteMany({ where: { articleId: id } });
+      await tx.articleRelation.deleteMany({ where: { sourceArticleId: id } });
+      await tx.articleResearch.createMany({ data: clean(ids.research).map((researchId) => ({ articleId: id, researchId })) });
+      await tx.articleService.createMany({ data: clean(ids.services).map((serviceId) => ({ articleId: id, serviceId })) });
+      await tx.articleExpert.createMany({ data: clean(ids.experts).map((expertId) => ({ articleId: id, expertId })) });
+      await tx.articleRelation.createMany({ data: clean(ids.articles).map((targetArticleId) => ({ sourceArticleId: id, targetArticleId })) });
+      break;
+    case "workshops":
+      await tx.workshopResearch.deleteMany({ where: { eventId: id } });
+      await tx.workshopService.deleteMany({ where: { eventId: id } });
+      await tx.eventRelation.deleteMany({ where: { sourceEventId: id } });
+      await tx.workshopResearch.createMany({ data: clean(ids.research).map((researchId) => ({ eventId: id, researchId })) });
+      await tx.workshopService.createMany({ data: clean(ids.services).map((serviceId) => ({ eventId: id, serviceId })) });
+      await tx.eventRelation.createMany({ data: clean(ids.workshops).map((targetEventId) => ({ sourceEventId: id, targetEventId })) });
+      break;
+  }
 }
+
 
 function revalidateDomain(domain: ContentDomain, slug: string, previousSlug?: string) {
   const publicBase = domain === "workshops" ? "/workshops" : `/${domain}`;
