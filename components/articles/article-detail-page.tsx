@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getResearchHref } from "@/data/research";
+import { getResearchHref } from "@/lib/research/paths";
 import { getExpertHref } from "@/data/expertise";
 import { getServiceHref } from "@/data/services";
 import { getArticleHref, getRelatedArticles, type Article } from "@/data/articles";
@@ -32,10 +32,10 @@ function RelatedList({ title, items }: { title: string; items: { title: string; 
   );
 }
 
-export function ArticleDetailPage({ article }: { article: Article }) {
+export async function ArticleDetailPage({ article }: { article: Article }) {
   const relatedArticles = getRelatedArticles(article);
-  const relatedResearch = getResearchForArticle(article);
-  const relatedServices = getServicesForArticle(article);
+  const relatedResearch = await getResearchForArticle(article);
+  const relatedServices = await getServicesForArticle(article);
   const author = article.author;
   const expertAuthor = getExpertForArticle(article);
 
