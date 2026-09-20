@@ -22,6 +22,7 @@ export const CONTENT_LABELS: Record<ContentDomain, string> = {
 
 export type ContentFormValues = {
   id?: string;
+  updatedAt?: string;
   title: string;
   slug: string;
   category: string;
@@ -246,7 +247,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         order: String(record.order), need: record.need ?? "", focus: record.focus ?? "", audience: record.audience ?? "",
         highlights: jsonText(record.highlights), faq: jsonText(record.faq), seoTitle: record.seoTitle ?? "",
         seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "", seoCanonical: record.seoCanonical ?? "",
-        seoNoIndex: record.seoNoIndex, relationResearchIds: record.researchLinks.map((x) => x.researchId),
+        seoNoIndex: record.seoNoIndex, updatedAt: record.updatedAt.toISOString(), relationResearchIds: record.researchLinks.map((x) => x.researchId),
         relationArticleIds: record.articleLinks.map((x) => x.articleId), relationWorkshopIds: record.workshopLinks.map((x) => x.eventId),
         relationExpertIds: record.expertLinks.map((x) => x.expertId),
       }) : null;
@@ -269,7 +270,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         audience: jsonText(record.audience), highlights: jsonText(record.highlights), scope: jsonText(record.scope),
         topics: jsonText(record.topics), sections: jsonText(record.sections), methodology: jsonText(record.methodology),
         seoTitle: record.seoTitle ?? "", seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "",
-        seoCanonical: record.seoCanonical ?? "", seoNoIndex: record.seoNoIndex,
+        seoCanonical: record.seoCanonical ?? "", seoNoIndex: record.seoNoIndex, updatedAt: record.updatedAt.toISOString(),
         relationServiceIds: record.serviceLinks.map((x) => x.serviceId), relationExpertIds: record.expertLinks.map((x) => x.expertId),
         relationArticleIds: record.articleLinks.map((x) => x.articleId), relationWorkshopIds: record.workshopLinks.map((x) => x.eventId),
       }) : null;
@@ -290,7 +291,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         type: record.role ?? "", audience: jsonText(record.expertise), tags: jsonText(record.qualifications),
         topics: jsonText(record.researchInterests), seoTitle: record.seoTitle ?? "",
         seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "", seoCanonical: record.seoCanonical ?? "",
-        seoNoIndex: record.seoNoIndex, relationResearchIds: record.researchLinks.map((x) => x.researchId),
+        seoNoIndex: record.seoNoIndex, updatedAt: record.updatedAt.toISOString(), relationResearchIds: record.researchLinks.map((x) => x.researchId),
         relationServiceIds: record.serviceLinks.map((x) => x.serviceId), relationArticleIds: record.articleLinks.map((x) => x.articleId),
       }) : null;
     }
@@ -311,7 +312,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         authorSlug: record.authorSlug ?? "", content: record.content ?? "", sections: jsonText(record.sections),
         image: record.image ?? "", featured: record.featured, tags: jsonText(record.tags),
         seoTitle: record.seoTitle ?? "", seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "",
-        relationResearchIds: record.researchLinks.map((x) => x.researchId), relationServiceIds: record.serviceLinks.map((x) => x.serviceId),
+        updatedAt: record.updatedAt.toISOString(), relationResearchIds: record.researchLinks.map((x) => x.researchId), relationServiceIds: record.serviceLinks.map((x) => x.serviceId),
         relationExpertIds: record.expertLinks.map((x) => x.expertId), relationArticleIds: record.relatedFrom.map((x) => x.targetArticleId),
       }) : null;
     }
@@ -333,7 +334,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         registrationHref: record.registrationHref ?? "", registrationStatus: record.registrationStatus ?? "",
         speakerId: record.speakerId ?? "", speakerRole: record.speakerRole ?? "",
         seoTitle: record.seoTitle ?? "", seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "",
-        relationResearchIds: record.researchLinks.map((x) => x.researchId), relationServiceIds: record.serviceLinks.map((x) => x.serviceId),
+        updatedAt: record.updatedAt.toISOString(), relationResearchIds: record.researchLinks.map((x) => x.researchId), relationServiceIds: record.serviceLinks.map((x) => x.serviceId),
         relationWorkshopIds: record.relatedFrom.map((x) => x.targetEventId),
       }) : null;
     }
@@ -346,7 +347,7 @@ export async function getRelationOptions(domain: ContentDomain, q: string) {
   const mode = "insensitive" as const;
   switch (domain) {
     case "services":
-      return prisma.client.service.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, label: true } as never, take: 20 });
+      return prisma.client.service.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
     case "research":
       return prisma.client.researchItem.findMany({ where: { OR: [{ title: { contains: value, mode } }, { slug: { contains: value, mode } }] }, select: { id: true, title: true, slug: true }, take: 20 });
     case "experts":
