@@ -21,7 +21,7 @@ export function HomePositioning() {
           </div>
 
           <div className="lg:col-span-6 lg:col-start-3">
-            <Heading
+            <ScrollHeading
               id="home-positioning-title"
               level={2}
               className="type-h2 max-w-[20ch]"
