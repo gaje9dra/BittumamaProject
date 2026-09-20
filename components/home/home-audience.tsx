@@ -62,7 +62,7 @@ export function HomeAudience() {
                         </ol>
                       </div>
           </div>
-        </ScrollTransition>        </div>
+        </ScrollTransition>
       </Container>
     </section>
   );
