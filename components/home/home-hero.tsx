@@ -23,7 +23,8 @@ export function HomeHero() {
             <ScrollHeading
               id="home-hero-title"
               level={1}
-              className="mt-6 max-w-[12ch] text-foreground type-display"
+              className="mt-6 max-w-[12ch] text-foreground"
+              headingClassName="type-display"
             >
               {hero.title}
             </ScrollHeading>
