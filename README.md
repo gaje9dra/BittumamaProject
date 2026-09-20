@@ -27,41 +27,48 @@ npm run build
 
 ## Architecture
 
-The project uses the Next.js App Router with a `(marketing)` route group for public-facing pages. The route group does not appear in public URLs.
+The frontend uses a Next.js App Router with a `(marketing)` route group for public pages. Canonical content is stored in typed modules under `data/`, while relationships, metadata and validation are centralized in `lib/`.
 
 ```text
 app/
-├── (marketing)/
-│   └── page.tsx
-├── error.tsx
-├── favicon.ico
-├── globals.css
-├── layout.tsx
-└── not-found.tsx
+  (marketing)/       public routes
+  design-system/     development-only references
+  layout.tsx
+  error.tsx
+  not-found.tsx
 
 components/
-├── ui/
-├── layout/
-├── sections/
-└── shared/
+  about/ articles/ contact/ events/ experts/
+  home/ layout/ research/ services/
+  ui/
+
+data/
+  services.ts
+  research.ts
+  expertise.ts
+  articles.ts
+  events.ts
+  site-config.ts
+  navigation.ts       compatibility re-export
+  homepage.ts
+  about.ts
+  contact.ts
 
 lib/
-hooks/
-types/
-data/
-config/
+  content/
+    relationships.ts
+    validation.ts
+  metadata.ts
+  navigation.ts
 
-public/
-├── images/
-├── icons/
-├── fonts/
-└── assets/
-
-prisma/
+docs/
+  content-architecture.md
 ```
 
-Future public routes can be added beneath `app/(marketing)/` without exposing the route-group name in URLs. Authentication, admin routes, APIs, database models, and domain-specific features are intentionally deferred to later phases.
+See `docs/content-architecture.md` for the current content ownership, relationship, metadata, validation and future-content rules.
 
 ## Current Phase
 
-Phase 1.3 establishes the scalable folder architecture and minimal App Router error boundaries. Product design, branding, content, database, authentication, payments, and other application features are deferred to later phases.
+**Phase 7.12 — Content Architecture Cleanup, Documentation & Maintainability.**
+
+The current frontend architecture preserves the canonical Services, Research, Experts, Articles, Workshops/Events, Relationships, Navigation, Metadata and Validation systems. Backend, database, CMS, authentication, payments, advanced search, full SEO, dedicated performance, security hardening and deployment work remain outside the current phase.
