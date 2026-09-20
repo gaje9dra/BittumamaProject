@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceCategoryAnchor, getServiceHref } from "@/data/services";
+import { getServiceCategoryAnchor, getServiceHref } from "@/lib/services/paths";
 import type { Service } from "@/data/services";
 
 export function ServicesDirectory({ services }: { services: Service[] }) {
