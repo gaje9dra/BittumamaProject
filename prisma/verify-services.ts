@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
-import { services } from "../data/services";
+import { canonicalServices } from "../data/canonicalServices";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -23,11 +23,11 @@ function expectedAvailability(status: string | undefined) {
 
 async function main() {
   const records = await prisma.service.findMany({ orderBy: { order: "asc" } });
-  const expectedBySlug = new Map(services.map((service, index) => [service.slug, { service, index }]));
+  const expectedBySlug = new Map(canonicalServices.map((service, index) => [service.slug, { service, index }]));
   const errors: string[] = [];
 
-  if (records.length !== services.length) {
-    errors.push(`Expected ${services.length} Services, found ${records.length}.`);
+  if (records.length !== canonicalServices.length) {
+    errors.push(`Expected ${canonicalServices.length} Services, found ${records.length}.`);
   }
 
   for (const record of records) {
