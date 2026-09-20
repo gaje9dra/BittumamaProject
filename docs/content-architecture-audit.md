@@ -947,3 +947,64 @@ The existing site configuration's default metadata description was changed to us
 ### Scope boundary
 
 No UI redesign, new content, backend, database, CMS, authentication, payments, advanced search, SEO implementation, performance optimization, security hardening, deployment work or Phase 7.10 work was introduced.
+
+
+## Phase 7.10 implementation — canonical metadata foundation
+
+Phase 7.10 adds a lightweight typed metadata layer at `lib/metadata.ts`. The layer consumes the existing Phase 7.8 Site Configuration and the canonical Phase 7.2–7.6 content records rather than introducing a second content lookup system.
+
+### Metadata model
+
+`SeoData` supports only the metadata controls currently useful to the frontend:
+
+- optional title
+- optional description
+- optional image
+- optional canonical
+- optional noIndex
+
+`createPageMetadata()` resolves page-level title/description fallbacks, canonical URLs, intentional noIndex behavior and Open Graph/site-name data. `createContentMetadata()` applies the same behavior to canonical content records.
+
+### Fallback order
+
+For dynamic content, the metadata flow is:
+
+1. record SEO title/description/image when supplied
+2. canonical record title/shortDescription/excerpt/description
+3. Site Configuration default title/description
+
+No artificial SEO copy is generated.
+
+### Content SEO ownership
+
+Services and Research now support optional typed SEO data in their canonical models, matching the existing SEO-capable Expert, Article and Event models. No SEO records were fabricated.
+
+Dynamic detail routes continue to use the same canonical slug lookup as page rendering:
+
+`params.slug → canonical lookup → record → generateMetadata()`
+
+Missing records still use `notFound()`.
+
+### Site-level metadata
+
+The root layout consumes `siteConfig.defaultMetadata` and now provides centralized Open Graph title, description and site name. No default social image was added because the repository does not currently contain a verified site-level social image.
+
+The project contains `app/favicon.ico`; no manifest, Apple icon, robots module or other icon asset was present in the repository paths inspected, so no placeholder assets were introduced.
+
+No production/base URL was hard-coded. Canonical URLs remain route-relative and can receive an absolute metadata base through future project configuration without changing content records.
+
+### Static pages
+
+Homepage, Services, Research, Experts, Articles, Workshops, About and Contact now use the shared metadata utility. Existing factual page titles and descriptions are preserved; this phase does not change visible page content.
+
+### Image handling
+
+Metadata image references are emitted only when the supplied image is a valid absolute HTTP(S) URL or an existing file under `public/`. Missing local images are omitted rather than referenced as broken social-preview assets.
+
+### Validation and boundaries
+
+Repository searches found no current matches for the removed Phase 6 phrases. No fake images, social URLs, authors, organizations, event details or SEO claims were introduced.
+
+Phase 7.10 does not implement keyword strategy, sitemap, robots optimization, structured data, search targeting, internal-link strategy, performance SEO, local SEO, Search Console, backend, database, CMS, admin, authentication, payments, advanced search, security hardening or deployment.
+
+The existing canonical content systems, navigation, relationships and dynamic route architecture remain the sources of truth.
