@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
-import { getAllServices } from "@/data/services";
+import type { Service } from "@/data/services";
 import { cn } from "@/lib/utils";
 
 type FormValues = {
@@ -44,14 +44,14 @@ function validate(values: FormValues): FormErrors {
   return errors;
 }
 
-export function ContactForm({ initialService = "" }: { initialService?: string }) {
+export function ContactForm({ initialService = "", services }: { initialService?: string; services: Service[] }) {
   const [values, setValues] = useState<FormValues>(() => ({ ...initialValues, service: initialService }));
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "failure">("idle");
 
   const selectedService = useMemo(
-    () => getAllServices().find((service) => service.slug === values.service),
+    () => services.find((service) => service.slug === values.service),
     [values.service],
   );
 
@@ -118,7 +118,7 @@ export function ContactForm({ initialService = "" }: { initialService?: string }
           <label htmlFor="contact-service" className="type-label">What do you need help with? <span aria-hidden="true">*</span></label>
           <select id="contact-service" name="service" value={values.service} onChange={(e) => update("service", e.target.value)} onBlur={() => handleBlur("service")} aria-invalid={Boolean(errorFor("service"))} aria-describedby={errorFor("service") ? "contact-service-error" : undefined} className={fieldClass}>
             <option value="">Select a requirement</option>
-            {getAllServices().map((service) => (
+            {services.map((service) => (
               <option key={service.id} value={service.slug}>
                 {service.title}{service.status === "Coming Soon" ? " — Coming Soon" : ""}
               </option>
