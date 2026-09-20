@@ -4,8 +4,9 @@ import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { getResearchHref } from "@/data/research";
+import { getExpertHref } from "@/data/expertise";
 import { getServiceHref } from "@/data/services";
-import { getRelatedArticles, type Article } from "@/data/articles";
+import { getArticleHref, getRelatedArticles, type Article } from "@/data/articles";
 import { getExpertForArticle, getResearchForArticle, getServicesForArticle } from "@/lib/content/relationships";
 
 function RelatedList({ title, items }: { title: string; items: { title: string; href: string; description?: string }[] }) {
@@ -97,7 +98,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
                 <p className="type-label text-muted-foreground">Author</p>
                 <p className="type-body-sm mt-3">{article.author}</p>
                 {article.authorRole && <p className="type-caption mt-1 text-muted-foreground">{article.authorRole}</p>}
-                {expertAuthor && <Link href={"/experts/" + expertAuthor.slug} className="mt-3 inline-flex min-h-11 items-center gap-2 type-button text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-3">View expert profile <ArrowUpRight aria-hidden="true" className="size-4" /></Link>}
+                {expertAuthor && <Link href={getExpertHref(expertAuthor)} className="mt-3 inline-flex min-h-11 items-center gap-2 type-button text-primary underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-3">View expert profile <ArrowUpRight aria-hidden="true" className="size-4" /></Link>}
               </section>
             ) : null}
           </aside>
@@ -107,7 +108,7 @@ export function ArticleDetailPage({ article }: { article: Article }) {
           <Container size="wide" className="layout-section-lg">
             <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
               <div className="lg:col-span-8 lg:col-start-3 space-y-10">
-                <RelatedList title="Related articles" items={relatedArticles.map((item) => ({ title: item.title, href: "/articles/" + item.slug, description: item.excerpt }))} />
+                <RelatedList title="Related articles" items={relatedArticles.map((item) => ({ title: item.title, href: getArticleHref(item), description: item.excerpt }))} />
                 <RelatedList title="Related research" items={relatedResearch.map((item) => ({ title: item.title, href: getResearchHref(item), description: item.summary ?? item.shortDescription }))} />
                 <RelatedList title="Related services" items={relatedServices.map((item) => ({ title: item.title, href: getServiceHref(item), description: item.shortDescription }))} />
               </div>
