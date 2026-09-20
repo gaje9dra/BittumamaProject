@@ -252,3 +252,20 @@ The deterministic Article import is `prisma/seed-articles.ts`, exposed as `npm r
 The public Articles listing and detail route use published database records only. Unknown or unpublished Article slugs use the existing Next.js not-found behavior. The current canonical Article snapshot is empty, so this migration intentionally imports zero Article records rather than inventing editorial content.
 
 No Article editor, CMS, authentication, payments, admin or Workshop/Event migration is introduced in Phase 8.5.
+
+
+## Phase 8.6 Workshops & Events ownership
+
+The Phase 7.6 canonical Workshop/Event snapshot in `data/events.ts` is migration/verification-only. Production reads go through `lib/events/repository.ts` and Prisma/PostgreSQL.
+
+The database preserves the canonical event identity, slug, title, curated order, date/end date, time, category, location, delivery format, descriptions, audience, facilitator reference, registration-related stored fields, featured state, publication state and SEO references. Event-to-event relationships use the existing `EventRelation` join table; Research and Service relationships use the existing `WorkshopResearch` and `WorkshopService` tables.
+
+The current Phase 7.6 source contains no Article relationship field, so no Article/Event join records are fabricated. Registration processing, bookings and payments are not implemented.
+
+The deterministic import is `prisma/seed-events.ts`, exposed as `npm run events:seed`. It validates the canonical snapshot, upserts by canonical slug while preserving canonical IDs, resolves existing Expert/Research/Service references, and rewrites only relationship rows for each imported event.
+
+`prisma/verify-events.ts`, exposed as `npm run events:verify`, compares PostgreSQL Workshop/Event records against the canonical snapshot and checks count, stable IDs/slugs, order, dates, publication state, core event fields, duplicate/unexpected records and relationship counts.
+
+The public `/workshops` listing and `/workshops/[slug]` detail route now use published database records only. Invalid or unpublished slugs use the existing Next.js not-found behavior.
+
+No Workshop/Event admin, CMS, registration processing, payment, attendee accounts or unrelated backend domain is introduced in Phase 8.6.
