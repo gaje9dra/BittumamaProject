@@ -340,6 +340,7 @@ async function slugConflict(domain: ContentDomain, slug: string, id?: string) {
 
 function revalidateDomain(domain: ContentDomain, slug: string, previousSlug?: string) {
   const publicBase = domain === "workshops" ? "/workshops" : "/" + domain;
+  revalidatePath("/");
   revalidatePath(publicBase);
   revalidatePath(publicBase + "/" + slug);
   if (previousSlug && previousSlug !== slug) revalidatePath(publicBase + "/" + previousSlug);
