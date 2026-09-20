@@ -30,6 +30,11 @@ export function validateContactInquiryInput(
   }
 
   const value = input as Record<string, unknown>;
+  const allowedKeys = new Set(["name", "email", "phone", "service", "message", "website", "formStartedAt"]);
+  const unexpectedKey = Object.keys(value).find((key) => !allowedKeys.has(key));
+  if (unexpectedKey) return { success: false, errors: { message: "Invalid request payload." } };
+  const website = typeof value.website === "string" ? value.website.trim() : "";
+  if (website) return { success: false, errors: { message: "Unable to process this submission." } };
   const name = typeof value.name === "string" ? value.name.trim() : "";
   const email = typeof value.email === "string" ? value.email.trim() : "";
   const phone = typeof value.phone === "string" ? value.phone.trim() : "";
