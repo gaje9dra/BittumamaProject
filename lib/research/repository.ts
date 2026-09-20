@@ -84,7 +84,7 @@ function asSeo(value: {
   };
 }
 
-function toDomainResearch(record: PrismaResearchItem): ResearchEntry {
+type PrismaResearchWithServices = PrismaResearchItem & {\n  serviceLinks: Array<{ serviceId: string }>;\n};\n\nfunction toDomainResearch(record: PrismaResearchWithServices): ResearchEntry {
   const seo = asSeo({
     title: record.seoTitle,
     description: record.seoDescription,
@@ -99,7 +99,7 @@ function toDomainResearch(record: PrismaResearchItem): ResearchEntry {
     slug: record.slug,
     category: record.category,
     shortDescription: record.shortDescription,
-    ...(record.summary ? { summary: record.summary } : {}),
+    ...(record.summary ? { summary: record.summary } : {}),\n    ...(record.serviceLinks.length ? { relatedServiceIds: record.serviceLinks.map((link) => link.serviceId) } : {}),
     ...(record.scope ? { scope: asResearchPoints(record.scope) } : {}),
     ...(record.topics ? { topics: asResearchPoints(record.topics) } : {}),
     ...(record.sections ? { sections: asResearchSections(record.sections) } : {}),
