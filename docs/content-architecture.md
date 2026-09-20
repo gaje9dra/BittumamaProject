@@ -35,7 +35,7 @@ The project remains server-first. Client Components are used only where browser 
 
 Do not duplicate canonical records inside pages or UI components.
 
-The current Research, Experts, Articles and Workshops collections are intentionally empty. Do not add placeholder or invented records to make the architecture appear populated.
+The current Research, Experts, Articles and Workshops domains contain no canonical Phase 7 records beyond their migration architecture where applicable. Do not add placeholder or invented records to make the architecture appear populated.
 
 ## Content access
 
