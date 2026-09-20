@@ -13,6 +13,5 @@ export {
   footerNavigation,
   globalActions,
   siteRoutes,
-  getServiceNavigation,
   validateSiteConfig,
 } from "@/data/site-config";
