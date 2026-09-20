@@ -2,9 +2,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceCategoryAnchor, getServiceHref, getServicesByCategory, serviceCategories } from "@/data/services";
+import { getServiceCategoryAnchor, getServiceHref } from "@/data/services";
+import type { Service } from "@/data/services";
 
-export function ServicesDirectory() {
+export function ServicesDirectory({ services }: { services: Service[] }) {
   return (
     <section id="service-directory" aria-labelledby="service-directory-title" className="scroll-anchor bg-background">
       <Container size="wide" className="layout-section-xl">
@@ -21,8 +22,8 @@ export function ServicesDirectory() {
         </div>
 
         <div className="border-t border-border">
-          {serviceCategories.map((category) => {
-            const categoryServices = getServicesByCategory(category);
+          {Array.from(new Set(services.map((service) => service.category))).map((category) => {
+            const categoryServices = services.filter((service) => service.category === category);
             return (
               <section key={category} id={getServiceCategoryAnchor(category)} className="scroll-anchor">
                 <div className="flex items-center justify-between gap-6 border-b border-border bg-surface-muted px-4 py-3 sm:px-5">
