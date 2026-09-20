@@ -13,7 +13,7 @@ if (!databaseUrl) {
 const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
-function availabilityFor(status: string | undefined) {
+function availabilityFor(status: string | undefined): "COMING_SOON" | "AVAILABLE" {
   return status === "Coming Soon" ? "COMING_SOON" : "AVAILABLE";
 }
 
