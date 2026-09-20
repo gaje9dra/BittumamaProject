@@ -39,7 +39,6 @@ export function validateContactInquiryInput(
   const service = typeof value.service === "string" ? value.service.trim() : "";
   const message = typeof value.message === "string" ? value.message.trim() : "";
   const website = typeof value.website === "string" ? value.website.trim() : "";
-  const website = typeof value.website === "string" ? value.website.trim() : "";
   if (website) return { success: false, errors: { message: "Unable to process this submission." } };
   const formStartedAt =
     typeof value.formStartedAt === "string" ? value.formStartedAt.trim() : undefined;
