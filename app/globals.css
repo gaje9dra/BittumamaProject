@@ -179,46 +179,74 @@
 
 @layer components {
   .mobile-menu-panel {
-    clip-path: inset(0 0 100% 0 round var(--radius-xl));
+    width: 4rem;
+    height: 2.75rem;
+    top: 0;
+    right: 0;
+    border-radius: 999px;
+    clip-path: inset(0 round 999px);
     transform-origin: top right;
-    opacity: 0;
-    transform: scaleY(.96) translateY(-6px);
-    transition: clip-path 380ms var(--motion-ease-emphasis), transform 380ms var(--motion-ease-emphasis), opacity 220ms var(--motion-ease-standard), border-radius 380ms var(--motion-ease-emphasis);
-    will-change: clip-path, transform, opacity;
-  }
-  .mobile-menu-panel-open {
-    clip-path: inset(0 0 0 0 round var(--radius-xl));
-    transform: scaleY(1) translateY(0);
     opacity: 1;
+    transition:
+      width 440ms var(--motion-ease-emphasis),
+      height 440ms var(--motion-ease-emphasis),
+      border-radius 440ms var(--motion-ease-emphasis),
+      clip-path 440ms var(--motion-ease-emphasis);
+    will-change: width, height, border-radius, clip-path;
   }
+
+  .mobile-menu-panel-open {
+    width: min(88vw, 30rem);
+    height: 100dvh;
+    border-radius: var(--radius-xl) 0 0 var(--radius-xl);
+    clip-path: inset(0 round var(--radius-xl) 0 0 var(--radius-xl));
+  }
+
   .mobile-menu-panel-closing {
-    clip-path: inset(0 0 100% 0 round var(--radius-xl));
-    transform: scaleY(.96) translateY(-6px);
-    opacity: 0;
-    transition-duration: 300ms;
+    width: 4rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    clip-path: inset(0 round 999px);
+    transition-duration: 380ms;
   }
+
   .mobile-menu-content {
     opacity: 0;
-    transform: translateY(-8px);
-    transition: opacity 220ms var(--motion-ease-standard), transform 280ms var(--motion-ease-emphasis);
+    transform: translate3d(14px, -4px, 0);
+    transition:
+      opacity 220ms var(--motion-ease-standard),
+      transform 260ms var(--motion-ease-emphasis);
+    pointer-events: none;
   }
+
   .mobile-menu-panel-open .mobile-menu-content {
     opacity: 1;
-    transform: translateY(0);
-    transition-delay: 120ms;
+    transform: translate3d(0, 0, 0);
+    transition-delay: 150ms;
+    pointer-events: auto;
   }
+
   .mobile-menu-panel-open .mobile-menu-content > * {
-    animation: mobile-menu-item-in 240ms var(--motion-ease-emphasis) both;
+    animation: mobile-menu-item-in 220ms var(--motion-ease-standard) both;
   }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(2) { animation-delay: 45ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(3) { animation-delay: 80ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(4) { animation-delay: 115ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(5) { animation-delay: 150ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(6) { animation-delay: 185ms; }
-  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(7) { animation-delay: 220ms; }
-  .mobile-menu-submenu { animation: mobile-menu-item-in 220ms var(--motion-ease-emphasis) both; }
-  @keyframes mobile-menu-item-in { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+
+  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(2) { animation-delay: 35ms; }
+  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(3) { animation-delay: 70ms; }
+  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(4) { animation-delay: 105ms; }
+  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(5) { animation-delay: 140ms; }
+  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(6) { animation-delay: 175ms; }
+  .mobile-menu-panel-open .mobile-menu-content > *:nth-child(7) { animation-delay: 210ms; }
+
+  .mobile-menu-submenu {
+    animation: mobile-menu-item-in 220ms var(--motion-ease-standard) both;
+  }
+
+  @keyframes mobile-menu-item-in {
+    from { opacity: 0; transform: translate3d(12px, 0, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
+  }
 }
+
 @media (prefers-reduced-motion: reduce) {
   .mobile-menu-panel, .mobile-menu-panel-open, .mobile-menu-panel-closing, .mobile-menu-content, .mobile-menu-panel-open .mobile-menu-content > *, .mobile-menu-submenu {
     animation: none !important; transition: none !important; transform: none !important; clip-path: none !important; opacity: 1 !important;
