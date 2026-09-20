@@ -446,21 +446,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scroll-heading-window {
-    overflow: visible;
-  }
-
-  .scroll-heading-text,
-  .scroll-heading-main,
-  .scroll-heading-ghost {
-    animation: none !important;
-    transform: none !important;
-  }
-
-  .scroll-heading-ghost {
-    display: none;
-  }
-
   .mobile-menu-panel, .mobile-menu-panel-open, .mobile-menu-panel-closing, .mobile-menu-content, .mobile-menu-panel-open .mobile-menu-content > *, .mobile-menu-submenu {
     animation: none !important; transition: none !important; transform: none !important; clip-path: none !important; opacity: 1 !important;
   }
