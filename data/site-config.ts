@@ -108,8 +108,7 @@ export const siteConfig: SiteConfig = {
   },
   defaultMetadata: {
     title: "Bittumama — Research, Intelligence & Expertise",
-    description:
-      "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.",
+    description: siteConfig.siteDescription,
   },
 };
 
