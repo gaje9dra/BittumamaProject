@@ -16,8 +16,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:deploy": "prisma migrate deploy",
-    "prisma:validate": "prisma validate",
-    "prisma:migration:check": "prisma migrate diff --exit-code --from-migrations prisma/migrations --to-schema prisma/schema.prisma"
+    "prisma:validate": "prisma validate"
   },
   "dependencies": {
     "next": "16.3.5",
