@@ -94,6 +94,7 @@ export function ScrollTransition({
     [config.skew, config.skew * 0.45, 0, -config.skew * 0.45, -config.skew],
   );
   const trailY = useTransform(y, (value) => value * 0.88 + (value >= 0 ? 10 : -10));
+  const trailOpacity = useTransform(opacity, (value) => Math.max(0, (value - 0.72) * 0.45));
 
   return (
     <div
@@ -108,7 +109,7 @@ export function ScrollTransition({
           className="pointer-events-none absolute inset-x-0 select-none"
           style={{
             y: trailY,
-            opacity: useTransform(opacity, (value) => Math.max(0, (value - 0.72) * 0.45)),
+            opacity: trailOpacity,
             scale,
             skewY: skew,
             willChange: "transform, opacity",
