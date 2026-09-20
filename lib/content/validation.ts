@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { getAllExperts, validateExperts, type Expert } from "@/data/expertise";
 import { getAllArticles, validateArticles, type Article } from "@/data/articles";
 import { getAllEvents, validateEvents, type Event } from "@/data/events";
 import { siteConfig, validateSiteConfig } from "@/data/site-config";
@@ -93,15 +92,6 @@ function validateOptionalImage(
   }
 }
 
-function validateExpertSpecific(records: readonly Expert[], issues: ContentValidationIssue[]) {
-  for (const record of records) {
-    if (!record.name.trim()) addIssue(issues, "error", "Expert", record.id, "Missing name.");
-    validateOptionalImage(issues, "Expert", record.id, "image", record.image);
-    validateBoolean(issues, "Expert", record.id, "featured", record.featured);
-    validateSeo(issues, "Expert", record.id, record.seo);
-  }
-}
-
 function validateArticleSpecific(records: readonly Article[], issues: ContentValidationIssue[]) {
   for (const record of records) {
     if (!record.title.trim()) addIssue(issues, "error", "Article", record.id, "Missing title.");
@@ -167,15 +157,12 @@ function validateEventSpecific(records: readonly Event[], issues: ContentValidat
 
 export function validateContentIntegrity(): ContentValidationIssue[] {
   const issues: ContentValidationIssue[] = [];
-  const experts = getAllExperts();
   const articles = getAllArticles();
   const events = getAllEvents();
 
-  validateUniqueRecords(experts, "Expert", issues);
   validateUniqueRecords(articles, "Article", issues);
   validateUniqueRecords(events, "Workshop", issues);
 
-  validateExpertSpecific(experts, issues);
   validateArticleSpecific(articles, issues);
   validateEventSpecific(events, issues);
 
