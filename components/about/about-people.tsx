@@ -2,9 +2,10 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { experts } from "@/data/expertise";
+import { getPublishedExperts } from "@/lib/experts/repository";
 
-export function AboutPeople() {
+export async function AboutPeople() {
+  const experts = await getPublishedExperts();
   if (!experts.length) return null;
 
   return <section aria-labelledby="about-people-title" className="border-b border-border bg-background">
