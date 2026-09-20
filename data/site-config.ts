@@ -1,4 +1,5 @@
-import { getPublishedServices } from "@/lib/services/repository";\nimport { getServiceHref } from "@/lib/services/paths";
+import { getPublishedServices } from "@/lib/services/repository";
+import { getServiceHref } from "@/lib/services/paths";
 
 export type NavigationMetadata = {
   eyebrow?: string;
