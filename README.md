@@ -69,9 +69,9 @@ See `docs/content-architecture.md` for the current content ownership, relationsh
 
 ## Current Phase
 
-**Phase 8.3 — Canonical Research Database Migration.**
+**Phase 8.4 — Canonical Experts Database Migration.**
 
-Phase 8.3 moves the canonical Phase 7 Research dataset into PostgreSQL and routes the existing Research experience through the server-side Prisma repository without changing the public UI, routes, or interaction design. Services remain database-backed from Phase 8.2.
+Phase 8.4 moves the canonical Phase 7 Experts dataset into PostgreSQL and routes the existing Experts experience through the server-side Prisma repository without changing the public UI, routes, or interaction design. Services and Research remain database-backed from Phases 8.2 and 8.3.
 
 The current frontend architecture preserves the canonical Services, Research, Experts, Articles, Workshops/Events, Relationships, Navigation, Metadata and Validation systems. Research and Services now use PostgreSQL repositories; Experts, Articles and Workshops remain on their Phase 7 canonical snapshots until their dedicated migrations. Backend, CMS, authentication, payments, advanced search, full SEO, dedicated performance, security hardening and deployment work remain outside the current phase.
 
@@ -263,3 +263,64 @@ There is no Research admin/editor or CMS in Phase 8.3. Update the canonical migr
 ### Phase boundary
 
 Phase 8.3 does not migrate Experts, Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
+
+
+## Phase 8.4 — Canonical Experts Database Migration
+
+Experts now follow:
+
+```text
+Experts UI
+  ↓
+lib/experts/repository.ts
+  ↓
+Prisma
+  ↓
+PostgreSQL
+```
+
+### Expert ownership
+
+- PostgreSQL owns persistent Expert content.
+- `lib/experts/repository.ts` is the production Expert access layer.
+- `data/expertise.ts` contains the Phase 7.4 canonical snapshot only for deterministic migration and integrity verification.
+- UI components consume the existing `Expert` domain type and do not receive Prisma-generated types.
+- Expert listing and detail routes use published database records only.
+- The canonical Expert ordering is stored in `Expert.order`.
+- Expert ↔ Research uses the existing `ExpertResearch` relation.
+- Expert ↔ Service uses the new minimal `ExpertService` relation.
+- Article and Workshop/Event relationships are deferred until those domains are migrated.
+
+### Canonical Expert migration
+
+Run against a configured PostgreSQL database after applying migrations:
+
+```bash
+npm run prisma:migrate
+npm run experts:seed
+npm run experts:verify
+```
+
+The Expert import is idempotent and uses the canonical slug as its upsert key while preserving the canonical ID. Relationship rows are rebuilt from the canonical relationship fields. It does not reset the database or delete unrelated records.
+
+### Public Expert queries
+
+The Expert repository exposes the current read surface:
+
+- `getPublishedExperts()`
+- `getPublishedExpertById()`
+- `getPublishedExpertBySlug()`
+- `getPublishedExpertDisciplines()`
+- `getFeaturedPublishedExperts()`
+
+Public queries filter to `PUBLISHED` records. Unknown or unpublished detail slugs return the existing Next.js not-found behavior.
+
+### Expert integrity verification
+
+`npm run experts:verify` compares the database against the Phase 7.4 canonical Expert snapshot and checks count, unexpected records, stable IDs/slugs, ordering, profile information, structured expertise, publication state, image references, SEO metadata and Service/Research relationships.
+
+There is no Expert admin/editor or CMS in Phase 8.4. Update the canonical migration snapshot and rerun the deterministic import and verification until future content-editing functionality is explicitly introduced.
+
+### Phase boundary
+
+Phase 8.4 does not migrate Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
