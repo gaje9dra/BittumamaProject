@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
+import { getEventHref } from "@/lib/events/paths";
 import type { Event } from "@/data/events";
 
 export function EventFeatured({ event }: { event?: Event }) {
@@ -26,7 +27,7 @@ export function EventFeatured({ event }: { event?: Event }) {
                 {event.registrationLabel}
               </a>
             )}
-            <Link href={"/workshops/" + event.slug} className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-border px-5 type-button hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-3">
+            <Link href={getEventHref(event)} className="inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-border px-5 type-button hover:bg-background focus-visible:outline-2 focus-visible:outline-offset-3">
               View Details
             </Link>
           </div>
