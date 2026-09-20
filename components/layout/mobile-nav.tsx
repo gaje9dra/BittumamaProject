@@ -268,7 +268,7 @@ export function MobileNav({ className }: { className?: string }) {
               onClick={closeMenu}
               className="mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border border-primary bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-micro)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
             >
-              Contact
+              {globalActions.contact.label}
             </Link>
           </nav>
         </div>
