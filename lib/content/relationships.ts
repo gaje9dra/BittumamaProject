@@ -1,4 +1,5 @@
 import type { Service } from "@/data/services";
+import { getPublishedArticleById, getPublishedArticleBySlug, getPublishedArticles } from "@/lib/articles/repository";
 import {
   getPublishedServiceById,
   getPublishedServiceBySlug,
@@ -11,12 +12,7 @@ import {
 import { getPublishedExpertById, getPublishedExpertBySlug, getPublishedExperts } from "@/lib/experts/repository";
 import type { ResearchEntry } from "@/data/research";
 import type { Expert } from "@/data/expertise";
-import {
-  getAllArticles,
-  getArticleById,
-  getArticleBySlug,
-  type Article,
-} from "@/data/articles";
+import type { Article } from "@/data/articles";
 import {
   getAllEvents,
   getEventById,
@@ -62,11 +58,8 @@ export async function getArticlesForService(serviceId: string): Promise<Article[
     (await getPublishedServiceBySlug(serviceId));
   if (!service) return [];
 
-  return getAllArticles().filter((article) =>
-    article.relatedServices?.some(
-      (reference) => reference === service.id || reference === service.slug,
-    ),
-  );
+  const articles = await getPublishedArticles();
+  return articles.filter((article) => article.relatedServices?.includes(service.id));
 }
 
 export async function getExpertsForService(serviceId: string): Promise<Expert[]> {
@@ -85,12 +78,8 @@ export async function getArticlesForResearch(researchId: string): Promise<Articl
     (await getPublishedResearchBySlug(researchId));
   if (!research) return [];
 
-  return getAllArticles().filter((article) =>
-    article.relatedResearch?.some(
-      (reference) =>
-        reference === research.id || reference === research.slug,
-    ),
-  );
+  const articles = await getPublishedArticles();
+  return articles.filter((article) => article.relatedResearch?.includes(research.id));
 }
 
 export async function getExpertsForResearch(researchId: string): Promise<Expert[]> {
@@ -187,43 +176,23 @@ export async function getArticlesForExpert(expertId: string): Promise<Article[]>
     (await getPublishedExpertBySlug(expertId));
   if (!expert) return [];
 
-  return getAllArticles().filter(
-    (article) =>
-      article.authorId === expert.id ||
-      article.authorSlug === expert.slug ||
-      article.authorId === expert.slug ||
-      article.authorSlug === expert.id ||
-      expert.articleIds?.includes(article.id) === true,
-  );
+  const articles = await getPublishedArticles();
+  return articles.filter((article) => article.authorId === expert.id);
 }
 
 export function validateContentRelationships(): ContentRelationshipValidationIssue[] {
   const issues: ContentRelationshipValidationIssue[] = [];
 
-  const add = (
-    sourceType: ContentRelationshipValidationIssue["sourceType"],
-    sourceId: string,
-    relation: string,
-    reference: string,
-    message: string,
-  ) => issues.push({ sourceType, sourceId, relation, reference, message });
-
-  for (const article of getAllArticles()) {
-    if ((article.authorId || article.authorSlug) && !getExpertForArticle(article)) {
-      add(
-        "article",
-        article.id,
-        "author",
-        article.authorId ?? article.authorSlug ?? "",
-        "Referenced Expert does not exist.",
-      );
-    }
-  }
-
   for (const event of getAllEvents()) {
     for (const reference of event.relatedEventIds ?? []) {
       if (!getEventById(reference) && !getEventBySlug(reference)) {
-        add("event", event.id, "relatedEventIds", reference, "Referenced Event does not exist.");
+        issues.push({
+          sourceType: "event",
+          sourceId: event.id,
+          relation: "relatedEventIds",
+          reference,
+          message: "Referenced Event does not exist.",
+        });
       }
     }
   }
@@ -233,14 +202,10 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
 
 export function assertContentRelationships() {
   const issues = validateContentRelationships();
-
   if (issues.length && process.env.NODE_ENV !== "production") {
     console.warn("Content relationship validation found issues:", issues);
   }
-
   return issues;
 }
 
-if (process.env.NODE_ENV !== "production") {
-  assertContentRelationships();
-}
+if (process.env.NODE_ENV !== "production") assertContentRelationships();
