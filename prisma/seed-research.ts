@@ -38,7 +38,8 @@ async function resolveServiceId(reference: string) {
   return service.id;
 }
 
-async function main() {\n  validateResearch();
+async function main() {
+  validateResearch();
   for (const [index, research] of canonicalResearchEntries.entries()) {
     const serviceIds = [];
     for (const reference of research.relatedServiceIds ?? []) {
