@@ -2,11 +2,12 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getAllExperts, getExpertDisciplineAnchor, getExpertHref, getExpertsByDiscipline, expertDisciplines as canonicalDisciplines, type Expert } from "@/data/expertise";
+import { getExpertDisciplineAnchor, getExpertHref } from "@/lib/experts/paths";
+import type { Expert } from "@/data/expertise";
 
-type ExpertDirectoryProps = { experts?: Expert[]; disciplines?: string[] };
+type ExpertDirectoryProps = { experts: Expert[]; disciplines: string[] };
 
-export function ExpertDirectory({ experts = getAllExperts(), disciplines = canonicalDisciplines }: ExpertDirectoryProps) {
+export function ExpertDirectory({ experts, disciplines }: ExpertDirectoryProps) {
   if (!experts.length) {
     return (
       <section id="expert-directory" aria-labelledby="expert-directory-title" className="scroll-anchor bg-background">
@@ -42,7 +43,7 @@ export function ExpertDirectory({ experts = getAllExperts(), disciplines = canon
           <div className="lg:col-span-9 lg:col-start-4">
             <div className="border-t border-border">
               {disciplines.map((discipline) => {
-                const group = experts === getAllExperts() ? getExpertsByDiscipline(discipline) : experts.filter((expert) => expert.discipline === discipline);
+                const group = experts.filter((expert) => expert.discipline === discipline);
                 if (!group.length) return null;
                 return (
                   <section key={discipline} id={getExpertDisciplineAnchor(discipline)} className="scroll-anchor">
