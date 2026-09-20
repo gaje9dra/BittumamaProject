@@ -1,22 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ServiceDetailPage } from "@/components/services/service-detail-page";
-import { getAllServices, getServiceBySlug, getServiceHref } from "@/data/services";
+import { getServiceHref } from "@/data/services";
+import { getPublishedServiceBySlug } from "@/lib/services/repository";
 import { createContentMetadata } from "@/lib/metadata";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return getAllServices().map((service) => ({ slug: service.slug }));
-}
-
 export async function generateMetadata({
   params,
 }: ServicePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = getServiceBySlug(slug);
+  const service = await getPublishedServiceBySlug(slug);
 
   if (!service) {
     return {};
