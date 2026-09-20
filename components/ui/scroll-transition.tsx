@@ -18,22 +18,19 @@ type ScrollTransitionProps = {
 
 const modeConfig = {
   content: {
-    distanceScale: 0.72,
-    opacityFloor: 0.72,
-    scaleFrom: 0.985,
-    skew: 0.18,
+    opacityFloor: 0.82,
+    scaleFrom: 0.995,
+    clipInset: 8,
   },
   heading: {
-    distanceScale: 1,
-    opacityFloor: 0.5,
-    scaleFrom: 0.97,
-    skew: 0.28,
+    opacityFloor: 0.72,
+    scaleFrom: 0.985,
+    clipInset: 0,
   },
   visual: {
-    distanceScale: 0.38,
-    opacityFloor: 0.84,
-    scaleFrom: 0.985,
-    skew: 0,
+    opacityFloor: 0.9,
+    scaleFrom: 0.992,
+    clipInset: 5,
   },
 } as const;
 
@@ -42,59 +39,79 @@ const easeOut = (value: number) => {
   return 1 - (1 - t) ** 3;
 };
 
-const motionValue = (value: number, distance: number) => {
-  if (value <= 0.5) {
-    return distance * (1 - easeOut(value / 0.5));
-  }
-
-  return -distance * easeOut((value - 0.5) / 0.5);
-};
-
-const opacityValue = (value: number, floor: number) => {
-  if (value <= 0.5) {
-    return floor + (1 - floor) * easeOut(value / 0.5);
-  }
-
-  return 1 - (1 - floor) * easeOut((value - 0.5) / 0.5);
-};
-
 export function ScrollTransition({
   children,
   className,
-  distance = 96,
+  distance = 8,
   mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const config = modeConfig[mode];
-  const movement = Math.min(
-    distance * config.distanceScale,
-    mode === "heading" ? 120 : mode === "visual" ? 50 : 80,
+  const microShift = Math.min(
+    Math.max(distance, 0),
+    mode === "heading" ? 12 : mode === "visual" ? 6 : 8,
   );
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 92%", "end 8%"],
+    offset: ["start 88%", "end 12%"],
   });
 
-  const y = useTransform(scrollYProgress, (value) =>
-    motionValue(value, movement),
+  // One continuous mask state:
+  // 0%: hidden from the top
+  // 50%: fully revealed
+  // 100%: hidden from the bottom
+  // Reversing scroll automatically reverses the reveal direction.
+  const clipPath = useTransform(scrollYProgress, (value) => {
+    if (value <= 0.5) {
+      const progress = easeOut(value / 0.5);
+      const topInset = 100 - progress * 100;
+      return `inset(${topInset}% 0 0 0)`;
+    }
+
+    const progress = easeOut((value - 0.5) / 0.5);
+    const bottomInset = progress * 100;
+    return `inset(0 0 ${bottomInset}% 0)`;
+  });
+
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 0.16, 0.38, 0.5, 0.62, 0.84, 1],
+    [
+      config.opacityFloor,
+      config.opacityFloor + 0.08,
+      0.98,
+      1,
+      0.98,
+      config.opacityFloor + 0.08,
+      config.opacityFloor,
+    ],
   );
-  const opacity = useTransform(scrollYProgress, (value) =>
-    opacityValue(value, config.opacityFloor),
-  );
+
   const scale = useTransform(
     scrollYProgress,
     [0, 0.28, 0.5, 0.72, 1],
-    [config.scaleFrom, 0.985, 1, 0.985, config.scaleFrom],
+    [
+      config.scaleFrom,
+      config.scaleFrom + (1 - config.scaleFrom) * 0.7,
+      1,
+      config.scaleFrom + (1 - config.scaleFrom) * 0.7,
+      config.scaleFrom,
+    ],
   );
-  const skew = useTransform(
+
+  const y = useTransform(
     scrollYProgress,
     [0, 0.28, 0.5, 0.72, 1],
-    [config.skew, config.skew * 0.45, 0, -config.skew * 0.45, -config.skew],
+    [microShift, microShift * 0.25, 0, -microShift * 0.25, -microShift],
   );
-  const trailY = useTransform(y, (value) => value * 0.88 + (value >= 0 ? 10 : -10));
-  const trailOpacity = useTransform(opacity, (value) => Math.max(0, (value - 0.72) * 0.45));
+
+  const subtleEchoOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.2, 0.42, 0.5, 0.58, 0.8, 1],
+    [0, 0.08, 0.13, 0, 0.13, 0.08, 0],
+  );
 
   return (
     <div
@@ -103,32 +120,34 @@ export function ScrollTransition({
       style={{ overflow: "hidden" }}
       data-scroll-transition={mode}
     >
-      {!reducedMotion && mode === "heading" ? (
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 select-none"
-          style={{
-            y: trailY,
-            opacity: trailOpacity,
-            scale,
-            skewY: skew,
-            willChange: "transform, opacity",
-          }}
-        >
-          {children}
-        </motion.div>
-      ) : null}
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 select-none"
+        style={
+          reducedMotion
+            ? { opacity: 0 }
+            : {
+                clipPath,
+                opacity: subtleEchoOpacity,
+                y,
+                scale,
+                willChange: "clip-path, transform, opacity",
+              }
+        }
+      >
+        {children}
+      </motion.div>
 
       <motion.div
         style={
           reducedMotion
             ? undefined
             : {
-                y,
+                clipPath,
                 opacity,
+                y,
                 scale,
-                skewY: skew,
-                willChange: "transform, opacity",
+                willChange: "clip-path, transform, opacity",
               }
         }
       >
