@@ -7,20 +7,21 @@ import { HomeServiceDiscovery } from "@/components/home/home-service-discovery";
 import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/data/site-config";
+import { getPublishedServices } from "@/lib/services/repository";
 
 export const metadata: Metadata = createPageMetadata({
   title: siteConfig.defaultMetadata.title,
   description: siteConfig.defaultMetadata.description,
 });
 
-export default function Home() {
-  return (
+export default async function Home() {
+  const services = await getPublishedServices();\n\n  return (
     <main className="min-h-screen bg-background text-foreground">
       <HomeHero />
       <HomePositioning />
       <HomeIntelligence />
       <HomeServiceDiscovery />
-      <HomeAudience />
+      <HomeAudience services={services} />
       <HomeProcess />
     </main>
   );
