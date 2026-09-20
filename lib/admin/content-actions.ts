@@ -72,6 +72,7 @@ function validateJsonShapes(domain: ContentDomain, json: Record<string, unknown>
 
 function validatePublished(domain: ContentDomain, fields: Record<string, string>) {
   const errors = validateBase(fields);
+  if (domain === "workshops" && !fields.date) errors.date = "Date is required for a workshop / event.";
   if (!fields.shortDescription && domain !== "experts") errors.shortDescription = "A published record needs a short description.";
   if (domain === "research" && !fields.summary) errors.summary = "A published research record needs summary content.";
   if (domain === "articles" && !fields.excerpt && !fields.content && !fields.sections) errors.content = "A published article needs editorial content.";
@@ -356,6 +357,7 @@ export async function saveContent(
   const intent = value(formData, "intent") || "save";
   const parsed = readForm(formData);
   const errors = { ...parsed.errors, ...validateBase(parsed.fields) };
+  if (domain === "workshops" && !parsed.fields.date) errors.date = "Date is required for a workshop / event.";
   validateJsonShapes(domain, parsed.json, errors);
   await validateRelationsExist(parsed.relationIds, errors);
 
