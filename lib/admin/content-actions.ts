@@ -382,6 +382,9 @@ export async function saveContent(
   if (await slugConflict(domain, parsed.fields.slug, id)) {
     return { message: "That slug is already in use.", fieldErrors: { slug: "Choose a unique slug." } };
   }
+  if (id && current?.status === "PUBLISHED" && current.slug !== parsed.fields.slug) {
+    return { message: "Published slugs cannot be changed in Phase 8.11. Unpublish the record first or keep its current slug.", fieldErrors: { slug: "Keep the current slug while published." } };
+  }
 
   const expectedUpdatedAt = value(formData, "updatedAt");
   if (id && current && expectedUpdatedAt && new Date(expectedUpdatedAt).getTime() !== current.updatedAt.getTime()) {
