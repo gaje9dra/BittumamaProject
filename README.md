@@ -1,13 +1,11 @@
 # BittumamaProject
 
-Production website foundation built with Next.js, React, TypeScript, App Router, ESLint, and Tailwind CSS.
+Production website foundation built with Next.js, React, TypeScript, App Router, ESLint, Tailwind CSS, PostgreSQL and Prisma.
 
 ## Requirements
 
 - Node.js 24.21.0 LTS or newer
 - npm 11.x or newer
-
-The repository includes `.nvmrc` with the project Node.js version.
 
 ## Development
 
@@ -25,424 +23,115 @@ npm run lint
 npm run build
 ```
 
-## Architecture
+## Database
 
-The frontend uses a Next.js App Router with a `(marketing)` route group for public pages. Canonical content is stored in typed modules under `data/`, while relationships, metadata and validation are centralized in `lib/`.
+PostgreSQL is the canonical persistence layer and Prisma is the server-side ORM. Keep `DATABASE_URL` server-only; never expose it through a `NEXT_PUBLIC_` variable.
+
+The committed migrations are additive. Do not reset the database or rewrite historical migrations.
+
+## Canonical content
+
+The five canonical public content domains are database-backed:
+
+- Services
+- Research
+- Experts
+- Articles
+- Workshops/Events
+
+Phase 8.7 also provides centralized published-only relationship helpers and `npm run content:verify` for cross-content integrity checks.
+
+## Phase 8.8 — Contact / Inquiry Backend
+
+The existing Contact enquiry experience now follows:
 
 ```text
-app/
-  (marketing)/       public routes
-  design-system/     development-only references
-  layout.tsx
-  error.tsx
-  not-found.tsx
-
-components/
-  about/ articles/ contact/ events/ experts/
-  home/ layout/ research/ services/
-  ui/
-
-data/
-  services.ts
-  research.ts
-  expertise.ts
-  articles.ts
-  events.ts
-  site-config.ts
-  navigation.ts       compatibility re-export
-  homepage.ts
-  about.ts
-  contact.ts
-
-lib/
-  content/
-    relationships.ts
-    validation.ts
-  metadata.ts
-  navigation.ts
-
-docs/
-  content-architecture.md
+Existing Contact form
+  ↓
+server-side validation
+  ↓
+anti-spam checks
+  ↓
+POST /api/contact
+  ↓
+Contact inquiry repository
+  ↓
+Prisma
+  ↓
+PostgreSQL
+  ↓
+ContactInquiry
 ```
 
-See `docs/content-architecture.md` for the current content ownership, relationship, metadata, validation and future-content rules.
+### ContactInquiry
 
-## Current Phase
+The additive Prisma model stores only the fields currently submitted by the Contact form:
 
-**Phase 8.5 — Canonical Experts Database Migration.**
+- stable database ID
+- submission/created/updated timestamps
+- name
+- normalized email
+- optional phone
+- optional relation to a published Service
+- message
+- server-controlled status
 
-Phase 8.5 moves the canonical Phase 7 Experts dataset into PostgreSQL and routes the existing Experts experience through the server-side Prisma repository without changing the public UI, routes, or interaction design. Services and Research remain database-backed from Phases 8.2 and 8.3.
+The initial status is `NEW`. The available lifecycle values are `NEW`, `READ`, `IN_PROGRESS`, `RESOLVED`, and `SPAM`. There is no public status control or inquiry read API.
 
-The current frontend architecture preserves the canonical Services, Research, Experts, Articles, Workshops/Events, Relationships, Navigation, Metadata and Validation systems. Research and Services now use PostgreSQL repositories; Experts, Articles and Workshops remain on their Phase 7 canonical snapshots until their dedicated migrations. Backend, CMS, authentication, payments, advanced search, full SEO, dedicated performance, security hardening and deployment work remain outside the current phase.
+### Validation and security
 
+Server-side validation is authoritative. The submission path enforces:
 
-## Phase 8.1 — PostgreSQL + Prisma
+- required name, email, service and message
+- bounded field lengths
+- email and optional phone format validation
+- published Service validation for selected Services
+- explicit support for the existing `Other` selection without inventing a Service record
+- JSON payload and request-size limits
+- rejection of unexpected fields
+- honeypot rejection
+- lightweight submission-timing sanity check
+- lightweight in-memory throttling for the current deployment architecture
+- generic production errors without Prisma/database details
 
-The project uses PostgreSQL as its canonical relational database and Prisma ORM 7.10.0 as the server-side data layer. Prisma 7 requires a PostgreSQL driver adapter and uses the generated client under `generated/prisma/`.
+The in-memory limiter is intentionally not represented as a distributed production rate limiter. A shared limiter can be introduced later if the deployment architecture requires it.
 
-### Local database setup
+No IP address, browser fingerprint, precise location, tracking identifier, or unnecessary inquiry metadata is persisted.
 
-1. Install and start PostgreSQL locally.
-2. Create a development database. The project does not assume a particular database name, username, or password.
-3. Copy `.env.example` to `.env.local`.
-4. Set `DATABASE_URL` to your local PostgreSQL connection string.
-5. Install dependencies:
+### Server/client boundary
 
-```bash
-npm install
-```
+`components/contact/contact-form.tsx` remains the client-side interaction surface. It submits to `app/api/contact/route.ts`. Prisma and database writes remain server-side in `lib/contact/repository.ts`.
 
-6. Generate the Prisma client:
+The client receives only a small success/error result. The ContactInquiry record, internal ID, timestamps and status are never returned.
+
+### Local verification
+
+After configuring PostgreSQL:
 
 ```bash
 npm run prisma:generate
-```
-
-7. Apply the development migration:
-
-```bash
+npm run prisma:validate
 npm run prisma:migrate
+npm run contact:verify
+npm run lint
+npm run build
 ```
 
-8. Inspect the database when needed:
-
-```bash
-npm run prisma:studio
-```
-
-### Prisma structure
-
-```text
-prisma/
-  schema.prisma
-  migrations/
-    000000000000_init/
-      migration.sql
-    migration_lock.toml
-
-lib/
-  db/
-    prisma.ts
-
-prisma.config.ts
-```
-
-The Prisma client is created lazily by `getPrismaClient()` and kept as a development singleton to avoid creating unnecessary connection pools during Next.js hot reload. Prisma access is server-side only.
-
-### Scripts
-
-- `npm run prisma:generate` — generate the typed Prisma client.
-- `npm run prisma:validate` — validate the Prisma schema.
-- `npm run prisma:migrate` — create/apply local development migrations.
-- `npm run prisma:deploy` — apply committed migrations in deployment environments.
-- `npm run prisma:studio` — inspect the local database.
-
-The Services frontend is now database-backed. The Phase 7 Services file remains only as an explicit migration/verification snapshot and is not used as a production Service read path. Research, Experts, Articles and Workshops remain outside Phase 8.2.
-
-### Database safety
-
-Never commit `.env` or `.env.local`. Never expose `DATABASE_URL` through a `NEXT_PUBLIC_` variable. If the database is not configured, the existing frontend can continue to render; attempting to use the Prisma data layer without `DATABASE_URL` produces a clear server-side configuration error.
-
-Phase 8.1 does not introduce authentication, user accounts, admin UI, payments, CMS functionality, or API overbuild.
-
-
-## Phase 8.2 — Canonical Services Database Migration
-
-Services now follow:
-
-```text
-Services UI
-  ↓
-lib/services/repository.ts
-  ↓
-Prisma
-  ↓
-PostgreSQL
-```
-
-### Service ownership
-
-- PostgreSQL owns persistent Service content.
-- `lib/services/repository.ts` is the production Service access layer.
-- `data/services.ts` contains the Phase 7 canonical snapshot only for deterministic migration and integrity verification.
-- UI components consume the existing `Service` domain type and do not receive Prisma-generated types.
-- UI state, responsive state, animations and interaction state remain outside PostgreSQL.
-
-### Canonical Service migration
-
-The import is idempotent and uses the canonical Service slug as its upsert key. Stable Phase 7 IDs are preserved. The canonical array order is persisted in the `Service.order` field.
-
-Run against a configured PostgreSQL database:
-
-```bash
-npm run prisma:migrate
-npm run prisma:seed
-npm run services:verify
-```
-
-`services:verify` compares the database records with the Phase 7 canonical snapshot and reports count, unexpected-record, ID, slug, title, category, description, ordering, status, availability, structured-field and metadata mismatches.
-
-### Public Service queries
-
-The production repository exposes only the small read surface required by the current website:
-
-- `getPublishedServices()`
-- `getPublishedServiceById()`
-- `getPublishedServiceBySlug()`
-- `getPublishedServiceCategories()`
-- `getRelatedPublishedServices()`
-
-Public queries filter to `PUBLISHED` Services. Detail routes continue to use `/services/<slug>` and return the existing Next.js not-found flow for unknown or unpublished Services.
-
-### Updating a Service at this stage
-
-There is no Service admin/editor yet. For this phase, update the canonical migration snapshot and rerun the idempotent seed, then run the integrity verification. Future CMS/admin phases can establish database-native editing once those capabilities are explicitly introduced.
-
-### Phase boundary
-
-Phase 8.2 does not migrate Research, Experts, Articles, Workshops, About, Contact submissions, users, authentication, payments, CMS/admin functionality, or public APIs.
-
-
-## Phase 8.3 — Canonical Research Database Migration
-
-Research now follows:
-
-```text
-Research UI
-  ↓
-lib/research/repository.ts
-  ↓
-Prisma
-  ↓
-PostgreSQL
-```
-
-### Research ownership
-
-- PostgreSQL owns persistent Research content.
-- `lib/research/repository.ts` is the production Research access layer.
-- `data/research.ts` contains the Phase 7 canonical snapshot only for deterministic migration and integrity verification.
-- UI components consume the existing `ResearchEntry` domain type and do not receive Prisma-generated types.
-- Research listing and detail routes use published database records only.
-- The canonical Research ordering is stored in `ResearchItem.order`.
-- The existing Research ↔ Service relationship is represented by the existing `ResearchService` relation because Services are already database-backed.
-- Expert, Article and Workshop/Event Research relationships are deferred until those domains are migrated.
-
-### Canonical Research migration
-
-Run against a configured PostgreSQL database after applying migrations:
-
-```bash
-npm run prisma:migrate
-npm run prisma:seed
-npm run research:seed
-npm run research:verify
-```
-
-The Research import is idempotent and uses the canonical slug as its upsert key while preserving the canonical ID. It does not reset the database or delete unrelated records.
-
-### Public Research queries
-
-The Research repository exposes the current read surface:
-
-- `getPublishedResearch()`
-- `getPublishedResearchById()`
-- `getPublishedResearchBySlug()`
-- `getPublishedResearchCategories()`
-- `getFeaturedPublishedResearch()`
-- `getRelatedPublishedResearch()`
-
-Public queries filter to `PUBLISHED` records. Unknown or unpublished detail slugs return the existing Next.js not-found behavior.
-
-### Research integrity verification
-
-`npm run research:verify` compares the database against the Phase 7.3 canonical Research snapshot and checks count, unexpected records, stable IDs/slugs, required fields, ordering, publication state, availability, structured content, SEO metadata and Research ↔ Service relationships.
-
-There is no Research admin/editor or CMS in Phase 8.3. Update the canonical migration snapshot and rerun the deterministic import and verification until future content-editing functionality is explicitly introduced.
-
-### Phase boundary
-
-Phase 8.3 does not migrate Experts, Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
-
-
-## Phase 8.5 — Canonical Experts Database Migration
-
-Experts now follow:
-
-```text
-Experts UI
-  ↓
-lib/experts/repository.ts
-  ↓
-Prisma
-  ↓
-PostgreSQL
-```
-
-### Expert ownership
-
-- PostgreSQL owns persistent Expert content.
-- `lib/experts/repository.ts` is the production Expert access layer.
-- `data/expertise.ts` contains the Phase 7.4 canonical snapshot only for deterministic migration and integrity verification.
-- UI components consume the existing `Expert` domain type and do not receive Prisma-generated types.
-- Expert listing and detail routes use published database records only.
-- The canonical Expert ordering is stored in `Expert.order`.
-- Expert ↔ Research uses the existing `ExpertResearch` relation.
-- Expert ↔ Service uses the new minimal `ExpertService` relation.
-- Article and Workshop/Event relationships are deferred until those domains are migrated.
-
-### Canonical Expert migration
-
-Run against a configured PostgreSQL database after applying migrations:
-
-```bash
-npm run prisma:migrate
-npm run experts:seed
-npm run experts:verify
-```
-
-The Expert import is idempotent and uses the canonical slug as its upsert key while preserving the canonical ID. Relationship rows are rebuilt from the canonical relationship fields. It does not reset the database or delete unrelated records.
-
-### Public Expert queries
-
-The Expert repository exposes the current read surface:
-
-- `getPublishedExperts()`
-- `getPublishedExpertById()`
-- `getPublishedExpertBySlug()`
-- `getPublishedExpertDisciplines()`
-- `getFeaturedPublishedExperts()`
-
-Public queries filter to `PUBLISHED` records. Unknown or unpublished detail slugs return the existing Next.js not-found behavior.
-
-### Expert integrity verification
-
-`npm run experts:verify` compares the database against the Phase 7.4 canonical Expert snapshot and checks count, unexpected records, stable IDs/slugs, ordering, profile information, structured expertise, publication state, image references, SEO metadata and Service/Research relationships.
-
-There is no Expert admin/editor or CMS in Phase 8.5. Update the canonical migration snapshot and rerun the deterministic import and verification until future content-editing functionality is explicitly introduced.
-
-### Phase boundary
-
-Phase 8.5 does not migrate Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
-
-
-## Phase 8.5 — Canonical Articles Database Migration
-
-Articles now follow:
-
-```text
-Articles UI
-  ↓
-lib/articles/repository.ts
-  ↓
-Prisma
-  ↓
-PostgreSQL
-```
-
-### Article ownership
-
-- PostgreSQL owns persistent Article content at runtime.
-- `lib/articles/repository.ts` is the production Article access layer.
-- `data/articles.ts` is the Phase 7.5 migration/verification snapshot only.
-- Existing Article UI components continue to consume the Article domain type rather than Prisma-generated types.
-- Published Article listing and detail queries filter to `PUBLISHED`.
-- Canonical array order is persisted in `Article.order`.
-- Article ↔ Research, Service, Expert and Article ↔ Article relationships use the existing Phase 8.1 join tables.
-- Workshop/Event relationships are deferred until that domain is migrated.
-
-### Canonical Article migration
-
-Run against a configured PostgreSQL database after applying migrations:
-
-```bash
-npm run prisma:migrate
-npm run articles:seed
-npm run articles:verify
-```
-
-The import is idempotent and uses the canonical slug as its upsert key while preserving the canonical ID. It does not reset PostgreSQL or delete unrelated records.
-
-### Public Article queries
-
-The repository exposes:
-
-- `getPublishedArticles()`
-- `getPublishedArticleById()`
-- `getPublishedArticleBySlug()`
-- `getPublishedArticleCategories()`
-- `getFeaturedPublishedArticles()`
-- `getRelatedPublishedArticles()`
-
-### Current canonical content state
-
-The actual Phase 7.5 Article snapshot currently contains zero Article records. Phase 8.5 therefore imports zero Articles rather than fabricating editorial content. The database schema and import/verification path are nevertheless complete for the canonical Article structure.
-
-### Phase boundary
-
-Phase 8.5 does not migrate Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS, analytics infrastructure or public APIs.
-
-
-## Phase 8.6 — Canonical Workshops & Events Database Migration
-
-Workshops/Events now follow:
-
-```text
-Workshops / Events UI
-  ↓
-lib/events/repository.ts
-  ↓
-Prisma
-  ↓
-PostgreSQL
-```
-
-The Phase 7.6 canonical snapshot remains available only for deterministic import and integrity verification. Public listing and detail routes use published PostgreSQL records.
-
-### Workshop/Event migration
-
-```bash
-npm run prisma:migrate
-npm run events:seed
-npm run events:verify
-```
-
-The import is idempotent and preserves canonical IDs, slugs and curated ordering. It resolves existing Expert, Research and Service relationships rather than creating duplicates.
-
-### Date and status semantics
-
-The current domain stores event dates as date-level values plus an optional display time string. The existing upcoming/past behavior is preserved by the repository using the same end-date/date semantics as the Phase 7.6 implementation. Publication is represented separately with Prisma `ContentStatus`.
-
-### Current relationship scope
-
-- Workshop/Event ↔ Expert uses the existing `Event.speaker` relation.
-- Workshop/Event ↔ Research uses `WorkshopResearch`.
-- Workshop/Event ↔ Service uses `WorkshopService`.
-- Workshop/Event ↔ Workshop/Event uses `EventRelation`.
-- The Phase 7.6 canonical type has no Article relationship field, so no Article/Event relation is invented.
-- Registration-related fields are stored as existing content only; no booking or payment flow is implemented.
-
-### Phase boundary
-
-Phase 8.6 does not migrate About, Contact submissions, users, authentication, admin, CMS, payments, wallet, analytics infrastructure, public APIs or registration processing.
-
-
-## Phase 8.7 — Global Content Integration
-
-The five canonical content domains use a shared server-side relationship/query convention:
-
-- Services → PostgreSQL
-- Research → PostgreSQL
-- Experts → PostgreSQL
-- Articles → PostgreSQL
-- Workshops/Events → PostgreSQL
-
-Public relationship helpers resolve only published target records and avoid per-related-record lookup loops. Cross-content integrity verification is available through:
-
-```bash
-npm run content:verify
-```
-
-The verifier checks canonical relationship structures, missing references, duplicate relationship keys, self-relations, and Workshop/Event speaker references. Public visibility checks report relationships from published parents to non-published targets so those records can remain stored without becoming publicly queryable.
-
-Phase 8.7 does not add authentication, admin, CMS, payments, event registration, Contact backend infrastructure, or new search infrastructure.
+`contact:verify` uses synthetic development data only. It checks valid input, invalid input cases, a real PostgreSQL ContactInquiry insert, default status, stored fields and timestamps, then removes the synthetic record.
+
+Manually test the Contact page with:
+
+1. valid submission
+2. invalid email
+3. missing required field
+4. oversized/long message
+5. repeated submit click
+6. honeypot behavior
+7. mobile form
+8. desktop form
+9. success confirmation
+10. database failure handling
+
+No admin UI, authentication, CMS, payment, email provider, inquiry listing/search API, or inquiry dashboard is part of Phase 8.8. Data retention/deletion policy is also deferred to a future governance phase.
+
+The homepage hero remains removed, and previously removed content remains removed.
