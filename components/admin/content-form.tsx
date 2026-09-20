@@ -110,7 +110,7 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
             ) : field === "image" ? (
               <MediaPicker name="imageMediaId" label={labels.image} initial={values.imageMediaId && values.image ? { id: values.imageMediaId, originalFilename: "Current managed media", publicUrl: values.image, width: null, height: null, altText: null } : null} />
             ) : (
-              <Input name={field} value={(values as Record<string, string>)[field] ?? ""} type={field === "date" || field === "endDate" ? "date" : "text"} error={errors[field]} />
+              <Input name={field} value={(values as unknown as Record<string, string>)[field] ?? ""} type={field === "date" || field === "endDate" ? "date" : "text"} error={errors[field]} />
             )}
           </div>
         ))}
@@ -118,7 +118,7 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
         {visibleFields.filter((field) => ["shortDescription","description","need","focus","summary","excerpt","content"].includes(field)).map((field) => (
           <div key={field} className={["description","summary","content"].includes(field) ? "lg:col-span-2" : ""}>
             <label htmlFor={field} className="text-sm font-medium">{labels[field]}</label>
-            <TextArea name={field} value={(values as Record<string, string>)[field] ?? ""} rows={field === "content" || field === "description" || field === "summary" ? 9 : 4} error={errors[field]} />
+            <TextArea name={field} value={(values as unknown as Record<string, string>)[field] ?? ""} rows={field === "content" || field === "description" || field === "summary" ? 9 : 4} error={errors[field]} />
           </div>
         ))}
       </div>
@@ -127,7 +127,7 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
         {visibleFields.filter((field) => ["audience","highlights","faq","tags","scope","topics","sections","methodology"].includes(field)).map((field) => (
           <div key={field}>
             <label htmlFor={field} className="text-sm font-medium">{labels[field]}</label>
-            <TextArea name={field} value={(values as Record<string, string>)[field] ?? ""} rows={6} error={errors[field]} />
+            <TextArea name={field} value={(values as unknown as Record<string, string>)[field] ?? ""} rows={6} error={errors[field]} />
           </div>
         ))}
       </div>

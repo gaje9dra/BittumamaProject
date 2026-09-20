@@ -31,4 +31,4 @@ async function main() {
   console.log("Media verification passed: " + report.length + " MediaAsset record(s) checked.");
 }
 
-main().catch((error) => { console.error(error); process.exitCode = 1; }).finally(() => prisma.$disconnect());
+main().catch((error) => { console.error(error); process.exitCode = 1; }).finally(() => prisma.client.$disconnect());
