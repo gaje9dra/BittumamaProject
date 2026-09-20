@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { ScrollHeading } from "@/components/ui/scroll-heading";
+import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { homepageContent } from "@/data/homepage";
 
@@ -21,13 +21,13 @@ export function HomePositioning() {
           </div>
 
           <div className="lg:col-span-6 lg:col-start-3">
-            <ScrollHeading
+            <Heading
               id="home-positioning-title"
               level={2}
               className="type-h2 max-w-[20ch]"
             >
               {positioning.title}
-            </ScrollHeading>
+            </Heading>
           </div>
 
           <div className="lg:col-span-4 lg:col-start-9 lg:pt-2">
