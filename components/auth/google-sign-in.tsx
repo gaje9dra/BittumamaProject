@@ -3,12 +3,12 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
-export function GoogleSignIn() {
+export function GoogleSignIn({ callbackUrl = "/auth-test" }: { callbackUrl?: string }) {
   const [pending, setPending] = useState(false);
 
   async function handleSignIn() {
     setPending(true);
-    await signIn("google", { callbackUrl: "/auth-test" });
+    await signIn("google", { callbackUrl });
   }
 
   return (
