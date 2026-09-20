@@ -209,6 +209,7 @@ model Expert {
   authoredArticles  Article[]
   workshopEvents    Event[]
   articleLinks      ArticleExpert[]
+  profileMedia      MediaAsset? @relation("ExpertProfileMedia", fields: [profileMediaId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([discipline])
