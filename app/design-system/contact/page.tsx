@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getPublishedServices } from "@/lib/services/repository";
 import { ContactForm } from "@/components/contact/contact-form";
 import { ContactFormStatePreview } from "@/components/contact/contact-form-state-preview";
 import { ContactGuidance } from "@/components/contact/contact-guidance";
@@ -6,7 +7,8 @@ import { ContactIntroduction } from "@/components/contact/contact-introduction";
 import { ContactMethods } from "@/components/contact/contact-methods";
 import { ContactServiceContext } from "@/components/contact/contact-service-context";
 
-export default function ContactDesignPreview() {
+export default async function ContactDesignPreview() {
+  const services = await getPublishedServices();
   if (process.env.NODE_ENV === "production") notFound();
 
   return (
@@ -23,7 +25,7 @@ export default function ContactDesignPreview() {
       <section className="border-b border-border">
         <div className="mx-auto grid max-w-[var(--container-wide)] gap-10 px-[var(--page-gutter)] py-10 lg:grid-cols-12 lg:gap-x-12">
           <div className="lg:col-span-4"><p className="type-label text-primary">Form states</p><h2 className="type-h3 mt-2">Enquiry foundation</h2></div>
-          <div className="lg:col-span-8"><ContactForm /></div>
+          <div className="lg:col-span-8"><ContactForm services={services} /></div>
         </div>
       </section>
       <ContactFormStatePreview />
