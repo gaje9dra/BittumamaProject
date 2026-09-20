@@ -4,8 +4,10 @@ import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
 import { homepageContent } from "@/data/homepage";
+import { getServiceHref } from "@/lib/services/paths";
+import type { Service } from "@/data/services";
 
-export function HomeAudience() {
+export function HomeAudience({ services }: { services: Service[] }) {
   const { audience } = homepageContent;
 
   return (
@@ -42,7 +44,7 @@ export function HomeAudience() {
                               </div>
             
                               <ul className="grid gap-1.5 sm:border-l sm:border-border sm:pl-6">
-                                {item.services.map((service) => (
+                                {item.serviceIds.map((serviceId) => {\n                                  const service = services.find((candidate) => candidate.id === serviceId || candidate.slug === serviceId);\n                                  if (!service) return null;\n                                  return (
                                   <li key={service.href}>
                                     <Link
                                       href={service.href}
