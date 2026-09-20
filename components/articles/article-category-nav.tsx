@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { articleCategories as canonicalCategories, getArticleCategoryAnchor } from "@/data/articles";
+import { getArticleCategoryAnchor } from "@/lib/articles/paths";
 
 type ArticleCategoryNavProps = { categories?: string[] };
 
-export function ArticleCategoryNav({ categories = canonicalCategories }: ArticleCategoryNavProps) {
+export function ArticleCategoryNav({ categories = [] }: ArticleCategoryNavProps) {
   if (!categories.length) return null;
 
   return (
@@ -14,7 +14,7 @@ export function ArticleCategoryNav({ categories = canonicalCategories }: Article
           All articles
         </Link>
         {categories.map((category) => (
-          <Link key={category} href={ "#" + getArticleCategoryAnchor(category) } className="type-label shrink-0 text-muted-foreground underline decoration-transparent underline-offset-4 hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3">
+          <Link key={category} href={"#" + getArticleCategoryAnchor(category)} className="type-label shrink-0 text-muted-foreground underline decoration-transparent underline-offset-4 hover:text-foreground hover:decoration-border focus-visible:outline-2 focus-visible:outline-offset-3">
             {category}
           </Link>
         ))}
