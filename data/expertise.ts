@@ -25,50 +25,11 @@ export type Expert = {
   seo?: ExpertSeo;
 };
 
-export const experts: Expert[] = [];
+// Migration-only Phase 7.4 canonical snapshot.
+// Production Expert reads come from PostgreSQL via lib/experts/repository.ts.
+export const canonicalExperts: Expert[] = [];
 
-export function getAllExperts() {
-  return experts;
-}
-
-export function getExpertHref(expert: Pick<Expert, "slug">) {
-  return "/experts/" + expert.slug;
-}
-
-export function getExpertById(id: string) {
-  return experts.find((expert) => expert.id === id);
-}
-
-export function getExpertBySlug(slug: string) {
-  return experts.find((expert) => expert.slug === slug);
-}
-
-export function getFeaturedExperts() {
-  return experts.filter((expert) => expert.featured);
-}
-
-export const expertDisciplines = Array.from(
-  new Set(
-    experts
-      .map((expert) => expert.discipline)
-      .filter((discipline): discipline is string => Boolean(discipline)),
-  ),
-);
-
-export function getExpertsByDiscipline(discipline: string) {
-  return experts.filter((expert) => expert.discipline === discipline);
-}
-
-export function getExpertDisciplineAnchor(discipline: string) {
-  const slug = discipline
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
-  return "expert-discipline-" + slug;
-}
-
-export function validateExperts(records: readonly Expert[] = experts) {
+export function validateExperts(records: readonly Expert[] = canonicalExperts) {
   const ids = new Set<string>();
   const slugs = new Set<string>();
 
