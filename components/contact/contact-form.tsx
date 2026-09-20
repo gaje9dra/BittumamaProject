@@ -52,7 +52,7 @@ export function ContactForm({ initialService = "", services }: { initialService?
 
   const selectedService = useMemo(
     () => services.find((service) => service.slug === values.service),
-    [values.service],
+    [services, values.service],
   );
 
   function update(field: keyof FormValues, value: string) {
