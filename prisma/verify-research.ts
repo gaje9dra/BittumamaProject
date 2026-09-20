@@ -32,7 +32,8 @@ async function resolveServiceId(reference: string) {
   return service?.id;
 }
 
-async function main() {\n  validateResearch();
+async function main() {
+  validateResearch();
   const records = await prisma.researchItem.findMany({
     orderBy: [{ order: "asc" }, { id: "asc" }],
     include: { serviceLinks: { select: { serviceId: true } } },
