@@ -20,6 +20,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Prisma generate
+        run: npm run prisma:generate
+
+      - name: Prisma schema validation
+        run: npm run prisma:validate
+
       - name: Lint
         run: npm run lint
 
