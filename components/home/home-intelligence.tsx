@@ -16,8 +16,8 @@ export function HomeIntelligence() {
       className="scroll-anchor bg-primary text-primary-foreground"
     >
       <Container size="wide" className="layout-section-lg">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
-          <ScrollTransition distance={56}>
+        <ScrollTransition distance={56}>
+          <div className="grid gap-14 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
 
                       <div className="lg:col-span-5">
                         <p className="type-label text-primary-foreground/70">{intelligence.eyebrow}</p>
@@ -113,8 +113,8 @@ export function HomeIntelligence() {
                           </p>
                         </div>
                       </div>
-          </ScrollTransition>
-        </div>
+          </div>
+        </ScrollTransition>        </div>
       </Container>
     </section>
   );
