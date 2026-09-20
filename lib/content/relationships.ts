@@ -181,7 +181,7 @@ export async function getResearchForExpert(expertId: string): Promise<ResearchEn
   return research.filter((entry) => expert.researchIds?.includes(entry.id));
 }
 
-export function getArticlesForExpert(expertId: string): Article[] {
+export async function getArticlesForExpert(expertId: string): Promise<Article[]> {
   const expert =
     (await getPublishedExpertById(expertId)) ??
     (await getPublishedExpertBySlug(expertId));
