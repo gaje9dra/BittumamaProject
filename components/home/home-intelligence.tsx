@@ -114,7 +114,7 @@ export function HomeIntelligence() {
                         </div>
                       </div>
           </div>
-        </ScrollTransition>        </div>
+        </ScrollTransition>
       </Container>
     </section>
   );
