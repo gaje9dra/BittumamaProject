@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import { getPublishedServiceBySlug } from "@/lib/services/repository";
-import {
-  contactInquiryLimits,
-  validateContactInquiryInput,
-} from "@/lib/contact/validation";
+import { contactInquiryLimits, validateContactInquiryInput } from "@/lib/contact/validation";
 import { createContactInquiry } from "@/lib/contact/repository";
 
 export const runtime = "nodejs";
@@ -12,6 +9,7 @@ export const dynamic = "force-dynamic";
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
+const allowedKeys = new Set(["name", "email", "phone", "service", "message", "website", "formStartedAt"]);
 
 function getClientKey(request: Request) {
   const forwarded = request.headers.get("x-forwarded-for");
@@ -21,14 +19,11 @@ function getClientKey(request: Request) {
 function isRateLimited(key: string) {
   const now = Date.now();
   const current = rateLimitStore.get(key);
-
   if (!current || current.resetAt <= now) {
     rateLimitStore.set(key, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
     return false;
   }
-
   if (current.count >= RATE_LIMIT_MAX_REQUESTS) return true;
-
   current.count += 1;
   return false;
 }
@@ -50,29 +45,30 @@ export async function POST(request: Request) {
 
   let payload: unknown;
   try {
-    payload = await request.json();
+    const body = await request.text();
+    if (new TextEncoder().encode(body).byteLength > contactInquiryLimits.maxBodyBytes) {
+      return safeError("This submission is too large. Please shorten your message.");
+    }
+    payload = JSON.parse(body) as unknown;
   } catch {
     return safeError("Invalid request payload.");
   }
 
-  const result = validateContactInquiryInput(payload);
-  if (!result.success) {
-    return NextResponse.json(
-      { success: false, errors: result.errors },
-      { status: 422 },
-    );
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return safeError("Invalid request payload.");
   }
+
+  const unexpectedKey = Object.keys(payload).find((key) => !allowedKeys.has(key));
+  if (unexpectedKey) return safeError("Invalid request payload.", 422);
 
   const raw = payload as Record<string, unknown>;
-  if (result.data.service === "other") {
-    // "Other" is a valid non-service selection and intentionally has no Service relation.
-  } else {
-    const service = await getPublishedServiceBySlug(result.data.service);
-    if (!service) return safeError("Select a valid service.", 422);
-  }
-
   if (typeof raw.website === "string" && raw.website.trim()) {
     return safeError("Unable to process this submission.", 422);
+  }
+
+  const result = validateContactInquiryInput(payload);
+  if (!result.success) {
+    return NextResponse.json({ success: false, errors: result.errors }, { status: 422 });
   }
 
   if (result.data.formStartedAt) {
@@ -85,12 +81,14 @@ export async function POST(request: Request) {
     }
   }
 
-  try {
-    const serviceId =
-      result.data.service === "other"
-        ? undefined
-        : (await getPublishedServiceBySlug(result.data.service))?.id;
+  let serviceId: string | undefined;
+  if (result.data.service !== "other") {
+    const service = await getPublishedServiceBySlug(result.data.service);
+    if (!service) return safeError("Select a valid service.", 422);
+    serviceId = service.id;
+  }
 
+  try {
     await createContactInquiry({
       name: result.data.name,
       email: result.data.email,
@@ -102,8 +100,5 @@ export async function POST(request: Request) {
     return safeError("We couldn't send your enquiry. Please try again.", 500);
   }
 
-  return NextResponse.json({
-    success: true,
-    message: "Your enquiry has been sent successfully.",
-  });
+  return NextResponse.json({ success: true, message: "Your enquiry has been sent successfully." });
 }
