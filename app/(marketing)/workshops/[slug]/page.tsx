@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { EventDetailPage } from "@/components/events/event-detail-page";
-import { getAllEvents, getEventBySlug } from "@/data/events";
+import { getAllEvents, getEventBySlug, getEventHref } from "@/data/events";
 
 export function generateStaticParams() {
   return getAllEvents().map((event) => ({ slug: event.slug }));
@@ -19,7 +20,7 @@ export async function generateMetadata({
   return {
     title: event.seo?.title ?? event.title + " | Bittumama Workshops & Events",
     description: event.seo?.description ?? event.shortDescription,
-    alternates: { canonical: "/workshops/" + event.slug },
+    alternates: { canonical: getEventHref(event) },
   };
 }
 
