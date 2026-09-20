@@ -1,6 +1,6 @@
 import "server-only";
 
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
 import { UserRole } from "@/generated/prisma/client";
 
@@ -24,11 +24,15 @@ export async function requireAuthenticatedUser() {
 }
 
 export async function requireAdmin() {
-  const user = await requireAuthenticatedUser();
+  const session = await auth();
 
-  if (user.role !== UserRole.ADMIN) {
-    redirect("/login?error=AccessDenied");
+  if (!session?.user) {
+    redirect("/login?callbackUrl=%2Fadmin");
   }
 
-  return user;
+  if (session.user.role !== UserRole.ADMIN) {
+    notFound();
+  }
+
+  return session.user;
 }
