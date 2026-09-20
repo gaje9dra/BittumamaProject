@@ -381,3 +381,47 @@ The actual Phase 7.5 Article snapshot currently contains zero Article records. P
 ### Phase boundary
 
 Phase 8.5 does not migrate Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS, analytics infrastructure or public APIs.
+
+
+## Phase 8.6 — Canonical Workshops & Events Database Migration
+
+Workshops/Events now follow:
+
+```text
+Workshops / Events UI
+  ↓
+lib/events/repository.ts
+  ↓
+Prisma
+  ↓
+PostgreSQL
+```
+
+The Phase 7.6 canonical snapshot remains available only for deterministic import and integrity verification. Public listing and detail routes use published PostgreSQL records.
+
+### Workshop/Event migration
+
+```bash
+npm run prisma:migrate
+npm run events:seed
+npm run events:verify
+```
+
+The import is idempotent and preserves canonical IDs, slugs and curated ordering. It resolves existing Expert, Research and Service relationships rather than creating duplicates.
+
+### Date and status semantics
+
+The current domain stores event dates as date-level values plus an optional display time string. The existing upcoming/past behavior is preserved by the repository using the same end-date/date semantics as the Phase 7.6 implementation. Publication is represented separately with Prisma `ContentStatus`.
+
+### Current relationship scope
+
+- Workshop/Event ↔ Expert uses the existing `Event.speaker` relation.
+- Workshop/Event ↔ Research uses `WorkshopResearch`.
+- Workshop/Event ↔ Service uses `WorkshopService`.
+- Workshop/Event ↔ Workshop/Event uses `EventRelation`.
+- The Phase 7.6 canonical type has no Article relationship field, so no Article/Event relation is invented.
+- Registration-related fields are stored as existing content only; no booking or payment flow is implemented.
+
+### Phase boundary
+
+Phase 8.6 does not migrate About, Contact submissions, users, authentication, admin, CMS, payments, wallet, analytics infrastructure, public APIs or registration processing.
