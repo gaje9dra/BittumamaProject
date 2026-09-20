@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
+import { ScrollHeading } from "@/components/ui/scroll-heading";
 import { Text } from "@/components/ui/text";
 import { homepageContent } from "@/data/homepage";
 
@@ -24,7 +24,7 @@ export function HomeIntelligence() {
               className="mt-5 max-w-[17ch] text-primary-foreground"
             >
               {intelligence.title}
-            </Heading>
+            </ScrollHeading>
             <Text size="lg" className="mt-7 max-w-[46ch] text-primary-foreground/80">
               {intelligence.description}
             </Text>
