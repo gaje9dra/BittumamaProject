@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client";
+import { Prisma, PrismaClient } from "../generated/prisma/client";
 import { canonicalServices } from "../data/services";
 
 const databaseUrl = process.env.DATABASE_URL;
@@ -17,7 +17,7 @@ function availabilityFor(status: string | undefined): "COMING_SOON" | "AVAILABLE
   return status === "Coming Soon" ? "COMING_SOON" : "AVAILABLE";
 }
 
-async function main() {
+function jsonValue(value: unknown) {\n  return value === undefined ? Prisma.JsonNull : value;\n}\n\nasync function main() {
   for (const [index, service] of canonicalServices.entries()) {
     await prisma.service.upsert({
       where: { slug: service.slug },
@@ -31,8 +31,8 @@ async function main() {
         need: service.need ?? null,
         focus: service.focus ?? null,
         audience: service.audience ?? null,
-        highlights: service.highlights ?? null,
-        faq: service.faq ?? null,
+        highlights: jsonValue(service.highlights),
+        faq: jsonValue(service.faq),
         featured: service.featured ?? false,
         availability: availabilityFor(service.status),
         status: "PUBLISHED",
