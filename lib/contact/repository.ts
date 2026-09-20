@@ -7,6 +7,7 @@ export type CreateContactInquiryInput = {
   email: string;
   phone?: string;
   serviceId?: string;
+  userId?: string;
   message: string;
 };
 
@@ -18,6 +19,7 @@ export async function createContactInquiry(input: CreateContactInquiryInput) {
         email: input.email,
         ...(input.phone ? { phone: input.phone } : {}),
         ...(input.serviceId ? { serviceId: input.serviceId } : {}),
+        ...(input.userId ? { userId: input.userId } : {}),
         message: input.message,
         status: "NEW",
       },
