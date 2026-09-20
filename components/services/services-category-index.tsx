@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getServiceCategoryAnchor } from "@/data/services";
+import { getServiceCategoryAnchor } from "@/lib/services/paths";
 
 export function ServicesCategoryIndex({ categories }: { categories: string[] }) {
   return (
