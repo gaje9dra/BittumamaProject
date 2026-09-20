@@ -77,6 +77,16 @@ export async function getPublishedServices(): Promise<Service[]> {
   return records.map(toDomainService);
 }
 
+export async function getPublishedServiceById(
+  id: string,
+): Promise<Service | undefined> {
+  const record = await prisma.client.service.findFirst({
+    where: { id, status: "PUBLISHED" },
+  });
+
+  return record ? toDomainService(record) : undefined;
+}
+
 export async function getPublishedServiceBySlug(
   slug: string,
 ): Promise<Service | undefined> {
