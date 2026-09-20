@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
-import { services } from "../data/services";
+import { canonicalServices } from "../data/canonicalServices";
 
 const databaseUrl = process.env.DATABASE_URL;
 
@@ -18,7 +18,7 @@ function availabilityFor(status: string | undefined) {
 }
 
 async function main() {
-  for (const [index, service] of services.entries()) {
+  for (const [index, service] of canonicalServices.entries()) {
     await prisma.service.upsert({
       where: { slug: service.slug },
       create: {
@@ -65,7 +65,7 @@ async function main() {
     });
   }
 
-  console.log(`Seeded ${services.length} canonical Services.`);
+  console.log(`Seeded ${canonicalServices.length} canonical Services.`);
 }
 
 main()
