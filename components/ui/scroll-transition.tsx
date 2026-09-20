@@ -1,7 +1,12 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { useRef } from "react";
 
 type ScrollTransitionProps = {
@@ -12,61 +17,83 @@ type ScrollTransitionProps = {
 };
 
 const modeConfig = {
-  content: { distanceScale: 1, opacityFloor: 0.8 },
-  heading: { distanceScale: 1.12, opacityFloor: 0.84 },
-  visual: { distanceScale: 0.48, opacityFloor: 0.9 },
+  content: {
+    distanceScale: 0.72,
+    opacityFloor: 0.72,
+    scaleFrom: 0.985,
+    skew: 0.18,
+  },
+  heading: {
+    distanceScale: 1,
+    opacityFloor: 0.5,
+    scaleFrom: 0.97,
+    skew: 0.28,
+  },
+  visual: {
+    distanceScale: 0.38,
+    opacityFloor: 0.84,
+    scaleFrom: 0.985,
+    skew: 0,
+  },
 } as const;
 
 const easeOut = (value: number) => {
-  const clamped = Math.max(0, Math.min(1, value));
-  return 1 - (1 - clamped) ** 3;
+  const t = Math.max(0, Math.min(1, value));
+  return 1 - (1 - t) ** 3;
 };
 
-const mapMotion = (value: number, distance: number) => {
+const motionValue = (value: number, distance: number) => {
   if (value <= 0.5) {
-    const progress = easeOut(value / 0.5);
-    return distance * (1 - progress);
+    return distance * (1 - easeOut(value / 0.5));
   }
 
-  const progress = easeOut((value - 0.5) / 0.5);
-  return -distance * progress;
+  return -distance * easeOut((value - 0.5) / 0.5);
 };
 
-const mapOpacity = (value: number, floor: number) => {
+const opacityValue = (value: number, floor: number) => {
   if (value <= 0.5) {
-    const progress = easeOut(value / 0.5);
-    return floor + (1 - floor) * progress;
+    return floor + (1 - floor) * easeOut(value / 0.5);
   }
 
-  const progress = easeOut((value - 0.5) / 0.5);
-  return 1 - (1 - floor) * progress;
+  return 1 - (1 - floor) * easeOut((value - 0.5) / 0.5);
 };
 
 export function ScrollTransition({
   children,
   className,
-  distance = 52,
+  distance = 96,
   mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
   const config = modeConfig[mode];
-  const movement = Math.min(distance * config.distanceScale, mode === "heading" ? 70 : 60);
+  const movement = Math.min(
+    distance * config.distanceScale,
+    mode === "heading" ? 120 : mode === "visual" ? 50 : 80,
+  );
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 88%", "end 12%"],
+    offset: ["start 92%", "end 8%"],
   });
 
-  const y = useTransform(scrollYProgress, (value) => mapMotion(value, movement));
+  const y = useTransform(scrollYProgress, (value) =>
+    motionValue(value, movement),
+  );
   const opacity = useTransform(scrollYProgress, (value) =>
-    mapOpacity(value, config.opacityFloor),
+    opacityValue(value, config.opacityFloor),
   );
   const scale = useTransform(
     scrollYProgress,
-    [0, 0.5, 1],
-    [mode === "visual" ? 0.996 : 0.999, 1, mode === "visual" ? 0.996 : 0.999],
+    [0, 0.28, 0.5, 0.72, 1],
+    [config.scaleFrom, 0.985, 1, 0.985, config.scaleFrom],
   );
+  const skew = useTransform(
+    scrollYProgress,
+    [0, 0.28, 0.5, 0.72, 1],
+    [config.skew, config.skew * 0.45, 0, -config.skew * 0.45, -config.skew],
+  );
+  const trailY = useTransform(y, (value) => value * 0.88 + (value >= 0 ? 10 : -10));
 
   return (
     <div
@@ -75,11 +102,33 @@ export function ScrollTransition({
       style={{ overflow: "hidden" }}
       data-scroll-transition={mode}
     >
+      {!reducedMotion && mode === "heading" ? (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 select-none"
+          style={{
+            y: trailY,
+            opacity: useTransform(opacity, (value) => Math.max(0, (value - 0.72) * 0.45)),
+            scale,
+            skewY: skew,
+            willChange: "transform, opacity",
+          }}
+        >
+          {children}
+        </motion.div>
+      ) : null}
+
       <motion.div
         style={
           reducedMotion
             ? undefined
-            : { y, opacity, scale, willChange: "transform, opacity" }
+            : {
+                y,
+                opacity,
+                scale,
+                skewY: skew,
+                willChange: "transform, opacity",
+              }
         }
       >
         {children}
