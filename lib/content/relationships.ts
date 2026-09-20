@@ -1,5 +1,4 @@
 import {
-  getAllServices,
   getServiceById,
   getServiceBySlug,
   type Service,
@@ -107,7 +106,10 @@ export function getExpertsForResearch(researchId: string): Expert[] {
 }
 
 export function getExpertForArticle(article: Article): Expert | undefined {
-  if (article.authorId) return getExpertById(article.authorId);
+  if (article.authorId) {
+    const expert = getExpertById(article.authorId);
+    if (expert) return expert;
+  }
   if (article.authorSlug) return getExpertBySlug(article.authorSlug);
   return undefined;
 }
@@ -220,11 +222,17 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
   }
 
   for (const article of getAllArticles()) {
-    if (article.authorId && !getExpertById(article.authorId)) {
-      add("article", article.id, "authorId", article.authorId, "Referenced Expert does not exist.");
-    }
-    if (article.authorSlug && !getExpertBySlug(article.authorSlug)) {
-      add("article", article.id, "authorSlug", article.authorSlug, "Referenced Expert does not exist.");
+    if (
+      (article.authorId || article.authorSlug) &&
+      !getExpertForArticle(article)
+    ) {
+      add(
+        "article",
+        article.id,
+        "author",
+        article.authorId ?? article.authorSlug ?? "",
+        "Referenced Expert does not exist.",
+      );
     }
     for (const reference of article.relatedResearch ?? []) {
       if (!getResearchById(reference) && !getResearchBySlug(reference)) {
@@ -239,11 +247,17 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
   }
 
   for (const event of getAllEvents()) {
-    if (event.speakerId && !getExpertById(event.speakerId)) {
-      add("event", event.id, "speakerId", event.speakerId, "Referenced Expert does not exist.");
-    }
-    if (event.speakerSlug && !getExpertBySlug(event.speakerSlug)) {
-      add("event", event.id, "speakerSlug", event.speakerSlug, "Referenced Expert does not exist.");
+    if (
+      (event.speakerId || event.speakerSlug) &&
+      !getExpertForWorkshop(event)
+    ) {
+      add(
+        "event",
+        event.id,
+        "speaker",
+        event.speakerId ?? event.speakerSlug ?? "",
+        "Referenced Expert does not exist.",
+      );
     }
     for (const reference of event.relatedResearchIds ?? []) {
       if (!getResearchById(reference) && !getResearchBySlug(reference)) {
