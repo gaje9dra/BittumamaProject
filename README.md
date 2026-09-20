@@ -320,3 +320,52 @@ Not implemented:
 - audit-log system
 
 The phase stops at the protected admin foundation as specified.
+
+## Phase 8.11 — Content Management Infrastructure
+
+Phase 8.11 adds the first protected content-management layer for the five canonical database-backed domains:
+
+- Services
+- Research
+- Experts
+- Articles
+- Workshops / Events
+
+### Admin routes
+
+- `/admin/content` — database-backed content overview
+- `/admin/content/services`
+- `/admin/content/research`
+- `/admin/content/experts`
+- `/admin/content/articles`
+- `/admin/content/workshops`
+- `/admin/content/[domain]/new`
+- `/admin/content/[domain]/[id]/edit`
+
+All content mutations use server actions and independently call the existing `requireAdmin()` guard. Domain fields are validated server-side, relation IDs are checked against PostgreSQL, coordinated relation changes run in a Prisma transaction, and unique-slug conflicts are handled safely.
+
+### Publication workflow
+
+- New records start as drafts.
+- Save preserves the current lifecycle state.
+- Publish, Unpublish, and Archive are explicit actions.
+- Published records require the fields needed by the existing public model and cannot reference unpublished related records.
+- Published slugs cannot be changed in Phase 8.11 because slug-history/redirect infrastructure is intentionally deferred.
+- Archived records remain in PostgreSQL and are not treated as public content.
+- Hard deletion is intentionally not exposed by the initial content-management UI; archival is the safe lifecycle operation for this phase.
+
+### Relationships
+
+The admin editor uses a protected, server-backed relationship search rather than loading every domain into the browser. Existing canonical relationships are preserved and updated atomically. The editor does not introduce new relationship types.
+
+### Revalidation
+
+Successful mutations invalidate the affected public listing and detail paths. Public content continues to read from PostgreSQL; migration/seed files remain bootstrap sources only.
+
+### Explicitly out of scope for Phase 8.11
+
+Inquiry management, user management, media uploads, payments, event registration, public draft preview, and advanced publishing remain separate future phases.
+
+### Concurrency limitation
+
+The editor sends the record's `updatedAt` and rejects an obviously stale form before saving. Full optimistic concurrency control is not introduced in this phase; a later audit/publishing phase can add a version column if stronger conflict guarantees are required.
