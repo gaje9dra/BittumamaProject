@@ -18,7 +18,9 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:validate": "prisma validate",
     "prisma:seed": "prisma db seed",
-    "services:verify": "tsx prisma/verify-services.ts"
+    "services:verify": "tsx prisma/verify-services.ts",
+    "research:seed": "tsx prisma/seed-research.ts",
+    "research:verify": "tsx prisma/verify-research.ts"
   },
   "dependencies": {
     "next": "16.3.5",
