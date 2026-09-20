@@ -17,6 +17,7 @@ type ScrollHeadingProps = HTMLAttributes<HTMLHeadingElement> & {
   children: ReactNode;
   level?: 1 | 2 | 3 | 4 | 5;
   as?: ElementType;
+  headingClassName?: string;
 };
 
 const headingTags = {
@@ -87,6 +88,7 @@ export function ScrollHeading({
   className,
   level = 2,
   as,
+  headingClassName,
   ...props
 }: ScrollHeadingProps) {
   const Tag = (as ?? headingTags[level]) as ElementType;
