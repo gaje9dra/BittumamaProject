@@ -51,6 +51,7 @@ model Service {
   createdAt        DateTime            @default(now())
   updatedAt        DateTime            @updatedAt
   researchLinks    ResearchService[]
+  articleLinks     ArticleService[]
   workshopLinks    WorkshopService[]
 
   @@index([status])
