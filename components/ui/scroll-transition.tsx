@@ -55,7 +55,7 @@ export function ScrollTransition({
 
   const { scrollYProgress } = useScroll({
     target: viewportRef,
-    offset: ["start 92%", "end 38%"],
+    offset: ["start 62%", "end 8%"],
   });
 
   // One continuous mask state:
@@ -64,21 +64,21 @@ export function ScrollTransition({
   // 100%: hidden from the bottom
   // Reversing scroll automatically reverses the reveal direction.
   const clipPath = useTransform(scrollYProgress, (value) => {
-    const progress = easeOut(Math.min(Math.max(value, 0) / 0.55, 1));
-    const topInset = 100 - progress * 100;
-    return `inset(${topInset}% 0 0 0)`;
+    const progress = easeOut(Math.min(Math.max((value - 0.35) / 0.65, 0), 1));
+    const bottomInset = progress * 100;
+    return `inset(0 0 ${bottomInset}% 0)`;
   });
 
   const opacity = useTransform(
     scrollYProgress,
     [0, 0.2, 0.42, 0.6, 0.8, 1],
     [
-      config.opacityFloor,
-      config.opacityFloor + 0.02,
+      1,
+      1,
+      1,
       0.99,
-      1,
-      1,
-      1,
+      config.opacityFloor + 0.02,
+      config.opacityFloor,
     ],
   );
 
@@ -97,13 +97,13 @@ export function ScrollTransition({
   const y = useTransform(
     scrollYProgress,
     [0, 0.28, 0.5, 0.72, 1],
-    [microShift, microShift * 0.25, 0, 0, 0],
+    [0, 0, 0, -microShift * 0.25, -microShift],
   );
 
   const subtleEchoOpacity = useTransform(
     scrollYProgress,
     [0, 0.2, 0.42, 0.55, 0.7, 1],
-    [0, 0.008, 0.015, 0.01, 0, 0],
+    [0, 0, 0, 0.01, 0.005, 0],
   );
 
   return (
