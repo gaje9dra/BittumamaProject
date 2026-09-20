@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "New content | Bittumama", robots: { 
 
 const empty: ContentFormValues = {
   title:"",slug:"",category:"",shortDescription:"",description:"",status:"DRAFT",featured:false,order:"0",date:"",endDate:"",time:"",
-  location:"",format:"",eventType:"",availability:"",type:"",topic:"",image:"",seoTitle:"",seoDescription:"",seoImage:"",seoCanonical:"",
+  location:"",format:"",eventType:"",availability:"",type:"",topic:"",image:"",imageMediaId:"",seoTitle:"",seoDescription:"",seoImage:"",seoCanonical:"",
   seoNoIndex:false,need:"",focus:"",audience:"",highlights:"",faq:"",summary:"",tags:"",scope:"",topics:"",sections:"",methodology:"",
   content:"",excerpt:"",author:"",authorRole:"",authorSlug:"",registrationLabel:"",registrationHref:"",registrationStatus:"",speakerRole:"",
   speakerId:"",relationServiceIds:[],relationResearchIds:[],relationExpertIds:[],relationArticleIds:[],relationWorkshopIds:[]
