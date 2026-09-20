@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
 import { getPublishedServiceBySlug } from "@/lib/services/repository";
 import { contactInquiryLimits, validateContactInquiryInput } from "@/lib/contact/validation";
 import { createContactInquiry } from "@/lib/contact/repository";
@@ -88,11 +89,21 @@ export async function POST(request: Request) {
     serviceId = service.id;
   }
 
+  let userId: string | undefined;
+  try {
+    const session = await auth();
+    userId = session?.user?.id;
+  } catch {
+    // Contact submission remains anonymous-capable if auth is unavailable or unconfigured.
+    userId = undefined;
+  }
+
   try {
     await createContactInquiry({
       name: result.data.name,
       email: result.data.email,
       ...(result.data.phone ? { phone: result.data.phone } : {}),
+      ...(userId ? { userId } : {}),
       serviceId,
       message: result.data.message,
     });
