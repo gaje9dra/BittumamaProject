@@ -182,7 +182,7 @@
     width: 4rem;
     height: 2.75rem;
     top: calc((var(--header-height) - 2.75rem) / 2);
-    right: 0;
+    right: var(--page-gutter);
     border-radius: 999px;
     clip-path: inset(0 round 999px);
     transform-origin: top right;
