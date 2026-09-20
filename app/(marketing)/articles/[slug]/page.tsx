@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ArticleDetailPage } from "@/components/articles/article-detail-page";
 import { getAllArticles, getArticleBySlug, getArticleHref } from "@/data/articles";
+import { createContentMetadata } from "@/lib/metadata";
 
 type ArticleDetailRouteProps = { params: Promise<{ slug: string }> };
 
@@ -14,11 +15,13 @@ export async function generateMetadata({ params }: ArticleDetailRouteProps): Pro
   const article = getArticleBySlug(slug);
   if (!article) return { title: "Article not found | Bittumama" };
 
-  return {
-    title: article.seo?.title ?? article.title + " | Articles & Insights | Bittumama",
-    description: article.seo?.description ?? article.excerpt,
-    alternates: { canonical: getArticleHref(article) },
-  };
+  return createContentMetadata({
+    seo: article.seo,
+    title: article.title,
+    description: article.excerpt,
+    image: article.image,
+    canonical: getArticleHref(article),
+  });
 }
 
 export default async function ArticleDetailRoute({ params }: ArticleDetailRouteProps) {
