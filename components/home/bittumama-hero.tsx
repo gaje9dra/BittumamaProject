@@ -21,7 +21,6 @@ export function BittumamaHero() {
   const [entered, setEntered] = useState(false);
   const [pointer, setPointer] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLElement>(null);
-  const lastStep = useRef(0);
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => setEntered(true));
@@ -50,24 +49,13 @@ export function BittumamaHero() {
   }, []);
 
   useEffect(() => {
-    const onScroll = () => {
-      const element = heroRef.current;
-      if (!element) return;
-      const rect = element.getBoundingClientRect();
-      const pageTop = window.scrollY + rect.top;
-      const progress = Math.max(
-        0,
-        Math.min(1, (window.scrollY - pageTop) / Math.max(element.offsetHeight * 0.9, 1)),
-      );
-      const next = Math.min(HERO_STATES.length - 1, Math.floor(progress * HERO_STATES.length));
-      if (next !== lastStep.current) {
-        lastStep.current = next;
-        setState(next);
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const timers = HERO_STATES.slice(1).map((_, index) =>
+      window.setTimeout(() => {
+        setState(index + 1);
+      }, 700 + index * 620),
+    );
+
+    return () => timers.forEach((timer) => window.clearTimeout(timer));
   }, []);
 
   const activeState = HERO_STATES[state];
