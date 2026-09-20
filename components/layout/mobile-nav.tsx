@@ -33,6 +33,7 @@ export function MobileNav({ className }: { className?: string }) {
   const closeMenu = useCallback(() => {
     setActiveSubmenu(null);
     setSearchOpen(false);
+    setClosing(true);
     setOpen(false);
   }, []);
 
@@ -161,18 +162,20 @@ export function MobileNav({ className }: { className?: string }) {
         aria-label={open ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={open}
         aria-controls={mounted ? "mobile-primary-navigation" : undefined}
-        className="inline-flex size-11 items-center justify-center rounded-[var(--radius-md)] border border-border bg-transparent text-foreground transition-colors duration-[var(--motion-micro)] hover:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-3"
+        className="relative z-[var(--layer-modal)] inline-flex h-11 min-w-16 items-center justify-center gap-2 rounded-full border border-border bg-background px-3 text-foreground shadow-[0_8px_24px_rgb(0_0_0_/_0.06)] transition-[background-color,border-color,transform] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:bg-surface-muted active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-3"
         onClick={() => {
           if (open) closeMenu();
           else {
             announceHeaderSurface("mobile");
+            setClosing(false);
             setMounted(true);
             setOpen(true);
           }
         }}
       >
-        <Menu aria-hidden="true" className={cn("absolute transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-75 opacity-0")} size={20} />
-        <X aria-hidden="true" className={cn("absolute transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-75 opacity-0")} size={20} />
+        <span className={cn("type-label transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-95 opacity-0")}>Menu</span>
+        <Menu aria-hidden="true" className={cn("transition-[opacity,transform] duration-[var(--motion-micro)]", open && "scale-75 opacity-0")} size={17} />
+        <X aria-hidden="true" className={cn("absolute right-3 transition-[opacity,transform] duration-[var(--motion-micro)]", !open && "scale-75 opacity-0")} size={18} />
       </button>
 
       {mounted && (
@@ -180,11 +183,11 @@ export function MobileNav({ className }: { className?: string }) {
           id="mobile-primary-navigation"
           ref={panelRef}
           className={cn(
-            "fixed inset-x-0 bottom-0 top-[var(--header-height)] z-[var(--layer-modal)] overflow-y-auto border-t border-border bg-background px-[var(--page-gutter)] py-8 lg:hidden",
+            "fixed right-0 top-0 z-[var(--layer-modal)] h-[100dvh] overflow-hidden border border-border bg-background lg:hidden",
             open ? "mobile-menu-panel mobile-menu-panel-open" : "mobile-menu-panel mobile-menu-panel-closing",
           )}
         >
-          <nav aria-label="Mobile primary navigation" className="mobile-menu-content mx-auto flex min-h-full max-w-[var(--container-content)] flex-col">
+          <nav aria-label="Mobile primary navigation" className="mobile-menu-content flex h-full min-h-0 flex-col overflow-y-auto px-[var(--page-gutter)] pb-8 pt-[calc(var(--header-height)+1.5rem)]">
             <div className="flex-1">
               {!activeSubmenu ? (
                 <>
