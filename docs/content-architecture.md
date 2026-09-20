@@ -190,3 +190,14 @@ Do not recreate renamed, hidden or responsive variants of these sections.
 ## Scope boundary
 
 Phase 7.13 closes the Phase 7 frontend content-architecture work. No new architecture layer is introduced. The frontend does not introduce a database, ORM, CMS, API layer, authentication, payments, advanced search, full SEO implementation, dedicated performance system, security-hardening system or deployment architecture here.
+
+
+## Phase 8.2 Service ownership
+
+The canonical Phase 7 Services snapshot in `data/services.ts` is now migration/verification-only. Production Service reads go through `lib/services/repository.ts` and Prisma/PostgreSQL.
+
+The Service database record preserves the canonical ID, slug, title, category, short description, ordering, need, focus, audience, availability, publication status, structured fields and SEO metadata. `Service.order` preserves the Phase 7 array ordering.
+
+The deterministic import is `prisma/seed.ts`, configured through Prisma's seed command. `prisma/verify-services.ts` compares database records with the canonical snapshot and detects missing, unexpected, duplicate, ordering, status, field and metadata differences.
+
+No Research, Expert, Article or Workshop data is migrated in Phase 8.2.
