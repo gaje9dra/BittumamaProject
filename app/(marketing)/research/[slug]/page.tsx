@@ -17,6 +17,7 @@ export async function generateMetadata({ params }: ResearchDetailRouteProps): Pr
   const research = getResearchBySlug(slug);
   if (!research) return { title: "Research not found | Bittumama" };
   return createContentMetadata({
+    seo: research.seo,
     title: research.title,
     description: research.shortDescription,
     image: research.image,
