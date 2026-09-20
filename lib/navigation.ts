@@ -1,4 +1,4 @@
-import type { NavigationItem } from "@/data/navigation";
+import type { NavigationItem } from "@/data/site-config";
 
 export function isNavigationItemActive(pathname: string, href: string) {
   const normalize = (value: string) => {
