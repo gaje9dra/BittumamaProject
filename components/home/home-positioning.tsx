@@ -50,7 +50,7 @@ export function HomePositioning() {
                         </Link>
                       </div>
           </div>
-        </ScrollTransition>        </div>
+        </ScrollTransition>
 
       </Container>
     </section>
