@@ -5,6 +5,7 @@ import { useActionState } from "react";
 import { saveContent, type ContentActionState } from "@/lib/admin/content-actions";
 import type { ContentDomain, ContentFormValues } from "@/lib/admin/content";
 import { RelationshipPicker } from "@/components/admin/relationship-picker";
+import { MediaPicker } from "@/components/admin/media-picker";
 
 type Option = { id: string; label: string; slug: string };
 type RelationOptions = {
@@ -106,6 +107,8 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
               <select id={field} name={field} defaultValue={values.availability} className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm">
                 <option value="">Available</option><option value="COMING_SOON">Coming soon</option>
               </select>
+            ) : field === "image" ? (
+              <MediaPicker name="imageMediaId" label={labels.image} initial={values.imageMediaId && values.image ? { id: values.imageMediaId, originalFilename: "Current managed media", publicUrl: values.image, width: null, height: null, altText: null } : null} />
             ) : (
               <Input name={field} value={(values as Record<string, string>)[field] ?? ""} type={field === "date" || field === "endDate" ? "date" : "text"} error={errors[field]} />
             )}

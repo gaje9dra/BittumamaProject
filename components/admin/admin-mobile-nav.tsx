@@ -53,6 +53,11 @@ export function AdminMobileNav({ displayName, email }: { displayName: string; em
                   Content
                 </Link>
               </li>
+              <li>
+                <Link href="/admin/media" onClick={() => setOpen(false)} className="block rounded-[var(--radius-md)] px-3 py-2.5 type-nav hover:bg-surface-interactive">
+                  Media
+                </Link>
+              </li>
             </ul>
             <div className="mt-4 border-t border-border pt-4">
               <SignOutButton />

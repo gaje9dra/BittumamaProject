@@ -42,6 +42,7 @@ export type ContentFormValues = {
   type: string;
   topic: string;
   image: string;
+  imageMediaId: string;
   seoTitle: string;
   seoDescription: string;
   seoImage: string;
@@ -220,7 +221,7 @@ function common(values: Partial<ContentFormValues>): ContentFormValues {
   return {
     title: "", slug: "", category: "", shortDescription: "", description: "", status: "DRAFT",
     featured: false, order: "0", date: "", endDate: "", time: "", location: "", format: "",
-    eventType: "", availability: "", type: "", topic: "", image: "", seoTitle: "",
+    eventType: "", availability: "", type: "", topic: "", image: "", imageMediaId: "", seoTitle: "",
     seoDescription: "", seoImage: "", seoCanonical: "", seoNoIndex: false, need: "", focus: "",
     audience: "", highlights: "", faq: "", summary: "", tags: "", scope: "", topics: "",
     sections: "", methodology: "", content: "", excerpt: "", author: "", authorRole: "",
@@ -261,13 +262,14 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
           expertLinks: { select: { expertId: true } },
           articleLinks: { select: { articleId: true } },
           workshopLinks: { select: { eventId: true } },
+          imageMedia: { select: { id: true, publicUrl: true } },
         },
       });
       return record ? common({
         id: record.id, title: record.title, slug: record.slug, category: record.category,
         shortDescription: record.shortDescription, summary: record.summary ?? "", status: record.status,
         order: String(record.order), date: isoDate(record.date), availability: record.availability, type: record.type ?? "",
-        topic: record.topic ?? "", image: record.image ?? "", featured: record.featured, tags: jsonText(record.tags),
+        topic: record.topic ?? "", image: record.imageMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.imageMediaId ?? "", featured: record.featured, tags: jsonText(record.tags),
         audience: jsonText(record.audience), highlights: jsonText(record.highlights), scope: jsonText(record.scope),
         topics: jsonText(record.topics), sections: jsonText(record.sections), methodology: jsonText(record.methodology),
         seoTitle: record.seoTitle ?? "", seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "",
@@ -283,12 +285,13 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
           researchLinks: { select: { researchId: true } },
           serviceLinks: { select: { serviceId: true } },
           articleLinks: { select: { articleId: true } },
+          profileMedia: { select: { id: true, publicUrl: true } },
         },
       });
       return record ? common({
         id: record.id, title: record.name, slug: record.slug, category: record.discipline ?? "",
         shortDescription: record.shortBio ?? "", description: record.bio ?? "", status: record.status,
-        order: String(record.order), featured: record.featured, image: record.image ?? "",
+        order: String(record.order), featured: record.featured, image: record.profileMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.profileMediaId ?? "",
         type: record.role ?? "", audience: jsonText(record.expertise), tags: jsonText(record.qualifications),
         topics: jsonText(record.researchInterests), seoTitle: record.seoTitle ?? "",
         seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "", seoCanonical: record.seoCanonical ?? "",
@@ -304,6 +307,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
           serviceLinks: { select: { serviceId: true } },
           expertLinks: { select: { expertId: true } },
           relatedFrom: { select: { targetArticleId: true } },
+          coverMedia: { select: { id: true, publicUrl: true } },
         },
       });
       return record ? common({
@@ -311,7 +315,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         shortDescription: record.excerpt ?? "", excerpt: record.excerpt ?? "", status: record.status,
         order: String(record.order), date: isoDate(record.date), author: record.author ?? "", authorRole: record.authorRole ?? "",
         authorSlug: record.authorSlug ?? "", content: record.content ?? "", sections: jsonText(record.sections),
-        image: record.image ?? "", featured: record.featured, tags: jsonText(record.tags),
+        image: record.coverMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.coverMediaId ?? "", featured: record.featured, tags: jsonText(record.tags),
         seoTitle: record.seoTitle ?? "", seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "",
         updatedAt: record.updatedAt.toISOString(), relationResearchIds: record.researchLinks.map((x) => x.researchId), relationServiceIds: record.serviceLinks.map((x) => x.serviceId),
         relationExpertIds: record.expertLinks.map((x) => x.expertId), relationArticleIds: record.relatedFrom.map((x) => x.targetArticleId),
@@ -324,13 +328,14 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
           researchLinks: { select: { researchId: true } },
           serviceLinks: { select: { serviceId: true } },
           relatedFrom: { select: { targetEventId: true } },
+          coverMedia: { select: { id: true, publicUrl: true } },
         },
       });
       return record ? common({
         id: record.id, title: record.title, slug: record.slug, category: record.category,
         shortDescription: record.shortDescription, description: record.description ?? "", status: record.status,
         order: String(record.order), date: isoDate(record.date), endDate: isoDate(record.endDate), time: record.time ?? "",
-        location: record.location ?? "", format: record.format ?? "", image: record.image ?? "", featured: record.featured,
+        location: record.location ?? "", format: record.format ?? "", image: record.coverMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.coverMediaId ?? "", featured: record.featured,
         audience: jsonText(record.audience), registrationLabel: record.registrationLabel ?? "",
         registrationHref: record.registrationHref ?? "", registrationStatus: record.registrationStatus ?? "",
         speakerId: record.speakerId ?? "", speakerRole: record.speakerRole ?? "",

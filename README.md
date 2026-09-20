@@ -369,3 +369,94 @@ Inquiry management, user management, media uploads, payments, event registration
 ### Concurrency limitation
 
 The editor sends the record's `updatedAt` and rejects an obviously stale form before saving. Full optimistic concurrency control is not introduced in this phase; a later audit/publishing phase can add a version column if stronger conflict guarantees are required.
+
+
+## Phase 8.12 — Media & Asset Infrastructure
+
+Phase 8.12 adds a canonical MediaAsset metadata model, a server-side storage abstraction, protected admin media management, and managed-media references for Research, Experts, Articles and Workshops/Events. PostgreSQL stores metadata and relationships; binary files are kept outside PostgreSQL.
+
+### Media model and relationships
+
+MediaAsset stores:
+
+- stable ID
+- server-controlled storage key
+- public asset URL/reference
+- original and normalized filenames
+- MIME type and file size
+- measured image width/height
+- optional alt text and caption
+- ACTIVE / ARCHIVED status
+- timestamps
+
+Managed content references are additive and backward-compatible:
+
+- ResearchItem.imageMediaId
+- Expert.profileMediaId
+- Article.coverMediaId
+- Event.coverMediaId
+
+Public repositories prefer the managed MediaAsset URL and fall back to the existing legacy image field until an asset is migrated.
+
+### Storage
+
+The application uses a server-only MediaStorage interface. Phase 8.12 provides a local filesystem adapter under .media-storage/ for development. Set MEDIA_STORAGE_DIR when a controlled local directory is preferred.
+
+The local adapter is not represented as durable production object storage. Before production uploads are enabled on an ephemeral/serverless deployment, replace the adapter implementation with a persistent object-storage provider without changing the Prisma media model, content repositories, or admin picker.
+
+Uploaded files are never committed to the source repository.
+
+### Upload security
+
+Only authenticated ADMIN users can reach the media mutation route. The upload path enforces:
+
+- 10 MB maximum file size
+- JPEG, PNG and WebP allowlist
+- extension/MIME agreement
+- server-side image signature validation
+- measured dimensions
+- normalized filenames
+- UUID-based storage identity
+- path traversal protection
+- cleanup if metadata creation fails
+
+SVG is intentionally not enabled in this phase.
+
+There is no anonymous upload endpoint.
+
+### Admin media
+
+- /admin/media — paginated media library with search and status filtering
+- /admin/media/[id] — asset detail, metadata editing, usage information, archive/restore and guarded deletion
+
+Referenced assets cannot be deleted. Archiving does not remove existing content references.
+
+### Content media picker
+
+Phase 8.11 content forms now use the MediaAsset picker for managed image fields on Research, Experts, Articles and Workshops/Events. The server validates the submitted media ID, requires an active supported image, stores the MediaAsset relationship and preserves the public URL in the existing legacy image field for compatibility.
+
+Storage operations remain outside PostgreSQL transactions. Upload failure and database failure are handled with cleanup to avoid unnecessary orphan files.
+
+### Verification
+
+Run:
+
+    npm run prisma:generate
+    npm run prisma:validate
+    npm run media:verify
+    npm run lint
+    npm run build
+
+media:verify checks MediaAsset references, supported MIME types, public URL shape, storage-object existence and broken content references. It does not automatically delete orphan media.
+
+### Migration policy
+
+No historical migration is rewritten and PostgreSQL is never reset. The Phase 8.12 migration is additive.
+
+The current repository does not contain managed image binaries in public/images; the directory is only a placeholder. Therefore no binary import was fabricated. Existing legacy URL/path fields remain intact and can be migrated through the MediaAsset workflow when actual managed assets exist.
+
+Static assets such as the logo, fixed icons, fonts and developer assets remain static and are not forced into the media library.
+
+Production object storage is not claimed as configured by this phase.
+
+The homepage hero remains removed, the previously removed content remains removed, and the public website UI is not redesigned.

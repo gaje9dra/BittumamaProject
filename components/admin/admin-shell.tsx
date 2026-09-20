@@ -13,6 +13,7 @@ type AdminIdentity = {
 const navItems = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/content", label: "Content" },
+  { href: "/admin/media", label: "Media" },
 ];
 
 export function AdminShell({ admin, children }: { admin: AdminIdentity; children: ReactNode }) {

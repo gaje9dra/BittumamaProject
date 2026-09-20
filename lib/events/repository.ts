@@ -12,6 +12,7 @@ type EventWithRelations = PrismaEvent & {
   researchLinks: Array<{ researchId: string }>;
   serviceLinks: Array<{ serviceId: string }>;
   relatedFrom: Array<{ targetEventId: string }>;
+  coverMedia: { publicUrl: string } | null;
 };
 
 function asStringArray(value: unknown): string[] | undefined {
@@ -47,7 +48,7 @@ function toDomainEvent(record: EventWithRelations): Event {
     ...(audience?.length ? { audience } : {}),
     ...(record.speakerId ? { speakerId: record.speakerId } : {}),
     ...(record.speakerRole ? { speakerRole: record.speakerRole } : {}),
-    ...(record.image ? { image: record.image } : {}),
+    ...(record.coverMedia?.publicUrl || record.image ? { image: record.coverMedia?.publicUrl ?? record.image! } : {}),
     ...(record.registrationLabel ? { registrationLabel: record.registrationLabel } : {}),
     ...(record.registrationHref ? { registrationHref: record.registrationHref } : {}),
     ...(registrationStatus ? { registrationStatus } : {}),
@@ -81,7 +82,7 @@ async function runEventQuery<T>(query: () => Promise<T>): Promise<T> {
 const relationInclude = {
   researchLinks: { select: { researchId: true } },
   serviceLinks: { select: { serviceId: true } },
-  relatedFrom: { select: { targetEventId: true } },
+  relatedFrom: { select: { targetEventId: true } }, coverMedia: { select: { publicUrl: true } },
 } as const;
 
 export async function getPublishedEvents(): Promise<Event[]> {

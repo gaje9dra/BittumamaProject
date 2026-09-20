@@ -167,6 +167,7 @@ model ResearchItem {
   expertLinks      ExpertResearch[]
   articleLinks     ArticleResearch[]
   workshopLinks    WorkshopResearch[]
+  imageMedia       MediaAsset? @relation("ResearchImageMedia", fields: [imageMediaId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([category])
@@ -184,6 +185,7 @@ model Expert {
   shortBio          String?
   bio               String?
   image             String?
+  profileMediaId    String?
   expertise         Json?
   qualifications    Json?
   researchInterests Json?
@@ -231,6 +233,7 @@ model Article {
   content        String?
   sections       Json?
   image          String?
+  coverMediaId   String?
   featured       Boolean           @default(false)
   tags           Json?
   status         ContentStatus     @default(DRAFT)
@@ -246,6 +249,7 @@ model Article {
   relatedFrom    ArticleRelation[] @relation("ArticleRelationSource")
   relatedTo      ArticleRelation[] @relation("ArticleRelationTarget")
   expertLinks    ArticleExpert[]
+  coverMedia     MediaAsset? @relation("ArticleCoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([category])
@@ -272,6 +276,7 @@ model Event {
   speakerSlug        String?
   speakerRole        String?
   image              String?
+  coverMediaId       String?
   registrationLabel  String?
   registrationHref   String?
   registrationStatus EventRegistrationStatus?
@@ -283,6 +288,7 @@ model Event {
   createdAt          DateTime                 @default(now())
   updatedAt          DateTime                 @updatedAt
   speaker            Expert?                  @relation(fields: [speakerId], references: [id], onDelete: SetNull)
+  coverMedia         MediaAsset?              @relation("EventCoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
   researchLinks      WorkshopResearch[]
   serviceLinks       WorkshopService[]
   relatedFrom        EventRelation[]          @relation("EventRelationSource")
@@ -383,6 +389,32 @@ model EventRelation {
 
   @@id([sourceEventId, targetEventId])
   @@index([targetEventId])
+}
+
+model MediaAsset {
+  id                 String      @id @default(cuid())
+  storageKey         String      @unique
+  publicUrl          String
+  originalFilename   String
+  normalizedFilename String
+  mimeType           String
+  fileSize           Int
+  width              Int?
+  height             Int?
+  altText            String?
+  caption            String?
+  status             MediaStatus @default(ACTIVE)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  articleCovers      Article[]      @relation("ArticleCoverMedia")
+  expertProfiles     Expert[]       @relation("ExpertProfileMedia")
+  researchImages     ResearchItem[] @relation("ResearchImageMedia")
+  eventCovers        Event[]        @relation("EventCoverMedia")
+
+  @@index([createdAt])
+  @@index([status])
+  @@index([mimeType])
+  @@index([originalFilename])
 }
 
 model ContactInquiry {

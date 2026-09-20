@@ -89,6 +89,7 @@ type PrismaResearchWithRelations = PrismaResearchItem & {
   expertLinks: Array<{ expertId: string }>;
   articleLinks: Array<{ articleId: string }>;
   workshopLinks: Array<{ eventId: string }>;
+  imageMedia: { publicUrl: string } | null;
 };
 
 function toDomainResearch(record: PrismaResearchWithRelations): ResearchEntry {
@@ -121,7 +122,7 @@ function toDomainResearch(record: PrismaResearchWithRelations): ResearchEntry {
     ...(record.status === "PUBLISHED" ? { status: record.availability === "COMING_SOON" ? "Coming Soon" : "Published" } : {}),
     ...(record.type ? { type: record.type } : {}),
     ...(record.topic ? { topic: record.topic } : {}),
-    ...(record.image ? { image: record.image } : {}),
+    ...(record.imageMedia?.publicUrl || record.image ? { image: record.imageMedia?.publicUrl ?? record.image! } : {}),
     ...(record.featured ? { featured: true } : {}),
     ...(record.tags ? { tags: asStringArray(record.tags) } : {}),
     ...(seo ? { seo } : {}),

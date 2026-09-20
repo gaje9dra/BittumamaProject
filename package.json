@@ -30,7 +30,8 @@
     "content:verify": "tsx prisma/verify-content-integrity.ts && tsx prisma/verify-contact.ts",
     "contact:verify": "tsx prisma/verify-contact.ts",
     "auth:bootstrap-admin": "tsx prisma/bootstrap-admin.ts",
-    "auth:verify": "tsx prisma/verify-auth.ts"
+    "auth:verify": "tsx prisma/verify-auth.ts",
+    "media:verify": "tsx prisma/verify-media.ts"
   },
   "dependencies": {
     "next": "16.3.5",

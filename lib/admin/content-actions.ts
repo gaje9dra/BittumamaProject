@@ -104,6 +104,15 @@ async function validateRelationsExist(relationIds: RelationIds, errors: Record<s
   });
 }
 
+async function validateMediaReference(domain: ContentDomain, mediaId: string, errors: Record<string, string>) {
+  if (!mediaId || domain === "services") return undefined;
+  const media = await prisma.client.mediaAsset.findUnique({ where: { id: mediaId }, select: { id: true, publicUrl: true, status: true, mimeType: true } });
+  if (!media) { errors.imageMediaId = "Selected media asset no longer exists."; return undefined; }
+  if (media.status !== "ACTIVE") { errors.imageMediaId = "Archived media cannot be selected for content."; return undefined; }
+  if (!["image/jpeg", "image/png", "image/webp"].includes(media.mimeType)) { errors.imageMediaId = "Selected media type is not supported."; return undefined; }
+  return media;
+}
+
 async function validatePublishedRelations(relationIds: RelationIds, speakerId: string, errors: Record<string, string>) {
   const counts = await Promise.all([
     relationIds.services.length ? prisma.client.service.count({ where: { id: { in: relationIds.services }, status: { not: "PUBLISHED" } } }) : 0,
@@ -135,6 +144,7 @@ function readForm(formData: FormData) {
     type: value(formData, "type"),
     topic: value(formData, "topic"),
     image: value(formData, "image"),
+    imageMediaId: value(formData, "imageMediaId"),
     seoTitle: value(formData, "seoTitle"),
     seoDescription: value(formData, "seoDescription"),
     seoImage: value(formData, "seoImage"),
@@ -209,7 +219,7 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
         ...shared, title: fields.title, category: fields.category, shortDescription: fields.shortDescription,
         summary: fields.summary || null, date: parseDate(fields.date) ?? null,
         availability: fields.availability === "COMING_SOON" ? "COMING_SOON" : "AVAILABLE",
-        type: fields.type || null, topic: fields.topic || null, image: fields.image || null,
+        type: fields.type || null, topic: fields.topic || null, image: fields.image || null, imageMediaId: fields.imageMediaId || null,
         tags: json.tags ?? null, highlights: json.highlights ?? null, audience: json.audience ?? null,
         scope: json.scope ?? null, topics: json.topics ?? null, sections: json.sections ?? null, methodology: json.methodology ?? null,
         seoTitle: fields.seoTitle || null, seoDescription: fields.seoDescription || null, seoImage: fields.seoImage || null,
@@ -218,7 +228,7 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
     case "experts":
       return {
         name: fields.title, slug: fields.slug, discipline: fields.category || null, shortBio: fields.shortDescription || null,
-        bio: fields.description || null, role: fields.type || null, order: shared.order, image: fields.image || null,
+        bio: fields.description || null, role: fields.type || null, order: shared.order, image: fields.image || null, profileMediaId: fields.imageMediaId || null,
         expertise: json.audience ?? null, qualifications: json.tags ?? null, researchInterests: json.topics ?? null,
         featured: shared.featured, status,
         seoTitle: fields.seoTitle || null, seoDescription: fields.seoDescription || null, seoImage: fields.seoImage || null,
@@ -229,7 +239,7 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
         ...shared, title: fields.title, category: fields.category, date: parseDate(fields.date) ?? null,
         excerpt: fields.excerpt || null, author: fields.author || null, authorRole: fields.authorRole || null,
         authorSlug: fields.authorSlug || null, content: fields.content || null, sections: json.sections ?? null,
-        image: fields.image || null, tags: json.tags ?? null,
+        image: fields.image || null, coverMediaId: fields.imageMediaId || null, tags: json.tags ?? null,
         seoTitle: fields.seoTitle || null, seoDescription: fields.seoDescription || null, seoImage: fields.seoImage || null,
       };
     case "workshops":
@@ -238,7 +248,7 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
         endDate: parseDate(fields.endDate) ?? null, time: fields.time || null, location: fields.location || null,
         format: ["ONLINE", "IN_PERSON", "HYBRID"].includes(fields.format) ? fields.format : null,
         shortDescription: fields.shortDescription, description: fields.description || null, audience: json.audience ?? null,
-        speakerId: fields.speakerId || null, speakerSlug: fields.speakerSlug || null, speakerRole: fields.speakerRole || null, image: fields.image || null,
+        speakerId: fields.speakerId || null, speakerSlug: fields.speakerSlug || null, speakerRole: fields.speakerRole || null, image: fields.image || null, coverMediaId: fields.imageMediaId || null,
         registrationLabel: fields.registrationLabel || null, registrationHref: fields.registrationHref || null,
         registrationStatus: ["REGISTRATION_OPEN", "REGISTRATION_CLOSED", "COMING_SOON", "COMPLETED"].includes(fields.registrationStatus) ? fields.registrationStatus : null,
         seoTitle: fields.seoTitle || null, seoDescription: fields.seoDescription || null, seoImage: fields.seoImage || null,
@@ -363,6 +373,8 @@ export async function saveContent(
   if (domain === "workshops" && !parsed.fields.date) errors.date = "Date is required for a workshop / event.";
   validateJsonShapes(domain, parsed.json, errors);
   await validateRelationsExist(parsed.relationIds, errors);
+  const media = await validateMediaReference(domain, parsed.fields.imageMediaId, errors);
+  if (media) parsed.fields.image = media.publicUrl;
 
   if (domain === "workshops" && parsed.fields.speakerId) {
     const speaker = await prisma.client.expert.findUnique({ where: { id: parsed.fields.speakerId }, select: { id: true, slug: true } });

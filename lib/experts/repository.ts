@@ -8,6 +8,7 @@ type PrismaExpertWithRelations = PrismaExpert & {
   researchLinks: Array<{ researchId: string }>;
   serviceLinks: Array<{ serviceId: string }>;
   articleLinks: Array<{ articleId: string }>;
+  profileMedia: { publicUrl: string } | null;
 };
 
 function asStringArray(value: unknown): string[] | undefined {
@@ -43,7 +44,7 @@ function toDomainExpert(record: PrismaExpertWithRelations): Expert {
     ...(record.discipline ? { discipline: record.discipline } : {}),
     ...(record.shortBio ? { shortBio: record.shortBio } : {}),
     ...(record.bio ? { bio: record.bio } : {}),
-    ...(record.image ? { image: record.image } : {}),
+    ...(record.profileMedia?.publicUrl || record.image ? { image: record.profileMedia?.publicUrl ?? record.image! } : {}),
     ...(expertise?.length ? { expertise } : {}),
     ...(qualifications?.length ? { qualifications } : {}),
     ...(researchInterests?.length ? { researchInterests } : {}),
@@ -70,6 +71,7 @@ const relationInclude = {
   researchLinks: { select: { researchId: true } },
   serviceLinks: { select: { serviceId: true } },
   articleLinks: { select: { articleId: true } },
+  profileMedia: { select: { publicUrl: true } },
 } as const;
 
 export async function getPublishedExperts(): Promise<Expert[]> {

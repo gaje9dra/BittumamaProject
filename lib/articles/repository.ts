@@ -9,6 +9,7 @@ type ArticleWithRelations = PrismaArticle & {
   serviceLinks: Array<{ serviceId: string }>;
   expertLinks: Array<{ expertId: string }>;
   relatedFrom: Array<{ targetArticleId: string }>;
+  coverMedia: { publicUrl: string } | null;
 };
 
 function asStringArray(value: unknown): string[] | undefined {
@@ -63,7 +64,7 @@ function toDomainArticle(record: ArticleWithRelations): Article {
     ...(record.excerpt ? { excerpt: record.excerpt } : {}),
     ...(record.content ? { content: record.content } : {}),
     ...(sections?.length ? { sections } : {}),
-    ...(record.image ? { image: record.image } : {}),
+    ...(record.coverMedia?.publicUrl || record.image ? { image: record.coverMedia?.publicUrl ?? record.image! } : {}),
     ...(record.featured ? { featured: true } : {}),
     ...(tags?.length ? { tags } : {}),
     ...(record.relatedFrom.length ? { relatedArticles: record.relatedFrom.map((item) => item.targetArticleId) } : {}),
@@ -88,6 +89,7 @@ const relationInclude = {
   serviceLinks: { select: { serviceId: true } },
   expertLinks: { select: { expertId: true } },
   relatedFrom: { select: { targetArticleId: true } },
+  coverMedia: { select: { publicUrl: true } },
 } as const;
 
 export async function getPublishedArticles(): Promise<Article[]> {
