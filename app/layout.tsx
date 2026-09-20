@@ -20,6 +20,8 @@ const displayFont = Literata({
   weight: ["400", "500", "600", "700"],
 });
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: siteConfig.defaultMetadata.title,
   description: siteConfig.defaultMetadata.description,
