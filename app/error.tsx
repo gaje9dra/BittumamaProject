@@ -1,17 +1,12 @@
 "use client";
 
-import { Header } from "@/components/layout/header";
-import { Footer } from "@/components/layout/footer";
-
 export default function Error({
   reset,
 }: {
   reset: () => void;
 }) {
   return (
-    <>
-      <Header />
-      <main className="min-h-screen px-[var(--page-gutter)] py-16">
+    <main className="min-h-screen px-[var(--page-gutter)] py-16">
       <div className="mx-auto w-full max-w-[var(--container-content)]">
         <h1 className="text-[length:var(--font-size-h1)] font-semibold tracking-tight">
           Something went wrong
@@ -27,8 +22,6 @@ export default function Error({
           Try again
         </button>
       </div>
-      </main>
-      <Footer />
-    </>
+    </main>
   );
 }
