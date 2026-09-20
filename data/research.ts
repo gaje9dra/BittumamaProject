@@ -52,60 +52,11 @@ export type ResearchEntry = {
   seo?: ResearchSeo;
 };
 
-export const researchEntries: ResearchEntry[] = [];
+// Migration-only Phase 7.3 canonical snapshot.
+// Production Research reads come from PostgreSQL via lib/research/repository.ts.
+export const canonicalResearchEntries: ResearchEntry[] = [];
 
-export function getAllResearch() {
-  return researchEntries;
-}
-
-export function getResearchHref(research: Pick<ResearchEntry, "slug">) {
-  return "/research/" + research.slug;
-}
-
-export function getResearchById(id: string) {
-  return researchEntries.find((entry) => entry.id === id);
-}
-
-export function getResearchBySlug(slug: string) {
-  return researchEntries.find((entry) => entry.slug === slug);
-}
-
-export const researchCategories = Array.from(
-  new Set(
-    researchEntries
-      .map((entry) => entry.category)
-      .filter((category): category is string => Boolean(category)),
-  ),
-);
-
-export function getResearchByCategory(category: string) {
-  return researchEntries.filter((entry) => entry.category === category);
-}
-
-export function getFeaturedResearch() {
-  return researchEntries.filter((entry) => entry.featured);
-}
-
-export function getResearchCategoryAnchor(category: string) {
-  const slug = category
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
-  return `research-category-${slug}`;
-}
-
-export function getRelatedResearch(entry: ResearchEntry) {
-  return researchEntries.filter((candidate) => {
-    if (candidate.id === entry.id || candidate.slug === entry.slug) return false;
-    if (candidate.category !== entry.category) return false;
-    if (!entry.tags?.length || !candidate.tags?.length) return false;
-
-    return entry.tags.some((tag) => candidate.tags?.includes(tag));
-  });
-}
-
-export function validateResearch(records: readonly ResearchEntry[] = researchEntries) {
+export function validateResearch(records: readonly ResearchEntry[] = canonicalResearchEntries) {
   const ids = new Set<string>();
   const slugs = new Set<string>();
 
