@@ -69,11 +69,11 @@ See `docs/content-architecture.md` for the current content ownership, relationsh
 
 ## Current Phase
 
-**Phase 8.2 — Canonical Services Database Migration.**
+**Phase 8.3 — Canonical Research Database Migration.**
 
-Phase 8.2 moves the canonical Phase 7 Services dataset into PostgreSQL and routes the existing Services experience through the server-side Prisma repository without changing the public UI, routes, or interaction design.
+Phase 8.3 moves the canonical Phase 7 Research dataset into PostgreSQL and routes the existing Research experience through the server-side Prisma repository without changing the public UI, routes, or interaction design. Services remain database-backed from Phase 8.2.
 
-The current frontend architecture preserves the canonical Services, Research, Experts, Articles, Workshops/Events, Relationships, Navigation, Metadata and Validation systems. Backend, database, CMS, authentication, payments, advanced search, full SEO, dedicated performance, security hardening and deployment work remain outside the current phase.
+The current frontend architecture preserves the canonical Services, Research, Experts, Articles, Workshops/Events, Relationships, Navigation, Metadata and Validation systems. Research and Services now use PostgreSQL repositories; Experts, Articles and Workshops remain on their Phase 7 canonical snapshots until their dedicated migrations. Backend, CMS, authentication, payments, advanced search, full SEO, dedicated performance, security hardening and deployment work remain outside the current phase.
 
 
 ## Phase 8.1 — PostgreSQL + Prisma
@@ -201,3 +201,65 @@ There is no Service admin/editor yet. For this phase, update the canonical migra
 ### Phase boundary
 
 Phase 8.2 does not migrate Research, Experts, Articles, Workshops, About, Contact submissions, users, authentication, payments, CMS/admin functionality, or public APIs.
+
+
+## Phase 8.3 — Canonical Research Database Migration
+
+Research now follows:
+
+```text
+Research UI
+  ↓
+lib/research/repository.ts
+  ↓
+Prisma
+  ↓
+PostgreSQL
+```
+
+### Research ownership
+
+- PostgreSQL owns persistent Research content.
+- `lib/research/repository.ts` is the production Research access layer.
+- `data/research.ts` contains the Phase 7 canonical snapshot only for deterministic migration and integrity verification.
+- UI components consume the existing `ResearchEntry` domain type and do not receive Prisma-generated types.
+- Research listing and detail routes use published database records only.
+- The canonical Research ordering is stored in `ResearchItem.order`.
+- The existing Research ↔ Service relationship is represented by the existing `ResearchService` relation because Services are already database-backed.
+- Expert, Article and Workshop/Event Research relationships are deferred until those domains are migrated.
+
+### Canonical Research migration
+
+Run against a configured PostgreSQL database after applying migrations:
+
+```bash
+npm run prisma:migrate
+npm run prisma:seed
+npm run research:seed
+npm run research:verify
+```
+
+The Research import is idempotent and uses the canonical slug as its upsert key while preserving the canonical ID. It does not reset the database or delete unrelated records.
+
+### Public Research queries
+
+The Research repository exposes the current read surface:
+
+- `getPublishedResearch()`
+- `getPublishedResearchById()`
+- `getPublishedResearchBySlug()`
+- `getPublishedResearchCategories()`
+- `getFeaturedPublishedResearch()`
+- `getRelatedPublishedResearch()`
+
+Public queries filter to `PUBLISHED` records. Unknown or unpublished detail slugs return the existing Next.js not-found behavior.
+
+### Research integrity verification
+
+`npm run research:verify` compares the database against the Phase 7.3 canonical Research snapshot and checks count, unexpected records, stable IDs/slugs, required fields, ordering, publication state, availability, structured content, SEO metadata and Research ↔ Service relationships.
+
+There is no Research admin/editor or CMS in Phase 8.3. Update the canonical migration snapshot and rerun the deterministic import and verification until future content-editing functionality is explicitly introduced.
+
+### Phase boundary
+
+Phase 8.3 does not migrate Experts, Articles, Workshops/Events, About, Contact submissions, users, authentication, payments, wallet, admin, CMS or public APIs.
