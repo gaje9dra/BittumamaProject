@@ -1,5 +1,5 @@
 import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
+import { ScrollHeading } from "@/components/ui/scroll-heading";
 
 export function ServicesHero() {
   return (
@@ -8,9 +8,9 @@ export function ServicesHero() {
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-8">
           <div>
             <p className="type-label text-muted-foreground">Services</p>
-            <Heading id="services-page-title" level={1} className="mt-3 max-w-[18ch]">
+            <ScrollHeading id="services-page-title" level={1} className="mt-3 max-w-[18ch]">
               Research support you can engage for.
-            </Heading>
+            </ScrollHeading>
           </div>
           <p className="type-body-sm max-w-[48ch] text-muted-foreground sm:pb-1">
             Thesis, research, analysis, publication, mentoring and research technology services.
