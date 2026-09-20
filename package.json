@@ -28,7 +28,8 @@
     "events:seed": "tsx prisma/seed-events.ts",
     "events:verify": "tsx prisma/verify-events.ts",
     "content:verify": "tsx prisma/verify-content-integrity.ts && tsx prisma/verify-contact.ts",
-    "contact:verify": "tsx prisma/verify-contact.ts"
+    "contact:verify": "tsx prisma/verify-contact.ts",
+    "auth:bootstrap-admin": "tsx prisma/bootstrap-admin.ts"
   },
   "dependencies": {
     "next": "16.3.5",
@@ -41,7 +42,9 @@
     "@prisma/adapter-pg": "7.10.0",
     "@prisma/client": "7.10.0",
     "pg": "8.16.3",
-    "server-only": "0.0.1"
+    "server-only": "0.0.1",
+    "@auth/prisma-adapter": "2.11.3",
+    "next-auth": "5.0.0-beta.32"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.3",
