@@ -4,12 +4,20 @@ import { EventFeatured } from "@/components/events/event-featured";
 import { EventsCta } from "@/components/events/events-cta";
 import { EventsDiscovery } from "@/components/events/events-discovery";
 import { EventsIntroduction } from "@/components/events/events-introduction";
-import { eventCategories, getAllEvents, getFeaturedEvents, getUpcomingEvents } from "@/data/events";
+import { getPublishedEventCategories, getFeaturedEvents, getPublishedEvents, getUpcomingEvents } from "@/lib/events/repository";
 
-export default function WorkshopsDesignPreview() {
+export const dynamic = "force-dynamic";
+
+export default async function WorkshopsDesignPreview() {
   if (process.env.NODE_ENV === "production") notFound();
 
-  const previewEvents = getAllEvents();
+  const [previewEvents, categories, featuredEvents, upcoming] = await Promise.all([
+    getPublishedEvents(),
+    getPublishedEventCategories(),
+    getFeaturedEvents(),
+    getUpcomingEvents(),
+  ]);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="border-b border-accent bg-surface-muted">
@@ -21,9 +29,9 @@ export default function WorkshopsDesignPreview() {
         </div>
       </div>
       <EventsIntroduction />
-      <EventFeatured event={previewEvents.find((event) => event.featured) ?? getFeaturedEvents()[0]} />
-      <EventCategories categories={eventCategories} />
-      <EventsDiscovery events={getUpcomingEvents()} />
+      <EventFeatured event={previewEvents.find((event) => event.featured) ?? featuredEvents[0]} />
+      <EventCategories categories={categories} />
+      <EventsDiscovery events={upcoming} />
       <EventsCta />
     </main>
   );
