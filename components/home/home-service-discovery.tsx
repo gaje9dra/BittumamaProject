@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
+import { ScrollHeading } from "@/components/ui/scroll-heading";
 import { getAllServices, getServiceHref } from "@/data/services";
 
 export function HomeServiceDiscovery() {
@@ -21,7 +21,7 @@ export function HomeServiceDiscovery() {
               className="mt-4 max-w-[18ch]"
             >
               Find the research service you need.
-            </Heading>
+            </ScrollHeading>
           </div>
 
           <div className="lg:col-span-8 lg:col-start-5">
