@@ -24,7 +24,9 @@
     "experts:seed": "tsx prisma/seed-experts.ts",
     "experts:verify": "tsx prisma/verify-experts.ts",
     "articles:seed": "tsx prisma/seed-articles.ts",
-    "articles:verify": "tsx prisma/verify-articles.ts"
+    "articles:verify": "tsx prisma/verify-articles.ts",
+    "events:seed": "tsx prisma/seed-events.ts",
+    "events:verify": "tsx prisma/verify-events.ts"
   },
   "dependencies": {
     "next": "16.3.5",
