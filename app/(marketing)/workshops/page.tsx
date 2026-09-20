@@ -5,22 +5,28 @@ import { EventsCta } from "@/components/events/events-cta";
 import { EventsDiscovery } from "@/components/events/events-discovery";
 import { EventsIntroduction } from "@/components/events/events-introduction";
 import { createPageMetadata } from "@/lib/metadata";
-import { eventCategories, getFeaturedEvents, getUpcomingEvents } from "@/data/events";
+import { getPublishedEventCategories, getFeaturedEvents, getUpcomingEvents } from "@/lib/events/repository";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Workshops & Events | Bittumama",
   description: "Discover workshops, learning sessions and research-focused events from Bittumama.",
 });
 
-export default function WorkshopsPage() {
-  const upcoming = getUpcomingEvents();
-  const featured = getFeaturedEvents()[0];
+export default async function WorkshopsPage() {
+  const [categories, featuredEvents, upcoming] = await Promise.all([
+    getPublishedEventCategories(),
+    getFeaturedEvents(),
+    getUpcomingEvents(),
+  ]);
+  const featured = featuredEvents[0];
 
   return (
     <main className="min-h-screen bg-background text-foreground">
       <EventsIntroduction />
       <EventFeatured event={featured} />
-      <EventCategories categories={eventCategories} />
+      <EventCategories categories={categories} />
       <EventsDiscovery events={upcoming} />
       {upcoming.length > 0 && <EventsCta />}
     </main>
