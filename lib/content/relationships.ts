@@ -4,11 +4,11 @@ import {
   getPublishedServiceBySlug,
 } from "@/lib/services/repository";
 import {
-  getAllResearch,
-  getResearchById,
-  getResearchBySlug,
-  type ResearchEntry,
-} from "@/data/research";
+  getPublishedResearch,
+  getPublishedResearchById,
+  getPublishedResearchBySlug,
+} from "@/lib/research/repository";
+import type { ResearchEntry } from "@/data/research";
 import {
   getAllExperts,
   getExpertById,
@@ -36,14 +36,6 @@ export type ContentRelationshipValidationIssue = {
   message: string;
 };
 
-function resolveByIdOrSlug<T extends { id: string; slug: string }>(
-  reference: string,
-  getById: (id: string) => T | undefined,
-  getBySlug: (slug: string) => T | undefined,
-) {
-  return getById(reference) ?? getBySlug(reference);
-}
-
 export async function getServicesForResearch(research: ResearchEntry): Promise<Service[]> {
   const services = await Promise.all(
     (research.relatedServiceIds ?? []).map(async (reference) =>
@@ -60,8 +52,9 @@ export async function getResearchForService(serviceId: string): Promise<Research
     (await getPublishedServiceBySlug(serviceId));
   if (!service) return [];
 
-  return getAllResearch().filter((research) =>
-    research.relatedServiceIds?.some(
+  const research = await getPublishedResearch();
+  return research.filter((entry) =>
+    entry.relatedServiceIds?.some(
       (reference) => reference === service.id || reference === service.slug,
     ),
   );
@@ -89,9 +82,10 @@ export async function getExpertsForService(serviceId: string): Promise<Expert[]>
   return getAllExperts().filter((expert) => expert.serviceIds?.includes(service.id));
 }
 
-export function getArticlesForResearch(researchId: string): Article[] {
+export async function getArticlesForResearch(researchId: string): Promise<Article[]> {
   const research =
-    getResearchById(researchId) ?? getResearchBySlug(researchId);
+    (await getPublishedResearchById(researchId)) ??
+    (await getPublishedResearchBySlug(researchId));
   if (!research) return [];
 
   return getAllArticles().filter((article) =>
@@ -102,9 +96,10 @@ export function getArticlesForResearch(researchId: string): Article[] {
   );
 }
 
-export function getExpertsForResearch(researchId: string): Expert[] {
+export async function getExpertsForResearch(researchId: string): Promise<Expert[]> {
   const research =
-    getResearchById(researchId) ?? getResearchBySlug(researchId);
+    (await getPublishedResearchById(researchId)) ??
+    (await getPublishedResearchBySlug(researchId));
   if (!research) return [];
 
   return getAllExperts().filter((expert) =>
@@ -121,12 +116,15 @@ export function getExpertForArticle(article: Article): Expert | undefined {
   return undefined;
 }
 
-export function getResearchForArticle(article: Article): ResearchEntry[] {
-  return (article.relatedResearch ?? [])
-    .map((reference) =>
-      resolveByIdOrSlug(reference, getResearchById, getResearchBySlug),
-    )
-    .filter((item): item is ResearchEntry => Boolean(item));
+export async function getResearchForArticle(article: Article): Promise<ResearchEntry[]> {
+  const references = article.relatedResearch ?? [];
+  const research = await Promise.all(
+    references.map(async (reference) =>
+      (await getPublishedResearchById(reference)) ??
+      (await getPublishedResearchBySlug(reference)),
+    ),
+  );
+  return research.filter((item): item is ResearchEntry => Boolean(item));
 }
 
 export async function getServicesForArticle(article: Article): Promise<Service[]> {
@@ -145,12 +143,14 @@ export function getExpertForWorkshop(event: Event): Expert | undefined {
   return undefined;
 }
 
-export function getResearchForWorkshop(event: Event): ResearchEntry[] {
-  return (event.relatedResearchIds ?? [])
-    .map((reference) =>
-      resolveByIdOrSlug(reference, getResearchById, getResearchBySlug),
-    )
-    .filter((item): item is ResearchEntry => Boolean(item));
+export async function getResearchForWorkshop(event: Event): Promise<ResearchEntry[]> {
+  const research = await Promise.all(
+    (event.relatedResearchIds ?? []).map(async (reference) =>
+      (await getPublishedResearchById(reference)) ??
+      (await getPublishedResearchBySlug(reference)),
+    ),
+  );
+  return research.filter((item): item is ResearchEntry => Boolean(item));
 }
 
 export async function getServicesForWorkshop(event: Event): Promise<Service[]> {
@@ -173,13 +173,12 @@ export async function getServicesForExpert(expertId: string): Promise<Service[]>
   return services.filter((item): item is Service => Boolean(item));
 }
 
-export function getResearchForExpert(expertId: string): ResearchEntry[] {
+export async function getResearchForExpert(expertId: string): Promise<ResearchEntry[]> {
   const expert = getExpertById(expertId) ?? getExpertBySlug(expertId);
   if (!expert) return [];
 
-  return (expert.researchIds ?? [])
-    .map((id) => getResearchById(id))
-    .filter((item): item is ResearchEntry => Boolean(item));
+  const research = await getPublishedResearch();
+  return research.filter((entry) => expert.researchIds?.includes(entry.id));
 }
 
 export function getArticlesForExpert(expertId: string): Article[] {
@@ -207,12 +206,9 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
     message: string,
   ) => issues.push({ sourceType, sourceId, relation, reference, message });
 
+  // Research is now database-backed. Research relationship integrity is verified by
+  // prisma/verify-research.ts; the remaining static domains are validated here.
   for (const expert of getAllExperts()) {
-    for (const reference of expert.researchIds ?? []) {
-      if (!getResearchById(reference) && !getResearchBySlug(reference)) {
-        add("expert", expert.id, "researchIds", reference, "Referenced Research does not exist.");
-      }
-    }
     for (const reference of expert.articleIds ?? []) {
       if (!getArticleById(reference) && !getArticleBySlug(reference)) {
         add("expert", expert.id, "articleIds", reference, "Referenced Article does not exist.");
@@ -221,10 +217,7 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
   }
 
   for (const article of getAllArticles()) {
-    if (
-      (article.authorId || article.authorSlug) &&
-      !getExpertForArticle(article)
-    ) {
+    if ((article.authorId || article.authorSlug) && !getExpertForArticle(article)) {
       add(
         "article",
         article.id,
@@ -233,18 +226,10 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
         "Referenced Expert does not exist.",
       );
     }
-    for (const reference of article.relatedResearch ?? []) {
-      if (!getResearchById(reference) && !getResearchBySlug(reference)) {
-        add("article", article.id, "relatedResearch", reference, "Referenced Research does not exist.");
-      }
-    }
   }
 
   for (const event of getAllEvents()) {
-    if (
-      (event.speakerId || event.speakerSlug) &&
-      !getExpertForWorkshop(event)
-    ) {
+    if ((event.speakerId || event.speakerSlug) && !getExpertForWorkshop(event)) {
       add(
         "event",
         event.id,
@@ -252,11 +237,6 @@ export function validateContentRelationships(): ContentRelationshipValidationIss
         event.speakerId ?? event.speakerSlug ?? "",
         "Referenced Expert does not exist.",
       );
-    }
-    for (const reference of event.relatedResearchIds ?? []) {
-      if (!getResearchById(reference) && !getResearchBySlug(reference)) {
-        add("event", event.id, "relatedResearchIds", reference, "Referenced Research does not exist.");
-      }
     }
     for (const reference of event.relatedEventIds ?? []) {
       if (!getEventById(reference) && !getEventBySlug(reference)) {
@@ -277,7 +257,6 @@ export function assertContentRelationships() {
 
   return issues;
 }
-
 
 if (process.env.NODE_ENV !== "production") {
   assertContentRelationships();
