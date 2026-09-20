@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
+import { ScrollHeading } from "@/components/ui/scroll-heading";
 import { homepageContent } from "@/data/homepage";
 
 export function HomeAudience() {
@@ -17,9 +17,9 @@ export function HomeAudience() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
             <p className="type-label text-muted-foreground">{audience.eyebrow}</p>
-            <Heading id="home-audience-title" level={2} className="mt-4 max-w-[18ch]">
+            <ScrollHeading id="home-audience-title" level={2} className="mt-4 max-w-[18ch]">
               {audience.title}
-            </Heading>
+            </ScrollHeading>
             <p className="type-body-sm mt-5 max-w-[38ch] text-muted-foreground">
               {audience.description}
             </p>
