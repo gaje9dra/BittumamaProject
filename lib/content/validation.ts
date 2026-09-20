@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { getAllResearch, validateResearch, type ResearchEntry } from "@/data/research";
 import { getAllExperts, validateExperts, type Expert } from "@/data/expertise";
 import { getAllArticles, validateArticles, type Article } from "@/data/articles";
 import { getAllEvents, validateEvents, type Event } from "@/data/events";
@@ -94,21 +93,6 @@ function validateOptionalImage(
   }
 }
 
-function validateResearchSpecific(records: readonly ResearchEntry[], issues: ContentValidationIssue[]) {
-  for (const record of records) {
-    if (!record.title.trim()) addIssue(issues, "error", "Research", record.id, "Missing title.");
-    if (!record.category.trim()) addIssue(issues, "error", "Research", record.id, "Missing category.");
-    if (!record.shortDescription.trim()) addIssue(issues, "error", "Research", record.id, "Missing shortDescription.");
-    validateDate(issues, "Research", record.id, "date", record.date);
-    validateBoolean(issues, "Research", record.id, "featured", record.featured);
-    if (record.status && record.status !== "Published" && record.status !== "Coming Soon") {
-      addIssue(issues, "error", "Research", record.id, "Invalid status: " + record.status);
-    }
-    validateOptionalImage(issues, "Research", record.id, "image", record.image);
-    validateSeo(issues, "Research", record.id, record.seo);
-  }
-}
-
 function validateExpertSpecific(records: readonly Expert[], issues: ContentValidationIssue[]) {
   for (const record of records) {
     if (!record.name.trim()) addIssue(issues, "error", "Expert", record.id, "Missing name.");
@@ -183,17 +167,14 @@ function validateEventSpecific(records: readonly Event[], issues: ContentValidat
 
 export function validateContentIntegrity(): ContentValidationIssue[] {
   const issues: ContentValidationIssue[] = [];
-  const research = getAllResearch();
   const experts = getAllExperts();
   const articles = getAllArticles();
   const events = getAllEvents();
 
-  validateUniqueRecords(research, "Research", issues);
   validateUniqueRecords(experts, "Expert", issues);
   validateUniqueRecords(articles, "Article", issues);
   validateUniqueRecords(events, "Workshop", issues);
 
-  validateResearchSpecific(research, issues);
   validateExpertSpecific(experts, issues);
   validateArticleSpecific(articles, issues);
   validateEventSpecific(events, issues);
@@ -240,7 +221,6 @@ export function formatContentValidationIssues(issues: readonly ContentValidation
 }
 
 export function runContentIntegrityValidation() {
-  validateResearch();
   validateExperts();
   validateArticles();
   validateEvents();
