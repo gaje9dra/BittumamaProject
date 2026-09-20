@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { Heading } from "@/components/ui/heading";
+import { ScrollHeading } from "@/components/ui/scroll-heading";
 import { homepageContent } from "@/data/homepage";
 
 export function HomeProcess() {
@@ -17,9 +17,9 @@ export function HomeProcess() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
           <div className="lg:col-span-4">
             <p className="type-label text-muted-foreground">{process.eyebrow}</p>
-            <Heading id="home-process-title" level={2} className="mt-4 max-w-[18ch]">
+            <ScrollHeading id="home-process-title" level={2} className="mt-4 max-w-[18ch]">
               {process.title}
-            </Heading>
+            </ScrollHeading>
             <p className="type-body-sm mt-5 max-w-[38ch] text-muted-foreground">
               {process.description}
             </p>
