@@ -42,6 +42,9 @@ export type ResearchEntry = {
   audience?: string[];
   highlights?: string[];
   relatedServiceIds?: string[];
+  expertIds?: string[];
+  relatedArticleIds?: string[];
+  relatedWorkshopIds?: string[];
   date?: string;
   status?: ResearchStatus;
   type?: string;
@@ -64,22 +67,14 @@ export function validateResearch(records: readonly ResearchEntry[] = canonicalRe
     if (!research.id || !research.title || !research.slug) {
       throw new Error("Every research entry must have an id, title and slug.");
     }
-
-    if (ids.has(research.id)) {
-      throw new Error(`Duplicate research id: ${research.id}`);
-    }
+    if (ids.has(research.id)) throw new Error(`Duplicate research id: ${research.id}`);
     ids.add(research.id);
-
-    if (slugs.has(research.slug)) {
-      throw new Error(`Duplicate research slug: ${research.slug}`);
-    }
+    if (slugs.has(research.slug)) throw new Error(`Duplicate research slug: ${research.slug}`);
     slugs.add(research.slug);
-
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(research.slug)) {
       throw new Error(`Invalid research slug: ${research.slug}`);
     }
   }
-
   return true;
 }
 
