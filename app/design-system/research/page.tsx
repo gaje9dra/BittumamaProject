@@ -5,7 +5,7 @@ import { ResearchCategoryIndex } from "@/components/research/research-category-i
 import { ResearchDirectory } from "@/components/research/research-directory";
 import { ResearchFeatured } from "@/components/research/research-featured";
 import { ResearchHero } from "@/components/research/research-hero";
-import { getResearchHref, type ResearchEntry } from "@/data/research";
+import type { ResearchEntry } from "@/data/research";
 
 const previewEntries: ResearchEntry[] = [
   {
