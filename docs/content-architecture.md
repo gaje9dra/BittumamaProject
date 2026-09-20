@@ -28,7 +28,7 @@ The project remains server-first. Client Components are used only where browser 
 | Content | Canonical source | Detail route |
 |---|---|---|
 | Services | `data/services.ts` | `/services/[slug]` |
-| Research | `data/research.ts` | `/research/[slug]` |
+| Research | PostgreSQL via `lib/research/repository.ts` (canonical snapshot: `data/research.ts`) | `/research/[slug]` |
 | Experts | `data/expertise.ts` | `/experts/[slug]` |
 | Articles | `data/articles.ts` | `/articles/[slug]` |
 | Workshops / Events | `data/events.ts` | `/workshops/[slug]` |
@@ -201,3 +201,18 @@ The Service database record preserves the canonical ID, slug, title, category, s
 The deterministic import is `prisma/seed.ts`, configured through Prisma's seed command. `prisma/verify-services.ts` compares database records with the canonical snapshot and detects missing, unexpected, duplicate, ordering, status, field and metadata differences.
 
 No Research, Expert, Article or Workshop data is migrated in Phase 8.2.
+
+
+## Phase 8.3 Research ownership
+
+The canonical Phase 7 Research snapshot in `data/research.ts` is now migration/verification-only. Production Research reads go through `lib/research/repository.ts` and Prisma/PostgreSQL.
+
+The Research database record preserves the canonical ID, slug, title, category, short description, ordering, publication state, availability, structured content and SEO metadata. `ResearchItem.order` preserves the Phase 7 array ordering.
+
+The deterministic Research import is `prisma/seed-research.ts`, exposed as `npm run research:seed`. `prisma/verify-research.ts`, exposed as `npm run research:verify`, compares the database against the canonical snapshot and checks count, unexpected records, IDs, slugs, required fields, ordering, publication state, structured fields, metadata and Research ↔ Service references.
+
+Research public queries are limited to published records. Unknown or unpublished Research slugs use the existing Next.js not-found behavior.
+
+Only the Research ↔ Service relationship is migrated in this phase because Services already exist in PostgreSQL. Expert, Article and Workshop/Event relationships remain for their future domain migrations; no placeholder records are created.
+
+No Research admin/editor, CMS, authentication, payments, users or other backend domain is introduced in Phase 8.3.
