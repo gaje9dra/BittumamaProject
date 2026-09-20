@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getServiceHref } from "@/data/services";
+import { getServiceHref } from "@/lib/services/paths";
 import type { ResearchEntry } from "@/data/research";
 import { getServicesForResearch } from "@/lib/content/relationships";
 
