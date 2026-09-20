@@ -5,22 +5,22 @@ import { ArrowUpRight, Check } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
-import { getAllServices, getServiceHref } from "@/data/services";
+import { getServiceHref } from "@/data/services";
+import type { Service } from "@/data/services";
 
-const needs = Array.from(
-  new Set(
-    getAllServices()
-      .map((service) => service.need)
-      .filter((need): need is string => Boolean(need)),
-  ),
-);
-
-export function ServiceFinder() {
+export function ServiceFinder({ services }: { services: Service[] }) {
+  const needs = Array.from(
+    new Set(
+      services
+        .map((service) => service.need)
+        .filter((need): need is string => Boolean(need)),
+    ),
+  );
   const [selectedNeed, setSelectedNeed] = useState(needs[0]);
 
   const matches = useMemo(
-    () => getAllServices().filter((service) => service.need === selectedNeed),
-    [selectedNeed],
+    () => services.filter((service) => service.need === selectedNeed),
+    [services, selectedNeed],
   );
 
   return (
