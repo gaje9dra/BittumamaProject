@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import { EventDetailPage } from "@/components/events/event-detail-page";
 import { getAllEvents, getEventBySlug, getEventHref } from "@/data/events";
 
@@ -30,5 +31,11 @@ export default async function WorkshopDetailRoute({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  return <EventDetailPage event={getEventBySlug(slug)} />;
+  const event = getEventBySlug(slug);
+
+  if (!event) {
+    notFound();
+  }
+
+  return <EventDetailPage event={event} />;
 }
