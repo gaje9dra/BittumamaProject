@@ -1,0 +1,1 @@
+Temporary CI verification marker. This file is only used to exercise the pull-request build workflow and is not part of the product architecture.
