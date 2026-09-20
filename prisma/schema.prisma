@@ -49,6 +49,11 @@ enum UserRole {
   ADMIN
 }
 
+enum MediaStatus {
+  ACTIVE
+  ARCHIVED
+}
+
 model User {
   id                String           @id @default(cuid())
   name              String?
@@ -148,6 +153,7 @@ model ResearchItem {
   type             String?
   topic            String?
   image            String?
+  imageMediaId     String?
   featured         Boolean             @default(false)
   tags             Json?
   highlights       Json?
