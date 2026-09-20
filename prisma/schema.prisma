@@ -155,8 +155,12 @@ model Article {
   slug           String            @unique
   title          String
   category       String
+  order          Int               @default(0)
   date           DateTime?
   excerpt        String?
+  author         String?
+  authorRole     String?
+  authorSlug     String?
   content        String?
   sections       Json?
   image          String?
@@ -179,6 +183,7 @@ model Article {
   @@index([status])
   @@index([category])
   @@index([date])
+  @@index([order])
   @@index([authorId])
 }
 
