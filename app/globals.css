@@ -301,6 +301,7 @@
     height: calc(100dvh - var(--mobile-menu-top) - 1rem);
     border-radius: var(--radius-lg) var(--radius-lg) var(--radius-xl) var(--radius-xl);
     clip-path: inset(0 round var(--radius-lg) var(--radius-lg) var(--radius-xl) var(--radius-xl));
+    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
   }
 
   .mobile-menu-panel-closing {
