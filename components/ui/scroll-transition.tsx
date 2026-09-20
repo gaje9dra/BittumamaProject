@@ -13,23 +13,23 @@ type ScrollTransitionProps = {
 
 const modeConfig = {
   content: {
-    y: 18,
-    opacity: 0.78,
+    y: 32,
+    opacity: 0.62,
   },
   heading: {
-    y: 20,
-    opacity: 0.72,
+    y: 38,
+    opacity: 0.56,
   },
   visual: {
-    y: 12,
-    opacity: 0.86,
+    y: 22,
+    opacity: 0.72,
   },
 } as const;
 
 export function ScrollTransition({
   children,
   className,
-  distance = 18,
+  distance = 32,
   mode = "content",
 }: ScrollTransitionProps) {
   const reducedMotion = useReducedMotion();
@@ -40,7 +40,7 @@ export function ScrollTransition({
     margin: "0px 0px -8% 0px",
   });
   const config = modeConfig[mode];
-  const movement = Math.min(Math.max(distance, 8), config.y);
+  const movement = Math.min(Math.max(distance, 12), config.y);
 
   return (
     <div
@@ -66,7 +66,7 @@ export function ScrollTransition({
           reducedMotion
             ? { duration: 0 }
             : {
-                duration: mode === "heading" ? 0.34 : 0.3,
+                duration: mode === "heading" ? 0.42 : mode === "visual" ? 0.36 : 0.38,
                 ease: [0.22, 0.8, 0.24, 1],
               }
         }
