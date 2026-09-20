@@ -15,8 +15,8 @@ export function HomeProcess() {
       className="scroll-anchor border-t border-border bg-surface-muted"
     >
       <Container size="wide" className="layout-section-lg">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
-          <ScrollTransition distance={56}>
+        <ScrollTransition distance={56}>
+          <div className="grid gap-10 lg:grid-cols-12 lg:gap-x-8 xl:gap-x-12">
 
                       <div className="lg:col-span-4">
                         <p className="type-label text-muted-foreground">{process.eyebrow}</p>
@@ -62,8 +62,8 @@ export function HomeProcess() {
                           />
                         </Link>
                       </div>
-          </ScrollTransition>
-        </div>
+          </div>
+        </ScrollTransition>        </div>
       </Container>
     </section>
   );
