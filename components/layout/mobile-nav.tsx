@@ -141,8 +141,8 @@ export function MobileNav({ className }: { className?: string }) {
         aria-current={active ? "page" : undefined}
         onClick={closeMenu}
         className={cn(
-          "type-h4 flex min-h-14 items-center justify-between border-b border-border py-3 text-foreground transition-colors duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4",
-          active && "font-semibold text-primary",
+          "mobile-menu-link type-h4 flex min-h-14 items-center justify-between border-b border-white/20 py-3 text-primary-foreground transition-[color,transform,opacity] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] hover:translate-x-1 hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4",
+          active && "font-semibold text-primary-foreground",
         )}
       >
         <span>
@@ -201,7 +201,7 @@ export function MobileNav({ className }: { className?: string }) {
                       controlsId={searchPanelId}
                       open={searchOpen}
                       onClick={() => setSearchOpen((value) => !value)}
-                      className="w-full justify-start border-border bg-surface"
+                      className="w-full justify-start border-white/20 bg-white/10 text-primary-foreground hover:bg-white/15"
                     />
                     <SearchPanel
                       id={searchPanelId}
@@ -228,7 +228,7 @@ export function MobileNav({ className }: { className?: string }) {
                         type="button"
                         onClick={() => enterSubmenu(item)}
                         className={cn(
-                          "type-h4 flex min-h-14 w-full items-center justify-between border-b border-border py-3 text-left text-foreground transition-colors duration-[var(--motion-micro)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4",
+                          "mobile-menu-link type-h4 flex min-h-14 w-full items-center justify-between border-b border-white/20 py-3 text-left text-primary-foreground transition-[color,transform,opacity] duration-[var(--motion-micro)] hover:translate-x-1 hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4",
                           index === 0 && "border-t",
                           isNavigationItemActive(pathname, item.href) && "font-semibold text-primary",
                         )}
@@ -245,24 +245,24 @@ export function MobileNav({ className }: { className?: string }) {
                     ref={submenuBackRef}
                     type="button"
                     onClick={leaveSubmenu}
-                    className="type-nav mb-6 inline-flex min-h-11 items-center gap-2 text-muted-foreground transition-colors duration-[var(--motion-fast)] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
+                    className="type-nav mb-6 inline-flex min-h-11 items-center gap-2 text-primary-foreground/70 transition-colors duration-[var(--motion-fast)] hover:text-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-3"
                     aria-label={"Back to " + (activeSubmenu.label === "Services" ? "main menu" : "main navigation")}
                   >
                     <ArrowLeft aria-hidden="true" size={18} />
                     Back
                   </button>
 
-                  <div className="border-b border-border pb-5">
-                    <p className="type-h3">{activeSubmenu.label}</p>
-                    {activeSubmenu.description && <p className="type-body-sm mt-2 text-muted-foreground">{activeSubmenu.description}</p>}
+                  <div className="border-b border-white/20 pb-5">
+                    <p className="type-h3 text-primary-foreground">{activeSubmenu.label}</p>
+                    {activeSubmenu.description && <p className="type-body-sm mt-2 text-primary-foreground/70">{activeSubmenu.description}</p>}
                   </div>
 
                   <div className="mt-2">
                     {(activeSubmenu.children ?? []).map(renderDestination)}
                     {(activeSubmenu.groups ?? []).map((group) => (
-                      <section key={group.label} className="border-b border-border py-5">
-                        <p className="type-label text-muted-foreground">{group.label}</p>
-                        {group.description && <p className="type-caption mt-2 text-muted-foreground">{group.description}</p>}
+                      <section key={group.label} className="border-b border-white/20 py-5">
+                        <p className="type-label text-primary-foreground/60">{group.label}</p>
+                        {group.description && <p className="type-caption mt-2 text-primary-foreground/70">{group.description}</p>}
                         <div className="mt-2">{group.items.map(renderDestination)}</div>
                       </section>
                     ))}
@@ -274,7 +274,7 @@ export function MobileNav({ className }: { className?: string }) {
             <Link
               href={globalActions.contact.href}
               onClick={closeMenu}
-              className="mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border border-primary bg-primary px-5 type-button text-primary-foreground transition-colors duration-[var(--motion-micro)] hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-3"
+              className="mobile-menu-utility mt-8 inline-flex min-h-11 w-fit items-center rounded-[var(--radius-md)] border border-background bg-background px-5 type-button text-foreground transition-[background-color,color,transform] duration-[var(--motion-micro)] hover:-translate-y-px focus-visible:outline-2 focus-visible:outline-offset-3"
             >
               {globalActions.contact.label}
             </Link>
