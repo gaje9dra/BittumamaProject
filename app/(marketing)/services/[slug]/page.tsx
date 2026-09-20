@@ -23,6 +23,7 @@ export async function generateMetadata({
   }
 
   return createContentMetadata({
+    seo: service.seo,
     title: service.title,
     description: service.shortDescription,
     canonical: getServiceHref(service),
