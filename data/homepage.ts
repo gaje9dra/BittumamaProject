@@ -1,5 +1,3 @@
-import { getServiceById, getServiceHref, type Service } from "@/data/services";
-
 export const homepageContent = {
   hero: {
     eyebrow: "Research Support",
@@ -49,19 +47,13 @@ export const homepageContent = {
         index: "01",
         title: "Thesis & Dissertation",
         description: "Support for students working on thesis and dissertation requirements.",
-        services: ["thesis-support", "dissertation-support"]
-          .map((id) => getServiceById(id))
-          .filter((service): service is Service => Boolean(service))
-          .map((service) => ({ label: service.title, href: getServiceHref(service) })),
+        serviceIds: ["thesis-support", "dissertation-support"],
       },
       {
         index: "02",
         title: "Research Papers & Analysis",
         description: "Support for researchers and students working on papers and data analysis.",
-        services: ["research-paper", "data-analysis"]
-          .map((id) => getServiceById(id))
-          .filter((service): service is Service => Boolean(service))
-          .map((service) => ({ label: service.title, href: getServiceHref(service) })),
+        serviceIds: ["research-paper", "data-analysis"],
       },
     ],
   },
