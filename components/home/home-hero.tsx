@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
-import { ScrollHeading } from "@/components/ui/scroll-heading";
+import { Heading } from "@/components/ui/heading";
 import { homepageContent } from "@/data/homepage";
 
 export function HomeHero() {
@@ -20,14 +20,13 @@ export function HomeHero() {
               <p className="type-label text-muted-foreground">{hero.eyebrow}</p>
             </div>
 
-            <ScrollHeading
+            <Heading
               id="home-hero-title"
               level={1}
-              className="mt-6 max-w-[12ch] text-foreground"
-              headingClassName="type-display"
+              className="type-display mt-6 max-w-[12ch] text-foreground"
             >
               {hero.title}
-            </ScrollHeading>
+            </Heading>
 
             <div className="mt-8 grid gap-8 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-10">
               <p className="type-body-lg max-w-[42rem] text-muted-foreground">
