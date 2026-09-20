@@ -13,7 +13,7 @@ import { getPublishedExpertById, getPublishedExpertBySlug, getPublishedExperts }
 import type { ResearchEntry } from "@/data/research";
 import type { Expert } from "@/data/expertise";
 import type { Article } from "@/data/articles";
-import { getPublishedEventById, getPublishedEventBySlug, type Event } from "@/lib/events/repository";
+import type { Event } from "@/data/events";
 
 export type ContentRelationshipValidationIssue = {
   sourceType: "service" | "research" | "expert" | "article" | "event";
