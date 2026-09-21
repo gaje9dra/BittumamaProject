@@ -522,3 +522,70 @@ With PostgreSQL/Auth.js configured:
 11. Run `npm run lint` and `npm run build`.
 
 Do not commit real personal inquiry data, credentials, `.env`, or `.env.local`.
+
+
+## Phase 8.14 — Admin User Management & Role Control
+
+Phase 8.14 adds the protected internal User Management area at `/admin/users`. It reuses the existing Phase 8.9 User/Account/Session authentication models and the existing server-side `requireAdmin()` authorization boundary. No authentication model or public user API was introduced.
+
+### Admin routes
+
+- `/admin/users` — paginated, server-side user listing with name/email search, role filtering and practical sorting
+- `/admin/users/[id]` — minimized user detail view with account/provider context, associated inquiry count and role-management controls
+
+The existing admin shell now exposes **Users** on desktop and mobile without changing the shell structure.
+
+### Data minimization
+
+User list/detail queries select only administrative fields required by the interface. They do not expose OAuth access tokens, refresh tokens, session tokens, password hashes, provider credentials or full Account/Session records. Provider information is shown only at the high-level provider-name level. Contact inquiry content is not embedded in the user-management UI; only an efficient associated inquiry count is shown.
+
+### Authorization
+
+Both user reads and role mutations are server-side protected. User IDs and requested roles are validated on the server. The authenticated actor is derived from the server-side session; no actor ID, admin ID, client role, or user object supplied by the browser is trusted.
+
+There is no public `/api/users` endpoint and no public user search. User-management pages are dynamic and marked non-indexable/non-cacheable.
+
+### Role management
+
+The existing `UserRole` enum remains the only role model:
+
+- `USER`
+- `ADMIN`
+
+A deliberate confirmation is required before changing a role. Role updates use a focused Server Action and authoritative PostgreSQL state. Promotion is `USER → ADMIN`; demotion is `ADMIN → USER` where permitted.
+
+The final administrator cannot be demoted. Self-demotion is blocked to prevent administrative lockout. Demotion checks the current database admin count rather than a cached value. Role mutations run in a PostgreSQL serializable Prisma transaction so concurrent administrator changes use the strongest practical protection available in the current architecture; a serialization conflict is handled as a safe generic failure rather than silently risking removal of all administrators.
+
+No user deletion, account disabling, bulk role operations, impersonation, password authentication, session-management UI, email/provider identity editing, or full audit subsystem was added.
+
+### Session consistency
+
+Authentication uses the existing NextAuth/Auth.js database-session strategy. The existing session callback reads the authenticated user's current database role when the session is resolved, so the role source remains the User record rather than a browser-provided role. The implementation does not claim instantaneous revocation of an already-issued client session beyond the behavior provided by the existing authentication/session strategy.
+
+### Bootstrap
+
+The existing intentional `npm run auth:bootstrap-admin` flow remains the administrator bootstrap mechanism. It requires a real existing User, `BOOTSTRAP_ADMIN_EMAIL`, and explicit `BOOTSTRAP_ADMIN_CONFIRM=YES`. Phase 8.14 does not seed fake administrators or production test users.
+
+### Compatibility
+
+The existing User, Account, Session and ContactInquiry relationships remain intact. The public Contact flow, content management, media management, inquiry management, authentication flow and public website are not redesigned by this phase. The previously removed homepage hero and removed public content remain removed.
+
+### Verification
+
+With PostgreSQL/Auth.js configured:
+
+1. Run `npm run prisma:generate` and `npm run prisma:validate`.
+2. Confirm `/admin/users` is accessible to an ADMIN and denied to anonymous/USER accounts.
+3. Test name and email search, ADMIN/USER role filters, newest/oldest/name sorting and pagination.
+4. Open a known user and verify minimized account/provider information and inquiry count.
+5. Test unknown and malformed user IDs for safe not-found behavior.
+6. Promote a synthetic USER to ADMIN and verify the role is persisted.
+7. Demote an ADMIN to USER and verify the target eventually loses admin access according to the existing database-session behavior.
+8. Attempt self-demotion and confirm it is rejected.
+9. With exactly one ADMIN, attempt demotion and confirm it is rejected.
+10. Exercise client-payload spoofing for role, actor and target IDs; verify the server remains authoritative.
+11. Verify existing ContactInquiry relationships remain intact.
+12. Verify public pages, Contact, authentication, content, media and inquiry management continue working.
+13. Run `npm run lint` and `npm run build`.
+
+Do not commit real user data, credentials, `.env`, or `.env.local`.
