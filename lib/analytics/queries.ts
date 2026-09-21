@@ -69,7 +69,7 @@ export async function getAnalyticsAggregate(query: AnalyticsQuery): Promise<Anal
 
   const topRows = query.category === AnalyticsEventCategory.PAGE ? [] : await prisma.client.analyticsEvent.groupBy({
     by: ["contentType", "contentId"],
-    where: { ...viewWhere, contentType: { not: null }, contentId: { not: null } },
+    where: { ...viewWhere, contentType: query.contentType ?? { not: null }, contentId: { not: null } },
     _count: { _all: true },
     orderBy: { _count: { _all: "desc" } },
     take: 10,
