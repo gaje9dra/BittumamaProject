@@ -43,7 +43,7 @@ export default async function LoginPage({
             </p>
           ) : (
             <div className="mt-7">
-              <GoogleSignIn callbackUrl={params.callbackUrl === "/admin" ? "/admin" : "/auth-test"} />
+              <GoogleSignIn callbackUrl={params.callbackUrl && params.callbackUrl.startsWith("/") && !params.callbackUrl.startsWith("//") && !params.callbackUrl.startsWith("/admin") ? params.callbackUrl : "/auth-test"} />
             </div>
           )}
         </div>
