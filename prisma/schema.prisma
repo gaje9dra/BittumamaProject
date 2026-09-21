@@ -737,31 +737,3 @@ model AuditLog {
   @@index([severity, createdAt])
   @@index([requestId])
 }
-
-
-model AuditLog {
-  id          String        @id @default(cuid())
-  actorUserId String?
-  action      AuditAction
-  category    AuditCategory
-  entityType  String?
-  entityId    String?
-  result      AuditResult
-  severity    AuditSeverity @default(INFO)
-  summary     String
-  metadata    Json?
-  requestId   String?
-  ipAddress   String?
-  userAgent   String?
-  createdAt   DateTime      @default(now())
-  actorUser   User?         @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
-
-  @@index([createdAt])
-  @@index([actorUserId, createdAt])
-  @@index([action, createdAt])
-  @@index([category, createdAt])
-  @@index([entityType, entityId])
-  @@index([result, createdAt])
-  @@index([severity, createdAt])
-  @@index([requestId])
-}
