@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
-import { globalActions } from "@/data/site-config";
 import { cn } from "@/lib/utils";
 
 export function HeaderActions({ className }: { className?: string }) {
@@ -24,10 +23,16 @@ export function HeaderActions({ className }: { className?: string }) {
     <div className={cn("items-center gap-2", className)}>
       <SearchTrigger ref={searchTriggerRef} controlsId={searchPanelId} open={searchOpen} onClick={() => setSearchOpen((value) => !value)} />
       <Link
-        href={globalActions.contact.href}
+        href="/login"
+        className="inline-flex min-h-10 items-center px-2 type-button text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-3"
+      >
+        Login
+      </Link>
+      <Link
+        href="/register"
         className="inline-flex min-h-10 items-center rounded-[var(--radius-md)] border border-primary bg-primary px-4 type-button text-primary-foreground transition-colors duration-[var(--motion-fast)] hover:bg-primary-700 active:bg-primary-800 focus-visible:outline-2 focus-visible:outline-offset-3"
       >
-        {globalActions.contact.label}
+        Register
       </Link>
       <SearchPanel id={searchPanelId} open={searchOpen} onClose={closeSearch} restoreFocusRef={searchTriggerRef} />
     </div>
