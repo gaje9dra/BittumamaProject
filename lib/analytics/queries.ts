@@ -70,8 +70,8 @@ export async function getAnalyticsAggregate(query: AnalyticsQuery): Promise<Anal
   const topRows = query.category === AnalyticsEventCategory.PAGE ? [] : await prisma.client.analyticsEvent.groupBy({
     by: ["contentType", "contentId"],
     where: { ...viewWhere, contentType: query.contentType ?? { not: null }, contentId: { not: null } },
-    _count: { _all: true },
-    orderBy: { _count: { _all: "desc" } },
+    _count: { id: true },
+    orderBy: { _count: { id: "desc" } },
     take: 10,
   });
 
@@ -99,7 +99,7 @@ export async function getAnalyticsAggregate(query: AnalyticsQuery): Promise<Anal
     viewsTrend: viewRows.map((row) => ({ day: row.day.toISOString().slice(0, 10), count: Number(row.count) })),
     conversionsTrend: conversionRows.map((row) => ({ day: row.day.toISOString().slice(0, 10), count: Number(row.count) })),
     topContent: topRows.filter((row) => row.contentType && row.contentId).map((row) => ({
-      contentType: row.contentType!, contentId: row.contentId!, title: titleByKey.get(row.contentType! + ":" + row.contentId!) ?? "Unavailable content", views: row._count._all,
+      contentType: row.contentType!, contentId: row.contentId!, title: titleByKey.get(row.contentType! + ":" + row.contentId!) ?? "Unavailable content", views: row._count.id,
     })),
   };
 }
