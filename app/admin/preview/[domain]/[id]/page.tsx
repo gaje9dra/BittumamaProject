@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { isContentDomain, type ContentDomain } from "@/lib/admin/content";
@@ -36,7 +37,7 @@ export default async function AdminPreviewPage({
   const token = query.token ?? "";
   if (!verifyPreviewToken(token, domain, id)) redirect("/admin/content");
 
-  let content: React.ReactNode = null;
+  let content: ReactNode = null;
   switch (domain) {
     case "services": {
       const record = await getPreviewServiceById(id);
