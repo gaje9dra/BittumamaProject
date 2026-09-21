@@ -589,3 +589,83 @@ With PostgreSQL/Auth.js configured:
 13. Run `npm run lint` and `npm run build`.
 
 Do not commit real user data, credentials, `.env`, or `.env.local`.
+
+
+## Phase 8.15 — Advanced Publishing, Scheduling & Secure Draft Preview
+
+Phase 8.15 extends the existing Phase 8.11 content-management system rather than creating a second CMS. The five canonical domains remain Services, Research, Experts, Articles, and Workshops / Events. The public website's visual design and removed homepage hero remain unchanged.
+
+### Publication model
+
+Each canonical content model now has an additive nullable `publishAt` timestamp. The existing `ContentStatus` enum remains DRAFT, PUBLISHED, and ARCHIVED. A scheduled record remains DRAFT with a future `publishAt`; the admin UI derives the Scheduled label without introducing a redundant permanent database status.
+
+For Workshops / Events, the existing `date` / `endDate` fields remain the event lifecycle. `publishAt` is independent publication timing.
+
+### Publish and schedule actions
+
+The existing server action remains the only content mutation boundary and requires `requireAdmin()`. It reloads authoritative state, validates public-content requirements, relationships and media, applies the existing slug/concurrency protections, and writes through the existing transaction.
+
+- Publish now: server sets PUBLISHED and `publishAt = new Date()`.
+- Schedule: validates a future time and stores the converted UTC timestamp while keeping the record DRAFT.
+- Cancel schedule: clears `publishAt` and keeps the record unpublished.
+- Unpublish: changes to DRAFT and clears `publishAt`.
+- Archive: changes to ARCHIVED and clears `publishAt`.
+
+The browser cannot directly set a trusted publication state, publication timestamp, or actor identity.
+
+### Timezone handling
+
+The schedule UI requires an explicit IANA timezone selection. The entered datetime-local value is converted server-side to UTC. The UI exposes UTC, Asia/Kolkata, Europe/London, and America/New_York as practical choices.
+
+### Public visibility
+
+All five public repositories now require PUBLISHED plus either a null publishAt or a publishAt at/before current server time. Public related-content lookups use the same rule, preventing scheduled records from leaking through lists, detail routes, or relationships.
+
+### Secure preview
+
+The editor Preview action creates a short-lived HMAC-signed token using PREVIEW_SECRET or the existing AUTH_SECRET. Tokens expire after 10 minutes and contain only domain, record ID, and expiry. Preview requests require an ADMIN session, valid signature, matching domain/record, and an unexpired token.
+
+Preview pages are dynamic and marked noindex/noarchive/nocache. They reuse the existing public detail components and read current PostgreSQL content directly. Normal public repositories are not weakened to expose drafts.
+
+### Scheduled execution
+
+A real Netlify Scheduled Function is implemented at `netlify/functions/publish-scheduled.mts` with a five-minute UTC cron cadence. Netlify documents Scheduled Functions as real cron-like functions that run on published deploys; they are available on all pricing plans and have a 30-second execution limit. citeturn3search0
+
+The worker finds only DRAFT records whose publishAt has arrived, validates required public fields/relationships/media, performs an idempotent status-guarded publication update, logs safe failures, and requests targeted Next.js revalidation through a protected internal route.
+
+The five-minute cadence means publication may execute shortly after the requested timestamp rather than claiming exact-second execution; the database timestamp remains authoritative.
+
+### Scheduler security
+
+The internal revalidation route accepts POST only and requires the server-only SCHEDULER_SECRET header. SCHEDULER_SECRET and optional PREVIEW_SECRET belong in deployment environment variables and must never be exposed through NEXT_PUBLIC_* variables or committed with real values. Netlify runtime environment variables are available to scheduled functions. citeturn3search7
+
+### Failed schedules and retries
+
+Invalid scheduled content remains DRAFT with publishAt intact. The worker logs the domain, record ID, and safe validation reasons and retries on a later invocation. Fixing the content allows a later run to publish it. Conditional status/publishAt updates prevent duplicate publication effects when a scheduler invocation retries or overlaps.
+
+### Concurrency
+
+The existing updatedAt stale-editor check remains active. Publishing does not silently overwrite a newer saved version. Scheduled publication uses a conditional DRAFT + eligible publishAt update for idempotency.
+
+Phase 8.15 does not add revision history, approvals, collaborative editing, notifications, analytics, payments, event registration, a calendar product, or public preview sharing.
+
+### Verification
+
+With PostgreSQL and authentication configured:
+
+1. Run `npm run prisma:generate` and `npm run prisma:validate`.
+2. Apply the additive migration using the project's normal Prisma deployment workflow.
+3. Verify drafts are absent from public lists, routes and relationships.
+4. Verify Preview is accessible only to an ADMIN with a valid, unexpired token.
+5. Verify preview pages are noindex and dynamically rendered.
+6. Verify Publish now, Unpublish and Archive behavior.
+7. Verify future publishAt records remain private until the scheduler runs.
+8. Use Netlify's Scheduled Function Run now facility to test the deployed worker; Netlify documents this as the supported manual testing path. citeturn3search0
+9. Verify scheduler retry/idempotency, cancellation and rescheduling.
+10. Verify invalid scheduled content remains unpublished and is logged safely.
+11. Verify stale edits, slug conflicts, invalid relationships, unavailable media and client status/publishAt/actor spoofing are rejected.
+12. Test admin controls at the required desktop/mobile widths.
+13. Run `npm run lint` and `npm run build`.
+14. Verify no secrets, .env, or .env.local files are committed.
+
+Do not proceed to Phase 8.16 or any later phase.
