@@ -3,14 +3,12 @@
 import { signOut } from "next-auth/react";
 import { useState } from "react";
 
-export function SignOutButton({ admin = false }: { admin?: boolean }) {
+export function SignOutButton() {
   const [pending, setPending] = useState(false);
 
   async function handleSignOut() {
     setPending(true);
-    if (admin) {
-      await fetch("/api/auth/admin/context", { method: "DELETE", credentials: "same-origin" });
-    }
+    await fetch("/api/auth/admin/context", { method: "DELETE", credentials: "same-origin" });
     await signOut({ callbackUrl: "/login" });
     setPending(false);
   }
