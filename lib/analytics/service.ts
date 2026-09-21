@@ -1,6 +1,6 @@
 import "server-only";
 
-import { AnalyticsEventCategory, AnalyticsEventName } from "@/generated/prisma/client";
+import { AnalyticsEventName } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db/prisma";
 import { ANALYTICS_EVENT_REGISTRY } from "@/lib/analytics/registry";
 import { createAnalyticsEvent } from "@/lib/analytics/repository";
