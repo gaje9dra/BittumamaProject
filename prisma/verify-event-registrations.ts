@@ -40,7 +40,7 @@ try {
       date: new Date(Date.now() + 7 * 86400000),
       status: "PUBLISHED",
       registrationEnabled: true,
-      registrationCapacity: 1,
+      registrationCapacity: 2,
       registrationMode: "ANONYMOUS_ALLOWED",
     },
     select: { id: true },
@@ -51,7 +51,7 @@ try {
   try {
     await registerWithSerializable(event.id, "phase-8-16@example.invalid");
   } catch (error) {
-    duplicateRejected = error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002" || error instanceof Error && error.message === "EVENT_FULL";
+    duplicateRejected = error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002";
   }
   if (!duplicateRejected) throw new Error("Duplicate registration was not rejected.");
 
@@ -64,6 +64,7 @@ try {
   if (!reactivated.id) throw new Error("Cancelled registration could not be re-created.");
 
   await prisma.eventRegistration.deleteMany({ where: { eventId: event.id } });
+  await prisma.event.update({ where: { id: event.id }, data: { registrationCapacity: 1 } });
 
   const attempts = await Promise.allSettled([
     registerWithSerializable(event.id, "phase-8-16-concurrent-a@example.invalid"),
