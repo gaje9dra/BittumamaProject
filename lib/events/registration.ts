@@ -234,7 +234,7 @@ export async function cancelOwnRegistration(registrationId: string) {
         select: { id: true, status: true, eventId: true, event: { select: { date: true } } },
       });
       if (!registration) throw new Error("NOT_FOUND");
-      if (![EventRegistrationRecordStatus.PENDING, EventRegistrationRecordStatus.CONFIRMED].includes(registration.status)) throw new Error("NOT_CANCELLABLE");
+      if (!CAPACITY_STATUSES.includes(registration.status)) throw new Error("NOT_CANCELLABLE");
       if (registration.event.date <= new Date()) throw new Error("EVENT_STARTED");
 
       return tx.eventRegistration.update({
