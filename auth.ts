@@ -52,7 +52,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       try {
         const target = new URL(url, baseUrl);
         const base = new URL(baseUrl);
-        return target.origin === base.origin ? target.href : baseUrl;
+        if (target.origin !== base.origin) return baseUrl;
+        if (target.pathname === "/admin" || target.pathname.startsWith("/admin/")) return new URL("/auth-test", base).href;
+        return target.href;
       } catch {
         return baseUrl;
       }
