@@ -4,6 +4,8 @@ import { Prisma, EventRegistrationRecordStatus, EventRegistrationMode } from "@/
 import { getCurrentUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { deliverCreatedNotifications, queueRegistrationNotification } from "@/lib/notifications/domain";
+import { AnalyticsEventCategory, AnalyticsEventName } from "@/generated/prisma/client";
+import { trackAnalyticsEvent } from "@/lib/analytics/service";
 
 const CAPACITY_STATUSES: EventRegistrationRecordStatus[] = [
   EventRegistrationRecordStatus.PENDING,
@@ -163,6 +165,7 @@ export async function createRegistration(
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
       const notificationIds: string[] = [];
+      let createdRegistrationId = "";
       await prisma.client.$transaction(async (tx) => {
         const lockedEvent = await tx.event.findUnique({
           where: { id: eventId },
@@ -192,6 +195,7 @@ export async function createRegistration(
           },
           select: { id: true, userId: true, fullName: true, email: true, status: true },
         });
+        createdRegistrationId = registration.id;
         const notification = await queueRegistrationNotification(tx, {
           registrationId: registration.id,
           userId: registration.userId,
@@ -205,6 +209,7 @@ export async function createRegistration(
         if (notification) notificationIds.push(notification.notificationId);
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
 
+      await trackAnalyticsEvent({ eventName: AnalyticsEventName.REGISTRATION_COMPLETED, eventCategory: AnalyticsEventCategory.CONVERSION, userId: user?.id ?? null, contentType: "WORKSHOP", contentId: eventId, metadata: { eventId, registrationId: createdRegistrationId } });
       await deliverCreatedNotifications(notificationIds);
       return { ok: true, message: "Registration confirmed.", fieldErrors: {} };
     } catch (error) {
