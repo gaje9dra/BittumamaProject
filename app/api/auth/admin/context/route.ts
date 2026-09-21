@@ -1,4 +1,8 @@
 import { NextResponse } from "next/server";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/db/prisma";
+import { recordAuditBestEffort } from "@/lib/audit/service";
+import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
 import { cookies } from "next/headers";
 import { clientRateLimitKey, consumeApiRateLimit } from "@/lib/api/rate-limit";
 import {
@@ -29,6 +33,16 @@ export async function POST(request: Request) {
 }
 
 export async function DELETE() {
+  const session = await auth();
+  if (session?.user?.id) {
+    await recordAuditBestEffort(prisma.client, {
+      action: AuditAction.AUTH_LOGOUT,
+      category: AuditCategory.AUTHENTICATION,
+      result: AuditResult.SUCCESS,
+      summary: "Authentication context cleared during logout.",
+      actor: { userId: session.user.id, type: "USER" },
+    });
+  }
   const store = await cookies();
   store.delete(ADMIN_INTENT_COOKIE);
   store.delete(ADMIN_CONTEXT_COOKIE);
