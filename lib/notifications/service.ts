@@ -68,7 +68,13 @@ export async function deliverNotification(notificationId: string) {
   }
 }
 
+const NON_RETRYABLE_FAILURES = new Set(["EMAIL_NOT_CONFIGURED", "INVALID_PAYLOAD", "UNSUPPORTED_CHANNEL"]);
+
 export async function retryNotification(notificationId: string) {
+  const existing = await getNotification(notificationId);
+  if (!existing || existing.status !== NotificationStatus.FAILED || (existing.failureCode && NON_RETRYABLE_FAILURES.has(existing.failureCode))) {
+    return { ok: false as const, reason: "NOT_RETRYABLE" as const };
+  }
   const updated = await prisma.client.notification.updateMany({
     where: { id: notificationId, status: NotificationStatus.FAILED },
     data: { status: NotificationStatus.PENDING, failedAt: null, failureCode: null, failureMessage: null },
