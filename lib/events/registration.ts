@@ -294,3 +294,30 @@ export async function cancelOwnRegistration(registrationId: string) {
     return failure("Unable to cancel the registration.");
   }
 }
+
+
+export async function listUserRegistrations(userId: string, page = 1, pageSize = 20) {
+  const safePage = Math.min(Math.max(page, 1), 100);
+  const safeSize = Math.min(Math.max(pageSize, 5), 50);
+  const where = { userId };
+  const [items, total] = await Promise.all([
+    prisma.client.eventRegistration.findMany({
+      where,
+      select: {
+        id: true,
+        eventId: true,
+        fullName: true,
+        email: true,
+        status: true,
+        createdAt: true,
+        updatedAt: true,
+        event: { select: { id: true, slug: true, title: true, date: true } },
+      },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      skip: (safePage - 1) * safeSize,
+      take: safeSize,
+    }),
+    prisma.client.eventRegistration.count({ where }),
+  ]);
+  return { items, total, page: safePage, pageSize: safeSize, totalPages: Math.max(1, Math.ceil(total / safeSize)) };
+}

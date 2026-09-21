@@ -11,6 +11,8 @@ import { getConfiguredPaymentProvider, getConfiguredPaymentProviderName } from "
 import { AnalyticsEventCategory, AnalyticsEventName } from "@/generated/prisma/client";
 import { trackAnalyticsEvent } from "@/lib/analytics/service";
 import { assertPaymentTransition } from "@/lib/payments/state";
+import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
+import { recordAudit } from "@/lib/audit/service";
 import { createPaymentTransaction, getPaymentByReference } from "@/lib/payments/repository";
 import type { ResolvedPaymentTarget, VerifiedPayment } from "@/lib/payments/types";
 
@@ -59,7 +61,7 @@ export async function initiateCheckout(reference: string, returnUrl: string) {
   return response;
 }
 
-export async function reconcileVerifiedPayment(verified: VerifiedPayment) {
+export async function reconcileVerifiedPayment(verified: VerifiedPayment, actorUserId: string | null = null) {
   const transaction = await prisma.client.paymentTransaction.findUnique({ where: { reference: verified.reference } });
   if (!transaction) throw new Error("PAYMENT_NOT_FOUND");
   if (normalizeCurrency(verified.currency) !== transaction.currency || verified.amountMinor !== transaction.amountMinor) {
@@ -88,6 +90,7 @@ export async function reconcileVerifiedPayment(verified: VerifiedPayment) {
     assertPaymentTransition(current.status, verified.status);
 
     const updated = await tx.paymentTransaction.update({ where: { id: current.id }, data });
+    await recordAudit(tx, { action: AuditAction.PAYMENT_STATE_CHANGED, category: AuditCategory.PAYMENT, result: AuditResult.SUCCESS, summary: "Payment state changed from verified provider state.", entityType: "PaymentTransaction", entityId: updated.id, metadata: { paymentTransactionId: updated.id, previousStatus: current.status, newStatus: updated.status, provider: updated.provider }, actor: { userId: actorUserId, type: actorUserId ? "USER" : "SYSTEM" } });
     if (verified.status === PaymentStatus.SUCCESS && updated.registrationId) {
       await tx.eventRegistration.updateMany({
         where: { id: updated.registrationId, status: { in: ["PENDING", "CONFIRMED"] } },

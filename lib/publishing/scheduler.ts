@@ -1,4 +1,6 @@
 import { prisma } from "../db/prisma";
+import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
+import { recordAuditBestEffort } from "@/lib/audit/service";
 type ContentDomain = "services" | "research" | "experts" | "articles" | "workshops";
 
 const DOMAINS: ContentDomain[] = ["services", "research", "experts", "articles", "workshops"];
@@ -129,7 +131,10 @@ export async function publishScheduledContent(now = new Date()) {
               ? prisma.client.article.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } })
               : prisma.client.event.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } }));
 
-      if (result.count === 1) published.push({ domain, id: candidate.id, slug: candidate.slug });
+      if (result.count === 1) {
+        await recordAuditBestEffort(prisma.client, { action: AuditAction.CONTENT_PUBLISHED, category: AuditCategory.CONTENT, result: AuditResult.SUCCESS, summary: "Scheduled content publication completed.", entityType: domain === "workshops" ? "Event" : domain === "research" ? "ResearchItem" : domain === "experts" ? "Expert" : domain === "articles" ? "Article" : "Service", entityId: candidate.id, metadata: { contentType: domain, contentId: candidate.id, trigger: "scheduled" }, actor: { userId: null, type: "SYSTEM" } });
+        published.push({ domain, id: candidate.id, slug: candidate.slug });
+      }
     }
   }
 

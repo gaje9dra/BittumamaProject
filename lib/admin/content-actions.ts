@@ -6,6 +6,8 @@ import { Prisma } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { contentBasePath, isContentDomain, type ContentDomain } from "@/lib/admin/content";
+import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
+import { recordAudit } from "@/lib/audit/service";
 
 export type ContentActionState = {
   message: string | null;
@@ -416,7 +418,7 @@ export async function saveContent(
   formData: FormData,
 ): Promise<ContentActionState> {
   void _previous;
-  await requireAdmin();
+  const actor = await requireAdmin();
 
   const domainValue = value(formData, "domain");
   if (!isContentDomain(domainValue)) return { message: "Unknown content domain.", fieldErrors: {} };
@@ -479,6 +481,9 @@ export async function saveContent(
         ? await updateRecord(tx, domain, id, data)
         : await createRecord(tx, domain, data);
       await syncRelations(tx, domain, record.id, parsed.relationIds);
+      const entityType = domain === "workshops" ? "Event" : domain === "research" ? "ResearchItem" : domain === "experts" ? "Expert" : domain === "articles" ? "Article" : "Service";
+      const action = !id ? AuditAction.CONTENT_CREATED : intent === "publish" ? AuditAction.CONTENT_PUBLISHED : intent === "unpublish" ? AuditAction.CONTENT_UNPUBLISHED : intent === "archive" ? AuditAction.CONTENT_ARCHIVED : AuditAction.CONTENT_UPDATED;
+      await recordAudit(tx, { action, category: AuditCategory.CONTENT, result: AuditResult.SUCCESS, summary: !id ? "Content created." : action === AuditAction.CONTENT_UPDATED ? "Content updated." : "Content publication state changed.", entityType, entityId: record.id, metadata: { contentType: domain, contentId: record.id }, actor: { userId: actor.id, type: "USER" } });
       return { id: record.id, previousSlug: current?.slug };
     });
   } catch (error) {

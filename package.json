@@ -36,7 +36,9 @@
     "payments:verify": "tsx prisma/verify-payments.ts",
     "notifications:verify": "tsx prisma/verify-notifications.ts",
     "analytics:verify": "tsx prisma/verify-analytics.ts",
-    "search:verify": "tsx prisma/verify-search.ts"
+    "search:verify": "tsx prisma/verify-search.ts",
+    "audit:verify": "tsx prisma/verify-audit.ts",
+    "api:verify": "tsx prisma/verify-api.ts"
   },
   "dependencies": {
     "next": "16.3.5",

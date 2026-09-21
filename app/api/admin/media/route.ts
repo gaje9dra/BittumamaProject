@@ -4,6 +4,8 @@ import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { getMediaStorage } from "@/lib/media/storage";
 import { validateImageFile } from "@/lib/media/validation";
+import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
+import { recordAuditBestEffort } from "@/lib/audit/service";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +26,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  await requireAdmin();
+  const actor = await requireAdmin();
   const formData = await request.formData();
   const file = formData.get("file");
   if (!(file instanceof File)) return NextResponse.json({ error: "Choose an image file." }, { status: 400 });
@@ -43,6 +45,7 @@ export async function POST(request: Request) {
         normalizedFilename: validated.normalizedFilename, mimeType: validated.mimeType,
         fileSize: validated.buffer.byteLength, width: validated.detected.width, height: validated.detected.height,
       } });
+      await recordAuditBestEffort(prisma.client, { action: AuditAction.MEDIA_CREATED, category: AuditCategory.MEDIA, result: AuditResult.SUCCESS, summary: "Media asset uploaded.", entityType: "MediaAsset", entityId: id, metadata: { mediaId: id, mimeType: validated.mimeType, fileSize: validated.buffer.byteLength }, actor: { userId: actor.id, type: "USER" } });
     } catch (error) {
       await getMediaStorage().remove(storageKey).catch(() => undefined);
       throw error;

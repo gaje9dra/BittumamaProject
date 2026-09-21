@@ -19,7 +19,8 @@ export const ANALYTICS_EVENT_REGISTRY: Record<AnalyticsEventName, AnalyticsEvent
   REGISTRATION_COMPLETED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false, contentType: AnalyticsContentType.WORKSHOP },
   PAYMENT_INITIATED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },
   PAYMENT_SUCCESS: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },
-  PAYMENT_FAILED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },\n  SEARCH_SUBMITTED: { category: AnalyticsEventCategory.PAGE, clientAllowed: true },
+  PAYMENT_FAILED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },
+  SEARCH_SUBMITTED: { category: AnalyticsEventCategory.PAGE, clientAllowed: true },
 };
 
 export const VIEW_EVENT_NAMES: AnalyticsEventName[] = [

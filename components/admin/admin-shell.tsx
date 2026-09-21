@@ -19,6 +19,7 @@ const navItems = [
   { href: "/admin/payments", label: "Payments" },
   { href: "/admin/notifications", label: "Notifications" },
   { href: "/admin/analytics", label: "Analytics" },
+  { href: "/admin/audit-logs", label: "Audit logs" },
 ];
 
 export function AdminShell({ admin, children }: { admin: AdminIdentity; children: ReactNode }) {

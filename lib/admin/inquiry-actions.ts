@@ -1,7 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ContactInquiryStatus } from "@/generated/prisma/client";
+import { AuditAction, AuditCategory, AuditResult, ContactInquiryStatus } from "@/generated/prisma/client";
+import { recordAuditBestEffort } from "@/lib/audit/service";
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 
@@ -16,7 +17,7 @@ export async function updateInquiryStatus(
   _previous: InquiryActionState,
   formData: FormData,
 ): Promise<InquiryActionState> {
-  await requireAdmin();
+  const actor = await requireAdmin();
 
   const id = String(formData.get("id") ?? "").trim();
   const status = String(formData.get("status") ?? "").trim();
@@ -27,14 +28,12 @@ export async function updateInquiryStatus(
   try {
     const existing = await prisma.client.contactInquiry.findUnique({
       where: { id },
-      select: { id: true },
+      select: { id: true, status: true },
     });
     if (!existing) return { message: null, error: "Inquiry not found." };
 
-    await prisma.client.contactInquiry.update({
-      where: { id },
-      data: { status: status as ContactInquiryStatus },
-    });
+    await prisma.client.contactInquiry.update({ where: { id }, data: { status: status as ContactInquiryStatus } });
+    await recordAuditBestEffort(prisma.client, { action: AuditAction.INQUIRY_STATUS_CHANGED, category: AuditCategory.INQUIRY, result: AuditResult.SUCCESS, summary: "Inquiry status changed.", entityType: "ContactInquiry", entityId: id, metadata: { inquiryId: id, previousStatus: existing.status, newStatus: status }, actor: { userId: actor.id, type: "USER" } });
 
     revalidatePath("/admin");
     revalidatePath("/admin/inquiries");
