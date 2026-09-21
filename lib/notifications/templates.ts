@@ -44,9 +44,10 @@ export function buildNotificationTemplate(payload: NotificationPayload) {
     case "PAYMENT_PENDING": {
       const title = payload.type === "PAYMENT_SUCCESS" ? "Payment successful" : payload.type === "PAYMENT_FAILED" ? "Payment failed" : "Payment requires confirmation";
       const subject = `${title} — ${cleanText(payload.reference, 80)}`;
-      const failure = payload.type === "PAYMENT_FAILED" && payload.failureMessage ? `\nReason: ${cleanText(payload.failureMessage, 300)}` : "";
+      const failureMessage = payload.type === "PAYMENT_FAILED" ? payload.failureMessage : null;
+      const failure = failureMessage ? `\nReason: ${cleanText(failureMessage, 300)}` : "";
       const text = `${title}. Reference: ${cleanText(payload.reference, 80)}. Amount: ${cleanText(payload.currency, 3)} ${cleanText(payload.amount, 30)}. Purpose: ${cleanText(payload.purpose, 80)}. Status: ${cleanText(payload.status, 40)}.${failure}`;
-      const html = shell(title, `<p><strong>Reference:</strong> ${escapeHtml(cleanText(payload.reference, 80))}</p><p><strong>Amount:</strong> ${escapeHtml(cleanText(payload.currency, 3))} ${escapeHtml(cleanText(payload.amount, 30))}<br><strong>Purpose:</strong> ${escapeHtml(cleanText(payload.purpose, 80))}<br><strong>Status:</strong> ${escapeHtml(cleanText(payload.status, 40))}</p>${failure ? `<p><strong>Reason:</strong> ${escapeHtml(cleanText(payload.failureMessage ?? "", 300))}</p>` : ""}`);
+      const html = shell(title, `<p><strong>Reference:</strong> ${escapeHtml(cleanText(payload.reference, 80))}</p><p><strong>Amount:</strong> ${escapeHtml(cleanText(payload.currency, 3))} ${escapeHtml(cleanText(payload.amount, 30))}<br><strong>Purpose:</strong> ${escapeHtml(cleanText(payload.purpose, 80))}<br><strong>Status:</strong> ${escapeHtml(cleanText(payload.status, 40))}</p>${failure ? `<p><strong>Reason:</strong> ${escapeHtml(cleanText(failureMessage ?? "", 300))}</p>` : ""}`);
       return { subject, text, html };
     }
   }
