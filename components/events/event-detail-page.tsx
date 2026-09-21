@@ -2,6 +2,10 @@ import Link from "next/link";
 import type { Event } from "@/data/events";
 import { getEventHref } from "@/lib/events/paths";
 import { getRelatedEvents } from "@/lib/events/repository";
+import { getCurrentUser } from "@/lib/auth/guards";
+import { getRegistrationAvailability } from "@/lib/events/registration";
+import { EventRegistrationForm } from "@/components/events/event-registration-form";
+import { EventRegistrationCancel } from "@/components/events/event-registration-cancel";
 import { Container } from "@/components/ui/container";
 
 function EventFacts({ event }: { event: Event }) {
@@ -27,7 +31,8 @@ function EventFacts({ event }: { event: Event }) {
 
 export async function EventDetailPage({ event }: { event: Event }) {
 
-  const related = await getRelatedEvents(event);
+  const [related, currentUser] = await Promise.all([getRelatedEvents(event), getCurrentUser()]);
+  const registration = await getRegistrationAvailability(event.id, currentUser?.id ?? null);
 
   return (
     <main className="min-h-screen bg-background text-foreground">
