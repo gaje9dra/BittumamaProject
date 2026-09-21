@@ -38,6 +38,43 @@ function parseDate(valueToParse: string) {
   return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
+function parseSchedule(valueToParse: string, timeZone: string, errors: Record<string, string>) {
+  if (!valueToParse) return undefined;
+  const normalizedTimeZone = timeZone.trim() || "UTC";
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: normalizedTimeZone }).format();
+  } catch {
+    errors.publishAt = "Choose a valid timezone.";
+    return undefined;
+  }
+  // datetime-local is interpreted deliberately in the selected IANA timezone.
+  const [datePart, timePart] = valueToParse.split("T");
+  if (!datePart || !timePart) {
+    errors.publishAt = "Enter a valid scheduled date and time.";
+    return undefined;
+  }
+  const [year, month, day] = datePart.split("-").map(Number);
+  const [hour, minute] = timePart.split(":").map(Number);
+  if (![year, month, day, hour, minute].every(Number.isFinite)) {
+    errors.publishAt = "Enter a valid scheduled date and time.";
+    return undefined;
+  }
+  let guess = new Date(Date.UTC(year, month - 1, day, hour, minute));
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: normalizedTimeZone,
+      year: "numeric", month: "2-digit", day: "2-digit",
+      hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+    }).formatToParts(guess);
+    const get = (type: string) => Number(parts.find((part) => part.type === type)?.value);
+    const rendered = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"));
+    const diff = rendered - guess.getTime();
+    if (diff === 0) return guess;
+    guess = new Date(guess.getTime() - diff);
+  }
+  return guess;
+}
+
 function validateBase(fields: Record<string, string>) {
   const errors: Record<string, string> = {};
   if (!fields.title || fields.title.length > 200) errors.title = "Title is required and must be 200 characters or fewer.";
@@ -192,7 +229,7 @@ function readForm(formData: FormData) {
   return { fields, json, errors, relationIds };
 }
 
-function common(fields: Record<string, string>, status: "DRAFT" | "PUBLISHED" | "ARCHIVED") {
+function common(fields: Record<string, string>, status: "DRAFT" | "PUBLISHED" | "ARCHIVED", publishAt: Date | null = null) {
   const order = Number.parseInt(fields.order || "0", 10);
   return {
     slug: fields.slug,
@@ -202,8 +239,8 @@ function common(fields: Record<string, string>, status: "DRAFT" | "PUBLISHED" | 
   };
 }
 
-function buildData(domain: ContentDomain, fields: Record<string, string>, json: Record<string, unknown>, status: "DRAFT" | "PUBLISHED" | "ARCHIVED"): unknown {
-  const shared = common(fields, status);
+function buildData(domain: ContentDomain, fields: Record<string, string>, json: Record<string, unknown>, status: "DRAFT" | "PUBLISHED" | "ARCHIVED", publishAt: Date | null = null): unknown {
+  const shared = common(fields, status, publishAt);
   switch (domain) {
     case "services":
       return {
@@ -330,11 +367,11 @@ async function syncRelations(tx: Prisma.TransactionClient, domain: ContentDomain
 
 async function currentRecord(domain: ContentDomain, id: string) {
   switch (domain) {
-    case "services": return prisma.client.service.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true } });
-    case "research": return prisma.client.researchItem.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true } });
-    case "experts": return prisma.client.expert.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true } });
-    case "articles": return prisma.client.article.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true } });
-    case "workshops": return prisma.client.event.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true } });
+    case "services": return prisma.client.service.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true, publishAt: true } });
+    case "research": return prisma.client.researchItem.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true, publishAt: true } });
+    case "experts": return prisma.client.expert.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true, publishAt: true } });
+    case "articles": return prisma.client.article.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true, publishAt: true } });
+    case "workshops": return prisma.client.event.findUnique({ where: { id }, select: { updatedAt: true, slug: true, status: true, publishAt: true } });
   }
 }
 
@@ -367,8 +404,8 @@ export async function saveContent(
   if (!isContentDomain(domainValue)) return { message: "Unknown content domain.", fieldErrors: {} };
   const domain = domainValue;
   const id = value(formData, "id") || undefined;
-  const intent = value(formData, "intent") || "save";
   const parsed = readForm(formData);
+  const intent = value(formData, "intent") || "save";
   const errors = { ...parsed.errors, ...validateBase(parsed.fields) };
   if (domain === "workshops" && !parsed.fields.date) errors.date = "Date is required for a workshop / event.";
   validateJsonShapes(domain, parsed.json, errors);
@@ -387,7 +424,15 @@ export async function saveContent(
   const current = id ? await currentRecord(domain, id) : null;
   if (id && !current) return { message: "The content record no longer exists.", fieldErrors: {} };
 
-  const status = intent === "publish" ? "PUBLISHED" : intent === "archive" ? "ARCHIVED" : intent === "unpublish" ? "DRAFT" : current?.status ?? "DRAFT";
+  const requestedSchedule = intent === "schedule" ? parseSchedule(parsed.fields.publishAt, parsed.fields.publishTimeZone, errors) : undefined;
+  if (intent === "schedule" && requestedSchedule && requestedSchedule <= new Date()) {
+    errors.publishAt = "Scheduled publication must be in the future.";
+  }
+  if (intent === "schedule" && !parsed.fields.publishAt) {
+    errors.publishAt = "Choose a future publication date and time.";
+  }
+  const status = intent === "publish" ? "PUBLISHED" : intent === "archive" ? "ARCHIVED" : (intent === "unpublish" || intent === "cancelSchedule" || intent === "schedule") ? "DRAFT" : current?.status ?? "DRAFT";
+  const publishAt = intent === "publish" ? new Date() : intent === "schedule" ? (requestedSchedule ?? null) : (intent === "unpublish" || intent === "archive" || intent === "cancelSchedule") ? null : undefined;
 
   if (status === "PUBLISHED") {
     const publicationErrors = validatePublished(domain, parsed.fields);
@@ -407,7 +452,7 @@ export async function saveContent(
     return { message: "This content changed while you were editing it. Reload the record and review the newer version before saving.", fieldErrors: {} };
   }
 
-  const data = buildData(domain, parsed.fields, parsed.json, status);
+  const data = buildData(domain, parsed.fields, parsed.json, status, publishAt === undefined ? current?.publishAt ?? null : publishAt);
 
   let result: { id: string; previousSlug?: string } | undefined;
   try {
@@ -432,4 +477,18 @@ export async function saveContent(
   if (!result) return { message: "The content could not be saved. Please try again.", fieldErrors: {} };
   revalidateDomain(domain, parsed.fields.slug, result.previousSlug);
   redirect(contentBasePath(domain) + "/" + result.id + "/edit?saved=1");
+}
+
+
+export async function createPreview(formData: FormData) {
+  const admin = await requireAdmin();
+  void admin;
+  const domainValue = value(formData, "domain");
+  const id = value(formData, "id");
+  if (!isContentDomain(domainValue) || !id) throw new Error("Invalid preview request.");
+  const record = await currentRecord(domainValue, id);
+  if (!record) throw new Error("Content record not found.");
+  const { createPreviewToken } = await import("@/lib/admin/preview");
+  const token = createPreviewToken(domainValue, id);
+  redirect(`/admin/preview/${domainValue}/${id}?token=${encodeURIComponent(token)}`);
 }
