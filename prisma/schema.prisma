@@ -272,6 +272,7 @@ model Service {
   @@index([status])
   @@index([publishAt])
   @@index([category])
+  @@index([order])
 }
 
 model ResearchItem {
@@ -316,6 +317,7 @@ model ResearchItem {
   @@index([date])
   @@index([publishAt])
   @@index([order])
+  @@index([imageMediaId])
 }
 
 model Expert {
@@ -353,6 +355,7 @@ model Expert {
   @@index([discipline])
   @@index([publishAt])
   @@index([order])
+  @@index([profileMediaId])
 }
 
 model ExpertService {
@@ -404,6 +407,7 @@ model Article {
   @@index([order])
   @@index([publishAt])
   @@index([authorId])
+  @@index([coverMediaId])
 }
 
 model Event {
@@ -455,6 +459,8 @@ model Event {
   @@index([order])
   @@index([publishAt])
   @@index([speakerId])
+  @@index([coverMediaId])
+  @@index([registrationDeadline])
 }
 
 model ResearchService {
