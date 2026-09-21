@@ -3,6 +3,7 @@ import "server-only";
 import { Prisma, EventRegistrationRecordStatus, EventRegistrationMode } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
+import { deliverCreatedNotifications, queueRegistrationNotification } from "@/lib/notifications/domain";
 
 const CAPACITY_STATUSES: EventRegistrationRecordStatus[] = [
   EventRegistrationRecordStatus.PENDING,
@@ -161,10 +162,11 @@ export async function createRegistration(
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
     try {
+      const notificationIds: string[] = [];
       await prisma.client.$transaction(async (tx) => {
         const lockedEvent = await tx.event.findUnique({
           where: { id: eventId },
-          select: { status: true, publishAt: true, registrationEnabled: true, registrationCapacity: true, registrationDeadline: true, registrationMode: true },
+          select: { status: true, publishAt: true, registrationEnabled: true, registrationCapacity: true, registrationDeadline: true, registrationMode: true, title: true, date: true },
         });
         if (!lockedEvent || !isPublicEvent(lockedEvent)) throw new Error("EVENT_NOT_PUBLIC");
         if (!lockedEvent.registrationEnabled) throw new Error("REGISTRATION_DISABLED");
@@ -176,7 +178,7 @@ export async function createRegistration(
         });
         if (lockedEvent.registrationCapacity != null && count >= lockedEvent.registrationCapacity) throw new Error("EVENT_FULL");
 
-        await tx.eventRegistration.create({
+        const registration = await tx.eventRegistration.create({
           data: {
             eventId,
             userId: user?.id ?? null,
@@ -188,9 +190,22 @@ export async function createRegistration(
             status: EventRegistrationRecordStatus.CONFIRMED,
             activeIdentityKey: identityKey,
           },
+          select: { id: true, userId: true, fullName: true, email: true, status: true },
         });
+        const notification = await queueRegistrationNotification(tx, {
+          registrationId: registration.id,
+          userId: registration.userId,
+          recipient: registration.email,
+          type: "REGISTRATION_RECEIVED",
+          name: registration.fullName,
+          eventTitle: lockedEvent.title,
+          eventDate: lockedEvent.date.toISOString(),
+          status: registration.status,
+        });
+        if (notification) notificationIds.push(notification.notificationId);
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
 
+      await deliverCreatedNotifications(notificationIds);
       return { ok: true, message: "Registration confirmed.", fieldErrors: {} };
     } catch (error) {
       if (error instanceof Error) {
@@ -243,6 +258,26 @@ export async function cancelOwnRegistration(registrationId: string) {
         select: { id: true, eventId: true },
       });
     });
+    const notificationIds: string[] = [];
+    await prisma.client.$transaction(async (tx) => {
+      const registration = await tx.eventRegistration.findUnique({
+        where: { id: result.id },
+        select: { id: true, userId: true, fullName: true, email: true, status: true, event: { select: { title: true, date: true } } },
+      });
+      if (!registration) return;
+      const notification = await queueRegistrationNotification(tx, {
+        registrationId: registration.id,
+        userId: registration.userId,
+        recipient: registration.email,
+        type: "REGISTRATION_CANCELLED",
+        name: registration.fullName,
+        eventTitle: registration.event.title,
+        eventDate: registration.event.date.toISOString(),
+        status: registration.status,
+      });
+      if (notification) notificationIds.push(notification.notificationId);
+    });
+    await deliverCreatedNotifications(notificationIds);
     return { ok: true, message: "Registration cancelled.", fieldErrors: {}, eventId: result.eventId };
   } catch (error) {
     if (error instanceof Error) {
