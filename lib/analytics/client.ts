@@ -19,3 +19,8 @@ export function trackClientEvent(event: AnalyticsClientEvent) {
     const body = JSON.stringify({ ...event, anonymousId: randomId(ANONYMOUS_KEY), sessionId: randomId(SESSION_KEY) });
     void fetch("/api/analytics/events", { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => undefined);
 }
+
+  } catch {
+    // Analytics must never interfere with the public application.
+  }
+}
