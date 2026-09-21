@@ -16,10 +16,17 @@ function randomId(key: string) {
 export function trackClientEvent(event: AnalyticsClientEvent) {
   if (typeof window === "undefined") return;
   try {
-    const body = JSON.stringify({ ...event, anonymousId: randomId(ANONYMOUS_KEY), sessionId: randomId(SESSION_KEY) });
-    void fetch("/api/analytics/events", { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => undefined);
-}
-
+    const body = JSON.stringify({
+      ...event,
+      anonymousId: randomId(ANONYMOUS_KEY),
+      sessionId: randomId(SESSION_KEY),
+    });
+    void fetch("/api/analytics/events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body,
+      keepalive: true,
+    }).catch(() => undefined);
   } catch {
     // Analytics must never interfere with the public application.
   }

@@ -99,6 +99,53 @@ enum AnalyticsEventCategory {
   CONVERSION
 }
 
+enum AuditCategory {
+  AUTHENTICATION
+  AUTHORIZATION
+  CONTENT
+  MEDIA
+  INQUIRY
+  REGISTRATION
+  PAYMENT
+  NOTIFICATION
+  SYSTEM
+}
+
+enum AuditResult {
+  SUCCESS
+  FAILURE
+}
+
+enum AuditSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+enum AuditAction {
+  AUTH_LOGIN
+  AUTH_LOGOUT
+  AUTH_LOGIN_FAILED
+  USER_ROLE_CHANGED
+  USER_SECURITY_CHANGED
+  CONTENT_CREATED
+  CONTENT_UPDATED
+  CONTENT_PUBLISHED
+  CONTENT_UNPUBLISHED
+  CONTENT_ARCHIVED
+  MEDIA_CREATED
+  MEDIA_UPDATED
+  MEDIA_DELETED
+  INQUIRY_STATUS_CHANGED
+  REGISTRATION_STATUS_CHANGED
+  REGISTRATION_CANCELLED
+  PAYMENT_RECONCILED
+  PAYMENT_STATE_CHANGED
+  NOTIFICATION_RETRIED
+  SEARCH_ADMIN_ACTION
+  SYSTEM_CONFIGURATION_CHANGED
+}
+
 enum AnalyticsEventName {
   PAGE_VIEW
   CONTENT_VIEW
@@ -150,6 +197,7 @@ model User {
   paymentTransactions PaymentTransaction[]
   notifications      Notification[]
   analyticsEvents     AnalyticsEvent[]
+  auditLogs           AuditLog[]
 
   @@index([role])
 }
@@ -224,6 +272,7 @@ model Service {
   @@index([status])
   @@index([publishAt])
   @@index([category])
+  @@index([order])
 }
 
 model ResearchItem {
@@ -268,6 +317,7 @@ model ResearchItem {
   @@index([date])
   @@index([publishAt])
   @@index([order])
+  @@index([imageMediaId])
 }
 
 model Expert {
@@ -305,6 +355,7 @@ model Expert {
   @@index([discipline])
   @@index([publishAt])
   @@index([order])
+  @@index([profileMediaId])
 }
 
 model ExpertService {
@@ -356,6 +407,7 @@ model Article {
   @@index([order])
   @@index([publishAt])
   @@index([authorId])
+  @@index([coverMediaId])
 }
 
 model Event {
@@ -407,6 +459,8 @@ model Event {
   @@index([order])
   @@index([publishAt])
   @@index([speakerId])
+  @@index([coverMediaId])
+  @@index([registrationDeadline])
 }
 
 model ResearchService {
@@ -661,4 +715,31 @@ model AnalyticsEvent {
   @@index([contentType, contentId, occurredAt])
   @@index([userId, occurredAt])
   @@index([anonymousId, occurredAt])
+}
+
+model AuditLog {
+  id          String        @id @default(cuid())
+  actorUserId String?
+  action      AuditAction
+  category    AuditCategory
+  entityType  String?
+  entityId    String?
+  result      AuditResult
+  severity    AuditSeverity @default(INFO)
+  summary     String
+  metadata    Json?
+  requestId   String?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime      @default(now())
+  actorUser   User?         @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([action, createdAt])
+  @@index([category, createdAt])
+  @@index([entityType, entityId])
+  @@index([result, createdAt])
+  @@index([severity, createdAt])
+  @@index([requestId])
 }

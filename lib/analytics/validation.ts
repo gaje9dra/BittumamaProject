@@ -29,7 +29,8 @@ export function validateAnalyticsMetadata(eventName: AnalyticsEventName, metadat
   const allowedByEvent: Record<AnalyticsEventName, string[]> = {
     PAGE_VIEW: [], CONTENT_VIEW: ["path"], SERVICE_VIEW: ["path"], RESEARCH_VIEW: ["path"], EXPERT_VIEW: ["path"], ARTICLE_VIEW: ["path"], WORKSHOP_VIEW: ["path"],
     CONTACT_SUBMISSION: ["sourcePath", "serviceId"], REGISTRATION_STARTED: ["eventId"], REGISTRATION_COMPLETED: ["eventId", "registrationId"],
-    PAYMENT_INITIATED: ["paymentTransactionId", "purpose", "currency"], PAYMENT_SUCCESS: ["paymentTransactionId", "purpose", "currency"], PAYMENT_FAILED: ["paymentTransactionId", "purpose", "currency"],\n    SEARCH_SUBMITTED: ["queryLengthBucket"],
+    PAYMENT_INITIATED: ["paymentTransactionId", "purpose", "currency"], PAYMENT_SUCCESS: ["paymentTransactionId", "purpose", "currency"], PAYMENT_FAILED: ["paymentTransactionId", "purpose", "currency"],
+    SEARCH_SUBMITTED: ["queryLengthBucket"],
   };
 
   if (!exactKeys(value, allowedByEvent[eventName])) throw new Error("INVALID_ANALYTICS_METADATA");
@@ -39,7 +40,8 @@ export function validateAnalyticsMetadata(eventName: AnalyticsEventName, metadat
     if (key === "serviceId" && item !== null && typeof item === "string" && !isValidAnalyticsId(item)) throw new Error("INVALID_ANALYTICS_METADATA");
     if ((key === "eventId" || key === "registrationId" || key === "paymentTransactionId") && item !== null && typeof item === "string" && !isValidAnalyticsId(item)) throw new Error("INVALID_ANALYTICS_METADATA");
     if (key === "currency" && item !== null && (typeof item !== "string" || !/^[A-Z]{3}$/.test(item))) throw new Error("INVALID_ANALYTICS_METADATA");
-    if (key === "purpose" && item !== null && (typeof item !== "string" || item.length > 64)) throw new Error("INVALID_ANALYTICS_METADATA");\n    if (key === "queryLengthBucket" && item !== "short" && item !== "medium" && item !== "long") throw new Error("INVALID_ANALYTICS_METADATA");
+    if (key === "purpose" && item !== null && (typeof item !== "string" || item.length > 64)) throw new Error("INVALID_ANALYTICS_METADATA");
+    if (key === "queryLengthBucket" && item !== "short" && item !== "medium" && item !== "long") throw new Error("INVALID_ANALYTICS_METADATA");
   }
   return value as Record<string, string | number | null>;
 }

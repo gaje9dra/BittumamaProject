@@ -64,3 +64,30 @@ export async function listAdminNotifications(options: { q?: string; status?: Not
   ]);
   return { items, total, page, pageSize };
 }
+
+export async function listUserNotifications(userId: string, page = 1, pageSize = 20) {
+  const safePage = Math.min(Math.max(page, 1), 100);
+  const safeSize = Math.min(Math.max(pageSize, 5), 50);
+  const where = { userId };
+  const [items, total] = await Promise.all([
+    prisma.client.notification.findMany({
+      where,
+      select: {
+        id: true,
+        type: true,
+        channel: true,
+        status: true,
+        subject: true,
+        relatedEntityType: true,
+        relatedEntityId: true,
+        createdAt: true,
+        sentAt: true,
+      },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      skip: (safePage - 1) * safeSize,
+      take: safeSize,
+    }),
+    prisma.client.notification.count({ where }),
+  ]);
+  return { items, total, page: safePage, pageSize: safeSize, totalPages: Math.max(1, Math.ceil(total / safeSize)) };
+}

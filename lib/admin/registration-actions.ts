@@ -5,6 +5,8 @@ import { EventRegistrationRecordStatus, Prisma } from "@/generated/prisma/client
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { deliverCreatedNotifications, queueRegistrationNotification } from "@/lib/notifications/domain";
+import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
+import { recordAudit } from "@/lib/audit/service";
 
 export type RegistrationAdminState = { message: string | null; error: string | null };
 export const registrationAdminInitialState: RegistrationAdminState = { message: null, error: null };
@@ -19,7 +21,7 @@ export async function updateEventRegistrationStatus(
   _previous: RegistrationAdminState,
   formData: FormData,
 ): Promise<RegistrationAdminState> {
-  await requireAdmin();
+  const actor = await requireAdmin();
 
   const eventId = String(formData.get("eventId") ?? "").trim();
   const registrationId = String(formData.get("registrationId") ?? "").trim();
@@ -57,10 +59,8 @@ export async function updateEventRegistrationStatus(
           if (event.registrationCapacity != null && count >= event.registrationCapacity) throw new Error("EVENT_FULL");
         }
 
-        await tx.eventRegistration.update({
-          where: { id: registrationId },
-          data: { status: nextStatus, activeIdentityKey },
-        });
+        await tx.eventRegistration.update({ where: { id: registrationId }, data: { status: nextStatus, activeIdentityKey } });
+        await recordAudit(tx, { action: nextStatus === EventRegistrationRecordStatus.CANCELLED ? AuditAction.REGISTRATION_CANCELLED : AuditAction.REGISTRATION_STATUS_CHANGED, category: AuditCategory.REGISTRATION, result: AuditResult.SUCCESS, summary: nextStatus === EventRegistrationRecordStatus.CANCELLED ? "Registration cancelled by an administrator." : "Registration status changed.", entityType: "EventRegistration", entityId: registration.id, metadata: { registrationId: registration.id, eventId, previousStatus: registration.status, newStatus: nextStatus }, actor: { userId: actor.id, type: "USER" } });
         if (nextStatus === EventRegistrationRecordStatus.CONFIRMED || nextStatus === EventRegistrationRecordStatus.CANCELLED) {
           const notification = await queueRegistrationNotification(tx, {
             registrationId: registration.id,
