@@ -32,7 +32,7 @@ function buildWhere(options: InquiryListOptions): Prisma.ContactInquiryWhereInpu
   if (to) submittedAt.lte = to;
 
   return {
-    ...(options.status ? { status: options.status } : {}),
+    ...(normalizeStatus(options.status) ? { status: normalizeStatus(options.status) } : {}),
     ...(options.serviceId ? { serviceId: options.serviceId } : {}),
     ...(from || to ? { submittedAt } : {}),
     ...(q
@@ -49,8 +49,16 @@ function buildWhere(options: InquiryListOptions): Prisma.ContactInquiryWhereInpu
   };
 }
 
+const VALID_STATUSES = new Set(["NEW", "READ", "IN_PROGRESS", "RESOLVED", "SPAM"] as const);
+
 function isValidInquiryId(id: string) {
   return /^[A-Za-z0-9_-]{1,64}$/.test(id);
+}
+
+function normalizeStatus(value: string | undefined): InquiryListOptions["status"] | undefined {
+  return value && VALID_STATUSES.has(value as (typeof VALID_STATUSES extends Set<infer T> ? T : never))
+    ? (value as InquiryListOptions["status"])
+    : undefined;
 }
 
 export async function listInquiries(options: InquiryListOptions = {}) {
