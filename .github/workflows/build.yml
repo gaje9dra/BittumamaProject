@@ -78,6 +78,9 @@ jobs:
       - name: Verify cross-content relationships
         run: npm run content:verify
 
+      - name: Verify event registrations
+        run: npm run registrations:verify
+
       - name: Lint
         run: npm run lint
 
