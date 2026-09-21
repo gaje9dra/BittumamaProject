@@ -1,6 +1,8 @@
 import "server-only";
 
 import { PaymentStatus, PaymentPurpose } from "@/generated/prisma/client";
+
+const PAYMENT_NOTIFICATION_STATUSES: PaymentStatus[] = [PaymentStatus.SUCCESS, PaymentStatus.FAILED, PaymentStatus.PENDING];
 import { getCurrentUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { assertAmountMinor, normalizeCurrency, minorToMajorString } from "@/lib/payments/money";
@@ -97,7 +99,7 @@ export async function reconcileVerifiedPayment(verified: VerifiedPayment) {
       });
     }
 
-    if (updated.userId && [PaymentStatus.SUCCESS, PaymentStatus.FAILED, PaymentStatus.PENDING].includes(verified.status)) {
+    if (updated.userId && PAYMENT_NOTIFICATION_STATUSES.includes(verified.status)) {
       const user = await tx.user.findUnique({ where: { id: updated.userId }, select: { email: true } });
       if (user?.email) {
         const notification = await queuePaymentNotification(tx, {
