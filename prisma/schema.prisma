@@ -36,6 +36,18 @@ enum EventFormat {
   HYBRID
 }
 
+enum EventRegistrationMode {
+  ANONYMOUS_ALLOWED
+  AUTHENTICATED_ONLY
+}
+
+enum EventRegistrationRecordStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  REJECTED
+}
+
 enum ContactInquiryStatus {
   NEW
   READ
@@ -66,6 +78,7 @@ model User {
   accounts          Account[]
   sessions          Session[]
   contactInquiries  ContactInquiry[]
+  eventRegistrations EventRegistration[]
 
   @@index([role])
 }
@@ -295,6 +308,10 @@ model Event {
   registrationLabel  String?
   registrationHref   String?
   registrationStatus EventRegistrationStatus?
+  registrationEnabled Boolean @default(false)
+  registrationCapacity Int?
+  registrationDeadline DateTime?
+  registrationMode EventRegistrationMode @default(ANONYMOUS_ALLOWED)
   featured           Boolean                  @default(false)
   status             ContentStatus            @default(DRAFT)
   publishAt         DateTime?
@@ -309,6 +326,7 @@ model Event {
   serviceLinks       WorkshopService[]
   relatedFrom        EventRelation[]          @relation("EventRelationSource")
   relatedTo          EventRelation[]          @relation("EventRelationTarget")
+  registrations      EventRegistration[]
 
   @@index([status])
   @@index([category])
@@ -453,4 +471,28 @@ model ContactInquiry {
   @@index([submittedAt])
   @@index([serviceId])
   @@index([userId])
+}
+
+
+model EventRegistration {
+  id                String                         @id @default(cuid())
+  eventId           String
+  userId            String?
+  fullName          String
+  email             String
+  phone             String?
+  organization      String?
+  notes             String?
+  status            EventRegistrationRecordStatus @default(CONFIRMED)
+  activeIdentityKey String?
+  createdAt         DateTime                       @default(now())
+  updatedAt         DateTime                       @updatedAt
+  event             Event                           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user              User?                           @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([eventId, activeIdentityKey])
+  @@index([eventId, status])
+  @@index([userId, createdAt])
+  @@index([eventId, createdAt])
+  @@index([email])
 }
