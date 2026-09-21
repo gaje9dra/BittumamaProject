@@ -52,6 +52,12 @@ function toDomainEvent(record: EventWithRelations): Event {
     ...(record.registrationLabel ? { registrationLabel: record.registrationLabel } : {}),
     ...(record.registrationHref ? { registrationHref: record.registrationHref } : {}),
     ...(registrationStatus ? { registrationStatus } : {}),
+    ...(record.registrationEnabled ? {
+      registrationEnabled: true,
+      registrationCapacity: record.registrationCapacity,
+      ...(record.registrationDeadline ? { registrationDeadline: record.registrationDeadline.toISOString() } : {}),
+      registrationMode: record.registrationMode,
+    } : {}),
     ...(record.featured ? { featured: true } : {}),
     ...(record.relatedFrom.length ? { relatedEventIds: record.relatedFrom.map((item) => item.targetEventId) } : {}),
     ...(record.researchLinks.length ? { relatedResearchIds: record.researchLinks.map((item) => item.researchId) } : {}),
