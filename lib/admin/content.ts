@@ -86,6 +86,7 @@ export function contentBasePath(domain: ContentDomain) {
 }
 
 function statusWhere(status?: string) {
+  if (status === "SCHEDULED") return { status: "DRAFT" as const, publishAt: { gt: new Date() } };
   return status === "DRAFT" || status === "PUBLISHED" || status === "ARCHIVED"
     ? { status: status as "DRAFT" | "PUBLISHED" | "ARCHIVED" }
     : undefined;
@@ -151,7 +152,7 @@ export async function listContent(
       const [items, total] = await Promise.all([
         prisma.client.service.findMany({
           where: where as Prisma.ServiceWhereInput,
-          select: { id: true, title: true, slug: true, category: true, status: true, updatedAt: true, order: true },
+          select: { id: true, title: true, slug: true, category: true, status: true, publishAt: true, updatedAt: true, order: true },
           orderBy: options.sort === "title" ? { title: "asc" } : options.sort === "date" ? { createdAt: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
@@ -163,7 +164,7 @@ export async function listContent(
       const [items, total] = await Promise.all([
         prisma.client.researchItem.findMany({
           where: where as Prisma.ResearchItemWhereInput,
-          select: { id: true, title: true, slug: true, category: true, status: true, updatedAt: true, date: true },
+          select: { id: true, title: true, slug: true, category: true, status: true, publishAt: true, updatedAt: true, date: true },
           orderBy: options.sort === "title" ? { title: "asc" } : options.sort === "date" ? { date: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
@@ -175,7 +176,7 @@ export async function listContent(
       const [items, total] = await Promise.all([
         prisma.client.expert.findMany({
           where: where as Prisma.ExpertWhereInput,
-          select: { id: true, name: true, slug: true, discipline: true, status: true, updatedAt: true, order: true },
+          select: { id: true, name: true, slug: true, discipline: true, status: true, publishAt: true, updatedAt: true, order: true },
           orderBy: options.sort === "title" ? { name: "asc" } : options.sort === "date" ? { createdAt: "desc" } : { updatedAt: "desc" },
           skip, take: pageSize,
         }),
