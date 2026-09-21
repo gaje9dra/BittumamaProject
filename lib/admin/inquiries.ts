@@ -49,16 +49,15 @@ function buildWhere(options: InquiryListOptions): Prisma.ContactInquiryWhereInpu
   };
 }
 
-const VALID_STATUSES = new Set(["NEW", "READ", "IN_PROGRESS", "RESOLVED", "SPAM"] as const);
+const VALID_STATUSES = ["NEW", "READ", "IN_PROGRESS", "RESOLVED", "SPAM"] as const;
+type InquiryStatus = (typeof VALID_STATUSES)[number];
 
 function isValidInquiryId(id: string) {
   return /^[A-Za-z0-9_-]{1,64}$/.test(id);
 }
 
-function normalizeStatus(value: string | undefined): InquiryListOptions["status"] | undefined {
-  return value && VALID_STATUSES.has(value as (typeof VALID_STATUSES extends Set<infer T> ? T : never))
-    ? (value as InquiryListOptions["status"])
-    : undefined;
+function normalizeStatus(value: string | undefined): InquiryStatus | undefined {
+  return value && VALID_STATUSES.includes(value as InquiryStatus) ? (value as InquiryStatus) : undefined;
 }
 
 export async function listInquiries(options: InquiryListOptions = {}) {
