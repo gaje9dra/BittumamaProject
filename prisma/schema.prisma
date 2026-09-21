@@ -182,24 +182,51 @@ enum NotificationType {
 }
 
 model User {
-  id                String           @id @default(cuid())
-  name              String?
-  email             String?          @unique
-  emailVerified     DateTime?
-  image             String?
-  role              UserRole         @default(USER)
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @updatedAt
-  accounts          Account[]
-  sessions          Session[]
-  contactInquiries   ContactInquiry[]
-  eventRegistrations EventRegistration[]
+  id                  String             @id @default(cuid())
+  name                String?
+  email               String?            @unique
+  emailVerified       DateTime?
+  image               String?
+  role                UserRole           @default(USER)
+  passwordHash        String?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+  accounts            Account[]
+  sessions            Session[]
+  contactInquiries    ContactInquiry[]
+  eventRegistrations  EventRegistration[]
   paymentTransactions PaymentTransaction[]
-  notifications      Notification[]
+  notifications       Notification[]
   analyticsEvents     AnalyticsEvent[]
   auditLogs           AuditLog[]
 
   @@index([role])
+}
+
+model AdminAccount {
+  id              String         @id @default(cuid())
+  email           String
+  normalizedEmail String         @unique
+  passwordHash    String
+  isActive        Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  lastLoginAt     DateTime?
+  sessions        AdminSession[]
+
+  @@index([isActive])
+}
+
+model AdminSession {
+  id             String       @id @default(cuid())
+  sessionToken   String       @unique
+  adminAccountId String
+  expires        DateTime
+  createdAt      DateTime     @default(now())
+  adminAccount   AdminAccount @relation(fields: [adminAccountId], references: [id], onDelete: Cascade)
+
+  @@index([adminAccountId])
+  @@index([expires])
 }
 
 model Account {
@@ -254,7 +281,7 @@ model Service {
   featured         Boolean             @default(false)
   availability     ServiceAvailability @default(AVAILABLE)
   status           ContentStatus       @default(PUBLISHED)
-  publishAt         DateTime?
+  publishAt        DateTime?
   seoTitle         String?
   seoDescription   String?
   seoImage         String?
@@ -285,7 +312,7 @@ model ResearchItem {
   summary          String?
   date             DateTime?
   status           ContentStatus       @default(DRAFT)
-  publishAt         DateTime?
+  publishAt        DateTime?
   availability     ResearchAvailability @default(AVAILABLE)
   type             String?
   topic            String?
@@ -298,7 +325,7 @@ model ResearchItem {
   scope            Json?
   topics           Json?
   sections         Json?
-  methodology     Json?
+  methodology      Json?
   seoTitle         String?
   seoDescription   String?
   seoImage         String?
@@ -310,7 +337,7 @@ model ResearchItem {
   expertLinks      ExpertResearch[]
   articleLinks     ArticleResearch[]
   workshopLinks    WorkshopResearch[]
-  imageMedia       MediaAsset? @relation("ResearchImageMedia", fields: [imageMediaId], references: [id], onDelete: SetNull)
+  imageMedia       MediaAsset?         @relation("ResearchImageMedia", fields: [imageMediaId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([category])
@@ -335,7 +362,7 @@ model Expert {
   qualifications    Json?
   researchInterests Json?
   featured          Boolean          @default(false)
-  status            ContentStatus    @default(PUBLISHED)
+  status             ContentStatus    @default(PUBLISHED)
   publishAt         DateTime?
   seoTitle          String?
   seoDescription    String?
@@ -349,7 +376,7 @@ model Expert {
   authoredArticles  Article[]
   workshopEvents    Event[]
   articleLinks      ArticleExpert[]
-  profileMedia      MediaAsset? @relation("ExpertProfileMedia", fields: [profileMediaId], references: [id], onDelete: SetNull)
+  profileMedia      MediaAsset?      @relation("ExpertProfileMedia", fields: [profileMediaId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([discipline])
@@ -386,7 +413,7 @@ model Article {
   featured       Boolean           @default(false)
   tags           Json?
   status         ContentStatus     @default(DRAFT)
-  publishAt         DateTime?
+  publishAt      DateTime?
   authorId       String?
   seoTitle       String?
   seoDescription String?
@@ -399,7 +426,7 @@ model Article {
   relatedFrom    ArticleRelation[] @relation("ArticleRelationSource")
   relatedTo      ArticleRelation[] @relation("ArticleRelationTarget")
   expertLinks    ArticleExpert[]
-  coverMedia     MediaAsset? @relation("ArticleCoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
+  coverMedia     MediaAsset?       @relation("ArticleCoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
 
   @@index([status])
   @@index([category])
@@ -411,47 +438,47 @@ model Article {
 }
 
 model Event {
-  id                 String                   @id @default(cuid())
-  slug               String                   @unique
-  title              String
-  order              Int                      @default(0)
-  date               DateTime
-  endDate            DateTime?
-  time               String?
-  category           String
-  location           String?
-  format             EventFormat?
-  shortDescription   String
-  description        String?
-  audience           Json?
-  speakerId          String?
-  speakerSlug        String?
-  speakerRole        String?
-  image              String?
-  coverMediaId       String?
-  registrationLabel  String?
-  registrationHref   String?
-  registrationStatus EventRegistrationStatus?
-  registrationEnabled Boolean @default(false)
-  registrationCapacity Int?
-  registrationDeadline DateTime?
-  registrationMode EventRegistrationMode @default(ANONYMOUS_ALLOWED)
-  featured           Boolean                  @default(false)
-  status             ContentStatus            @default(DRAFT)
-  publishAt         DateTime?
-  seoTitle           String?
-  seoDescription     String?
-  seoImage           String?
-  createdAt          DateTime                 @default(now())
-  updatedAt          DateTime                 @updatedAt
-  speaker            Expert?                  @relation(fields: [speakerId], references: [id], onDelete: SetNull)
-  coverMedia         MediaAsset?              @relation("EventCoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
-  researchLinks      WorkshopResearch[]
-  serviceLinks       WorkshopService[]
-  relatedFrom        EventRelation[]          @relation("EventRelationSource")
-  relatedTo          EventRelation[]          @relation("EventRelationTarget")
-  registrations      EventRegistration[]
-  paymentTransactions PaymentTransaction[]
+  id                    String                   @id @default(cuid())
+  slug                  String                   @unique
+  title                 String
+  order                 Int                      @default(0)
+  date                  DateTime
+  endDate               DateTime?
+  time                  String?
+  category              String
+  location              String?
+  format                EventFormat?
+  shortDescription      String
+  description           String?
+  audience              Json?
+  speakerId             String?
+  speakerSlug           String?
+  speakerRole           String?
+  image                 String?
+  coverMediaId          String?
+  registrationLabel     String?
+  registrationHref      String?
+  registrationStatus    EventRegistrationStatus?
+  registrationEnabled   Boolean                  @default(false)
+  registrationCapacity  Int?
+  registrationDeadline  DateTime?
+  registrationMode      EventRegistrationMode    @default(ANONYMOUS_ALLOWED)
+  featured              Boolean                  @default(false)
+  status                ContentStatus            @default(DRAFT)
+  publishAt             DateTime?
+  seoTitle              String?
+  seoDescription        String?
+  seoImage              String?
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+  speaker               Expert?                  @relation(fields: [speakerId], references: [id], onDelete: SetNull)
+  coverMedia            MediaAsset?              @relation("EventCoverMedia", fields: [coverMediaId], references: [id], onDelete: SetNull)
+  researchLinks         WorkshopResearch[]
+  serviceLinks          WorkshopService[]
+  relatedFrom           EventRelation[]           @relation("EventRelationSource")
+  relatedTo             EventRelation[]           @relation("EventRelationTarget")
+  registrations         EventRegistration[]
+  paymentTransactions   PaymentTransaction[]
 
   @@index([status])
   @@index([category])
@@ -565,7 +592,7 @@ model MediaAsset {
   height             Int?
   altText            String?
   caption            String?
-  status             MediaStatus @default(ACTIVE)
+  status              MediaStatus @default(ACTIVE)
   createdAt          DateTime    @default(now())
   updatedAt          DateTime    @updatedAt
   articleCovers      Article[]      @relation("ArticleCoverMedia")
@@ -600,24 +627,22 @@ model ContactInquiry {
   @@index([userId])
 }
 
-
 model EventRegistration {
-  id                String                         @id @default(cuid())
-  eventId           String
-  userId            String?
-  fullName          String
-  email             String
-  phone             String?
-  organization      String?
-  notes             String?
-  status            EventRegistrationRecordStatus @default(CONFIRMED)
-  activeIdentityKey String?
-  createdAt         DateTime                       @default(now())
-  updatedAt         DateTime                       @updatedAt
-  event             Event                           @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  user              User?                           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  id                  String                         @id @default(cuid())
+  eventId             String
+  userId              String?
+  fullName             String
+  email               String
+  phone                String?
+  organization        String?
+  notes               String?
+  status              EventRegistrationRecordStatus @default(CONFIRMED)
+  activeIdentityKey   String?
+  createdAt           DateTime                       @default(now())
+  updatedAt           DateTime                       @updatedAt
+  event               Event                           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user                User?                           @relation(fields: [userId], references: [id], onDelete: SetNull)
   paymentTransactions PaymentTransaction[]
-
   @@unique([eventId, activeIdentityKey])
   @@index([eventId, status])
   @@index([userId, createdAt])
@@ -625,18 +650,17 @@ model EventRegistration {
   @@index([email])
 }
 
-
 model PaymentTransaction {
   id                    String         @id @default(cuid())
   userId                String?
   eventId               String?
-  registrationId        String?
+  registrationId         String?
   serviceId             String?
   reference             String         @unique
   idempotencyKey        String         @unique
   provider              String
   providerTransactionId String?
-  amountMinor           Int
+  amountMinor            Int
   currency              String
   purpose               PaymentPurpose
   status                PaymentStatus  @default(CREATED)
@@ -651,7 +675,6 @@ model PaymentTransaction {
   event                 Event?         @relation(fields: [eventId], references: [id], onDelete: SetNull)
   registration          EventRegistration? @relation(fields: [registrationId], references: [id], onDelete: SetNull)
   service               Service?       @relation(fields: [serviceId], references: [id], onDelete: SetNull)
-
   @@unique([provider, providerTransactionId])
   @@index([userId, createdAt])
   @@index([status, createdAt])
@@ -661,7 +684,6 @@ model PaymentTransaction {
   @@index([serviceId])
   @@index([purpose, createdAt])
 }
-
 
 model Notification {
   id                 String               @id @default(cuid())
@@ -685,14 +707,12 @@ model Notification {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   user               User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
-
   @@index([userId, createdAt])
   @@index([status, scheduledFor])
   @@index([relatedEntityType, relatedEntityId])
   @@index([providerMessageId])
   @@index([type, status])
 }
-
 
 model AnalyticsEvent {
   id            String                 @id @default(cuid())
@@ -708,7 +728,6 @@ model AnalyticsEvent {
   occurredAt    DateTime               @default(now())
   createdAt     DateTime               @default(now())
   user          User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
-
   @@index([occurredAt])
   @@index([eventName, occurredAt])
   @@index([eventCategory, occurredAt])
@@ -733,7 +752,6 @@ model AuditLog {
   userAgent   String?
   createdAt   DateTime      @default(now())
   actorUser   User?         @relation(fields: [actorUserId], references: [id], onDelete: SetNull)
-
   @@index([createdAt])
   @@index([actorUserId, createdAt])
   @@index([action, createdAt])
