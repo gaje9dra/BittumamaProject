@@ -81,6 +81,9 @@ jobs:
       - name: Verify event registrations
         run: npm run registrations:verify
 
+      - name: Verify payment infrastructure
+        run: npm run payments:verify
+
       - name: Lint
         run: npm run lint
 
