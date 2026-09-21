@@ -4,6 +4,8 @@ import { getPublishedServiceBySlug } from "@/lib/services/repository";
 import { contactInquiryLimits, validateContactInquiryInput } from "@/lib/contact/validation";
 import { createContactInquiry } from "@/lib/contact/repository";
 import { deliverCreatedNotifications } from "@/lib/notifications/domain";
+import { AnalyticsEventCategory, AnalyticsEventName } from "@/generated/prisma/client";
+import { trackAnalyticsEvent } from "@/lib/analytics/service";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -108,6 +110,10 @@ export async function POST(request: Request) {
       serviceId,
       message: result.data.message,
     });
+    const referer = request.headers.get("referer");
+    let sourcePath: string | null = null;
+    if (referer) { try { sourcePath = new URL(referer).pathname; } catch { sourcePath = null; } }
+    await trackAnalyticsEvent({ eventName: AnalyticsEventName.CONTACT_SUBMISSION, eventCategory: AnalyticsEventCategory.CONVERSION, userId: userId ?? null, path: sourcePath, metadata: { sourcePath, serviceId: serviceId ?? null } });
     await deliverCreatedNotifications(saved.notificationIds);
   } catch {
     return safeError("We couldn't send your enquiry. Please try again.", 500);
