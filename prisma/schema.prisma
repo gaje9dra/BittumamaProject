@@ -66,6 +66,21 @@ enum MediaStatus {
   ARCHIVED
 }
 
+enum PaymentStatus {
+  CREATED
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELLED
+  EXPIRED
+}
+
+enum PaymentPurpose {
+  SERVICE
+  EVENT
+  EVENT_REGISTRATION
+}
+
 model User {
   id                String           @id @default(cuid())
   name              String?
@@ -77,8 +92,9 @@ model User {
   updatedAt         DateTime         @updatedAt
   accounts          Account[]
   sessions          Session[]
-  contactInquiries  ContactInquiry[]
+  contactInquiries   ContactInquiry[]
   eventRegistrations EventRegistration[]
+  paymentTransactions PaymentTransaction[]
 
   @@index([role])
 }
@@ -148,6 +164,7 @@ model Service {
   workshopLinks    WorkshopService[]
   expertLinks      ExpertService[]
   contactInquiries ContactInquiry[]
+  paymentTransactions PaymentTransaction[]
 
   @@index([status])
   @@index([publishAt])
@@ -327,6 +344,7 @@ model Event {
   relatedFrom        EventRelation[]          @relation("EventRelationSource")
   relatedTo          EventRelation[]          @relation("EventRelationTarget")
   registrations      EventRegistration[]
+  paymentTransactions PaymentTransaction[]
 
   @@index([status])
   @@index([category])
@@ -489,10 +507,48 @@ model EventRegistration {
   updatedAt         DateTime                       @updatedAt
   event             Event                           @relation(fields: [eventId], references: [id], onDelete: Cascade)
   user              User?                           @relation(fields: [userId], references: [id], onDelete: SetNull)
+  paymentTransactions PaymentTransaction[]
 
   @@unique([eventId, activeIdentityKey])
   @@index([eventId, status])
   @@index([userId, createdAt])
   @@index([eventId, createdAt])
   @@index([email])
+}
+
+
+model PaymentTransaction {
+  id                    String         @id @default(cuid())
+  userId                String?
+  eventId               String?
+  registrationId        String?
+  serviceId             String?
+  reference             String         @unique
+  idempotencyKey        String         @unique
+  provider              String
+  providerTransactionId String?
+  amountMinor           Int
+  currency              String
+  purpose               PaymentPurpose
+  status                PaymentStatus  @default(CREATED)
+  description           String?
+  metadata              Json?
+  failureCode           String?
+  failureMessage        String?
+  paidAt                DateTime?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  user                  User?          @relation(fields: [userId], references: [id], onDelete: SetNull)
+  event                 Event?         @relation(fields: [eventId], references: [id], onDelete: SetNull)
+  registration          EventRegistration? @relation(fields: [registrationId], references: [id], onDelete: SetNull)
+  service               Service?       @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+
+  @@unique([provider, providerTransactionId])
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@index([provider, createdAt])
+  @@index([eventId])
+  @@index([registrationId])
+  @@index([serviceId])
+  @@index([purpose, createdAt])
 }
