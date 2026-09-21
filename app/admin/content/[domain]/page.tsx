@@ -26,7 +26,7 @@ export default async function AdminContentListPage({ params, searchParams }: { p
       </div>
       <form method="get" className="mt-6 grid gap-3 border-y border-border py-4 sm:grid-cols-[1fr_auto_auto_auto]">
         <label className="sr-only" htmlFor="q">Search</label><input id="q" name="q" defaultValue={query.q ?? ""} placeholder={`Search ${titleKey === "name" ? "name" : "title"} or slug…`} className="border border-border bg-background px-3 py-2.5 text-sm"/>
-        <select name="status" defaultValue={query.status ?? ""} className="border border-border bg-background px-3 py-2.5 text-sm"><option value="">All statuses</option><option value="DRAFT">Draft</option><option value="PUBLISHED">Published</option><option value="ARCHIVED">Archived</option></select>
+        <select name="status" defaultValue={query.status ?? ""} className="border border-border bg-background px-3 py-2.5 text-sm"><option value="">All statuses</option><option value="DRAFT">Draft</option><option value="SCHEDULED">Scheduled</option><option value="PUBLISHED">Published</option><option value="ARCHIVED">Archived</option></select>
         <select name="sort" defaultValue={query.sort ?? ""} className="border border-border bg-background px-3 py-2.5 text-sm"><option value="">Recently updated</option><option value="title">Title</option><option value="date">Date</option></select>
         <button className="border border-border px-4 py-2.5 text-sm font-medium">Filter</button>
       </form>
@@ -35,7 +35,7 @@ export default async function AdminContentListPage({ params, searchParams }: { p
           <table className="w-full min-w-[760px] text-left text-sm">
             <thead className="border-b border-border bg-surface"><tr><th className="px-4 py-3 font-medium">{titleKey === "name" ? "Name" : "Title"}</th><th className="px-4 py-3 font-medium">Slug</th><th className="px-4 py-3 font-medium">Type / Category</th><th className="px-4 py-3 font-medium">Status</th><th className="px-4 py-3 font-medium">Updated</th><th className="px-4 py-3 font-medium">Action</th></tr></thead>
             <tbody className="divide-y divide-border">
-              {result.items.map((item:any) => <tr key={item.id}><td className="px-4 py-3 font-medium">{item.title ?? item.name}</td><td className="px-4 py-3 text-muted-foreground">{item.slug}</td><td className="px-4 py-3 text-muted-foreground">{item.category ?? item.discipline ?? "—"}</td><td className="px-4 py-3"><span className="border border-border px-2 py-1 text-xs">{item.status}</span></td><td className="px-4 py-3 text-muted-foreground">{new Date(item.updatedAt).toLocaleDateString()}</td><td className="px-4 py-3"><Link href={`${base}/${item.id}/edit`} className="underline underline-offset-4">Edit</Link></td></tr>)}
+              {result.items.map((item:any) => <tr key={item.id}><td className="px-4 py-3 font-medium">{item.title ?? item.name}</td><td className="px-4 py-3 text-muted-foreground">{item.slug}</td><td className="px-4 py-3 text-muted-foreground">{item.category ?? item.discipline ?? "—"}</td><td className="px-4 py-3"><span className="border border-border px-2 py-1 text-xs">{item.status === "DRAFT" && item.publishAt && new Date(item.publishAt) > new Date() ? "SCHEDULED" : item.status}</span></td><td className="px-4 py-3 text-muted-foreground">{new Date(item.updatedAt).toLocaleDateString()}</td><td className="px-4 py-3"><Link href={`${base}/${item.id}/edit`} className="underline underline-offset-4">Edit</Link></td></tr>)}
             </tbody>
           </table>
         </div>
