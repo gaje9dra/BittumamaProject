@@ -32,7 +32,8 @@
     "auth:bootstrap-admin": "tsx prisma/bootstrap-admin.ts",
     "auth:verify": "tsx prisma/verify-auth.ts",
     "media:verify": "tsx prisma/verify-media.ts",
-    "registrations:verify": "tsx prisma/verify-event-registrations.ts"
+    "registrations:verify": "tsx prisma/verify-event-registrations.ts",
+    "payments:verify": "tsx prisma/verify-payments.ts"
   },
   "dependencies": {
     "next": "16.3.5",

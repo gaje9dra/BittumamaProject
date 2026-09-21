@@ -726,3 +726,52 @@ NaN
 `registrations:verify` verifies duplicate protection, cancellation capacity release and concurrent finite-capacity behavior against PostgreSQL. CI runs this verification after the existing canonical-content checks.
 
 Phase 8.16 does not implement payments, notifications/email, analytics, search, audit logging, API-layer expansion, QR/check-in, tickets, refunds or other Phase 8.17+ functionality.
+
+## Phase 8.17 — Payments & Payment Transaction Infrastructure
+
+Phase 8.17 adds the canonical PaymentTransaction financial record and provider-agnostic payment boundary. The repository did not contain an established payment provider or finalized payable pricing model, so this phase deliberately does not invent provider credentials, prices, or provider-specific hash/callback contracts. PAYMENT_PROVIDER remains unset until a real provider is selected and registered.
+
+### Payment domain
+
+- PaymentTransaction is the single canonical payment record.
+- Amounts use integer minor units (amountMinor) and uppercase three-letter currencies.
+- reference is a non-sequential public-safe transaction reference.
+- idempotencyKey prevents repeated creation of the same logical payment request.
+- PaymentPurpose distinguishes SERVICE, EVENT, and EVENT_REGISTRATION.
+- PostgreSQL checks require exactly one payment target and require purpose/target agreement.
+- Provider transaction references, failures, timestamps and verified status are retained for reconciliation.
+
+### Lifecycle and provider boundary
+
+The internal lifecycle is CREATED → PENDING → SUCCESS/FAILED/CANCELLED/EXPIRED. Terminal states cannot be arbitrarily changed. lib/payments/provider.ts defines the small provider adapter registry with checkout, return verification, webhook verification and reconciliation operations. No provider is registered until the project has an actual provider contract and credentials.
+
+### Pricing authority
+
+The current Service and Event schemas do not contain a finalized payable-price field. Phase 8.17 therefore does not invent a price. The public checkout endpoint refuses targets that have no server-authoritative price configuration. This keeps arbitrary browser-supplied amounts out of the system while leaving the transaction/provider architecture ready for the later pricing integration.
+
+### Checkout and result boundaries
+
+POST /api/payments/checkout authenticates the user, validates the internal return URL and requires a server-resolved payable target. It never accepts an amount or trusted status from the browser. GET /api/payments/result returns only the authenticated user's safe transaction result fields.
+
+POST /api/payments/webhook/[provider] delegates authenticity verification to the configured provider adapter and reconciles only verified results. Browser redirects are never treated as proof of payment.
+
+### User and admin access
+
+- /account/payments exposes only the signed-in user's own payment history.
+- /admin/payments provides protected search/filter/list access.
+- /admin/payments/[id] shows minimized transaction details.
+- There is no manual SUCCESS control, arbitrary amount editing, deletion, refund, or raw webhook display.
+
+### Event-registration compatibility
+
+The payment transaction model can link to EventRegistration, and verified SUCCESS reconciliation atomically confirms a linked registration that is already active. Phase 8.16 currently has no event price field, so no paid-registration UI is activated and the existing free-registration flow remains unchanged.
+
+### Security
+
+Payment secrets belong in server-only environment variables. The implementation does not store card numbers, CVV, payment credentials, provider secrets, or raw webhook payloads. Target ownership, amount, currency and payment status are server-authoritative. Publishing rules remain the responsibility of the target resolver; no public payment target is currently exposed for unpublished content.
+
+### Verification
+
+npm run payments:verify checks integer money conversion, server-created amount, idempotency, ownership query shape, invalid state transitions, verified success reconciliation, duplicate reconciliation and amount mismatch rejection. CI runs it after the existing registration verification and before lint/build.
+
+No Phase 8.18+ functionality is implemented.
