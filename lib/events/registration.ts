@@ -6,6 +6,7 @@ import { prisma } from "@/lib/db/prisma";
 import { deliverCreatedNotifications, queueRegistrationNotification } from "@/lib/notifications/domain";
 import { AnalyticsEventCategory, AnalyticsEventName } from "@/generated/prisma/client";
 import { trackAnalyticsEvent } from "@/lib/analytics/service";
+import type { RegistrationActionState } from "@/lib/events/registration-types";
 
 const CAPACITY_STATUSES: EventRegistrationRecordStatus[] = [
   EventRegistrationRecordStatus.PENDING,
@@ -111,12 +112,6 @@ export async function getRegistrationAvailability(eventId: string, userId?: stri
 
   return { open: true, reason: "OPEN", count, capacity: event.registrationCapacity, remaining: event.registrationCapacity == null ? null : Math.max(event.registrationCapacity - count, 0), mode: event.registrationMode, currentUserRegistration };
 }
-
-export type RegistrationActionState = {
-  ok: boolean;
-  message: string | null;
-  fieldErrors: Record<string, string>;
-};
 
 export const registrationInitialState: RegistrationActionState = {
   ok: false,
