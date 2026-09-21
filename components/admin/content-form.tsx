@@ -148,6 +148,7 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
             <label htmlFor="publishAt" className="text-sm font-medium">Scheduled publication time</label>
             <input id="publishAt" name="publishAt" type="datetime-local" defaultValue={scheduleValue} aria-describedby="publishAt-help" className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm" />
             <p id="publishAt-help" className="mt-1 text-xs text-muted-foreground">Enter the time in the selected timezone. The stored publication timestamp is UTC.</p>
+            {errors.publishAt && <p className="mt-1 text-sm text-destructive" role="alert">{errors.publishAt}</p>}
           </div>
           <div>
             <label htmlFor="publishTimeZone" className="text-sm font-medium">Timezone</label>
