@@ -775,3 +775,52 @@ Payment secrets belong in server-only environment variables. The implementation 
 npm run payments:verify checks integer money conversion, server-created amount, idempotency, ownership query shape, invalid state transitions, verified success reconciliation, duplicate reconciliation and amount mismatch rejection. CI runs it after the existing registration verification and before lint/build.
 
 No Phase 8.18+ functionality is implemented.
+
+
+## Phase 8.18 — Notifications & Email Infrastructure
+
+Phase 8.18 adds canonical transactional notification infrastructure without changing the public website or introducing a marketing system. The architecture is business event → durable Notification intent → NotificationService → EmailProvider → delivery result.
+
+### Notification domain
+
+Notification is the single persisted notification record. It supports EMAIL today and explicit statuses PENDING, PROCESSING, SENT, FAILED, and CANCELLED. Notification types are limited to application events that exist in the current product: inquiry received, registration received/confirmed/cancelled, and verified payment pending/success/failed.
+
+A deterministic unique dedupeKey prevents duplicate logical notifications. Delivery claims a pending record before calling the provider, then persists the provider message ID and delivery timestamps. Failed records retain only safe failure classification and message. No raw provider payloads are stored.
+
+### Email provider
+
+No email provider existed before Phase 8.18. The implementation uses a small provider abstraction with a Resend REST adapter, avoiding an additional npm dependency. Resend's Email API supports direct REST sending and idempotency keys; the adapter sends the notification's deterministic dedupe key as the provider idempotency key. citeturn0search0turn0search1
+
+Required server environment variables are RESEND_API_KEY, NOTIFICATION_FROM_EMAIL, and NOTIFICATION_FROM_NAME. Optional NOTIFICATION_REPLY_TO and comma-separated NOTIFICATION_INTERNAL_EMAILS configure reply-to and internal inquiry recipients. Real credentials are never committed.
+
+The sender is fully server-controlled. Public forms cannot select recipients, sender metadata, provider, template, status, or HTML.
+
+### Templates and security
+
+Templates are a typed server-side registry producing subject, plain-text and HTML versions. User-controlled values are HTML-escaped and constrained before interpolation. Subjects and sender/reply-to configuration strip CR/LF to prevent header injection. No arbitrary HTML, scripts, forms, external resource URLs, or client-selected templates are accepted.
+
+Transactional emails use concise status-oriented content for registrations, payments and internal inquiries. No newsletter, campaign, subscriber, broadcast, marketing unsubscribe or notification-center functionality is included.
+
+### Delivery and retry
+
+Business state is committed before delivery is attempted. Provider failure therefore cannot roll back a successful registration, inquiry or verified payment. Failed notifications can be retried by an authorized admin while preserving the same notification record and deterministic provider idempotency key. Temporary provider failures are classified separately from permanent configuration/validation failures; there is no uncontrolled retry loop.
+
+The current deployment has no existing queue/worker platform, so Phase 8.18 does not invent Redis, Kafka, SQS or fake background processing. Notification records are durable and the service boundary is ready for later asynchronous execution.
+
+### Integrations
+
+- Contact inquiry: after a validated inquiry is persisted, an internal INQUIRY_RECEIVED notification is queued only when internal recipients are configured.
+- Registration: creation queues REGISTRATION_RECEIVED; real status transitions to confirmed/cancelled queue their corresponding notifications. The deterministic key prevents repeated operations from creating duplicate logical messages.
+- Payments: PAYMENT_SUCCESS, PAYMENT_FAILED, and PAYMENT_PENDING are queued only from verified server-side PaymentTransaction state changes.
+
+### Admin
+
+Protected /admin/notifications provides delivery-state search/filter/list access. /admin/notifications/[id] exposes minimized troubleshooting metadata and a secure retry action for failed notifications. Notification payloads and provider diagnostics are not exposed through the admin UI.
+
+### Verification
+
+npm run notifications:verify checks durable creation, deterministic deduplication and persisted delivery-state transitions using a fake provider record; it never calls a production email provider. CI runs it after payment verification and before lint/build.
+
+Resend live delivery was not claimed or executed because no real credentials were committed/configured in CI. A production deployment must configure a valid Resend sending API key and a verified sender/domain before enabling live delivery. Resend also documents sending-access API keys for restricting production credentials to email sending. citeturn0search14
+
+No Phase 8.19+ functionality is implemented.

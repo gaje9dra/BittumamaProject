@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { EventRegistrationRecordStatus, Prisma } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
+import { deliverCreatedNotifications, queueRegistrationNotification } from "@/lib/notifications/domain";
 
 export type RegistrationAdminState = { message: string | null; error: string | null };
 export const registrationAdminInitialState: RegistrationAdminState = { message: null, error: null };
@@ -30,18 +31,19 @@ export async function updateEventRegistrationStatus(
   const nextStatus = requested as EventRegistrationRecordStatus;
 
   for (let attempt = 0; attempt < 3; attempt += 1) {
+    const notificationIds: string[] = [];
     try {
       await prisma.client.$transaction(async (tx) => {
         const registration = await tx.eventRegistration.findFirst({
           where: { id: registrationId, eventId },
-          select: { id: true, status: true, userId: true, email: true, activeIdentityKey: true },
+          select: { id: true, status: true, userId: true, email: true, fullName: true, activeIdentityKey: true },
         });
         if (!registration) throw new Error("NOT_FOUND");
         if (registration.status === nextStatus) throw new Error("UNCHANGED");
 
         const event = await tx.event.findUnique({
           where: { id: eventId },
-          select: { registrationCapacity: true },
+          select: { registrationCapacity: true, title: true, date: true },
         });
         if (!event) throw new Error("NOT_FOUND");
 
@@ -59,8 +61,22 @@ export async function updateEventRegistrationStatus(
           where: { id: registrationId },
           data: { status: nextStatus, activeIdentityKey },
         });
+        if (nextStatus === EventRegistrationRecordStatus.CONFIRMED || nextStatus === EventRegistrationRecordStatus.CANCELLED) {
+          const notification = await queueRegistrationNotification(tx, {
+            registrationId: registration.id,
+            userId: registration.userId,
+            recipient: registration.email,
+            type: nextStatus === EventRegistrationRecordStatus.CONFIRMED ? "REGISTRATION_CONFIRMED" : "REGISTRATION_CANCELLED",
+            name: registration.fullName,
+            eventTitle: event.title,
+            eventDate: event.date.toISOString(),
+            status: nextStatus,
+          });
+          if (notification) notificationIds.push(notification.notificationId);
+        }
       }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable });
 
+      await deliverCreatedNotifications(notificationIds);
       revalidatePath(`/admin/registrations/${eventId}`);
       revalidatePath(`/admin/registrations/${eventId}/${registrationId}`);
       const event = await prisma.client.event.findUnique({ where: { id: eventId }, select: { slug: true } });

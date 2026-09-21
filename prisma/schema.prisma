@@ -81,6 +81,28 @@ enum PaymentPurpose {
   EVENT_REGISTRATION
 }
 
+enum NotificationStatus {
+  PENDING
+  PROCESSING
+  SENT
+  FAILED
+  CANCELLED
+}
+
+enum NotificationChannel {
+  EMAIL
+}
+
+enum NotificationType {
+  INQUIRY_RECEIVED
+  REGISTRATION_RECEIVED
+  REGISTRATION_CONFIRMED
+  REGISTRATION_CANCELLED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+  PAYMENT_PENDING
+}
+
 model User {
   id                String           @id @default(cuid())
   name              String?
@@ -95,6 +117,7 @@ model User {
   contactInquiries   ContactInquiry[]
   eventRegistrations EventRegistration[]
   paymentTransactions PaymentTransaction[]
+  notifications      Notification[]
 
   @@index([role])
 }
@@ -551,4 +574,35 @@ model PaymentTransaction {
   @@index([registrationId])
   @@index([serviceId])
   @@index([purpose, createdAt])
+}
+
+
+model Notification {
+  id                 String               @id @default(cuid())
+  userId             String?
+  type               NotificationType
+  channel            NotificationChannel
+  status             NotificationStatus   @default(PENDING)
+  subject            String?
+  recipient          String
+  relatedEntityType  String?
+  relatedEntityId    String?
+  payload            Json?
+  provider           String?
+  providerMessageId  String?
+  dedupeKey          String               @unique
+  scheduledFor       DateTime?
+  sentAt             DateTime?
+  failedAt           DateTime?
+  failureCode        String?
+  failureMessage     String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  user               User?                @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([status, scheduledFor])
+  @@index([relatedEntityType, relatedEntityId])
+  @@index([providerMessageId])
+  @@index([type, status])
 }

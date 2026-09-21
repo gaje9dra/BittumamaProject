@@ -1,9 +1,12 @@
 import "server-only";
 
 import { PaymentStatus, PaymentPurpose } from "@/generated/prisma/client";
+
+const PAYMENT_NOTIFICATION_STATUSES: PaymentStatus[] = [PaymentStatus.SUCCESS, PaymentStatus.FAILED, PaymentStatus.PENDING];
 import { getCurrentUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
-import { assertAmountMinor, normalizeCurrency } from "@/lib/payments/money";
+import { assertAmountMinor, normalizeCurrency, minorToMajorString } from "@/lib/payments/money";
+import { deliverCreatedNotifications, queuePaymentNotification } from "@/lib/notifications/domain";
 import { getConfiguredPaymentProvider, getConfiguredPaymentProviderName } from "@/lib/payments/provider";
 import { assertPaymentTransition } from "@/lib/payments/state";
 import { createPaymentTransaction, getPaymentByReference } from "@/lib/payments/repository";
@@ -81,6 +84,7 @@ export async function reconcileVerifiedPayment(verified: VerifiedPayment) {
     paidAt: verified.status === PaymentStatus.SUCCESS ? new Date() : null,
   };
 
+  const notificationIds: string[] = [];
   const result = await prisma.client.$transaction(async (tx) => {
     const current = await tx.paymentTransaction.findUnique({ where: { id: transaction.id } });
     if (!current) throw new Error("PAYMENT_NOT_FOUND");
@@ -94,8 +98,28 @@ export async function reconcileVerifiedPayment(verified: VerifiedPayment) {
         data: { status: "CONFIRMED" },
       });
     }
+
+    if (updated.userId && PAYMENT_NOTIFICATION_STATUSES.includes(verified.status)) {
+      const user = await tx.user.findUnique({ where: { id: updated.userId }, select: { email: true } });
+      if (user?.email) {
+        const notification = await queuePaymentNotification(tx, {
+          paymentId: updated.id,
+          userId: updated.userId,
+          recipient: user.email,
+          type: verified.status === PaymentStatus.SUCCESS ? "PAYMENT_SUCCESS" : verified.status === PaymentStatus.FAILED ? "PAYMENT_FAILED" : "PAYMENT_PENDING",
+          reference: updated.reference,
+          amount: minorToMajorString(updated.amountMinor),
+          currency: updated.currency,
+          purpose: updated.purpose,
+          status: updated.status,
+          failureMessage: updated.failureMessage,
+        });
+        if (notification) notificationIds.push(notification.notificationId);
+      }
+    }
     return updated;
   });
+  await deliverCreatedNotifications(notificationIds);
   return { ok: true as const, changed: true as const, transaction: result };
 }
 
