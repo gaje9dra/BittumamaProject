@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "New content | Bittumama", robots: { index: false, follow: false, nocache: true } };
 
 const empty: ContentFormValues = {
-  title:"",slug:"",category:"",shortDescription:"",description:"",status:"DRAFT",featured:false,order:"0",date:"",endDate:"",time:"",
+  title:"",slug:"",category:"",shortDescription:"",description:"",status:"DRAFT",publishAt:"",featured:false,order:"0",date:"",endDate:"",time:"",
   location:"",format:"",eventType:"",availability:"",type:"",topic:"",image:"",imageMediaId:"",seoTitle:"",seoDescription:"",seoImage:"",seoCanonical:"",
   seoNoIndex:false,need:"",focus:"",audience:"",highlights:"",faq:"",summary:"",tags:"",scope:"",topics:"",sections:"",methodology:"",
   content:"",excerpt:"",author:"",authorRole:"",authorSlug:"",registrationLabel:"",registrationHref:"",registrationStatus:"",speakerRole:"",
