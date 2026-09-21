@@ -81,7 +81,7 @@ function toDomainService(record: PrismaService): Service {
 
 export async function getPublishedServices(): Promise<Service[]> {
   const records = await runServiceQuery(() => prisma.client.service.findMany({
-    where: { status: "PUBLISHED" },
+    where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
     orderBy: [{ order: "asc" }, { id: "asc" }],
   }));
 
@@ -92,7 +92,7 @@ export async function getPublishedServiceById(
   id: string,
 ): Promise<Service | undefined> {
   const record = await runServiceQuery(() => prisma.client.service.findFirst({
-    where: { id, status: "PUBLISHED" },
+    where: { id, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
   }));
 
   return record ? toDomainService(record) : undefined;
@@ -104,7 +104,7 @@ export async function getPublishedServiceBySlug(
   const record = await runServiceQuery(() => prisma.client.service.findFirst({
     where: {
       slug,
-      status: "PUBLISHED",
+      status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
     },
   }));
 
@@ -113,7 +113,7 @@ export async function getPublishedServiceBySlug(
 
 export async function getPublishedServiceCategories(): Promise<string[]> {
   const records = await runServiceQuery(() => prisma.client.service.findMany({
-    where: { status: "PUBLISHED" },
+    where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
     select: { category: true },
     distinct: ["category"],
     orderBy: { category: "asc" },
@@ -142,7 +142,7 @@ export async function getRelatedPublishedServices(
 ): Promise<Service[]> {
   const records = await runServiceQuery(() => prisma.client.service.findMany({
     where: {
-      status: "PUBLISHED",
+      status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
       category: service.category,
       NOT: { id: service.id },
     },
@@ -150,4 +150,10 @@ export async function getRelatedPublishedServices(
   }));
 
   return records.map(toDomainService);
+}
+
+
+export async function getPreviewServiceById(id: string): Promise<Service | undefined> {
+  const record = await runServiceQuery(() => prisma.client.service.findUnique({ where: { id } }));
+  return record ? toDomainService(record) : undefined;
 }
