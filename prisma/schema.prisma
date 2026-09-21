@@ -113,6 +113,7 @@ enum AnalyticsEventName {
   PAYMENT_INITIATED
   PAYMENT_SUCCESS
   PAYMENT_FAILED
+  SEARCH_SUBMITTED
 }
 
 enum AnalyticsContentType {
