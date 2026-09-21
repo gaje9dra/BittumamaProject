@@ -130,9 +130,10 @@ SELECT
     + ts_rank_cd(search_vector, websearch_to_tsquery('simple', $1), 32) * 100
   )::double precision AS rank
 FROM candidates
-WHERE
+WHERE (
   search_vector @@ websearch_to_tsquery('simple', $1)
   OR lower(title) LIKE lower('%' || $1 || '%')
+)
 `;
 
 function typeClause(type: SearchResultType) {
