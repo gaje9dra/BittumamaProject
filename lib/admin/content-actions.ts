@@ -87,6 +87,9 @@ function validateBase(fields: Record<string, string>) {
   if (fields.date && fields.endDate && parseDate(fields.date) && parseDate(fields.endDate) && parseDate(fields.endDate)! < parseDate(fields.date)!) {
     errors.endDate = "End date cannot be earlier than the event date.";
   }
+  if (fields.registrationCapacity && (!Number.isInteger(Number(fields.registrationCapacity)) || Number(fields.registrationCapacity) < 1)) errors.registrationCapacity = "Capacity must be a positive whole number.";
+  if (fields.registrationDeadline && !parseDate(fields.registrationDeadline)) errors.registrationDeadline = "Enter a valid registration deadline.";
+  if (fields.registrationEnabled === "true" && fields.registrationDeadline && parseDate(fields.registrationDeadline) && parseDate(fields.registrationDeadline)! <= new Date()) errors.registrationDeadline = "Registration deadline must be in the future.";
   return errors;
 }
 
@@ -245,15 +248,7 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
   const registrationCapacity = fields.registrationCapacity ? Number(fields.registrationCapacity) : null;
   const registrationDeadline = parseDate(fields.registrationDeadline);
   if (domain === "workshops") {
-    if (fields.registrationCapacity && (!Number.isInteger(registrationCapacity) || registrationCapacity! < 1)) {
-      throw new Error("Registration capacity must be a positive whole number.");
-    }
-    if (registrationDeadline === undefined && fields.registrationDeadline) {
-      throw new Error("Registration deadline must be a valid date and time.");
-    }
-    if (registrationDeadline && registrationDeadline <= new Date() && registrationEnabled) {
-      throw new Error("Registration deadline must be in the future when registration is enabled.");
-    }
+
   }
   switch (domain) {
     case "services":
