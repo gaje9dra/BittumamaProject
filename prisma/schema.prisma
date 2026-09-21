@@ -122,6 +122,7 @@ model Service {
   featured         Boolean             @default(false)
   availability     ServiceAvailability @default(AVAILABLE)
   status           ContentStatus       @default(PUBLISHED)
+  publishAt         DateTime?
   seoTitle         String?
   seoDescription   String?
   seoImage         String?
@@ -149,6 +150,7 @@ model ResearchItem {
   summary          String?
   date             DateTime?
   status           ContentStatus       @default(DRAFT)
+  publishAt         DateTime?
   availability     ResearchAvailability @default(AVAILABLE)
   type             String?
   topic            String?
@@ -197,6 +199,7 @@ model Expert {
   researchInterests Json?
   featured          Boolean          @default(false)
   status            ContentStatus    @default(PUBLISHED)
+  publishAt         DateTime?
   seoTitle          String?
   seoDescription    String?
   seoImage          String?
@@ -244,6 +247,7 @@ model Article {
   featured       Boolean           @default(false)
   tags           Json?
   status         ContentStatus     @default(DRAFT)
+  publishAt         DateTime?
   authorId       String?
   seoTitle       String?
   seoDescription String?
@@ -289,6 +293,7 @@ model Event {
   registrationStatus EventRegistrationStatus?
   featured           Boolean                  @default(false)
   status             ContentStatus            @default(DRAFT)
+  publishAt         DateTime?
   seoTitle           String?
   seoDescription     String?
   seoImage           String?
