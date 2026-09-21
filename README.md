@@ -824,3 +824,34 @@ npm run notifications:verify checks durable creation, deterministic deduplicatio
 Resend live delivery was not claimed or executed because no real credentials were committed/configured in CI. A production deployment must configure a valid Resend sending API key and a verified sender/domain before enabling live delivery. Resend also documents sending-access API keys for restricting production credentials to email sending. citeturn0search14
 
 No Phase 8.19+ functionality is implemented.
+
+
+## Phase 8.19 — Analytics & Measurement Infrastructure
+
+Phase 8.19 adds a first-party, privacy-conscious analytics event layer. It does not add Google Analytics, GA4, GTM, PostHog, Plausible, Clarity, Vercel Analytics, or another third-party tracking vendor.
+
+### Event model
+
+`AnalyticsEvent` is the canonical raw measurement record. Event names and categories are explicit Prisma enums. The initial scope covers public page/content views, contact submission, registration start/completion, and verified payment initiation/success/failure. Client code may submit only controlled page-view and registration-start events; critical business conversions are generated server-side after the corresponding business state is committed.
+
+No passwords, tokens, payment credentials, provider payloads, inquiry bodies, private notes, or arbitrary browser metadata are recorded. Content titles are resolved from canonical Services, Research, Experts, Articles and Workshops / Events during aggregate queries rather than copied into every event.
+
+### Anonymous/session measurement
+
+The lightweight page tracker creates random UUID identifiers in `sessionStorage`. No email, phone number, deterministic fingerprint, IP address or hardware/browser fingerprint is used. Unique visitors are intentionally not presented as a metric; the dashboard reports measured views and conversion events instead. The isolated client tracker can be placed behind a future consent gate without changing the analytics domain.
+
+### Public view rules
+
+The client tracker records one logical navigation event and excludes `/admin`, secure preview, API and internal paths. For canonical content routes, the server resolves the slug and records a content-specific view only when the record is currently `PUBLISHED` and its `publishAt` has been reached. Draft, scheduled, archived and preview traffic is excluded from public content metrics.
+
+### Business events
+
+Contact submission is recorded only after `ContactInquiry` persistence. Registration completion is recorded only after `EventRegistration` persistence. Payment initiation is recorded after a new internal `PaymentTransaction` is created, while payment success/failure is recorded only from verified `PaymentTransaction` state transitions. Analytics errors are isolated and cannot roll back or fail the business operation.
+
+### Aggregation and admin
+
+Protected `/admin/analytics` uses bounded PostgreSQL aggregation queries for today, last 7 days, last 30 days, and validated custom UTC ranges. It shows views, inquiries, registrations, payment attempts/success/failure, daily trends and top viewed content. Category and content-type filters are server-side and bounded. No raw-event explorer or individual user surveillance view is provided.
+
+### Retention and provider configuration
+
+No automatic deletion is introduced in this phase. Raw events are timestamped so a future configurable retention job can remove old records safely. There is no third-party analytics provider and therefore no analytics provider credential configuration.
