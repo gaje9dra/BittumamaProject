@@ -26,9 +26,9 @@ export async function reconcilePaymentAsAdmin(
     const provider = getConfiguredPaymentProvider();
     if (provider.name !== payment.provider) return { message: null, error: "The configured provider does not match this payment." };
     const verified = await provider.reconcile(payment.reference);
-    const result = await reconcileVerifiedPayment(verified, actor.id);
-    if (result.ok) await recordAuditBestEffort(prisma.client, { action: AuditAction.PAYMENT_RECONCILED, category: AuditCategory.PAYMENT, result: AuditResult.SUCCESS, summary: "Payment reconciled against verified provider state.", entityType: "PaymentTransaction", entityId: payment.id, metadata: { paymentTransactionId: payment.id, changed: result.changed }, actor: { userId: actor.id, type: "USER" } });
-    if (!result.ok) { await recordAuditBestEffort(prisma.client, { action: AuditAction.PAYMENT_RECONCILED, category: AuditCategory.PAYMENT, result: AuditResult.FAILURE, severity: AuditSeverity.WARNING, summary: "Payment reconciliation mismatch.", entityType: "PaymentTransaction", entityId: payment.id, metadata: { paymentTransactionId: payment.id, reason: result.reason }, actor: { userId: actor.id, type: "USER" } }); return { message: null, error: "Provider reconciliation found a payment mismatch." }; }
+    const result = await reconcileVerifiedPayment(verified, null);
+    if (result.ok) await recordAuditBestEffort(prisma.client, { action: AuditAction.PAYMENT_RECONCILED, category: AuditCategory.PAYMENT, result: AuditResult.SUCCESS, summary: "Payment reconciled against verified provider state.", entityType: "PaymentTransaction", entityId: payment.id, metadata: { paymentTransactionId: payment.id, changed: result.changed }, actor: { userId: null, type: "SYSTEM" } });
+    if (!result.ok) { await recordAuditBestEffort(prisma.client, { action: AuditAction.PAYMENT_RECONCILED, category: AuditCategory.PAYMENT, result: AuditResult.FAILURE, severity: AuditSeverity.WARNING, summary: "Payment reconciliation mismatch.", entityType: "PaymentTransaction", entityId: payment.id, metadata: { paymentTransactionId: payment.id, reason: result.reason, adminAccountId: actor.id }, actor: { userId: null, type: "SYSTEM" } }); return { message: null, error: "Provider reconciliation found a payment mismatch." }; }
 
     revalidatePath("/admin/payments");
     revalidatePath("/admin/payments/" + id);

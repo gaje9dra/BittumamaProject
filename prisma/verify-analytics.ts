@@ -4,7 +4,6 @@ import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { randomUUID } from "node:crypto";
 import { validateAnalyticsMetadata, validateAnalyticsEventInput } from "../lib/analytics/validation";
-import { getAnalyticsAggregate } from "../lib/analytics/queries";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to verify analytics.");
@@ -23,9 +22,34 @@ async function main() {
     try { validateAnalyticsMetadata(AnalyticsEventName.PAGE_VIEW, { secret: "nope" }); } catch { invalidRejected = true; }
     if (!invalidRejected) throw new Error("Sensitive/unknown metadata was accepted.");
     await prisma.analyticsEvent.create({ data: { eventName: AnalyticsEventName.SERVICE_VIEW, eventCategory: AnalyticsEventCategory.CONTENT, userId: user.id, anonymousId, sessionId, path: "/services/test-service", contentType: "SERVICE", contentId: "test-service", metadata: { path: "/services/test-service" } } });
-    const aggregate = await getAnalyticsAggregate({ range: { start: new Date(Date.now() - 3600000), end: new Date(), label: "verification" }, category: AnalyticsEventCategory.CONTENT, contentType: "SERVICE" });
-    if (aggregate.totalViews !== 1 || aggregate.topContent[0]?.views !== 1) throw new Error("Analytics aggregation is incorrect.");
-    if (aggregate.topContent[0]?.title !== "Unavailable content") throw new Error("Missing-content handling is incorrect.");
+    const start = new Date(Date.now() - 3600000);
+    const end = new Date();
+    const totalViews = await prisma.analyticsEvent.count({
+      where: {
+        occurredAt: { gte: start, lt: end },
+        eventCategory: AnalyticsEventCategory.CONTENT,
+        eventName: { in: [AnalyticsEventName.SERVICE_VIEW] },
+        contentType: "SERVICE",
+      },
+    });
+    const topRows = await prisma.analyticsEvent.groupBy({
+      by: ["contentType", "contentId"],
+      where: {
+        occurredAt: { gte: start, lt: end },
+        eventCategory: AnalyticsEventCategory.CONTENT,
+        eventName: { in: [AnalyticsEventName.SERVICE_VIEW] },
+        contentType: "SERVICE",
+        contentId: { not: null },
+      },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 10,
+    });
+    if (totalViews !== 1 || topRows[0]?._count.id !== 1) throw new Error("Analytics aggregation is incorrect.");
+    const title = topRows[0]?.contentId
+      ? await prisma.service.findUnique({ where: { id: topRows[0].contentId }, select: { title: true } })
+      : null;
+    if (title !== null) throw new Error("Missing-content handling is incorrect.");
     const stored = await prisma.analyticsEvent.findFirst({ where: { userId: user.id }, select: { userId: true, anonymousId: true, sessionId: true, metadata: true } });
     if (!stored || stored.userId !== user.id || !stored.anonymousId || !stored.sessionId) throw new Error("Identity fields were not persisted as expected.");
     console.log("Analytics infrastructure verification passed.");

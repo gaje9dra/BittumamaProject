@@ -60,7 +60,7 @@ export async function updateEventRegistrationStatus(
         }
 
         await tx.eventRegistration.update({ where: { id: registrationId }, data: { status: nextStatus, activeIdentityKey } });
-        await recordAudit(tx, { action: nextStatus === EventRegistrationRecordStatus.CANCELLED ? AuditAction.REGISTRATION_CANCELLED : AuditAction.REGISTRATION_STATUS_CHANGED, category: AuditCategory.REGISTRATION, result: AuditResult.SUCCESS, summary: nextStatus === EventRegistrationRecordStatus.CANCELLED ? "Registration cancelled by an administrator." : "Registration status changed.", entityType: "EventRegistration", entityId: registration.id, metadata: { registrationId: registration.id, eventId, previousStatus: registration.status, newStatus: nextStatus }, actor: { userId: actor.id, type: "USER" } });
+        await recordAudit(tx, { action: nextStatus === EventRegistrationRecordStatus.CANCELLED ? AuditAction.REGISTRATION_CANCELLED : AuditAction.REGISTRATION_STATUS_CHANGED, category: AuditCategory.REGISTRATION, result: AuditResult.SUCCESS, summary: nextStatus === EventRegistrationRecordStatus.CANCELLED ? "Registration cancelled by an administrator." : "Registration status changed.", entityType: "EventRegistration", entityId: registration.id, metadata: { registrationId: registration.id, eventId, previousStatus: registration.status, newStatus: nextStatus, adminAccountId: actor.id }, actor: { userId: null, type: "SYSTEM" } });
         if (nextStatus === EventRegistrationRecordStatus.CONFIRMED || nextStatus === EventRegistrationRecordStatus.CANCELLED) {
           const notification = await queueRegistrationNotification(tx, {
             registrationId: registration.id,
