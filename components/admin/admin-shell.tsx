@@ -14,6 +14,7 @@ const navItems = [
   { href: "/admin", label: "Overview" },
   { href: "/admin/content", label: "Content" },
   { href: "/admin/media", label: "Media" },
+  { href: "/admin/inquiries", label: "Inquiries" },
 ];
 
 export function AdminShell({ admin, children }: { admin: AdminIdentity; children: ReactNode }) {
@@ -33,10 +34,7 @@ export function AdminShell({ admin, children }: { admin: AdminIdentity; children
             <ul className="space-y-1">
               {navItems.map((item) => (
                 <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    className="block rounded-[var(--radius-md)] bg-surface-interactive px-3 py-2.5 type-nav text-foreground"
-                  >
+                  <Link href={item.href} className="block rounded-[var(--radius-md)] bg-surface-interactive px-3 py-2.5 type-nav text-foreground">
                     {item.label}
                   </Link>
                 </li>
@@ -46,9 +44,7 @@ export function AdminShell({ admin, children }: { admin: AdminIdentity; children
           <div className="border-t border-border p-4">
             <p className="truncate type-body-sm font-medium">{displayName}</p>
             {admin.email && <p className="mt-1 truncate type-caption text-muted-foreground">{admin.email}</p>}
-            <div className="mt-4">
-              <SignOutButton />
-            </div>
+            <div className="mt-4"><SignOutButton /></div>
           </div>
         </aside>
 
@@ -62,10 +58,7 @@ export function AdminShell({ admin, children }: { admin: AdminIdentity; children
               <AdminMobileNav displayName={displayName} email={admin.email} />
             </div>
           </header>
-
-          <main className="px-[var(--page-gutter)] py-8 sm:py-10 lg:py-12">
-            {children}
-          </main>
+          <main className="px-[var(--page-gutter)] py-8 sm:py-10 lg:py-12">{children}</main>
         </div>
       </div>
     </div>
