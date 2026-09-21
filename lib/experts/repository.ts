@@ -77,7 +77,7 @@ const relationInclude = {
 export async function getPublishedExperts(): Promise<Expert[]> {
   const records = await runExpertQuery(() =>
     prisma.client.expert.findMany({
-      where: { status: "PUBLISHED" },
+      where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       orderBy: [{ order: "asc" }, { id: "asc" }],
       include: relationInclude,
     }),
@@ -88,7 +88,7 @@ export async function getPublishedExperts(): Promise<Expert[]> {
 export async function getPublishedExpertById(id: string): Promise<Expert | undefined> {
   const record = await runExpertQuery(() =>
     prisma.client.expert.findFirst({
-      where: { id, status: "PUBLISHED" },
+      where: { id, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       include: relationInclude,
     }),
   );
@@ -98,7 +98,7 @@ export async function getPublishedExpertById(id: string): Promise<Expert | undef
 export async function getPublishedExpertBySlug(slug: string): Promise<Expert | undefined> {
   const record = await runExpertQuery(() =>
     prisma.client.expert.findFirst({
-      where: { slug, status: "PUBLISHED" },
+      where: { slug, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       include: relationInclude,
     }),
   );
@@ -119,4 +119,10 @@ export async function getPublishedExpertDisciplines(): Promise<string[]> {
 export async function getFeaturedPublishedExperts(): Promise<Expert[]> {
   const experts = await getPublishedExperts();
   return experts.filter((expert) => expert.featured);
+}
+
+
+export async function getPreviewExpertById(id: string): Promise<Expert | undefined> {
+  const record = await runExpertQuery(() => prisma.client.expert.findUnique({ where: { id }, include: relationInclude }));
+  return record ? toDomainExpert(record) : undefined;
 }
