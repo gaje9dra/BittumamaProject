@@ -1,6 +1,6 @@
 "use client";
 
-import type { AnalyticsClientEvent } from "@/lib/analytics/types";
+import type { AnalyticsClientEvent } from "@/lib/analytics/client-types";
 
 const ANONYMOUS_KEY = "bittumama:analytics:anonymous";
 const SESSION_KEY = "bittumama:analytics:session";
