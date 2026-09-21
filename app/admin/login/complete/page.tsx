@@ -13,10 +13,10 @@ import { recordAuditBestEffort } from "@/lib/audit/service";
 import { AuditAction, AuditCategory, AuditResult, AuditSeverity } from "@/generated/prisma/client";
 
 function safeAdminCallback(value: string | undefined) {
-  if (!value || !value.startsWith("/admin") || value.startsWith("//")) return "/admin";
+  if (!value || (!value.startsWith("/admin/") && value !== "/admin") || value.startsWith("//")) return "/admin";
   try {
     const url = new URL(value, "https://bittumama.invalid");
-    if (url.origin !== "https://bittumama.invalid" || !url.pathname.startsWith("/admin")) return "/admin";
+    if (url.origin !== "https://bittumama.invalid" || (url.pathname !== "/admin" && !url.pathname.startsWith("/admin/"))) return "/admin";
     return `${url.pathname}${url.search}${url.hash}`;
   } catch {
     return "/admin";
