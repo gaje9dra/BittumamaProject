@@ -16,7 +16,7 @@ export interface MediaStorage {
 const root = path.resolve(process.env.MEDIA_STORAGE_DIR?.trim() || path.join(process.cwd(), ".media-storage"));
 
 function safePath(storageKey: string) {
-  const resolved = path.resolve(/* turbopackIgnore: true */ root, storageKey);
+  const resolved = path.resolve(/*turbopackIgnore: true*/ root, storageKey);
   if (resolved !== root && !resolved.startsWith(root + path.sep)) throw new Error("Invalid storage key.");
   return resolved;
 }
@@ -35,7 +35,7 @@ const localStorage: MediaStorage = {
   async exists(storageKey) { try { await stat(safePath(storageKey)); return true; } catch { return false; } },
   async getStream(storageKey) {
     if (!(await this.exists(storageKey))) throw new Error("Storage object not found.");
-    return createReadStream(/* turbopackIgnore: true */ safePath(storageKey));
+    return createReadStream(/*turbopackIgnore: true*/ safePath(storageKey));
   },
 };
 
