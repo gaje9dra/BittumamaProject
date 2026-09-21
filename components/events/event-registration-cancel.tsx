@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { cancelEventRegistration } from "@/lib/events/registration-actions";
-import type { RegistrationActionState } from "@/lib/events/registration";
+import type { RegistrationActionState } from "@/lib/events/registration-types";
 
 const initialState: RegistrationActionState = { ok: false, message: null, fieldErrors: {} };
 
