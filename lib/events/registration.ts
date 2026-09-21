@@ -113,12 +113,6 @@ export async function getRegistrationAvailability(eventId: string, userId?: stri
   return { open: true, reason: "OPEN", count, capacity: event.registrationCapacity, remaining: event.registrationCapacity == null ? null : Math.max(event.registrationCapacity - count, 0), mode: event.registrationMode, currentUserRegistration };
 }
 
-export const registrationInitialState: RegistrationActionState = {
-  ok: false,
-  message: null,
-  fieldErrors: {},
-};
-
 function failure(message: string, fieldErrors: Record<string, string> = {}): RegistrationActionState {
   return { ok: false, message, fieldErrors };
 }
