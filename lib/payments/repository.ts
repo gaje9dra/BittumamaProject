@@ -18,17 +18,22 @@ export async function getPaymentByReference(reference: string) {
 }
 
 export async function listUserPayments(userId: string, page = 1, pageSize = 20) {
-  const safePage = Math.max(1, page);
+  const safePage = Math.min(Math.max(page, 1), 100);
   const safeSize = Math.min(Math.max(pageSize, 5), 50);
-  return prisma.client.paymentTransaction.findMany({
-    where: { userId },
-    select: {
-      reference: true, amountMinor: true, currency: true, purpose: true, status: true, createdAt: true, paidAt: true,
-    },
-    orderBy: { createdAt: "desc" },
-    skip: (safePage - 1) * safeSize,
-    take: safeSize,
-  });
+  const where = { userId };
+  const [items, total] = await Promise.all([
+    prisma.client.paymentTransaction.findMany({
+      where,
+      select: {
+        reference: true, amountMinor: true, currency: true, purpose: true, status: true, createdAt: true, paidAt: true,
+      },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      skip: (safePage - 1) * safeSize,
+      take: safeSize,
+    }),
+    prisma.client.paymentTransaction.count({ where }),
+  ]);
+  return { items, total, page: safePage, pageSize: safeSize, totalPages: Math.max(1, Math.ceil(total / safeSize)) };
 }
 
 export type AdminPaymentOptions = {
