@@ -18,8 +18,8 @@ export async function retryNotificationAsAdmin(
     const result = await retryNotification(id);
     revalidatePath("/admin/notifications");
     revalidatePath("/admin/notifications/" + id);
-    if (!result.ok && "reason" in result) return { message: null, error: "This notification is not eligible for retry." };
-    return result.delivered
+    if ("ok" in result && !result.ok) return { message: null, error: "This notification is not eligible for retry." };
+    return "delivered" in result && result.delivered
       ? { message: "Notification delivered.", error: null }
       : { message: null, error: "Retry did not deliver the notification." };
   } catch {
