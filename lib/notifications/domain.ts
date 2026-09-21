@@ -1,6 +1,6 @@
 import "server-only";
 
-import { NotificationChannel, NotificationType, Prisma } from "@/generated/prisma/client";
+import { NotificationChannel, NotificationType } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db/prisma";
 import { getNotificationConfig, normalizeRecipient } from "@/lib/notifications/config";
 import { createNotificationIntent, type NotificationTx } from "@/lib/notifications/repository";
