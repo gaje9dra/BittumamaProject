@@ -434,7 +434,7 @@ export async function saveContent(
   const status = intent === "publish" ? "PUBLISHED" : intent === "archive" ? "ARCHIVED" : (intent === "unpublish" || intent === "cancelSchedule" || intent === "schedule") ? "DRAFT" : current?.status ?? "DRAFT";
   const publishAt = intent === "publish" ? new Date() : intent === "schedule" ? (requestedSchedule ?? null) : (intent === "unpublish" || intent === "archive" || intent === "cancelSchedule") ? null : undefined;
 
-  if (status === "PUBLISHED") {
+  if (status === "PUBLISHED" || intent === "schedule") {
     const publicationErrors = validatePublished(domain, parsed.fields);
     await validatePublishedRelations(parsed.relationIds, parsed.fields.speakerId, publicationErrors);
     if (Object.keys(publicationErrors).length) return { message: "This content is not ready to publish.", fieldErrors: publicationErrors };
