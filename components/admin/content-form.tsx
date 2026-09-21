@@ -80,6 +80,8 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
     domain === "articles" ? ["relationResearchIds","relationServiceIds","relationExpertIds","relationArticleIds"] :
     ["relationResearchIds","relationServiceIds","relationWorkshopIds"];
 
+  const scheduleValue = values.publishAt ? new Date(values.publishAt).toISOString().slice(0, 16) : "";
+
   return (
     <form action={formAction} className="space-y-8">
       <input type="hidden" name="domain" value={domain} />
@@ -137,7 +139,26 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
 
       <section className="border-y border-border py-5" aria-labelledby="publication-title">
         <h2 id="publication-title" className="text-sm font-medium">Publication</h2>
-        <p className="mt-1 text-sm text-muted-foreground">Current state: <strong>{values.status}</strong>. Save preserves the current state; Publish, Unpublish and Archive are explicit server actions.</p>
+        <p className="mt-1 text-sm text-muted-foreground">Current state: <strong>{values.status === "DRAFT" && values.publishAt && new Date(values.publishAt) > new Date() ? "SCHEDULED" : values.status}</strong>. Save preserves the current state; publishing actions are server-authorized.</p>
+        {values.id && values.publishAt && values.status === "DRAFT" && (
+          <p className="mt-2 text-xs text-muted-foreground">Scheduled for {new Date(values.publishAt).toLocaleString("en-IN", { timeZone: "UTC", dateStyle: "medium", timeStyle: "short" })} UTC.</p>
+        )}
+        <div className="mt-4 grid gap-4 md:grid-cols-[minmax(0,1fr)_14rem]">
+          <div>
+            <label htmlFor="publishAt" className="text-sm font-medium">Scheduled publication time</label>
+            <input id="publishAt" name="publishAt" type="datetime-local" defaultValue={scheduleValue} aria-describedby="publishAt-help" className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm" />
+            <p id="publishAt-help" className="mt-1 text-xs text-muted-foreground">Enter the time in the selected timezone. The stored publication timestamp is UTC.</p>
+          </div>
+          <div>
+            <label htmlFor="publishTimeZone" className="text-sm font-medium">Timezone</label>
+            <select id="publishTimeZone" name="publishTimeZone" defaultValue="UTC" className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm">
+              <option value="UTC">UTC</option>
+              <option value="Asia/Kolkata">Asia/Kolkata (IST)</option>
+              <option value="Europe/London">Europe/London</option>
+              <option value="America/New_York">America/New_York</option>
+            </select>
+          </div>
+        </div>
         <div className="mt-4 flex flex-wrap gap-5">
           <label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" name="featured" defaultChecked={values.featured} /> Featured</label>
           <label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" name="seoNoIndex" defaultChecked={values.seoNoIndex} /> Noindex</label>
@@ -173,8 +194,10 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
 
       <div className="flex flex-wrap gap-3">
         <button name="intent" value="save" disabled={pending} className="bg-foreground px-4 py-2.5 text-sm font-medium text-background disabled:opacity-50">{pending ? "Saving…" : "Save"}</button>
-        <button name="intent" value="publish" disabled={pending} className="border border-border px-4 py-2.5 text-sm font-medium disabled:opacity-50">Publish</button>
-        {values.id && values.status === "PUBLISHED" && <button name="intent" value="unpublish" disabled={pending} className="border border-border px-4 py-2.5 text-sm disabled:opacity-50">Unpublish</button>}
+        <button name="intent" value="publish" disabled={pending} className="border border-border px-4 py-2.5 text-sm font-medium disabled:opacity-50">Publish now</button>
+        <button name="intent" value="schedule" disabled={pending} className="border border-border px-4 py-2.5 text-sm font-medium disabled:opacity-50">Schedule</button>
+        {values.id && values.status === "PUBLISHED" && <button name="intent" value="unpublish" disabled={pending} onClick={(event) => { if (!window.confirm("Unpublish " + values.title + "? It will no longer be publicly visible.")) event.preventDefault(); }} className="border border-border px-4 py-2.5 text-sm disabled:opacity-50">Unpublish</button>}
+        {values.id && values.publishAt && values.status === "DRAFT" && <button name="intent" value="cancelSchedule" disabled={pending} onClick={(event) => { if (!window.confirm("Cancel the scheduled publication? The content will remain unpublished.")) event.preventDefault(); }} className="border border-border px-4 py-2.5 text-sm disabled:opacity-50">Cancel schedule</button>}
         {values.id && values.status !== "ARCHIVED" && <button name="intent" value="archive" disabled={pending} onClick={(event) => { if (!window.confirm("Archive " + values.title + "? This will remove it from public visibility according to the canonical publication rules.")) event.preventDefault(); }} className="border border-border px-4 py-2.5 text-sm disabled:opacity-50">Archive</button>}
         <Link href={"/admin/content/" + domain} className="px-4 py-2.5 text-sm">Cancel</Link>
       </div>
