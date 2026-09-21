@@ -241,6 +241,7 @@ function common(fields: Record<string, string>, status: "DRAFT" | "PUBLISHED" | 
   return {
     slug: fields.slug,
     status,
+    publishAt,
     featured: fields.featured === "true",
     order: Number.isFinite(order) ? order : 0,
   };
