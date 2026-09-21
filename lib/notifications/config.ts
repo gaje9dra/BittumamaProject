@@ -15,13 +15,17 @@ export function getNotificationConfig() {
     .split(",").map((item) => item.trim().toLowerCase()).filter(Boolean);
 
   if (!apiKey || !fromEmail || !fromName) return null;
-  cleanHeaderValue(fromEmail);
+  const normalizedFrom = cleanHeaderValue(fromEmail).toLowerCase();
+  if (!isEmail(normalizedFrom)) throw new Error("Invalid notification sender email configuration.");
   cleanHeaderValue(fromName);
-  if (replyTo) cleanHeaderValue(replyTo);
+  if (replyTo) {
+    const normalizedReplyTo = cleanHeaderValue(replyTo).toLowerCase();
+    if (!isEmail(normalizedReplyTo)) throw new Error("Invalid notification reply-to configuration.");
+  }
   for (const recipient of internalRecipients) {
     if (!isEmail(recipient)) throw new Error("Invalid internal notification recipient configuration.");
   }
-  return { apiKey, fromEmail, fromName, replyTo: replyTo ? cleanHeaderValue(replyTo) : undefined, internalRecipients };
+  return { apiKey, fromEmail: normalizedFrom, fromName: cleanHeaderValue(fromName), replyTo: replyTo ? cleanHeaderValue(replyTo).toLowerCase() : undefined, internalRecipients };
 }
 
 export function isEmail(value: string) {
