@@ -24,6 +24,7 @@ export const CONTENT_LABELS: Record<ContentDomain, string> = {
 export type ContentFormValues = {
   id?: string;
   updatedAt?: string;
+  publishAt?: string;
   title: string;
   slug: string;
   category: string;
@@ -213,13 +214,17 @@ function isoDate(value: Date | null | undefined) {
   return value ? value.toISOString().slice(0, 10) : "";
 }
 
+function isoDateTime(value: Date | null | undefined) {
+  return value ? value.toISOString() : "";
+}
+
 function jsonText(value: unknown) {
   return value == null ? "" : JSON.stringify(value, null, 2);
 }
 
 function common(values: Partial<ContentFormValues>): ContentFormValues {
   return {
-    title: "", slug: "", category: "", shortDescription: "", description: "", status: "DRAFT",
+    title: "", slug: "", category: "", shortDescription: "", description: "", status: "DRAFT", publishAt: "",
     featured: false, order: "0", date: "", endDate: "", time: "", location: "", format: "",
     eventType: "", availability: "", type: "", topic: "", image: "", imageMediaId: "", seoTitle: "",
     seoDescription: "", seoImage: "", seoCanonical: "", seoNoIndex: false, need: "", focus: "",
@@ -246,6 +251,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
       return record ? common({
         id: record.id, title: record.title, slug: record.slug, category: record.category,
         shortDescription: record.shortDescription, status: record.status, featured: record.featured,
+        publishAt: isoDateTime(record.publishAt),
         order: String(record.order), need: record.need ?? "", focus: record.focus ?? "", audience: record.audience ?? "",
         highlights: jsonText(record.highlights), faq: jsonText(record.faq), seoTitle: record.seoTitle ?? "",
         seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "", seoCanonical: record.seoCanonical ?? "",
@@ -267,7 +273,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
       });
       return record ? common({
         id: record.id, title: record.title, slug: record.slug, category: record.category,
-        shortDescription: record.shortDescription, summary: record.summary ?? "", status: record.status,
+        shortDescription: record.shortDescription, summary: record.summary ?? "", status: record.status, publishAt: isoDateTime(record.publishAt),
         order: String(record.order), date: isoDate(record.date), availability: record.availability, type: record.type ?? "",
         topic: record.topic ?? "", image: record.imageMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.imageMediaId ?? "", featured: record.featured, tags: jsonText(record.tags),
         audience: jsonText(record.audience), highlights: jsonText(record.highlights), scope: jsonText(record.scope),
@@ -290,7 +296,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
       });
       return record ? common({
         id: record.id, title: record.name, slug: record.slug, category: record.discipline ?? "",
-        shortDescription: record.shortBio ?? "", description: record.bio ?? "", status: record.status,
+        shortDescription: record.shortBio ?? "", description: record.bio ?? "", status: record.status, publishAt: isoDateTime(record.publishAt),
         order: String(record.order), featured: record.featured, image: record.profileMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.profileMediaId ?? "",
         type: record.role ?? "", audience: jsonText(record.expertise), tags: jsonText(record.qualifications),
         topics: jsonText(record.researchInterests), seoTitle: record.seoTitle ?? "",
@@ -312,7 +318,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
       });
       return record ? common({
         id: record.id, title: record.title, slug: record.slug, category: record.category,
-        shortDescription: record.excerpt ?? "", excerpt: record.excerpt ?? "", status: record.status,
+        shortDescription: record.excerpt ?? "", excerpt: record.excerpt ?? "", status: record.status, publishAt: isoDateTime(record.publishAt),
         order: String(record.order), date: isoDate(record.date), author: record.author ?? "", authorRole: record.authorRole ?? "",
         authorSlug: record.authorSlug ?? "", content: record.content ?? "", sections: jsonText(record.sections),
         image: record.coverMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.coverMediaId ?? "", featured: record.featured, tags: jsonText(record.tags),
@@ -333,7 +339,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
       });
       return record ? common({
         id: record.id, title: record.title, slug: record.slug, category: record.category,
-        shortDescription: record.shortDescription, description: record.description ?? "", status: record.status,
+        shortDescription: record.shortDescription, description: record.description ?? "", status: record.status, publishAt: isoDateTime(record.publishAt),
         order: String(record.order), date: isoDate(record.date), endDate: isoDate(record.endDate), time: record.time ?? "",
         location: record.location ?? "", format: record.format ?? "", image: record.coverMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.coverMediaId ?? "", featured: record.featured,
         audience: jsonText(record.audience), registrationLabel: record.registrationLabel ?? "",
