@@ -1,6 +1,6 @@
 import "server-only";
 
-import { Prisma, PaymentStatus, PaymentPurpose } from "@/generated/prisma/client";
+import { PaymentStatus, PaymentPurpose } from "@/generated/prisma/client";
 import { getCurrentUser } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 import { assertAmountMinor, normalizeCurrency } from "@/lib/payments/money";
