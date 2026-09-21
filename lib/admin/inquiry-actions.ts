@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { Prisma } from "@/generated/prisma/client";
+import { ContactInquiryStatus } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
 
@@ -33,7 +33,7 @@ export async function updateInquiryStatus(
 
     await prisma.client.contactInquiry.update({
       where: { id },
-      data: { status: status as Prisma.ContactInquiryStatus },
+      data: { status: status as ContactInquiryStatus },
     });
 
     revalidatePath("/admin");
