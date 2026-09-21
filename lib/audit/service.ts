@@ -4,7 +4,7 @@ import type { PrismaClient } from "@/generated/prisma/client";
 import { AuditAction, AuditCategory, AuditResult, AuditSeverity } from "@/generated/prisma/client";
 import { normalizeAuditInput, type AuditRecordInput } from "@/lib/audit/types";
 
-type AuditDb = PrismaClient;
+type AuditDb = Pick<PrismaClient, "auditLog">;
 
 export async function recordAudit(db: AuditDb, input: AuditRecordInput) {
   const normalized = normalizeAuditInput(input);
