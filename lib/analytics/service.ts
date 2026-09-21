@@ -8,7 +8,7 @@ import { validateAnalyticsEventInput } from "@/lib/analytics/validation";
 import type { AnalyticsEventInput } from "@/lib/analytics/types";
 
 function logAnalyticsFailure(error: unknown, eventName: AnalyticsEventName) {
-  if (process.env.NODE_ENV !== "production") console.error("Analytics event failed:", { eventName, error: error instanceof Error ? error.message : "unknown" });
+  console.error("Analytics event failed:", { eventName, error: error instanceof Error ? error.message : "unknown" });
 }
 
 export async function trackAnalyticsEvent(input: AnalyticsEventInput) {
