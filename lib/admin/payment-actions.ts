@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/auth/guards";
+import { prisma } from "@/lib/db/prisma";
 import { getAdminPayment } from "@/lib/payments/repository";
 import { getConfiguredPaymentProvider } from "@/lib/payments/provider";
 import { reconcileVerifiedPayment } from "@/lib/payments/service";
