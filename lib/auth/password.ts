@@ -1,7 +1,12 @@
 import { randomBytes, scrypt as nodeScrypt, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
-
-const scrypt = promisify(nodeScrypt);
+function derive(password: string, salt: Buffer, keyLength: number) {
+  return new Promise<Buffer>((resolve, reject) => {
+    nodeScrypt(password, salt, keyLength, { N: COST, r: BLOCK_SIZE, p: PARALLELIZATION, maxmem: MAX_MEMORY }, (error, derived) => {
+      if (error) reject(error);
+      else resolve(derived);
+    });
+  });
+}
 const KEY_LENGTH = 64;
 const COST = 16_384;
 const BLOCK_SIZE = 8;
@@ -14,7 +19,7 @@ function decode(value: string) { return Buffer.from(value, "base64url"); }
 
 export async function hashPassword(password: string) {
   const salt = randomBytes(16);
-  const derived = (await scrypt(password, salt, KEY_LENGTH, { N: COST, r: BLOCK_SIZE, p: PARALLELIZATION, maxmem: MAX_MEMORY })) as Buffer;
+  const derived = await derive(password, salt, KEY_LENGTH);
   return [FORMAT, COST, BLOCK_SIZE, PARALLELIZATION, encode(salt), encode(derived)].join("$");
 }
 
@@ -28,7 +33,9 @@ export async function verifyPassword(password: string, storedHash: string | null
   try {
     const salt = decode(saltText);
     const expected = decode(expectedText);
-    const derived = (await scrypt(password, salt, expected.length, { N: cost, r: blockSize, p: parallelization, maxmem: MAX_MEMORY })) as Buffer;
+    const derived = await new Promise<Buffer>((resolve, reject) => {
+      nodeScrypt(password, salt, expected.length, { N: cost, r: blockSize, p: parallelization, maxmem: MAX_MEMORY }, (error, derived) => error ? reject(error) : resolve(derived));
+    });
     return derived.length === expected.length && timingSafeEqual(derived, expected);
   } catch { return false; }
 }
