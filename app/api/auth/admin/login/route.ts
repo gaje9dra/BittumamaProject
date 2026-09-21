@@ -29,7 +29,7 @@ export async function POST(request: Request) {
   const admin = await prisma.client.adminAccount.findUnique({ where: { normalizedEmail: email }, select: { id: true, email: true, passwordHash: true, isActive: true } });
   const valid = await verifyPassword(password, admin?.passwordHash);
   if (!admin || !admin.isActive || !valid) {
-    await recordAuditBestEffort(prisma.client, { action: AuditAction.AUTH_LOGIN_FAILED, category: AuditCategory.AUTHENTICATION, result: AuditResult.FAILURE, severity: AuditSeverity.WARNING, summary: "Administrator credential authentication failed.", entityType: "AdminAccount", entityId: admin?.id ?? null, actor: { userId: null, type: "SYSTEM" } });
+    await recordAuditBestEffort(prisma.client, { action: AuditAction.AUTH_LOGIN_FAILED, category: AuditCategory.AUTHENTICATION, result: AuditResult.FAILURE, severity: AuditSeverity.WARNING, summary: "Administrator credential authentication failed.", entityType: "AdminAccount", entityId: admin?.id, actor: { userId: null, type: "SYSTEM" } });
     return NextResponse.json({ error: "Invalid administrator credentials." }, { status: 401, headers: { "Cache-Control": "no-store" } });
   }
   await createAdminSession(admin.id);
