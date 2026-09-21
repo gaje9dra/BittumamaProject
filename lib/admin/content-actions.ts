@@ -483,7 +483,7 @@ export async function saveContent(
       await syncRelations(tx, domain, record.id, parsed.relationIds);
       const entityType = domain === "workshops" ? "Event" : domain === "research" ? "ResearchItem" : domain === "experts" ? "Expert" : domain === "articles" ? "Article" : "Service";
       const action = !id ? AuditAction.CONTENT_CREATED : intent === "publish" ? AuditAction.CONTENT_PUBLISHED : intent === "unpublish" ? AuditAction.CONTENT_UNPUBLISHED : intent === "archive" ? AuditAction.CONTENT_ARCHIVED : AuditAction.CONTENT_UPDATED;
-      await recordAudit(tx, { action, category: AuditCategory.CONTENT, result: AuditResult.SUCCESS, summary: !id ? "Content created." : action === AuditAction.CONTENT_UPDATED ? "Content updated." : "Content publication state changed.", entityType, entityId: record.id, metadata: { contentType: domain, contentId: record.id }, actor: { userId: null, type: "SYSTEM" }, metadata: { contentType: domain, contentId: record.id, adminAccountId: actor.id } });
+      await recordAudit(tx, { action, category: AuditCategory.CONTENT, result: AuditResult.SUCCESS, summary: !id ? "Content created." : action === AuditAction.CONTENT_UPDATED ? "Content updated." : "Content publication state changed.", entityType, entityId: record.id, metadata: { contentType: domain, contentId: record.id, adminAccountId: actor.id }, actor: { userId: null, type: "SYSTEM" } });
       return { id: record.id, previousSlug: current?.slug };
     });
   } catch (error) {
