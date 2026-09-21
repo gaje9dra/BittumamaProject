@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
   const store = await cookies();
   store.set(ADMIN_INTENT_COOKIE, createAdminIntentToken(), adminIntentCookieOptions);
-  store.delete(ADMIN_CONTEXT_COOKIE);
+  store.set(ADMIN_CONTEXT_COOKIE, "", { ...adminContextCookieOptions, maxAge: 0 });
 
   return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
 }
@@ -44,7 +44,7 @@ export async function DELETE() {
     });
   }
   const store = await cookies();
-  store.delete(ADMIN_INTENT_COOKIE);
-  store.delete(ADMIN_CONTEXT_COOKIE);
+  store.set(ADMIN_INTENT_COOKIE, "", { ...adminIntentCookieOptions, maxAge: 0 });
+  store.set(ADMIN_CONTEXT_COOKIE, "", { ...adminContextCookieOptions, maxAge: 0 });
   return NextResponse.json({ ok: true }, { headers: { "Cache-Control": "no-store" } });
 }
