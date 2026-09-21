@@ -2,7 +2,8 @@ import "dotenv/config";
 
 import { AuditAction, AuditCategory, AuditResult, AuditSeverity } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db/prisma";
-import { recordAudit, sanitizeAuditMetadata } from "@/lib/audit/service";
+import { recordAudit } from "@/lib/audit/service";
+import { sanitizeAuditMetadata } from "@/lib/audit/types";
 
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required to verify audit logging.");
