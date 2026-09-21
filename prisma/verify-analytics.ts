@@ -2,6 +2,7 @@ import "dotenv/config";
 import { AnalyticsEventCategory, AnalyticsEventName } from "../generated/prisma/client";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { randomUUID } from "node:crypto";
 import { validateAnalyticsMetadata, validateAnalyticsEventInput } from "../lib/analytics/validation";
 import { getAnalyticsAggregate } from "../lib/analytics/queries";
 
@@ -14,8 +15,8 @@ async function main() {
   const suffix = Date.now().toString(36);
   const user = await prisma.user.create({ data: { email: "analytics-test-" + suffix + "@example.test" } });
   try {
-    const anonymousId = "00000000-0000-4000-8000-" + suffix.padStart(12, "0").slice(-12);
-    const sessionId = "10000000-0000-4000-8000-" + suffix.padStart(12, "0").slice(-12);
+    const anonymousId = randomUUID();
+    const sessionId = randomUUID();
     const validated = validateAnalyticsEventInput({ eventName: AnalyticsEventName.PAGE_VIEW, path: "/services/test-service", anonymousId, sessionId });
     if (validated.path !== "/services/test-service") throw new Error("Valid page event rejected.");
     let invalidRejected = false;
