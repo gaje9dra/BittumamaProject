@@ -8,6 +8,8 @@ import { prisma } from "@/lib/db/prisma";
 import { assertAmountMinor, normalizeCurrency, minorToMajorString } from "@/lib/payments/money";
 import { deliverCreatedNotifications, queuePaymentNotification } from "@/lib/notifications/domain";
 import { getConfiguredPaymentProvider, getConfiguredPaymentProviderName } from "@/lib/payments/provider";
+import { AnalyticsEventCategory, AnalyticsEventName } from "@/generated/prisma/client";
+import { trackAnalyticsEvent } from "@/lib/analytics/service";
 import { assertPaymentTransition } from "@/lib/payments/state";
 import { createPaymentTransaction, getPaymentByReference } from "@/lib/payments/repository";
 import type { ResolvedPaymentTarget, VerifiedPayment } from "@/lib/payments/types";
@@ -28,15 +30,9 @@ export async function createServerPayment(target: ResolvedPaymentTarget, request
   const currency = normalizeCurrency(target.currency);
   const provider = getConfiguredPaymentProviderName();
   if (!provider) throw new Error("PAYMENT_PROVIDER_NOT_CONFIGURED");
-  return createPaymentTransaction({
-    userId: user.id,
-    target,
-    amountMinor: target.amountMinor,
-    currency,
-    provider,
-    idempotencyKey: buildIdempotencyKey(user.id, target, requestId),
-    description: target.description,
-  });
+  const result = await createPaymentTransaction({ userId: user.id, target, amountMinor: target.amountMinor, currency, provider, idempotencyKey: buildIdempotencyKey(user.id, target, requestId), description: target.description });
+  if (result.created) await trackAnalyticsEvent({ eventName: AnalyticsEventName.PAYMENT_INITIATED, eventCategory: AnalyticsEventCategory.CONVERSION, userId: user.id, contentType: target.eventId ? "WORKSHOP" : undefined, contentId: target.eventId ?? undefined, metadata: { paymentTransactionId: result.transaction.id, purpose: target.purpose, currency } });
+  return result;
 }
 
 export async function initiateCheckout(reference: string, returnUrl: string) {
@@ -119,6 +115,7 @@ export async function reconcileVerifiedPayment(verified: VerifiedPayment) {
     }
     return updated;
   });
+  if (verified.status === PaymentStatus.SUCCESS || verified.status === PaymentStatus.FAILED) await trackAnalyticsEvent({ eventName: verified.status === PaymentStatus.SUCCESS ? AnalyticsEventName.PAYMENT_SUCCESS : AnalyticsEventName.PAYMENT_FAILED, eventCategory: AnalyticsEventCategory.CONVERSION, userId: result.userId, contentType: result.eventId ? "WORKSHOP" : undefined, contentId: result.eventId ?? undefined, metadata: { paymentTransactionId: result.id, purpose: result.purpose, currency: result.currency } });
   await deliverCreatedNotifications(notificationIds);
   return { ok: true as const, changed: true as const, transaction: result };
 }
