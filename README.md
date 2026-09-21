@@ -669,3 +669,60 @@ With PostgreSQL and authentication configured:
 14. Verify no secrets, .env, or .env.local files are committed.
 
 Do not proceed to Phase 8.16 or any later phase.
+
+## Phase 8.16 — Event / Workshop Registration
+
+Phase 8.16 adds reusable registration infrastructure to the existing PostgreSQL + Prisma Workshops / Events model without creating a second event system or redesigning the public UI.
+
+### Registration model
+
+`EventRegistration` stores the event, optional authenticated `userId`, registrant name/email and optional phone, organization and notes. Status is an explicit enum: `PENDING`, `CONFIRMED`, `CANCELLED`, `REJECTED`. New valid registrations default to CONFIRMED because Phase 8.16 does not invent an approval workflow.
+
+Active duplicate identity is stored as a server-derived key. Authenticated registrations use `user:<userId>`; anonymous registrations use `email:<normalized-email>`. The database has a unique `(eventId, activeIdentityKey)` constraint. Cancellation/rejection clears the active key so a later registration can be made without deleting history.
+
+### Event registration configuration
+
+The canonical `Event` model now supports `registrationEnabled`, nullable `registrationCapacity`, nullable `registrationDeadline`, and `registrationMode` (anonymous allowed or authenticated users only).
+
+A single server-side eligibility source determines availability. Public registration is allowed only when the event is PUBLISHED, its Phase 8.15 `publishAt` is null or reached, registration is enabled, the deadline has not passed, and finite capacity remains. Unpublished, scheduled, archived, disabled, expired and full events cannot accept public registration.
+
+### Capacity and concurrency
+
+Registration creation and admin activation use PostgreSQL `Serializable` transactions. Capacity is counted from PENDING + CONFIRMED records. Prisma P2034 serialization failures are retried, and the database uniqueness constraint handles duplicate active-identity races. This prevents concurrent requests from exceeding finite capacity.
+
+CANCELLED and REJECTED registrations do not count toward capacity. PENDING and CONFIRMED registrations do.
+
+### Public flow
+
+The existing event detail page gets only a minimal registration block. It connects to the server registration service and shows open, full, closed, authentication-required, already-registered and confirmation states. Anonymous registration is supported by default; AUTHENTICATED_ONLY events require the existing Auth.js session. No password authentication or new provider is introduced.
+
+Authenticated users can cancel their own active registration before the event date. Anonymous cancellation is intentionally unsupported because Phase 8.16 does not add a separate secure anonymous identity mechanism.
+
+### User queries
+
+`getCurrentUserRegistrations()` returns only records belonging to the current authenticated user and selects only event reference, status and timestamps needed for a later user UI. There is no public registration-list endpoint.
+
+### Admin registration management
+
+Existing `requireAdmin()` protects registration management under:
+
+- `/admin/registrations/[eventId]` — search, status filter, count and remaining capacity.
+- `/admin/registrations/[eventId]/[registrationId]` — minimized registration detail and server-authorized status changes.
+
+Admin status changes validate the event/registration relationship and re-check capacity when activating a registration. No deletion, exports, payments, CRM, analytics, check-in or notification system is included.
+
+### Security and privacy
+
+The browser cannot supply a trusted `userId`, status, capacity, publication state or eligibility decision. Authenticated identity is derived from the server session. Public queries never include registration records or personal registration fields. Admin queries select only the fields needed for registration management.
+
+The public form includes a lightweight honeypot and strict server-side validation for name, email, phone, organization and notes. No external CAPTCHA dependency was added.
+
+### Verification
+
+Run:
+
+NaN
+
+`registrations:verify` verifies duplicate protection, cancellation capacity release and concurrent finite-capacity behavior against PostgreSQL. CI runs this verification after the existing canonical-content checks.
+
+Phase 8.16 does not implement payments, notifications/email, analytics, search, audit logging, API-layer expansion, QR/check-in, tickets, refunds or other Phase 8.17+ functionality.
