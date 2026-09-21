@@ -150,7 +150,7 @@ async function countSearchResults(query: string, type: SearchResultType) {
   const clause = typeClause(type);
   const sql = `SELECT COUNT(*)::bigint AS count FROM (${SEARCH_SQL}) ranked WHERE 1=1 ${clause}`;
   const rows = await prisma.client.$queryRawUnsafe<Array<{ count: bigint }>>(sql, query);
-  return Number(rows[0]?.count ?? 0n);
+  return Number(rows[0]?.count ?? BigInt(0));
 }
 
 export async function searchContent(input: {
