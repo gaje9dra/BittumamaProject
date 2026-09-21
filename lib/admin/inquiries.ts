@@ -49,10 +49,8 @@ function buildWhere(options: InquiryListOptions): Prisma.ContactInquiryWhereInpu
   };
 }
 
-function assertInquiryId(id: string) {
-  if (!/^[A-Za-z0-9_-]{1,64}$/.test(id)) {
-    throw new Error("Invalid inquiry identifier.");
-  }
+function isValidInquiryId(id: string) {
+  return /^[A-Za-z0-9_-]{1,64}$/.test(id);
 }
 
 export async function listInquiries(options: InquiryListOptions = {}) {
@@ -92,7 +90,7 @@ export async function listInquiries(options: InquiryListOptions = {}) {
 
 export async function getInquiryById(id: string) {
   await requireAdmin();
-  assertInquiryId(id);
+  if (!isValidInquiryId(id)) return null;
 
   return prisma.client.contactInquiry.findUnique({
     where: { id },
