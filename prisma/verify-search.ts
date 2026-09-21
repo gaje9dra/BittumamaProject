@@ -6,7 +6,7 @@ import { normalizeSearchQuery, parseSearchFilters } from "@/lib/search/validatio
 
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required to verify search.");
-  const marker = "phase820-" + Date.now().toString(36);
+  const marker = "phase820" + Date.now().toString(36);
   const slug = (suffix: string) => marker + "-" + suffix;
 
   const service = await prisma.client.service.create({ data: { slug: slug("service"), title: marker + " Service", category: "Research", shortDescription: "Search verification service", status: "PUBLISHED" } });
