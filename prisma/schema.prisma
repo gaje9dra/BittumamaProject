@@ -137,6 +137,7 @@ model Service {
   contactInquiries ContactInquiry[]
 
   @@index([status])
+  @@index([publishAt])
   @@index([category])
 }
 
@@ -180,6 +181,7 @@ model ResearchItem {
   @@index([status])
   @@index([category])
   @@index([date])
+  @@index([publishAt])
   @@index([order])
 }
 
@@ -216,6 +218,7 @@ model Expert {
 
   @@index([status])
   @@index([discipline])
+  @@index([publishAt])
   @@index([order])
 }
 
@@ -266,6 +269,7 @@ model Article {
   @@index([category])
   @@index([date])
   @@index([order])
+  @@index([publishAt])
   @@index([authorId])
 }
 
@@ -310,6 +314,7 @@ model Event {
   @@index([category])
   @@index([date])
   @@index([order])
+  @@index([publishAt])
   @@index([speakerId])
 }
 
