@@ -6,6 +6,7 @@ import type { FormEvent } from "react";
 import { forwardRef, useEffect, useId, useRef, useState, type RefObject } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { announceHeaderSurface, subscribeToHeaderSurface } from "@/lib/header-surface";
+import { trackClientEvent } from "@/lib/analytics/client";
 import { cn } from "@/lib/utils";
 
 type SearchTriggerProps = {
@@ -119,11 +120,13 @@ export function SearchPanel({ open, onClose, variant = "overlay", className, res
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const trimmed = query.trim();
-    if (!trimmed) {
+    const trimmed = query.trim().replace(/\\s+/g, " ");
+    if (trimmed.length < 2 || trimmed.length > 160) {
       inputRef.current?.focus();
       return;
     }
+    const queryLengthBucket = trimmed.length <= 8 ? "short" : trimmed.length <= 40 ? "medium" : "long";
+    trackClientEvent({ eventName: "SEARCH_SUBMITTED", path: window.location.pathname, queryLengthBucket });
     onClose(false);
     router.push("/search?q=" + encodeURIComponent(trimmed));
   };

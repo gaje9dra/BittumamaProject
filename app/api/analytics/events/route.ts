@@ -30,7 +30,7 @@ export async function POST(request: Request) {
   const path = typeof raw.path === "string" ? normalizeAnalyticsPath(raw.path) : null;
   const anonymousId = typeof raw.anonymousId === "string" ? raw.anonymousId : null;
   const sessionId = typeof raw.sessionId === "string" ? raw.sessionId : null;
-  if (eventName !== "PAGE_VIEW" && eventName !== "REGISTRATION_STARTED") return NextResponse.json({ accepted: false }, { status: 422 });
+  if (eventName !== "PAGE_VIEW" && eventName !== "REGISTRATION_STARTED" && eventName !== "SEARCH_SUBMITTED") return NextResponse.json({ accepted: false }, { status: 422 });
   if (!path) return NextResponse.json({ accepted: false }, { status: 422 });
   if (anonymousId && !isValidAnalyticsAnonymousId(anonymousId)) return NextResponse.json({ accepted: false }, { status: 422 });
   if (sessionId && !isValidAnalyticsAnonymousId(sessionId)) return NextResponse.json({ accepted: false }, { status: 422 });
@@ -39,6 +39,23 @@ export async function POST(request: Request) {
   try {
     const session = await auth();
     const userId = session?.user?.id ?? null;
+    if (eventName === "SEARCH_SUBMITTED") {
+      const queryLengthBucket = raw.queryLengthBucket;
+      if (queryLengthBucket !== "short" && queryLengthBucket !== "medium" && queryLengthBucket !== "long") {
+        return NextResponse.json({ accepted: false }, { status: 422 });
+      }
+      await trackAnalyticsEvent({
+        eventName: AnalyticsEventName.SEARCH_SUBMITTED,
+        eventCategory: AnalyticsEventCategory.PAGE,
+        userId,
+        anonymousId,
+        sessionId,
+        path,
+        metadata: { queryLengthBucket },
+      });
+      return NextResponse.json({ accepted: true });
+    }
+
     if (eventName === "REGISTRATION_STARTED") {
       const eventId = typeof raw.eventId === "string" ? raw.eventId : "";
       if (!isValidAnalyticsId(eventId)) return NextResponse.json({ accepted: false }, { status: 422 });
