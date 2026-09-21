@@ -15,6 +15,7 @@ function randomId(key: string) {
 
 export function trackClientEvent(event: AnalyticsClientEvent) {
   if (typeof window === "undefined") return;
-  const body = JSON.stringify({ ...event, anonymousId: randomId(ANONYMOUS_KEY), sessionId: randomId(SESSION_KEY) });
-  void fetch("/api/analytics/events", { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => undefined);
+  try {
+    const body = JSON.stringify({ ...event, anonymousId: randomId(ANONYMOUS_KEY), sessionId: randomId(SESSION_KEY) });
+    void fetch("/api/analytics/events", { method: "POST", headers: { "content-type": "application/json" }, body, keepalive: true }).catch(() => undefined);
 }
