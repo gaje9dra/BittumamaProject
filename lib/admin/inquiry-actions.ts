@@ -33,7 +33,7 @@ export async function updateInquiryStatus(
     if (!existing) return { message: null, error: "Inquiry not found." };
 
     await prisma.client.contactInquiry.update({ where: { id }, data: { status: status as ContactInquiryStatus } });
-    await recordAuditBestEffort(prisma.client, { action: AuditAction.INQUIRY_STATUS_CHANGED, category: AuditCategory.INQUIRY, result: AuditResult.SUCCESS, summary: "Inquiry status changed.", entityType: "ContactInquiry", entityId: id, metadata: { inquiryId: id, previousStatus: existing.status, newStatus: status }, actor: { userId: null, type: "SYSTEM" }, metadata: { inquiryId: id, previousStatus: existing.status, newStatus: status, adminAccountId: actor.id } });
+    await recordAuditBestEffort(prisma.client, { action: AuditAction.INQUIRY_STATUS_CHANGED, category: AuditCategory.INQUIRY, result: AuditResult.SUCCESS, summary: "Inquiry status changed.", entityType: "ContactInquiry", entityId: id, metadata: { inquiryId: id, previousStatus: existing.status, newStatus: status, adminAccountId: actor.id }, actor: { userId: null, type: "SYSTEM" } });
 
     revalidatePath("/admin");
     revalidatePath("/admin/inquiries");
