@@ -6,6 +6,7 @@ import { getNotificationConfig, normalizeRecipient } from "@/lib/notifications/c
 import { getEmailProvider } from "@/lib/notifications/provider";
 import { buildNotificationTemplate } from "@/lib/notifications/templates";
 import { EmailDeliveryError, type NotificationPayload } from "@/lib/notifications/types";
+import { assertNotificationTransition } from "@/lib/notifications/state";
 import { getNotification } from "@/lib/notifications/repository";
 
 function payloadFor(record: { type: NotificationType; payload: unknown }): NotificationPayload {
@@ -27,6 +28,7 @@ function payloadFor(record: { type: NotificationType; payload: unknown }): Notif
 
 
 export async function deliverNotification(notificationId: string) {
+  assertNotificationTransition(NotificationStatus.PENDING, NotificationStatus.PROCESSING);
   const claimed = await prisma.client.notification.updateMany({
     where: { id: notificationId, status: NotificationStatus.PENDING },
     data: { status: NotificationStatus.PROCESSING },
@@ -52,6 +54,7 @@ export async function deliverNotification(notificationId: string) {
       idempotencyKey: record.dedupeKey,
       ...(config.replyTo ? { replyTo: config.replyTo } : {}),
     });
+    assertNotificationTransition(NotificationStatus.PROCESSING, NotificationStatus.SENT);
     await prisma.client.notification.update({
       where: { id: record.id },
       data: { status: NotificationStatus.SENT, provider: result.provider, providerMessageId: result.providerMessageId, sentAt: new Date(), failedAt: null, failureCode: null, failureMessage: null },
@@ -59,6 +62,7 @@ export async function deliverNotification(notificationId: string) {
     return { delivered: true as const, providerMessageId: result.providerMessageId };
   } catch (error) {
     const deliveryError = error instanceof EmailDeliveryError ? error : new EmailDeliveryError("TEMPORARY", "UNEXPECTED_EMAIL_ERROR", "Unexpected email delivery error.");
+    assertNotificationTransition(NotificationStatus.PROCESSING, NotificationStatus.FAILED);
     await prisma.client.notification.update({
       where: { id: record.id },
       data: { status: NotificationStatus.FAILED, failedAt: new Date(), failureCode: deliveryError.code, failureMessage: deliveryError.message },
@@ -75,6 +79,7 @@ export async function retryNotification(notificationId: string) {
   if (!existing || existing.status !== NotificationStatus.FAILED || (existing.failureCode && NON_RETRYABLE_FAILURES.has(existing.failureCode))) {
     return { ok: false as const, reason: "NOT_RETRYABLE" as const };
   }
+  assertNotificationTransition(NotificationStatus.FAILED, NotificationStatus.PENDING);
   const updated = await prisma.client.notification.updateMany({
     where: { id: notificationId, status: NotificationStatus.FAILED },
     data: { status: NotificationStatus.PENDING, failedAt: null, failureCode: null, failureMessage: null },
