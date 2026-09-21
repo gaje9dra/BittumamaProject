@@ -88,7 +88,7 @@ const relationInclude = {
 export async function getPublishedEvents(): Promise<Event[]> {
   const records = await runEventQuery(() =>
     prisma.client.event.findMany({
-      where: { status: "PUBLISHED" },
+      where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       orderBy: [{ order: "asc" }, { id: "asc" }],
       include: relationInclude,
     }),
@@ -99,7 +99,7 @@ export async function getPublishedEvents(): Promise<Event[]> {
 export async function getPublishedEventById(id: string): Promise<Event | undefined> {
   const record = await runEventQuery(() =>
     prisma.client.event.findFirst({
-      where: { id, status: "PUBLISHED" },
+      where: { id, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       include: relationInclude,
     }),
   );
@@ -109,7 +109,7 @@ export async function getPublishedEventById(id: string): Promise<Event | undefin
 export async function getPublishedEventBySlug(slug: string): Promise<Event | undefined> {
   const record = await runEventQuery(() =>
     prisma.client.event.findFirst({
-      where: { slug, status: "PUBLISHED" },
+      where: { slug, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       include: relationInclude,
     }),
   );
@@ -157,4 +157,10 @@ export async function getRelatedEvents(event: Event): Promise<Event[]> {
       candidate.category === event.category &&
       Boolean(event.category),
   );
+}
+
+
+export async function getPreviewEventById(id: string): Promise<Event | undefined> {
+  const record = await runEventQuery(() => prisma.client.event.findUnique({ where: { id }, include: relationInclude }));
+  return record ? toDomainEvent(record) : undefined;
 }
