@@ -27,6 +27,27 @@ export function resolveAnalyticsDateRange(range: string | undefined, startValue?
 
 function dateWhere(range: AnalyticsDateRange) { return { occurredAt: { gte: range.start, lt: range.end } }; }
 
+function trendParams(query: AnalyticsQuery, includeContentType: boolean) {
+  const params: Array<Date | string> = [query.range.start, query.range.end];
+  let suffix = "";
+  if (query.category) {
+    params.push(query.category);
+    suffix += ' AND "eventCategory" = $' + params.length;
+  }
+  if (includeContentType && query.contentType) {
+    params.push(query.contentType);
+    suffix += ' AND "contentType" = $' + params.length;
+  }
+  return { params, suffix };
+}
+
+async function dailyCounts(eventNames: string[], query: AnalyticsQuery, includeContentType: boolean) {
+  const names = eventNames.map((value) => "'" + value + "'").join(",");
+  const binding = trendParams(query, includeContentType);
+  const sql = 'SELECT date_trunc(\'day\', "occurredAt") AS day, COUNT(*)::bigint AS count FROM "AnalyticsEvent" WHERE "occurredAt" >= $1 AND "occurredAt" < $2 AND "eventName" IN (' + names + ')' + binding.suffix + ' GROUP BY 1 ORDER BY 1';
+  return prisma.client.$queryRawUnsafe<Array<{ day: Date; count: bigint }>>(sql, ...binding.params);
+}
+
 export async function getAnalyticsAggregate(query: AnalyticsQuery): Promise<AnalyticsAggregate> {
   const base = { ...dateWhere(query.range), ...(query.category ? { eventCategory: query.category } : {}) };
   const viewWhere = { ...base, eventName: { in: VIEW_EVENT_NAMES }, ...(query.contentType ? { contentType: query.contentType } : {}) };
@@ -41,18 +62,10 @@ export async function getAnalyticsAggregate(query: AnalyticsQuery): Promise<Anal
     prisma.client.analyticsEvent.count({ where: { ...conversionWhere, eventName: "PAYMENT_FAILED" } }),
   ]);
 
-  const viewNames = VIEW_EVENT_NAMES.map((value) => "'" + value + "'").join(",");
-  const conversionNames = CONVERSION_EVENT_NAMES.map((value) => "'" + value + "'").join(",");
-  const categorySql = query.category ? ' AND "eventCategory" = $3' : "";
-  const contentSql = query.contentType ? ' AND "contentType" = $4' : "";
-  const viewRows = await prisma.client.$queryRawUnsafe<Array<{ day: Date; count: bigint }>>(
-    'SELECT date_trunc(\'day\', "occurredAt") AS day, COUNT(*)::bigint AS count FROM "AnalyticsEvent" WHERE "occurredAt" >= $1 AND "occurredAt" < $2 AND "eventName" IN (' + viewNames + ')' + categorySql + contentSql + ' GROUP BY 1 ORDER BY 1',
-    query.range.start, query.range.end, query.category ?? null, query.contentType ?? null,
-  );
-  const conversionRows = await prisma.client.$queryRawUnsafe<Array<{ day: Date; count: bigint }>>(
-    'SELECT date_trunc(\'day\', "occurredAt") AS day, COUNT(*)::bigint AS count FROM "AnalyticsEvent" WHERE "occurredAt" >= $1 AND "occurredAt" < $2 AND "eventName" IN (' + conversionNames + ')' + categorySql + ' GROUP BY 1 ORDER BY 1',
-    query.range.start, query.range.end, query.category ?? null,
-  );
+  const [viewRows, conversionRows] = await Promise.all([
+    dailyCounts(VIEW_EVENT_NAMES, query, true),
+    dailyCounts(CONVERSION_EVENT_NAMES, query, false),
+  ]);
 
   const topRows = query.category === AnalyticsEventCategory.PAGE ? [] : await prisma.client.analyticsEvent.groupBy({
     by: ["contentType", "contentId"],
@@ -68,11 +81,17 @@ export async function getAnalyticsAggregate(query: AnalyticsQuery): Promise<Anal
     if (row.contentType && row.contentId) idsByType.set(row.contentType, [...(idsByType.get(row.contentType) ?? []), row.contentId]);
   }
   for (const [type, ids] of idsByType) {
-    if (type === AnalyticsContentType.SERVICE) for (const item of await prisma.client.service.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
-    else if (type === AnalyticsContentType.RESEARCH) for (const item of await prisma.client.researchItem.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
-    else if (type === AnalyticsContentType.EXPERT) for (const item of await prisma.client.expert.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } })) titleByKey.set(type + ":" + item.id, item.name);
-    else if (type === AnalyticsContentType.ARTICLE) for (const item of await prisma.client.article.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
-    else for (const item of await prisma.client.event.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
+    if (type === AnalyticsContentType.SERVICE) {
+      for (const item of await prisma.client.service.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
+    } else if (type === AnalyticsContentType.RESEARCH) {
+      for (const item of await prisma.client.researchItem.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
+    } else if (type === AnalyticsContentType.EXPERT) {
+      for (const item of await prisma.client.expert.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } })) titleByKey.set(type + ":" + item.id, item.name);
+    } else if (type === AnalyticsContentType.ARTICLE) {
+      for (const item of await prisma.client.article.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
+    } else {
+      for (const item of await prisma.client.event.findMany({ where: { id: { in: ids } }, select: { id: true, title: true } })) titleByKey.set(type + ":" + item.id, item.title);
+    }
   }
 
   return {
