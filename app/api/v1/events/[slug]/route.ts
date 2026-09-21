@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getPublishedEventBySlug } from "@/lib/events/repository";
 import { getRegistrationAvailability } from "@/lib/events/registration";
 import { getApiActor } from "@/lib/api/auth";
-import { apiError, getRequestId, publicCacheHeaders } from "@/lib/api/response";
+import { apiError, getRequestId } from "@/lib/api/response";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,7 +26,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ slug
         mode: availability.mode,
       },
     };
-    return NextResponse.json({ data, meta: { requestId } }, { headers: { ...publicCacheHeaders(30), "X-Request-Id": requestId } });
+    return NextResponse.json({ data, meta: { requestId } }, { headers: { "Cache-Control": "private, no-store", "X-Request-Id": requestId } });
   } catch {
     return apiError("INTERNAL_ERROR", "An unexpected error occurred.", 500, requestId);
   }
