@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client";
+import { AuditAction, AuditCategory, AuditResult, PrismaClient } from "../generated/prisma/client";
 import { hashPassword, validatePassword } from "../lib/auth/password";
 import { isValidEmail, normalizeEmail } from "../lib/auth/normalize-email";
 
