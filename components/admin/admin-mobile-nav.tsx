@@ -9,6 +9,7 @@ const navItems = [
   { href: "/admin/content", label: "Content" },
   { href: "/admin/media", label: "Media" },
   { href: "/admin/inquiries", label: "Inquiries" },
+  { href: "/admin/users", label: "Users" },
 ];
 
 export function AdminMobileNav({ displayName, email }: { displayName: string; email?: string | null }) {
