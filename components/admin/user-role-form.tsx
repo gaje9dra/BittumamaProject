@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
+import type { FormEvent } from "react";
 import { setUserRole, userRoleInitialState } from "@/lib/admin/user-actions";
 
 export function UserRoleForm({
@@ -19,7 +20,7 @@ export function UserRoleForm({
   const changing = requestedRole !== currentRole;
   const requiresConfirmation = changing;
 
-  function submit(event: React.FormEvent<HTMLFormElement>) {
+  function submit(event: FormEvent<HTMLFormElement>) {
     if (!requiresConfirmation) {
       event.preventDefault();
       return;
