@@ -302,6 +302,10 @@ function buildData(domain: ContentDomain, fields: Record<string, string>, json: 
         speakerId: fields.speakerId || null, speakerSlug: fields.speakerSlug || null, speakerRole: fields.speakerRole || null, image: fields.image || null, coverMediaId: fields.imageMediaId || null,
         registrationLabel: fields.registrationLabel || null, registrationHref: fields.registrationHref || null,
         registrationStatus: ["REGISTRATION_OPEN", "REGISTRATION_CLOSED", "COMING_SOON", "COMPLETED"].includes(fields.registrationStatus) ? fields.registrationStatus : null,
+        registrationEnabled,
+        registrationCapacity,
+        registrationDeadline: registrationDeadline ?? null,
+        registrationMode: fields.registrationMode === "AUTHENTICATED_ONLY" ? "AUTHENTICATED_ONLY" : "ANONYMOUS_ALLOWED",
         seoTitle: fields.seoTitle || null, seoDescription: fields.seoDescription || null, seoImage: fields.seoImage || null,
       };
   }
