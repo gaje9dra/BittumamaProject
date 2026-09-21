@@ -460,3 +460,65 @@ Static assets such as the logo, fixed icons, fonts and developer assets remain s
 Production object storage is not claimed as configured by this phase.
 
 The homepage hero remains removed, the previously removed content remains removed, and the public website UI is not redesigned.
+
+
+## Phase 8.13 — Admin Inquiry Management System
+
+Phase 8.13 adds the protected operational interface for the existing `ContactInquiry` records created by Phase 8.8. It does not replace the public Contact submission flow and does not introduce a second inquiry model or public inquiry API.
+
+### Admin routes
+
+- `/admin/inquiries` — server-backed inquiry list with search, status/service/date filters, sorting and pagination
+- `/admin/inquiries/[id]` — protected inquiry detail view with the complete submitted message and contact context
+
+The existing admin shell now exposes **Inquiries** on desktop and mobile, and the admin overview links its real Contact inquiry count to `/admin/inquiries`.
+
+### Authorization and privacy
+
+Every inquiry read and status mutation independently calls the existing server-side `requireAdmin()` guard. Anonymous visitors and normal `USER` accounts cannot retrieve inquiry records. There is no `GET /api/inquiries` or other public inquiry endpoint.
+
+Inquiry pages are dynamic and non-indexable/non-cacheable. Inquiry messages are rendered as plain text with preserved line breaks; arbitrary submitted content is never treated as HTML.
+
+### Listing behavior
+
+The list queries PostgreSQL through Prisma and selects only the fields needed for the operational table. Default ordering is newest submission first. Search is performed server-side across name, email, message and related Service title/slug. Status, Service, date-range and sort controls preserve their query state during pagination.
+
+Page size is bounded server-side. The list does not load all inquiries into the browser and does not query related Services one-by-one.
+
+### Status workflow
+
+The existing `ContactInquiryStatus` enum remains canonical:
+
+- `NEW` — not yet processed
+- `READ` — reviewed
+- `IN_PROGRESS` — currently being handled
+- `RESOLVED` — no further action currently required
+- `SPAM` — unwanted/abusive inquiry
+
+Status changes use a protected Server Action with server-side identifier and enum validation, existence checking, database persistence and revalidation. The original submitted name, email, phone, message and `submittedAt` remain unchanged by this workflow.
+
+### Service and user context
+
+The existing `ContactInquiry.serviceId` relation is resolved from the canonical Service table, including when the Service is no longer published. The existing optional `userId` relation is displayed only when it exists. No identity is inferred by matching email addresses, and no new assignment/notes relationship was added.
+
+### Scope exclusions
+
+Phase 8.13 does not add hard deletion, bulk actions, CSV/XLSX export, CRM integration, WhatsApp automation, email notifications, analytics, assignment, internal notes, a new inquiry model, or changes to the public Contact page. No homepage hero or previously removed public content is restored.
+
+### Local verification
+
+With PostgreSQL/Auth.js configured:
+
+1. Run `npm run prisma:generate` and `npm run prisma:validate`.
+2. Submit a synthetic development inquiry through the public Contact form.
+3. Confirm it appears under `/admin/inquiries` without manual database intervention.
+4. Test anonymous and `USER` access to `/admin/inquiries` and `/admin/inquiries/[id]`.
+5. Test search by name, email and message; combine search with status/service/date filters.
+6. Exercise pagination and newest/oldest/updated sorting.
+7. Open a real test inquiry and verify contact fields, Service context, message, timestamps and status.
+8. Change status through `READ`, `IN_PROGRESS`, `RESOLVED` and `SPAM` as appropriate for the test record.
+9. Test malformed and nonexistent IDs and confirm safe not-found behavior.
+10. Check mobile widths around 360px, 390px and 430px and desktop widths around 1024px, 1280px and 1440px.
+11. Run `npm run lint` and `npm run build`.
+
+Do not commit real personal inquiry data, credentials, `.env`, or `.env.local`.
