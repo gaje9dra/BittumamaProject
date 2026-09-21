@@ -1,7 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createRegistration, cancelOwnRegistration, type RegistrationActionState, registrationInitialState } from "@/lib/events/registration";
+import { createRegistration, cancelOwnRegistration } from "@/lib/events/registration";
+import { registrationInitialState, type RegistrationActionState } from "@/lib/events/registration-types";
 
 export async function submitEventRegistration(
   previous: RegistrationActionState = registrationInitialState,
