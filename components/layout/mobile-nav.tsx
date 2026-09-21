@@ -238,6 +238,22 @@ export function MobileNav({ className }: { className?: string }) {
                       restoreFocusRef={searchTriggerRef}
                     />
                   </div>
+                  <div className="mb-8 flex items-center gap-2">
+                    <Link
+                      href="/login"
+                      onClick={closeMenu}
+                      className="mobile-menu-utility inline-flex min-h-11 items-center border border-transparent px-2 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-3"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      onClick={closeMenu}
+                      className="mobile-menu-utility inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-[var(--menu-border)] bg-[var(--menu-control-surface)] px-4 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:bg-[var(--menu-surface-elevated)] focus-visible:outline-2 focus-visible:outline-offset-3"
+                    >
+                      Register
+                    </Link>
+                  </div>
                   {primaryNavigation.map((item, index) => {
                     const hasNestedNavigation = Boolean(item.children?.length || item.groups?.length);
                     if (!hasNestedNavigation) {
