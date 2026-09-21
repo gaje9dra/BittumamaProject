@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { submitEventRegistration } from "@/lib/events/registration-actions";
 import type { RegistrationActionState } from "@/lib/events/registration";
+import { trackClientEvent } from "@/lib/analytics/client";
 
 const initialState: RegistrationActionState = { ok: false, message: null, fieldErrors: {} };
 
@@ -27,7 +28,7 @@ export function EventRegistrationForm({
   }
 
   return (
-    <form action={action} className="border-y border-border py-6" aria-describedby="registration-message">
+    <form action={action} onSubmit={() => trackClientEvent({ eventName: "REGISTRATION_STARTED", path: window.location.pathname, eventId })} className="border-y border-border py-6" aria-describedby="registration-message">
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="registration-fullName" className="text-sm font-medium">Full name</label>

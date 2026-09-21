@@ -93,6 +93,36 @@ enum NotificationChannel {
   EMAIL
 }
 
+enum AnalyticsEventCategory {
+  PAGE
+  CONTENT
+  CONVERSION
+}
+
+enum AnalyticsEventName {
+  PAGE_VIEW
+  CONTENT_VIEW
+  SERVICE_VIEW
+  RESEARCH_VIEW
+  EXPERT_VIEW
+  ARTICLE_VIEW
+  WORKSHOP_VIEW
+  CONTACT_SUBMISSION
+  REGISTRATION_STARTED
+  REGISTRATION_COMPLETED
+  PAYMENT_INITIATED
+  PAYMENT_SUCCESS
+  PAYMENT_FAILED
+}
+
+enum AnalyticsContentType {
+  SERVICE
+  RESEARCH
+  EXPERT
+  ARTICLE
+  WORKSHOP
+}
+
 enum NotificationType {
   INQUIRY_RECEIVED
   REGISTRATION_RECEIVED
@@ -118,6 +148,7 @@ model User {
   eventRegistrations EventRegistration[]
   paymentTransactions PaymentTransaction[]
   notifications      Notification[]
+  analyticsEvents     AnalyticsEvent[]
 
   @@index([role])
 }
@@ -605,4 +636,28 @@ model Notification {
   @@index([relatedEntityType, relatedEntityId])
   @@index([providerMessageId])
   @@index([type, status])
+}
+
+
+model AnalyticsEvent {
+  id            String                 @id @default(cuid())
+  eventName     AnalyticsEventName
+  eventCategory AnalyticsEventCategory
+  userId        String?
+  anonymousId   String?
+  sessionId     String?
+  path          String?
+  contentType   AnalyticsContentType?
+  contentId     String?
+  metadata      Json?
+  occurredAt    DateTime               @default(now())
+  createdAt     DateTime               @default(now())
+  user          User?                  @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([occurredAt])
+  @@index([eventName, occurredAt])
+  @@index([eventCategory, occurredAt])
+  @@index([contentType, contentId, occurredAt])
+  @@index([userId, occurredAt])
+  @@index([anonymousId, occurredAt])
 }

@@ -87,6 +87,9 @@ jobs:
       - name: Verify notifications
         run: npm run notifications:verify
 
+      - name: Verify analytics
+        run: npm run analytics:verify
+
       - name: Lint
         run: npm run lint
 
