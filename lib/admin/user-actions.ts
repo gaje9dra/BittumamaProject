@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { Prisma, UserRole } from "@/generated/prisma/client";
 import { requireAdmin } from "@/lib/auth/guards";
 import { prisma } from "@/lib/db/prisma";
+import { AUDIT, recordAudit, recordAuditBestEffort } from "@/lib/audit/service";
 
 export type UserRoleActionState = {
   message: string | null;
@@ -51,6 +52,7 @@ export async function setUserRole(
         }
 
         if (target.id === actor.id && targetRole === UserRole.USER) {
+          await recordAuditBestEffort(tx, { ...AUDIT.roleChanged(actor.id, target.id, target.role, targetRole), result: "FAILURE", summary: "Self-demotion attempt rejected.", severity: "WARNING" });
           throw new UserRoleActionError("SELF_DEMOTION");
         }
 
@@ -68,10 +70,9 @@ export async function setUserRole(
           }
         }
 
-        await tx.user.update({
-          where: { id: target.id },
-          data: { role: targetRole },
-        });
+        const previousRole = target.role;
+        await tx.user.update({ where: { id: target.id }, data: { role: targetRole } });
+        await recordAudit(tx, AUDIT.roleChanged(actor.id, target.id, previousRole, targetRole));
       },
       { isolationLevel: Prisma.TransactionIsolationLevel.Serializable },
     );
