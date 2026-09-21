@@ -1,10 +1,16 @@
 import "server-only";
 
+import { createHash } from "node:crypto";
+
 import { getNotificationConfig } from "@/lib/notifications/config";
 import type { EmailMessage, EmailProvider, EmailProviderResult } from "@/lib/notifications/types";
 import { EmailDeliveryError } from "@/lib/notifications/types";
 
 const RESEND_ENDPOINT = "https://api.resend.com/emails";
+
+function providerIdempotencyKey(value: string) {
+  return value.length <= 256 ? value : `notification-${createHash("sha256").update(value).digest("hex")}`;
+}
 
 class ResendEmailProvider implements EmailProvider {
   readonly name = "resend";
@@ -29,7 +35,7 @@ class ResendEmailProvider implements EmailProvider {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${config.apiKey}`,
-          "Idempotency-Key": message.idempotencyKey,
+          "Idempotency-Key": providerIdempotencyKey(message.idempotencyKey),
         },
         body: JSON.stringify(payload),
         cache: "no-store",
