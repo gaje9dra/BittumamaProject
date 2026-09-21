@@ -19,16 +19,23 @@ export const ANALYTICS_EVENT_REGISTRY: Record<AnalyticsEventName, AnalyticsEvent
   REGISTRATION_COMPLETED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false, contentType: AnalyticsContentType.WORKSHOP },
   PAYMENT_INITIATED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },
   PAYMENT_SUCCESS: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },
-  PAYMENT_FAILED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },
-  SEARCH_SUBMITTED: { category: AnalyticsEventCategory.PAGE, clientAllowed: true },
+  PAYMENT_FAILED: { category: AnalyticsEventCategory.CONVERSION, clientAllowed: false },\n  SEARCH_SUBMITTED: { category: AnalyticsEventCategory.PAGE, clientAllowed: true },
 };
 
 export const VIEW_EVENT_NAMES: AnalyticsEventName[] = [
-  AnalyticsEventName.PAGE_VIEW, AnalyticsEventName.SERVICE_VIEW, AnalyticsEventName.RESEARCH_VIEW,
-  AnalyticsEventName.EXPERT_VIEW, AnalyticsEventName.ARTICLE_VIEW, AnalyticsEventName.WORKSHOP_VIEW,
+  AnalyticsEventName.PAGE_VIEW,
+  AnalyticsEventName.SERVICE_VIEW,
+  AnalyticsEventName.RESEARCH_VIEW,
+  AnalyticsEventName.EXPERT_VIEW,
+  AnalyticsEventName.ARTICLE_VIEW,
+  AnalyticsEventName.WORKSHOP_VIEW,
 ];
 
 export const CONVERSION_EVENT_NAMES: AnalyticsEventName[] = [
-  AnalyticsEventName.CONTACT_SUBMISSION, AnalyticsEventName.REGISTRATION_STARTED, AnalyticsEventName.REGISTRATION_COMPLETED,
-  AnalyticsEventName.PAYMENT_INITIATED, AnalyticsEventName.PAYMENT_SUCCESS, AnalyticsEventName.PAYMENT_FAILED,
+  AnalyticsEventName.CONTACT_SUBMISSION,
+  AnalyticsEventName.REGISTRATION_STARTED,
+  AnalyticsEventName.REGISTRATION_COMPLETED,
+  AnalyticsEventName.PAYMENT_INITIATED,
+  AnalyticsEventName.PAYMENT_SUCCESS,
+  AnalyticsEventName.PAYMENT_FAILED,
 ];
