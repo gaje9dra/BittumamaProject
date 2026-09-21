@@ -95,7 +95,7 @@ const relationInclude = {
 export async function getPublishedArticles(): Promise<Article[]> {
   const records = await runArticleQuery(() =>
     prisma.client.article.findMany({
-      where: { status: "PUBLISHED" },
+      where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       orderBy: [{ order: "asc" }, { id: "asc" }],
       include: relationInclude,
     }),
@@ -106,7 +106,7 @@ export async function getPublishedArticles(): Promise<Article[]> {
 export async function getPublishedArticleById(id: string): Promise<Article | undefined> {
   const record = await runArticleQuery(() =>
     prisma.client.article.findFirst({
-      where: { id, status: "PUBLISHED" },
+      where: { id, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       include: relationInclude,
     }),
   );
@@ -116,7 +116,7 @@ export async function getPublishedArticleById(id: string): Promise<Article | und
 export async function getPublishedArticleBySlug(slug: string): Promise<Article | undefined> {
   const record = await runArticleQuery(() =>
     prisma.client.article.findFirst({
-      where: { slug, status: "PUBLISHED" },
+      where: { slug, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
       include: relationInclude,
     }),
   );
@@ -146,4 +146,10 @@ export async function getRelatedPublishedArticles(article: Article): Promise<Art
       candidate.category === article.category &&
       Boolean(article.tags?.some((tag) => candidate.tags?.includes(tag))),
   );
+}
+
+
+export async function getPreviewArticleById(id: string): Promise<Article | undefined> {
+  const record = await runArticleQuery(() => prisma.client.article.findUnique({ where: { id }, include: relationInclude }));
+  return record ? toDomainArticle(record) : undefined;
 }
