@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/container";
+import { SearchPageForm } from "@/components/search/search-page-form";
 import { Heading } from "@/components/ui/heading";
 import { Text } from "@/components/ui/text";
 import { searchContent } from "@/lib/search/service";
@@ -44,12 +45,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               {result ? `Results for “${result.query}”` : invalidQuery ? "Use 2–160 characters for a search." : "Search published services, research, experts, articles, and workshops."}
             </Text>
           </div>
-          <form action="/search" method="get" role="search" className="mt-8 flex flex-col gap-3 lg:flex-row">
-            <label htmlFor="search-page-query" className="sr-only">Search Bittumama content</label>
-            <input id="search-page-query" name="q" type="search" defaultValue={rawQuery ?? ""} placeholder="Search research, articles, services..." className="min-h-12 min-w-0 flex-1 border border-input bg-background px-4 type-body outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20" minLength={2} maxLength={160} />
-            <input type="hidden" name="pageSize" value={filters.pageSize} />
-            <button type="submit" className="min-h-12 border border-primary bg-primary px-5 type-button text-primary-foreground hover:bg-primary-700 focus-visible:outline-2 focus-visible:outline-offset-2">Search</button>
-          </form>
+          <SearchPageForm query={rawQuery ?? ""} type={filters.type} pageSize={filters.pageSize} />
           <nav aria-label="Filter search results" className="mt-6 flex flex-wrap gap-2">
             {SEARCH_RESULT_TYPES.map((type) => (
               <Link key={type} href={result ? searchHref(result.query, type, 1, filters.pageSize) : searchHref(normalizedQuery ?? "", type, 1, filters.pageSize)} aria-current={filters.type === type ? "page" : undefined} className={`inline-flex min-h-10 items-center border px-3 type-caption transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${filters.type === type ? "border-primary bg-primary text-primary-foreground" : "border-border hover:bg-surface-muted"}`}>
