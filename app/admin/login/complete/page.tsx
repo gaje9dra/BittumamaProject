@@ -61,7 +61,7 @@ export default async function AdminLoginCompletePage({
   }
 
   store.set(ADMIN_CONTEXT_COOKIE, createAdminContextToken(), adminContextCookieOptions);
-  store.delete(ADMIN_INTENT_COOKIE);
+  store.set(ADMIN_INTENT_COOKIE, "", { ...adminIntentCookieOptions, maxAge: 0 });
 
   await recordAuditBestEffort(prisma.client, {
     action: AuditAction.AUTH_LOGIN,
