@@ -6,6 +6,7 @@ import {
   ADMIN_CONTEXT_COOKIE,
   ADMIN_INTENT_COOKIE,
   adminContextCookieOptions,
+  adminIntentCookieOptions,
   isValidAdminIntent,
   createAdminContextToken,
 } from "@/lib/auth/admin-context";
