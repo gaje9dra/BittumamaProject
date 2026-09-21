@@ -7,8 +7,9 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Payment history | Bittumama", robots: { index: false, follow: false, nocache: true } };
 
 export default async function PaymentHistoryPage() {
-  const payments = await getOwnPaymentHistory();
-  if (!payments) redirect("/login?callbackUrl=%2Faccount%2Fpayments");
+  const paymentHistory = await getOwnPaymentHistory();
+  if (!paymentHistory) redirect("/login?callbackUrl=%2Faccount%2Fpayments");
+  const payments = paymentHistory.items;
   return (
     <main className="min-h-screen bg-background text-foreground">
       <section className="mx-auto max-w-5xl px-[var(--page-gutter)] py-12 sm:py-16">
