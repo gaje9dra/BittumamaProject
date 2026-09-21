@@ -1,7 +1,10 @@
 import "dotenv/config";
 
+import { NotificationStatus } from "../generated/prisma/client";
 import { PrismaClient } from "../generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { buildNotificationTemplate } from "../lib/notifications/templates-core";
+import { canTransitionNotification } from "../lib/notifications/state";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to verify notifications.");
@@ -12,6 +15,11 @@ async function main() {
   const suffix = Date.now().toString(36);
   const user = await prisma.user.create({ data: { email: `notification-test-${suffix}@example.test`, name: "Notification Test" } });
   try {
+    const template = buildNotificationTemplate({ type: "REGISTRATION_RECEIVED", name: "<script>alert(1)</script>", eventTitle: "Workshop & Research", eventDate: "2026-09-21", status: "CONFIRMED" });
+    if (template.html.includes("<script>") || !template.html.includes("&lt;script&gt;")) throw new Error("HTML escaping failed.");
+    if (!template.subject || !template.text) throw new Error("Template output is incomplete.");
+    if (!canTransitionNotification(NotificationStatus.PENDING, NotificationStatus.PROCESSING)) throw new Error("Valid notification transition rejected.");
+    if (canTransitionNotification(NotificationStatus.SENT, NotificationStatus.PROCESSING)) throw new Error("Invalid notification transition accepted.");
     const first = await prisma.notification.create({
       data: {
         type: "REGISTRATION_RECEIVED", channel: "EMAIL", recipient: user.email!, dedupeKey: `notification-test:${suffix}`,
