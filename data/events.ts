@@ -27,6 +27,10 @@ export type Event = {
   registrationLabel?: string;
   registrationHref?: string;
   registrationStatus?: EventRegistrationStatus;
+  registrationEnabled?: boolean;
+  registrationCapacity?: number | null;
+  registrationDeadline?: string;
+  registrationMode?: "ANONYMOUS_ALLOWED" | "AUTHENTICATED_ONLY";
   featured?: boolean;
   relatedEventIds?: string[];
   relatedResearchIds?: string[];
