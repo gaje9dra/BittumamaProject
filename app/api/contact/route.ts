@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { getPublishedServiceBySlug } from "@/lib/services/repository";
 import { contactInquiryLimits, validateContactInquiryInput } from "@/lib/contact/validation";
 import { createContactInquiry } from "@/lib/contact/repository";
+import { deliverCreatedNotifications } from "@/lib/notifications/domain";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -99,7 +100,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    await createContactInquiry({
+    const saved = await createContactInquiry({
       name: result.data.name,
       email: result.data.email,
       ...(result.data.phone ? { phone: result.data.phone } : {}),
@@ -107,6 +108,7 @@ export async function POST(request: Request) {
       serviceId,
       message: result.data.message,
     });
+    await deliverCreatedNotifications(saved.notificationIds);
   } catch {
     return safeError("We couldn't send your enquiry. Please try again.", 500);
   }
