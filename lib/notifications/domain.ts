@@ -3,6 +3,8 @@ import "server-only";
 import { NotificationChannel, NotificationType } from "@/generated/prisma/client";
 import { prisma } from "@/lib/db/prisma";
 import { getNotificationConfig, normalizeRecipient } from "@/lib/notifications/config";
+import { buildNotificationTemplate } from "@/lib/notifications/templates";
+import { deliverNotification } from "@/lib/notifications/service";
 import { createNotificationIntent, type NotificationTx } from "@/lib/notifications/repository";
 import type { NotificationPayload } from "@/lib/notifications/types";
 
@@ -21,13 +23,7 @@ export async function queueNotification(
   const config = getNotificationConfig();
   if (!config) return null;
   const recipient = normalizeRecipient(input.recipient);
-  const templateSubject = input.type === "INQUIRY_RECEIVED" ? "New enquiry received"
-    : input.type === "REGISTRATION_RECEIVED" ? "Registration received"
-    : input.type === "REGISTRATION_CONFIRMED" ? "Registration confirmed"
-    : input.type === "REGISTRATION_CANCELLED" ? "Registration cancelled"
-    : input.type === "PAYMENT_SUCCESS" ? "Payment successful"
-    : input.type === "PAYMENT_FAILED" ? "Payment failed"
-    : "Payment requires confirmation";
+  const subject = buildNotificationTemplate(input.payload).subject;
   return createNotificationIntent(tx, {
     userId: input.userId ?? null,
     type: input.type,
@@ -37,7 +33,7 @@ export async function queueNotification(
     relatedEntityId: input.relatedEntityId,
     payload: input.payload,
     dedupeKey: input.dedupeKey,
-    subject: templateSubject,
+    subject,
   });
 }
 
@@ -98,7 +94,7 @@ export async function queuePaymentNotification(
 
 export async function deliverCreatedNotifications(ids: string[]) {
   const results = [];
-  for (const id of ids) results.push(await import("@/lib/notifications/service").then(({ deliverNotification }) => deliverNotification(id)));
+  for (const id of ids) results.push(await deliverNotification(id));
   return results;
 }
 
