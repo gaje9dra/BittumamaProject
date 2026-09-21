@@ -23,8 +23,13 @@ const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
 try {
+  const existing = await prisma.adminAccount.findUnique({ where: { normalizedEmail: email }, select: { id: true } });
   const passwordHash = await hashPassword(password);
   const admin = await prisma.adminAccount.upsert({ where: { normalizedEmail: email }, create: { email, normalizedEmail: email, passwordHash, isActive: true }, update: { email, passwordHash, isActive: true }, select: { id: true, email: true, isActive: true } });
+  if (existing) {
+    await prisma.adminSession.deleteMany({ where: { adminAccountId: admin.id } });
+  }
+
   await prisma.auditLog.create({
     data: {
       action: AuditAction.SYSTEM_CONFIGURATION_CHANGED,
