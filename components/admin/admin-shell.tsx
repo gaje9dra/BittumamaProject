@@ -49,7 +49,7 @@ export function AdminShell({ admin, children }: { admin: AdminIdentity; children
           <div className="border-t border-border p-4">
             <p className="truncate type-body-sm font-medium">{displayName}</p>
             {admin.email && <p className="mt-1 truncate type-caption text-muted-foreground">{admin.email}</p>}
-            <div className="mt-4"><SignOutButton admin /></div>
+            <div className="mt-4"><SignOutButton /></div>
           </div>
         </aside>
 
