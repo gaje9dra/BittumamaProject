@@ -241,6 +241,20 @@ function common(fields: Record<string, string>, status: "DRAFT" | "PUBLISHED" | 
 
 function buildData(domain: ContentDomain, fields: Record<string, string>, json: Record<string, unknown>, status: "DRAFT" | "PUBLISHED" | "ARCHIVED", publishAt: Date | null = null): unknown {
   const shared = common(fields, status, publishAt);
+  const registrationEnabled = fields.registrationEnabled === "true";
+  const registrationCapacity = fields.registrationCapacity ? Number(fields.registrationCapacity) : null;
+  const registrationDeadline = parseDate(fields.registrationDeadline);
+  if (domain === "workshops") {
+    if (fields.registrationCapacity && (!Number.isInteger(registrationCapacity) || registrationCapacity! < 1)) {
+      throw new Error("Registration capacity must be a positive whole number.");
+    }
+    if (registrationDeadline === undefined && fields.registrationDeadline) {
+      throw new Error("Registration deadline must be a valid date and time.");
+    }
+    if (registrationDeadline && registrationDeadline <= new Date() && registrationEnabled) {
+      throw new Error("Registration deadline must be in the future when registration is enabled.");
+    }
+  }
   switch (domain) {
     case "services":
       return {
