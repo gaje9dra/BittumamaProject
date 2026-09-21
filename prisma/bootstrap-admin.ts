@@ -25,5 +25,15 @@ const prisma = new PrismaClient({ adapter });
 try {
   const passwordHash = await hashPassword(password);
   const admin = await prisma.adminAccount.upsert({ where: { normalizedEmail: email }, create: { email, normalizedEmail: email, passwordHash, isActive: true }, update: { email, passwordHash, isActive: true }, select: { id: true, email: true, isActive: true } });
+  await prisma.auditLog.create({
+    data: {
+      action: AuditAction.SYSTEM_CONFIGURATION_CHANGED,
+      category: AuditCategory.SYSTEM,
+      result: AuditResult.SUCCESS,
+      entityType: "AdminAccount",
+      entityId: admin.id,
+      summary: "Administrator account provisioned through the secure server-side bootstrap.",
+    },
+  });
   console.log(JSON.stringify({ ok:true, message:"AdminAccount provisioned securely. No User.role value was changed.", admin:{id:admin.id,email:admin.email,isActive:admin.isActive} },null,2));
 } finally { await prisma.$disconnect(); }
