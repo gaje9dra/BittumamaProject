@@ -84,6 +84,9 @@ jobs:
       - name: Verify payment infrastructure
         run: npm run payments:verify
 
+      - name: Verify notifications
+        run: npm run notifications:verify
+
       - name: Lint
         run: npm run lint
 
