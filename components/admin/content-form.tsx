@@ -25,7 +25,7 @@ const labels: Record<string, string> = {
   image: "Image / media reference", tags: "Tags / qualifications (JSON)", scope: "Scope (JSON)", topics: "Topics / interests (JSON)",
   sections: "Structured sections (JSON)", methodology: "Methodology (JSON)", excerpt: "Excerpt", author: "Author",
   authorRole: "Author role", authorSlug: "Author slug", content: "Editorial content", time: "Time", location: "Location",
-  registrationLabel: "Registration label", registrationHref: "Registration URL", registrationStatus: "Registration status",
+  registrationLabel: "Registration label", registrationHref: "Registration URL", registrationStatus: "Registration status", registrationDeadline: "Registration deadline",
   speakerRole: "Speaker role",
 };
 
@@ -169,6 +169,10 @@ export function ContentForm({ domain, values, relationOptions }: { domain: Conte
       {domain === "workshops" && (
         <section className="grid gap-6 lg:grid-cols-2">
           <div><label htmlFor="format" className="text-sm font-medium">Format</label><select id="format" name="format" defaultValue={values.format} className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm"><option value="">Not specified</option><option value="ONLINE">Online</option><option value="IN_PERSON">In person</option><option value="HYBRID">Hybrid</option></select></div>
+          <div><label htmlFor="registrationEnabled" className="text-sm font-medium">Registration enabled</label><div className="mt-1"><input id="registrationEnabled" name="registrationEnabled" type="checkbox" value="true" defaultChecked={values.registrationEnabled} className="h-4 w-4" /> <span className="text-sm text-muted-foreground">Allow registrations for this event</span></div></div>
+          <div><label htmlFor="registrationCapacity" className="text-sm font-medium">Capacity (optional)</label><Input name="registrationCapacity" value={values.registrationCapacity} type="number" error={errors.registrationCapacity} /></div>
+          <div><label htmlFor="registrationDeadline" className="text-sm font-medium">Registration deadline</label><Input name="registrationDeadline" value={values.registrationDeadline ? new Date(values.registrationDeadline).toISOString().slice(0,16) : ""} type="datetime-local" error={errors.registrationDeadline} /></div>
+          <div><label htmlFor="registrationMode" className="text-sm font-medium">Registration mode</label><select id="registrationMode" name="registrationMode" defaultValue={values.registrationMode} className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm"><option value="ANONYMOUS_ALLOWED">Anonymous allowed</option><option value="AUTHENTICATED_ONLY">Signed-in users only</option></select></div>
           <div><label htmlFor="registrationStatus" className="text-sm font-medium">Registration status</label><select id="registrationStatus" name="registrationStatus" defaultValue={values.registrationStatus} className="mt-1 block w-full border border-border bg-background px-3 py-2.5 text-sm"><option value="">Not specified</option><option value="REGISTRATION_OPEN">Registration open</option><option value="REGISTRATION_CLOSED">Registration closed</option><option value="COMING_SOON">Coming soon</option><option value="COMPLETED">Completed</option></select></div>
         </section>
       )}
