@@ -35,8 +35,8 @@ export default async function AdminLoginCompletePage({
   const user = await getCurrentUser();
 
   if (!user?.id || !isValidAdminIntent(intent)) {
-    store.delete(ADMIN_INTENT_COOKIE);
-    store.delete(ADMIN_CONTEXT_COOKIE);
+    store.set(ADMIN_INTENT_COOKIE, "", { ...adminIntentCookieOptions, maxAge: 0 });
+    store.set(ADMIN_CONTEXT_COOKIE, "", { ...adminContextCookieOptions, maxAge: 0 });
     redirect("/admin/login?error=unauthorized");
   }
 
@@ -54,8 +54,8 @@ export default async function AdminLoginCompletePage({
       summary: "Administrator authentication context rejected by server-side authorization.",
       actor: { userId: account?.id ?? null, type: account ? "USER" : "SYSTEM" },
     });
-    store.delete(ADMIN_INTENT_COOKIE);
-    store.delete(ADMIN_CONTEXT_COOKIE);
+    store.set(ADMIN_INTENT_COOKIE, "", { ...adminIntentCookieOptions, maxAge: 0 });
+    store.set(ADMIN_CONTEXT_COOKIE, "", { ...adminContextCookieOptions, maxAge: 0 });
     redirect("/admin/login?error=unauthorized");
   }
 
