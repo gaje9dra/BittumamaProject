@@ -16,8 +16,8 @@ export async function POST(request: Request, { params }: Params) {
       return NextResponse.json({ error: "Unsupported webhook content type." }, { status: 415 });
     }
     const input = contentType.includes("json")
-      ? Object.fromEntries(Object.entries(await request.json() as Record<string, unknown>).map(([k,v]) => [k, String(v ?? "")]))
-      : Object.fromEntries((await request.formData()).entries()).reduce<Record<string,string>>((acc,[k,v]) => { acc[k]=typeof v === "string" ? v : ""; return acc; }, {});
+      ? Object.fromEntries(Object.entries(await request.json() as Record<string, unknown>).map(([k, v]) => [k, String(v ?? "")]))
+      : Object.fromEntries(Array.from((await request.formData()).entries()).map(([k, v]) => [k, typeof v === "string" ? v : ""]));
     const verified = await adapter.verifyWebhook(input);
     const result = await reconcileVerifiedPayment(verified);
     if (!result.ok) return NextResponse.json({ error: "Payment reconciliation mismatch." }, { status: 409 });
