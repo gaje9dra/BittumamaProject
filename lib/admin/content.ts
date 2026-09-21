@@ -68,6 +68,10 @@ export type ContentFormValues = {
   registrationLabel: string;
   registrationHref: string;
   registrationStatus: string;
+  registrationEnabled: boolean;
+  registrationCapacity: string;
+  registrationDeadline: string;
+  registrationMode: string;
   speakerRole: string;
   speakerId: string;
   relationServiceIds: string[];
@@ -231,7 +235,7 @@ function common(values: Partial<ContentFormValues>): ContentFormValues {
     seoDescription: "", seoImage: "", seoCanonical: "", seoNoIndex: false, need: "", focus: "",
     audience: "", highlights: "", faq: "", summary: "", tags: "", scope: "", topics: "",
     sections: "", methodology: "", content: "", excerpt: "", author: "", authorRole: "",
-    authorSlug: "", registrationLabel: "", registrationHref: "", registrationStatus: "",
+    authorSlug: "", registrationLabel: "", registrationHref: "", registrationStatus: "", registrationEnabled: false, registrationCapacity: "", registrationDeadline: "", registrationMode: "ANONYMOUS_ALLOWED",
     speakerRole: "", speakerId: "", relationServiceIds: [], relationResearchIds: [],
     relationExpertIds: [], relationArticleIds: [], relationWorkshopIds: [], ...values,
   };
@@ -345,6 +349,7 @@ export async function getContentForEdit(domain: ContentDomain, id: string): Prom
         location: record.location ?? "", format: record.format ?? "", image: record.coverMedia?.publicUrl ?? record.image ?? "", imageMediaId: record.coverMediaId ?? "", featured: record.featured,
         audience: jsonText(record.audience), registrationLabel: record.registrationLabel ?? "",
         registrationHref: record.registrationHref ?? "", registrationStatus: record.registrationStatus ?? "",
+        registrationEnabled: record.registrationEnabled, registrationCapacity: record.registrationCapacity == null ? "" : String(record.registrationCapacity), registrationDeadline: record.registrationDeadline ? record.registrationDeadline.toISOString() : "", registrationMode: record.registrationMode,
         speakerId: record.speakerId ?? "", speakerRole: record.speakerRole ?? "",
         seoTitle: record.seoTitle ?? "", seoDescription: record.seoDescription ?? "", seoImage: record.seoImage ?? "",
         updatedAt: record.updatedAt.toISOString(), relationResearchIds: record.researchLinks.map((x) => x.researchId), relationServiceIds: record.serviceLinks.map((x) => x.serviceId),
