@@ -1,7 +1,5 @@
-import "server-only";
-
 import { prisma } from "@/lib/db/prisma";
-import type { ContentDomain } from "@/lib/admin/content";
+type ContentDomain = "services" | "research" | "experts" | "articles" | "workshops";
 
 const DOMAINS: ContentDomain[] = ["services", "research", "experts", "articles", "workshops"];
 
@@ -105,14 +103,14 @@ export async function publishScheduledContent(now = new Date()) {
 
   for (const domain of DOMAINS) {
     const candidates = await (domain === "services"
-      ? prisma.client.service.findMany({ where: { status: "DRAFT", publishAt: { lte: now, not: null } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
+      ? prisma.client.service.findMany({ where: { status: "DRAFT", publishAt: { lte: now } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
       : domain === "research"
-        ? prisma.client.researchItem.findMany({ where: { status: "DRAFT", publishAt: { lte: now, not: null } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
+        ? prisma.client.researchItem.findMany({ where: { status: "DRAFT", publishAt: { lte: now } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
         : domain === "experts"
-          ? prisma.client.expert.findMany({ where: { status: "DRAFT", publishAt: { lte: now, not: null } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
+          ? prisma.client.expert.findMany({ where: { status: "DRAFT", publishAt: { lte: now } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
           : domain === "articles"
-            ? prisma.client.article.findMany({ where: { status: "DRAFT", publishAt: { lte: now, not: null } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
-            : prisma.client.event.findMany({ where: { status: "DRAFT", publishAt: { lte: now, not: null } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } }));
+            ? prisma.client.article.findMany({ where: { status: "DRAFT", publishAt: { lte: now } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } })
+            : prisma.client.event.findMany({ where: { status: "DRAFT", publishAt: { lte: now } }, select: { id: true, slug: true }, take: 50, orderBy: { publishAt: "asc" } }));
 
     for (const candidate of candidates) {
       const errors = await validateScheduledRecord(domain, candidate.id);
@@ -122,14 +120,14 @@ export async function publishScheduledContent(now = new Date()) {
       }
 
       const result = await (domain === "services"
-        ? prisma.client.service.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now, not: null } }, data: { status: "PUBLISHED", updatedAt: now } })
+        ? prisma.client.service.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } })
         : domain === "research"
-          ? prisma.client.researchItem.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now, not: null } }, data: { status: "PUBLISHED", updatedAt: now } })
+          ? prisma.client.researchItem.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } })
           : domain === "experts"
-            ? prisma.client.expert.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now, not: null } }, data: { status: "PUBLISHED", updatedAt: now } })
+            ? prisma.client.expert.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } })
             : domain === "articles"
-              ? prisma.client.article.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now, not: null } }, data: { status: "PUBLISHED", updatedAt: now } })
-              : prisma.client.event.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now, not: null } }, data: { status: "PUBLISHED", updatedAt: now } }));
+              ? prisma.client.article.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } })
+              : prisma.client.event.updateMany({ where: { id: candidate.id, status: "DRAFT", publishAt: { lte: now } }, data: { status: "PUBLISHED", updatedAt: now } }));
 
       if (result.count === 1) published.push({ domain, id: candidate.id, slug: candidate.slug });
     }
