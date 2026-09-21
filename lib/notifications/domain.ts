@@ -4,7 +4,6 @@ import { NotificationChannel, NotificationType } from "@/generated/prisma/client
 import { prisma } from "@/lib/db/prisma";
 import { getNotificationConfig, normalizeRecipient } from "@/lib/notifications/config";
 import { buildNotificationTemplate } from "@/lib/notifications/templates";
-import { deliverNotification } from "@/lib/notifications/service";
 import { createNotificationIntent, type NotificationTx } from "@/lib/notifications/repository";
 import type { NotificationPayload } from "@/lib/notifications/types";
 
@@ -94,7 +93,10 @@ export async function queuePaymentNotification(
 
 export async function deliverCreatedNotifications(ids: string[]) {
   const results = [];
-  for (const id of ids) results.push(await deliverNotification(id));
+  for (const id of ids) {
+    const { deliverNotification } = await import("@/lib/notifications/service");
+    results.push(await deliverNotification(id));
+  }
   return results;
 }
 
