@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getPaymentForAdmin } from "@/lib/admin/payments";
 import { minorToMajorString } from "@/lib/payments/money";
+import { PaymentReconcileForm } from "@/components/admin/payment-reconcile-form";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Payment detail | Bittumama", robots: { index: false, follow: false, nocache: true } };
@@ -30,6 +31,7 @@ export default async function AdminPaymentDetailPage({ params }: { params: Promi
           ["Failure", payment.failureMessage ?? payment.failureCode ?? "—"],
         ].map(([label,value])=><div key={label}><dt className="type-label text-muted-foreground">{label}</dt><dd className="mt-1 type-body-sm break-words">{value}</dd></div>)}
       </dl>
+      <PaymentReconcileForm id={payment.id} />
       <p className="mt-6 type-caption text-muted-foreground">Payment records cannot be manually marked successful or deleted from this interface.</p>
     </section>
   );
