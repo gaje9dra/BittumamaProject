@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { NotificationStatus } from "@/generated/prisma/client";
 
 const transitions: Record<NotificationStatus, readonly NotificationStatus[]> = {
