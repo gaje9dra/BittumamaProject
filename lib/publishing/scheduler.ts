@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/db/prisma";
+import { prisma } from "../db/prisma";
 type ContentDomain = "services" | "research" | "experts" | "articles" | "workshops";
 
 const DOMAINS: ContentDomain[] = ["services", "research", "experts", "articles", "workshops"];
