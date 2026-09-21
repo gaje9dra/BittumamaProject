@@ -19,7 +19,7 @@ export async function retryNotificationAsAdmin(
   if (!/^[A-Za-z0-9_-]{1,64}$/.test(id)) return { message: null, error: "Invalid notification." };
   try {
     const result = await retryNotification(id);
-    await recordAuditBestEffort(prisma.client, { action: AuditAction.NOTIFICATION_RETRIED, category: AuditCategory.NOTIFICATION, result: ("ok" in result && !result.ok) ? AuditResult.FAILURE : AuditResult.SUCCESS, summary: "Notification retry requested by administrator.", entityType: "Notification", entityId: id, metadata: { notificationId: id }, actor: { userId: actor.id, type: "USER" } });
+    await recordAuditBestEffort(prisma.client, { action: AuditAction.NOTIFICATION_RETRIED, category: AuditCategory.NOTIFICATION, result: ("ok" in result && !result.ok) ? AuditResult.FAILURE : AuditResult.SUCCESS, summary: "Notification retry requested by administrator.", entityType: "Notification", entityId: id, metadata: { notificationId: id }, actor: { userId: null, type: "SYSTEM" }, metadata: { notificationId: id, adminAccountId: actor.id } });
     revalidatePath("/admin/notifications");
     revalidatePath("/admin/notifications/" + id);
     if ("ok" in result && !result.ok) return { message: null, error: "This notification is not eligible for retry." };
