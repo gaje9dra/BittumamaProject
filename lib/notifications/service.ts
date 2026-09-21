@@ -12,8 +12,19 @@ function payloadFor(record: { type: NotificationType; payload: unknown }): Notif
   if (!record.payload || typeof record.payload !== "object" || Array.isArray(record.payload)) throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload is invalid.");
   const value = record.payload as Record<string, unknown>;
   if (value.type !== record.type) throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload type is invalid.");
-  return value as NotificationPayload;
+  if (typeof value.type !== "string") throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload type is invalid.");
+  const required = record.type === "INQUIRY_RECEIVED"
+    ? ["name", "email", "messagePreview"]
+    : record.type.startsWith("REGISTRATION_")
+      ? ["name", "eventTitle", "status"]
+      : ["reference", "amount", "currency", "purpose", "status"];
+  for (const key of required) if (typeof value[key] !== "string") throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload is incomplete.");
+  if (record.type === "INQUIRY_RECEIVED" && value.serviceTitle !== null && typeof value.serviceTitle !== "string") throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload is invalid.");
+  if (record.type.startsWith("REGISTRATION_") && value.eventDate !== null && typeof value.eventDate !== "string") throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload is invalid.");
+  if (record.type === "PAYMENT_FAILED" && value.failureMessage !== null && typeof value.failureMessage !== "string") throw new EmailDeliveryError("PERMANENT", "INVALID_PAYLOAD", "Notification payload is invalid.");
+  return value as unknown as NotificationPayload;
 }
+
 
 export async function deliverNotification(notificationId: string) {
   const claimed = await prisma.client.notification.updateMany({
