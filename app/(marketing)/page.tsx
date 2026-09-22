@@ -1,5 +1,6 @@
 import { HomeAudience } from "@/components/home/home-audience";
 import { HomeHero } from "@/components/home/home-hero";
+import { HomepageVisualShowcase } from "@/components/home/homepage-visual-showcase";
 import { HomeIntelligence } from "@/components/home/home-intelligence";
 import { HomePositioning } from "@/components/home/home-positioning";
 import { HomeProcess } from "@/components/home/home-process";
@@ -20,6 +21,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-background text-foreground">
+      <HomepageVisualShowcase />
       <HomeHero />
       <HomePositioning />
       <HomeIntelligence />
