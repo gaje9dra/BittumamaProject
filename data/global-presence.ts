@@ -2,7 +2,7 @@ export type GlobalPresenceRegion="Americas"|"Europe"|"Asia"|"Africa"|"Oceania"|"
 export type GlobalPresenceCity={id:string;city:string;country:string;code:string;region:GlobalPresenceRegion;image:string;alt:string;detail:string;coordinates:string};
 export const globalPresenceRegions=["All","Americas","Europe","Asia","Africa","Oceania","Middle East"] as const;
 export const globalPresenceStats=[{value:"25+",label:"CITIES"},{value:"6",label:"CONTINENTS"},{value:"10K+",label:"STUDENTS"},{value:"98%",label:"SUCCESS RATE"}] as const;
-const img=(id:string)=>`/images/global-presence/${id}.svg`;
+const img=(id:string)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=82`;
 const generic="Global academic and research reference point.";
 export const globalPresenceCities:GlobalPresenceCity[]=[
 ["new-york","New York","USA","US","Americas","photo-1496442226666-8d4d0e62e6e9","New York city skyline","74°W  ·  41°N"],
@@ -10,7 +10,7 @@ export const globalPresenceCities:GlobalPresenceCity[]=[
 ["dubai","Dubai","UAE","AE","Middle East","photo-1512453979798-5ea266f8880c","Dubai skyline","55°E  ·  25°N"],
 ["tokyo","Tokyo","Japan","JP","Asia","photo-1540959733332-eab4deabeeaf","Tokyo city skyline","140°E  ·  36°N"],
 ["singapore","Singapore","Singapore","SG","Asia","photo-1525625293386-3f8f99389edd","Singapore skyline","104°E  ·  1°N"],
-["sydney","Sydney","Australia","AU","Oceania","photo-1506973035872-a4ec16b8e8d0","Sydney skyline and harbour","151°E  ·  34°S"],
+["sydney","Sydney","Australia","AU","Oceania","photo-1660381187645-6d968c6f21e5","Sydney skyline and harbour","151°E  ·  34°S"],
 ["paris","Paris","France","FR","Europe","photo-1502602898657-3e91760cbb34","Paris city skyline","2°E  ·  49°N"],
 ["toronto","Toronto","Canada","CA","Americas","photo-1517090504586-fde19ea6066f","Toronto skyline","79°W  ·  44°N"],
 ["berlin","Berlin","Germany","DE","Europe","photo-1599946347371-68eb71b16afc","Berlin cityscape","13°E  ·  52°N"],
@@ -18,8 +18,8 @@ export const globalPresenceCities:GlobalPresenceCity[]=[
 ["sao-paulo","São Paulo","Brazil","BR","Americas","photo-1543059080-f9b1272213d5","São Paulo city skyline","47°W  ·  24°S"],
 ["amsterdam","Amsterdam","Netherlands","NL","Europe","photo-1534351590666-13e3e96b5017","Amsterdam cityscape","5°E  ·  52°N"],
 ["melbourne","Melbourne","Australia","AU","Oceania","photo-1514395462725-fb4566210144","Melbourne skyline","145°E  ·  38°S"],
-["los-angeles","Los Angeles","USA","US","Americas","photo-1534190760961-74e8c1c5c643","Los Angeles skyline","118°W  ·  34°N"],
-["seoul","Seoul","South Korea","KR","Asia","photo-1538485399081-7c8972e3b1d4","Seoul city skyline at night","81°E  ·  33°N"],
+["los-angeles","Los Angeles","USA","US","Americas","photo-1494522358652-f30e61a60313","Los Angeles skyline","118°W  ·  34°N"],
+["seoul","Seoul","South Korea","KR","Asia","photo-1546874177-9e664107314e","Seoul city skyline at night","81°E  ·  33°N"],
 ["zurich","Zurich","Switzerland","CH","Europe","photo-1515488764276-beab7607c1e6","Zurich cityscape","8°E  ·  47°N"],
 ["mexico-city","Mexico City","Mexico","MX","Americas","photo-1518105779142-d975f22f1b0a","Mexico City skyline","99°W  ·  19°N"],
 ["nairobi","Nairobi","Kenya","KE","Africa","photo-1690715541830-8146074eab02","Nairobi cityscape","37°E  ·  1°S"],

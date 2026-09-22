@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -24,13 +23,11 @@ const regionStyles: Record<GlobalPresenceCity["region"], string> = {
 
 function CityImage({ city }: { city: GlobalPresenceCity }) {
   return (
-    <Image
-      src={city.image}
-      alt={city.alt}
-      fill
-      sizes="(max-width: 640px) 100vw, (max-width: 1280px) 33vw, 20vw"
-      className="object-cover object-center"
-      unoptimized
+    <div
+      role="img"
+      aria-label={city.alt}
+      className="absolute inset-0 bg-cover bg-center"
+      style={{ backgroundImage: `url("${city.image}")` }}
     />
   );
 }
