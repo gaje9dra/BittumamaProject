@@ -5,7 +5,7 @@ import { ServicesDirectory } from "@/components/services/services-directory";
 import { ServicesHero } from "@/components/services/services-hero";
 import { ServiceFinder } from "@/components/services/service-finder";
 import { createPageMetadata } from "@/lib/metadata";
-import { getPublishedServices } from "@/lib/services/repository";
+import { getRequestedPublishedServices } from "@/lib/services/repository";
 
 export const dynamic = "force-dynamic";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default async function ServicesPage() {
-  const services = await getPublishedServices();
+  const services = await getRequestedPublishedServices();
   const categories = Array.from(new Set(services.map((service) => service.category)));
 
   return (
