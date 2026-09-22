@@ -2,13 +2,12 @@ import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../generated/prisma/client";
+import { canonicalServices, getServiceHref } from "../data/services";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is required to verify Services.");
 const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
-import { canonicalServices, getServiceHref } from "../data/services";
-
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required to verify Services.");
 
@@ -54,7 +53,7 @@ async function main() {
 
     if (record.slug !== service.slug) errors.push(`${service.title}: slug mismatch.`);
 
-    const publicService = await prisma.client.service.findFirst({ where: { slug: service.slug, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] }, select: { id: true, slug: true, title: true } });
+    const publicService = await prisma.service.findFirst({ where: { slug: service.slug, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] }, select: { id: true, slug: true, title: true } });
     if (!publicService || publicService.slug !== service.slug || publicService.title !== service.title) errors.push(`${service.title}: public route data is missing or mismatched.`);
     if (getServiceHref(service) !== "/services/" + service.slug) errors.push(`${service.title}: canonical route mismatch.`);
   }
