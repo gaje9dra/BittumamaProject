@@ -10,10 +10,11 @@ import { isNavigationItemActive } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 import { announceHeaderSurface } from "@/lib/header-surface";
+import { SignOutButton } from "@/components/auth/sign-out";
 
 const MENU_TRANSITION_MS = 560;
 
-export function MobileNav({ className }: { className?: string }) {
+export function MobileNav({ className, user }: { className?: string; user: { name: string | null; email: string | null } | null }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -239,20 +240,38 @@ export function MobileNav({ className }: { className?: string }) {
                     />
                   </div>
                   <div className="mb-8 flex items-center gap-2">
-                    <Link
-                      href="/login"
-                      onClick={closeMenu}
-                      className="mobile-menu-utility inline-flex min-h-11 items-center border border-transparent px-2 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-3"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      href="/register"
-                      onClick={closeMenu}
-                      className="mobile-menu-utility inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-[var(--menu-border)] bg-[var(--menu-control-surface)] px-4 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:bg-[var(--menu-surface-elevated)] focus-visible:outline-2 focus-visible:outline-offset-3"
-                    >
-                      Register
-                    </Link>
+                    {user ? (
+                      <>
+                        <Link
+                          href="/account"
+                          onClick={closeMenu}
+                          className="mobile-menu-utility inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-[var(--menu-border)] bg-[var(--menu-control-surface)] px-4 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:bg-[var(--menu-surface-elevated)] focus-visible:outline-2 focus-visible:outline-offset-3"
+                        >
+                          Account
+                        </Link>
+                        <SignOutButton
+                          compact
+                          className="mobile-menu-utility min-h-11 border border-transparent px-2 text-[var(--menu-text)] hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-3"
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <Link
+                          href="/login"
+                          onClick={closeMenu}
+                          className="mobile-menu-utility inline-flex min-h-11 items-center border border-transparent px-2 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:text-[var(--menu-text)] focus-visible:outline-2 focus-visible:outline-offset-3"
+                        >
+                          Login
+                        </Link>
+                        <Link
+                          href="/register"
+                          onClick={closeMenu}
+                          className="mobile-menu-utility inline-flex min-h-11 items-center rounded-[var(--radius-md)] border border-[var(--menu-border)] bg-[var(--menu-control-surface)] px-4 type-button text-[var(--menu-text)] transition-colors duration-[var(--motion-fast)] hover:bg-[var(--menu-surface-elevated)] focus-visible:outline-2 focus-visible:outline-offset-3"
+                        >
+                          Register
+                        </Link>
+                      </>
+                    )}
                   </div>
                   {primaryNavigation.map((item, index) => {
                     const hasNestedNavigation = Boolean(item.children?.length || item.groups?.length);
