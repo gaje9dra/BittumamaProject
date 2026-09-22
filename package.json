@@ -38,7 +38,8 @@
     "analytics:verify": "tsx prisma/verify-analytics.ts",
     "search:verify": "tsx prisma/verify-search.ts",
     "audit:verify": "tsx prisma/verify-audit.ts",
-    "api:verify": "tsx prisma/verify-api.ts"
+    "api:verify": "tsx prisma/verify-api.ts",
+    "services:routes:verify": "tsx scripts/verify-service-routes.ts"
   },
   "dependencies": {
     "next": "16.3.5",
