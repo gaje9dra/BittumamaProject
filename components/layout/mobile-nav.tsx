@@ -283,7 +283,7 @@ export function MobileNav({
                       </button>
 
                       {servicesExpanded && (
-                        <div id="mobile-services-submenu" className="ml-3 border-l border-[var(--menu-border)] pl-4" aria-label="Services submenu">
+                        <div id="mobile-services-submenu" className="ml-3 border-l border-[var(--menu-border)] pl-4">
                           {(item.children ?? []).map(renderDestination)}
                         </div>
                       )}
