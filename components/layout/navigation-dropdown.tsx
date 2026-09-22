@@ -111,8 +111,12 @@ export function NavigationDropdown({ item, pathname }: { item: NavigationItem; p
     <div
       ref={panelRef}
       className="relative"
-      onPointerEnter={clearCloseTimer}
-      onPointerLeave={scheduleClose}
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") clearCloseTimer();
+      }}
+      onPointerLeave={(event) => {
+        if (event.pointerType === "mouse") scheduleClose();
+      }}
     >
       <button
         ref={triggerRef}
