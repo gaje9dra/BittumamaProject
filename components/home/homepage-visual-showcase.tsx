@@ -45,9 +45,9 @@ export function HomepageVisualShowcase() {
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-xl)] border border-border bg-dark-background sm:aspect-[16/10] lg:aspect-[16/8.5]">
           {SCENES.map((scene, index) => (
             <SceneFrame key={scene.id} active={index === activeIndex} index={index} previousIndex={previousIndex} reducedMotion={reducedMotion} label={scene.label}>
-              {index === 0 ? <ResearchWorkflowScene active={index === activeIndex} /> : null}
-              {index === 1 ? <ExpertResearchScene active={index === activeIndex} /> : null}
-              {index === 2 ? <DataAnalysisScene active={index === activeIndex} /> : null}
+              {index === 0 ? <ResearchWorkflowScene /> : null}
+              {index === 1 ? <ExpertResearchScene /> : null}
+              {index === 2 ? <DataAnalysisScene /> : null}
             </SceneFrame>
           ))}
         </div>
