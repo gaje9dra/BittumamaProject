@@ -7,7 +7,7 @@ CREATE TABLE "AnalyticsEvent" (
   "id" TEXT NOT NULL,
   "eventName" "AnalyticsEventName" NOT NULL,
   "eventCategory" "AnalyticsEventCategory" NOT NULL,
-  "userId" TEXT,
+  "userId" UUID,
   "anonymousId" TEXT,
   "sessionId" TEXT,
   "path" TEXT,
