@@ -1,15 +1,7 @@
-import {
-  BriefcaseBusiness,
-  FileText,
-  Globe2,
-  Network,
-} from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
 import { AnimatedStat } from "@/components/home/animated-stat";
 import { globalPresenceStats } from "@/data/global-presence";
-
-const STAT_ICONS = [FileText, BriefcaseBusiness, Network, Globe2] as const;
 
 const STAT_ACCENTS = [
   "border-t-4 border-t-[#386779] text-[#386779]",
@@ -23,7 +15,7 @@ const stats = globalPresenceStats.map((stat, index) => ({
   value: Number(stat.value.replace(/[^0-9]/g, "")) * (stat.value.includes("K") ? 1000 : 1),
   display: stat.value,
   label: stat.label,
-  icon: STAT_ICONS[index],
+  icon: ["file", "briefcase", "network", "globe"][index] as "file" | "briefcase" | "network" | "globe",
   accentClass: STAT_ACCENTS[index],
 }));
 
