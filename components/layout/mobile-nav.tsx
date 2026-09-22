@@ -27,6 +27,7 @@ export function MobileNav({
   const [mounted, setMounted] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [closing, setClosing] = useState(false);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [servicesExpanded, setServicesExpanded] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchTriggerRef = useRef<HTMLButtonElement>(null);
