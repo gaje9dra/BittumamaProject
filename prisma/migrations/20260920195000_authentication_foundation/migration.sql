@@ -1,5 +1,19 @@
 -- CreateEnum
-CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+-- This migration may be re-run after a failed deployment where the enum was
+-- created manually or by an earlier partial migration attempt.
+DO $
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_type t
+    JOIN pg_namespace n ON n.oid = t.typnamespace
+    WHERE t.typname = 'UserRole'
+      AND n.nspname = current_schema()
+  ) THEN
+    CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
+  END IF;
+END
+$;
 
 -- CreateTable
 CREATE TABLE "User" (
