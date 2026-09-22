@@ -68,10 +68,6 @@ export function HeaderActionsClient({
     };
   }, [menuOpen]);
 
-  useEffect(() => {
-    if (!user) setMenuOpen(false);
-  }, [user]);
-
   return (
     <div className={cn("items-center gap-2", className)}>
       <SearchTrigger ref={searchTriggerRef} controlsId={searchPanelId} open={searchOpen} onClick={() => setSearchOpen((value) => !value)} />
