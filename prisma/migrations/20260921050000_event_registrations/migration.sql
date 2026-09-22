@@ -11,7 +11,7 @@ ALTER TABLE "Event"
 CREATE TABLE "EventRegistration" (
   "id" TEXT NOT NULL,
   "eventId" TEXT NOT NULL,
-  "userId" TEXT,
+  "userId" UUID,
   "fullName" TEXT NOT NULL,
   "email" TEXT NOT NULL,
   "phone" TEXT,
