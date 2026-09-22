@@ -52,7 +52,7 @@ export function ExpertResearchScene({ active }: { active: boolean }) {
             </div>
           </div>
 
-          <div className="absolute bottom-3 left-1/2 w-[48%] -translate-x-1/2 rounded-full border border-[var(--dark-border)] bg-[var(--dark-background)]/95 px-3 py-1.5 text-center sm:bottom-5 sm:w-auto sm:min-w-[13rem]"><span className="text-[8px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)]">{topic.detail}</span></div>
+          <button type="button" aria-pressed={activeTopic === "proposal"} onClick={() => setActiveTopic("proposal")} className={cn("absolute bottom-3 left-1/2 min-h-11 w-[48%] -translate-x-1/2 rounded-full border px-3 py-1.5 text-center transition-colors sm:bottom-5 sm:w-auto sm:min-w-[13rem]", activeTopic === "proposal" ? "border-[var(--dark-border)] bg-[var(--dark-background)]/95" : "border-[var(--dark-border)]/70 bg-[var(--dark-background)]/85 hover:border-[var(--dark-muted-foreground)]")}><span className="text-[8px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)]">{topic.detail}</span></button>
         </div>
 
         <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--dark-border)] pt-3">
