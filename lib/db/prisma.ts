@@ -21,10 +21,31 @@ function getDatabaseUrl() {
   return databaseUrl;
 }
 
+function getRuntimeConnectionString(databaseUrl: string) {
+  try {
+    const url = new URL(databaseUrl);
+
+    // Supabase transaction pooling is the correct mode for Netlify/serverless
+    // runtime traffic. Prisma must be told to use pooler-compatible behavior.
+    if (url.port === "6543" && url.hostname.endsWith(".pooler.supabase.com")) {
+      if (!url.searchParams.has("pgbouncer")) {
+        url.searchParams.set("pgbouncer", "true");
+      }
+    }
+
+    return url.toString();
+  } catch {
+    return databaseUrl;
+  }
+}
+
 export function getPrismaClient() {
   if (!globalForPrisma.__bittumamaPrisma) {
     const adapter = new PrismaPg({
-      connectionString: getDatabaseUrl(),
+      connectionString: getRuntimeConnectionString(getDatabaseUrl()),
+      max: 1,
+      connectionTimeoutMillis: 10_000,
+      idleTimeoutMillis: 30_000,
     });
 
     globalForPrisma.__bittumamaPrisma = new PrismaClient({ adapter });
