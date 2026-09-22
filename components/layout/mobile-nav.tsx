@@ -12,7 +12,6 @@ import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 import { announceHeaderSurface } from "@/lib/header-surface";
 import { SignOutButton } from "@/components/auth/sign-out";
 
-const MENU_TRANSITION_MS = 560;
 
 export function MobileNav({
   className,
