@@ -5,7 +5,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
-export function EmailPasswordLogin({ callbackUrl = "/auth-test" }: { callbackUrl?: string }) {
+export function EmailPasswordLogin({ callbackUrl = "/account" }: { callbackUrl?: string }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
