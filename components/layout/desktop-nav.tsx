@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { NavigationDropdown } from "@/components/layout/navigation-dropdown";
 import { NavigationMegaTrigger } from "@/components/layout/navigation-mega-trigger";
-import { primaryNavigation } from "@/data/site-config";
+import type { NavigationItem } from "@/data/site-config";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { announceHeaderSurface } from "@/lib/header-surface";
 import { cn } from "@/lib/utils";
 
-export function DesktopNav() {
+export function DesktopNav({ navigation }: { navigation: NavigationItem[] }) {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function DesktopNav() {
 
   return (
     <nav aria-label="Primary navigation" className="ml-auto hidden items-center gap-5 lg:flex xl:gap-7">
-      {primaryNavigation.map((item) => {
+      {navigation.map((item) => {
         if (item.type === "dropdown" && item.children?.length) {
           return <NavigationDropdown key={item.href} item={item} pathname={pathname} />;
         }
