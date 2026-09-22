@@ -69,7 +69,7 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
                 </div>
               </div>
               <div className="mt-3 rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2.5">
-                <div className="flex items-center justify-between gap-2"><span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Active module</span><span className="text-[9px] font-semibold">{modules.find((item) => item.id === activeModule)?.label}</span></div>
+                <div className="flex items-center justify-between gap-2"><span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Active module</span><button type="button" aria-pressed={activeModule === "methodology"} onClick={() => setActiveModule("methodology")} className={cn("min-h-11 rounded border px-2 text-[9px] font-semibold transition-colors", activeModule === "methodology" ? "border-[var(--dark-border)] bg-[var(--dark-surface)] text-[var(--dark-foreground)]" : "border-[var(--dark-border)] text-[var(--dark-muted-foreground)] hover:text-[var(--dark-foreground)]")}>Methodology</button></div>
                 <div className="mt-2 grid grid-cols-5 gap-1">{modules.map((module) => <span key={module.id} className={cn("h-1.5 rounded-full", activeModule === module.id ? "bg-[var(--data-5)]" : "bg-[var(--dark-border)]")} />)}</div>
               </div>
             </div>
