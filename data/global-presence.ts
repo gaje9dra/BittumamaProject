@@ -2,7 +2,7 @@ export type GlobalPresenceRegion="Americas"|"Europe"|"Asia"|"Africa"|"Oceania"|"
 export type GlobalPresenceCity={id:string;city:string;country:string;code:string;region:GlobalPresenceRegion;image:string;alt:string;detail:string;coordinates:string};
 export const globalPresenceRegions=["All","Americas","Europe","Asia","Africa","Oceania","Middle East"] as const;
 export const globalPresenceStats=[{value:"25+",label:"CITIES"},{value:"6",label:"CONTINENTS"},{value:"10K+",label:"STUDENTS"},{value:"98%",label:"SUCCESS RATE"}] as const;
-const img=(id:string)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=1000&q=78`;
+const img=(id:string)=>`/images/global-presence/${id}.svg`;
 const generic="Global academic and research reference point.";
 export const globalPresenceCities:GlobalPresenceCity[]=[
 ["new-york","New York","USA","US","Americas","photo-1496442226666-8d4d0e62e6e9","New York city skyline","74°W  ·  41°N"],
