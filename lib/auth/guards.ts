@@ -10,9 +10,9 @@ import { AuditAction, AuditCategory, AuditResult, AuditSeverity } from "@/genera
 export async function getCurrentSession() { return auth(); }
 export async function getCurrentUser() { const session = await auth(); return session?.user ?? null; }
 
-export async function requireAuthenticatedUser() {
+export async function requireAuthenticatedUser(callbackUrl = "/account") {
   const user = await getCurrentUser();
-  if (!user) redirect("/login?callbackUrl=%2Fauth-test");
+  if (!user) redirect("/login?callbackUrl=" + encodeURIComponent(callbackUrl));
   return user;
 }
 

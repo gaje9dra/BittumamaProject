@@ -1,10 +1,12 @@
+import { redirect } from "next/navigation";
 import { requireAuthenticatedUser } from "@/lib/auth/guards";
 import { SignOutButton } from "@/components/auth/sign-out";
 
 export const dynamic = "force-dynamic";
 
 export default async function AuthTestPage() {
-  const user = await requireAuthenticatedUser();
+  if (process.env.NODE_ENV === "production") redirect("/account");
+  const user = await requireAuthenticatedUser("/auth-test");
 
   return (
     <main className="min-h-screen bg-background text-foreground">

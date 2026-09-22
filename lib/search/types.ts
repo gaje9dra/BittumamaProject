@@ -1,8 +1,6 @@
-import type { AnalyticsContentType } from "@/generated/prisma/client";
+import type { SearchResultType } from "@/lib/search/client-types";
 
-export const SEARCH_RESULT_TYPES = ["all", "services", "research", "experts", "articles", "workshops"] as const;
-export type SearchResultType = (typeof SEARCH_RESULT_TYPES)[number];
-
+export { SEARCH_RESULT_TYPES, type SearchResultType } from "@/lib/search/client-types";
 export type SearchFilters = {
   type: SearchResultType;
   page: number;
@@ -44,4 +42,3 @@ export type SearchAnalyticsEvent = {
   queryLengthBucket: "short" | "medium" | "long";
 };
 
-export type SearchAnalyticsContentType = AnalyticsContentType;

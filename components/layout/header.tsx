@@ -4,8 +4,11 @@ import { HeaderActions } from "@/components/layout/header-actions";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { HeaderScrollShell } from "@/components/layout/header-scroll-shell";
 import { siteConfig } from "@/data/site-config";
+import { getCurrentUser } from "@/lib/auth/guards";
 
-export function Header() {
+export async function Header() {
+  const user = await getCurrentUser();
+
   return (
     <HeaderScrollShell>
       <header className="border-b border-border bg-background transition-[background-color,border-color] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)]">
@@ -18,8 +21,8 @@ export function Header() {
             <span className="type-h5 font-semibold tracking-[-0.02em]">{siteConfig.siteName}</span>
           </Link>
           <DesktopNav />
-          <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" />
-          <MobileNav className="ml-auto lg:hidden" />
+          <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" user={user ? { name: user.name ?? null, email: user.email ?? null, image: user.image ?? null } : null} />
+          <MobileNav className="ml-auto lg:hidden" user={user ? { name: user.name ?? null, email: user.email ?? null } : null} />
         </div>
       </header>
     </HeaderScrollShell>

@@ -18,7 +18,7 @@ export default async function LoginPage({
   searchParams: Promise<{ callbackUrl?: string; error?: string }>;
 }) {
   const user = await getCurrentUser();
-  if (user) redirect("/auth-test");
+  if (user) redirect("/account");
 
   const params = await searchParams;
   const callbackUrl =
@@ -27,7 +27,7 @@ export default async function LoginPage({
     !params.callbackUrl.startsWith("//") &&
     !params.callbackUrl.startsWith("/admin")
       ? params.callbackUrl
-      : "/auth-test";
+      : "/account";
 
   return (
     <AuthShell

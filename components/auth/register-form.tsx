@@ -44,7 +44,7 @@ export function RegisterForm() {
         setError(typeof body?.error === "string" ? body.error : "Unable to create the account.");
         return;
       }
-      router.replace("/auth-test");
+      router.replace("/account");
       router.refresh();
     } catch {
       setError("Unable to create the account. Try again.");

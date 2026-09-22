@@ -2,7 +2,7 @@
 
 import { useActionState } from "react";
 import { submitEventRegistration } from "@/lib/events/registration-actions";
-import type { RegistrationActionState } from "@/lib/events/registration";
+import type { RegistrationActionState } from "@/lib/events/registration-types";
 import { trackClientEvent } from "@/lib/analytics/client";
 
 const initialState: RegistrationActionState = { ok: false, message: null, fieldErrors: {} };

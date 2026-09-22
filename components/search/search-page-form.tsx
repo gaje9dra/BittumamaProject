@@ -2,7 +2,7 @@
 
 import type { FormEvent } from "react";
 import { trackClientEvent } from "@/lib/analytics/client";
-import type { SearchResultType } from "@/lib/search/types";
+import type { SearchResultType } from "@/lib/search/client-types";
 
 export function SearchPageForm({ query, type, pageSize }: { query: string; type: SearchResultType; pageSize: number }) {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
