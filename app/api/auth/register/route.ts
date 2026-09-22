@@ -34,5 +34,5 @@ export async function POST(request: Request) {
   const user = await prisma.client.user.create({ data: { email, name: name || null, passwordHash }, select: { id: true } });
   await createUserDatabaseSession(user.id);
   await recordAuditBestEffort(prisma.client, { action: AuditAction.AUTH_LOGIN, category: AuditCategory.AUTHENTICATION, result: AuditResult.SUCCESS, summary: "New user account created with email credentials.", actor: { userId: user.id, type: "USER" } });
-  return NextResponse.json({ ok: true, redirectTo: "/auth-test" }, { headers: { "Cache-Control": "no-store" } });
+  return NextResponse.json({ ok: true, redirectTo: "/account" }, { headers: { "Cache-Control": "no-store" } });
 }
