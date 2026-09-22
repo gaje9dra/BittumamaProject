@@ -31,6 +31,7 @@ export function ScrollStagger({
       {items.map((child, index) => (
         <motion.div
           key={index}
+          className="min-w-0 w-full h-full"
           initial={
             reducedMotion
               ? false
