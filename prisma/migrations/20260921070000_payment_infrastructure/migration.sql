@@ -1,20 +1,17 @@
 -- Phase 8.17: canonical payment transaction infrastructure
+-- Existing production databases may already contain these enums.
+-- Enum values for an existing type must be added outside a transaction before
+-- this migration runs; see the migration recovery instructions.
 DO $bittumama$
 BEGIN
   IF NOT EXISTS (
-    SELECT 1 FROM pg_type t
+    SELECT 1
+    FROM pg_type t
     JOIN pg_namespace n ON n.oid = t.typnamespace
     WHERE t.typname = 'PaymentStatus'
       AND n.nspname = current_schema()
   ) THEN
     CREATE TYPE "PaymentStatus" AS ENUM ('CREATED', 'PENDING', 'SUCCESS', 'FAILED', 'CANCELLED', 'EXPIRED');
-  ELSE
-    ALTER TYPE "PaymentStatus" ADD VALUE IF NOT EXISTS 'CREATED';
-    ALTER TYPE "PaymentStatus" ADD VALUE IF NOT EXISTS 'PENDING';
-    ALTER TYPE "PaymentStatus" ADD VALUE IF NOT EXISTS 'SUCCESS';
-    ALTER TYPE "PaymentStatus" ADD VALUE IF NOT EXISTS 'FAILED';
-    ALTER TYPE "PaymentStatus" ADD VALUE IF NOT EXISTS 'CANCELLED';
-    ALTER TYPE "PaymentStatus" ADD VALUE IF NOT EXISTS 'EXPIRED';
   END IF;
 END
 $bittumama$;
@@ -22,17 +19,13 @@ $bittumama$;
 DO $bittumama$
 BEGIN
   IF NOT EXISTS (
-    SELECT 1 FROM pg_type t
+    SELECT 1
+    FROM pg_type t
     JOIN pg_namespace n ON n.oid = t.typnamespace
     WHERE t.typname = 'PaymentPurpose'
       AND n.nspname = current_schema()
   ) THEN
     CREATE TYPE "PaymentPurpose" AS ENUM ('SERVICE', 'EVENT', 'EVENT_REGISTRATION');
-  ELSE
-    ALTER TYPE "PaymentPurpose" ADD VALUE IF NOT EXISTS 'SERVICE';
-    ALTER TYPE "PaymentPurpose" ADD VALUE IF NOT EXISTS 'EVENT';
-    ALTER TYPE "PaymentPurpose" ADD VALUE IF NOT EXISTS 'EVENT';
-    ALTER TYPE "PaymentPurpose" ADD VALUE IF NOT EXISTS 'EVENT_REGISTRATION';
   END IF;
 END
 $bittumama$;
