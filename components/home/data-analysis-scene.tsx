@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import { SceneFrameShell, ShowcaseCTA } from "./coded-showcase-frame";
 
@@ -85,7 +85,7 @@ export function DataAnalysisScene() {
   );
 }
 
-function DataPanel({ label, accent, children }: { label: string; accent: string; children: React.ReactNode }) {
+function DataPanel({ label, accent, children }: { label: string; accent: string; children: ReactNode }) {
   return (
     <div className="min-h-0 overflow-hidden border border-[var(--dark-border)] bg-[var(--dark-surface)] p-2.5 sm:p-3">
       <div className="mb-2 flex items-center gap-2 text-[7px] font-semibold uppercase tracking-[0.13em] text-[var(--dark-muted-foreground)]"><span className="h-1.5 w-5" style={{ backgroundColor: accent }} />{label}</div>
