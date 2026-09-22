@@ -48,7 +48,7 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
           <div className="absolute bottom-0 left-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[3]} active={activeModule === "analysis"} onClick={() => setActiveModule("analysis")} accent="var(--data-4)" /></div>
           <div className="absolute bottom-0 right-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[4]} active={activeModule === "findings"} onClick={() => setActiveModule("findings")} accent="var(--data-5)" /></div>
 
-          <div className="absolute left-1/2 top-1/2 w-[61%] -translate-x-1/2 -translate-y-1/2 sm:w-[54%] lg:w-[47%]">
+          <div className="absolute inset-0 grid place-items-center"><div className="w-[61%] sm:w-[54%] lg:w-[47%]">
             <div className="rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-3 shadow-[var(--shadow-lg)] backdrop-blur-sm sm:p-4">
               <div className="flex items-center justify-between border-b border-[var(--dark-border)] pb-2">
                 <div><p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--dark-muted-foreground)] sm:text-[10px]">Thesis working board</p><p className="mt-0.5 font-[var(--font-display-family)] text-sm sm:text-base">Research framework</p></div>
@@ -72,8 +72,7 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
                 <div className="flex items-center justify-between gap-2"><span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Active module</span><button type="button" aria-pressed={activeModule === "methodology"} onClick={() => setActiveModule("methodology")} className={cn("min-h-11 rounded border px-2 text-[9px] font-semibold transition-colors", activeModule === "methodology" ? "border-[var(--dark-border)] bg-[var(--dark-surface)] text-[var(--dark-foreground)]" : "border-[var(--dark-border)] text-[var(--dark-muted-foreground)] hover:text-[var(--dark-foreground)]")}>Methodology</button></div>
                 <div className="mt-2 grid grid-cols-5 gap-1">{modules.map((module) => <span key={module.id} className={cn("h-1.5 rounded-full", activeModule === module.id ? "bg-[var(--data-5)]" : "bg-[var(--dark-border)]")} />)}</div>
               </div>
-            </div>
-          </div>
+            </div></div>
 
           <div className="absolute bottom-[18%] left-1/2 hidden -translate-x-1/2 lg:block">
             <Link href="/services/thesis-assistance" className="rounded-full border border-[var(--dark-border)] bg-[var(--dark-surface)] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.13em] hover:border-[var(--data-5)] hover:text-[var(--data-5)]">Thesis assistance</Link>
