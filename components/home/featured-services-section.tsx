@@ -120,8 +120,9 @@ export function FeaturedServicesSection() {
             </div>
           </div>
 
-          <ScrollStagger className="mx-auto mt-8 grid max-w-[1180px] grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" stagger={0.09} distance={26}>
-            {HOME_SERVICE_CARDS.map((card) => {
+          <ScrollStagger className="mx-auto mt-8 max-w-[1180px]" stagger={0.09} distance={26}>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {HOME_SERVICE_CARDS.map((card) => {
               const Icon = card.icon;
 
               return (
@@ -164,7 +165,8 @@ export function FeaturedServicesSection() {
                   </div>
                 </Link>
               );
-            })}
+              })}
+            </div>
           </ScrollStagger>
         </ScrollTransition>
       </Container>
