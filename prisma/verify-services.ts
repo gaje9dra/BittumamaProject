@@ -1,7 +1,8 @@
 import "dotenv/config";
 
 import { prisma } from "../lib/db/prisma";
-import { canonicalServices } from "../data/services";
+import { canonicalServices, getServiceHref } from "../data/services";
+import { getPublishedServiceBySlug } from "../lib/services/repository";
 
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required to verify Services.");
@@ -47,6 +48,10 @@ async function main() {
     }
 
     if (record.slug !== service.slug) errors.push(`${service.title}: slug mismatch.`);
+
+    const publicService = await getPublishedServiceBySlug(service.slug);
+    if (!publicService) errors.push(`${service.title}: public route data is missing.`);
+    if (getServiceHref(service) !== "/services/" + service.slug) errors.push(`${service.title}: canonical route mismatch.`);
   }
 
   const duplicateSlugs = await prisma.client.service.groupBy({
