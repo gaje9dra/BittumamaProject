@@ -32,14 +32,14 @@ export function DataAnalysisScene({ active }: { active: boolean }) {
                   <svg viewBox="0 0 520 260" className="h-full min-h-[150px] w-full" role="img" aria-label="Illustrative research signal line chart">
                     <g stroke="var(--dark-border)" strokeWidth="1">{[40,90,140,190,240].map((y)=><line key={y} x1="48" y1={y} x2="500" y2={y} />)}{[48,160,272,384,496].map((x)=><line key={x} x1={x} y1="20" x2={x} y2="240" />)}</g>
                     <path d="M48 220 L110 186 L172 198 L234 142 L296 154 L358 94 L420 108 L496 55" fill="none" stroke={visualization ? "var(--data-5)" : "var(--data-2)"} strokeWidth={visualization ? 4 : 3} />
-                    {[[48,220],[110,186],[172,198],[234,142],[296,154],[358,94],[420,108],[496,55].map((point,index)=><circle key={index} cx={point[0]} cy={point[1]} r={analysis ? 6 : 4} fill={analysis ? "var(--data-4)" : "var(--data-2)"} />)}
+                    {[[48,220],[110,186],[172,198],[234,142],[296,154],[358,94],[420,108],[496,55]].map((point,index)=><circle key={index} cx={point[0]} cy={point[1]} r={analysis ? 6 : 4} fill={analysis ? "var(--data-4)" : "var(--data-2)"} />)}
                     <path d="M48 240H500M48 20V240" stroke="var(--dark-foreground)" strokeOpacity=".55" />
                   </svg>
                   <div className="mt-1 flex justify-between text-[8px] uppercase tracking-[0.1em] text-[var(--dark-muted-foreground)]"><span>sample sequence</span><span>signal</span></div>
                 </div>
                 <div className="rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2 sm:p-3">
                   <p className="text-[8px] uppercase tracking-[0.13em] text-[var(--dark-muted-foreground)]">Data table</p>
-                  <div className="mt-3 space-y-2">{[["A","24","0.72"],["B","31","0.61"],["C","19","0.84"],["D","27","0.68"]].map(([label,n,score])=><div key={label} className="grid grid-cols-3 items-center gap-2 border-b border-[var(--dark-border)] pb-2 text-[9px]"><span className="font-semibold">{label}</span><span className="text-[var(--dark-muted-foreground)]">{n}</span><span className="text-right text-[var(--dark-muted-foreground)]">{score}</span></div>)}</div>
+                  <div className="mt-3 space-y-2">{[["A","low","ref"],["B","mid","ref"],["C","high","ref"],["D","mid","ref"]].map(([label,n,score])=><div key={label} className="grid grid-cols-3 items-center gap-2 border-b border-[var(--dark-border)] pb-2 text-[9px]"><span className="font-semibold">{label}</span><span className="text-[var(--dark-muted-foreground)]">{n}</span><span className="text-right text-[var(--dark-muted-foreground)]">{score}</span></div>)}</div>
                 </div>
               </div>
             </div>
