@@ -115,6 +115,13 @@ jobs:
           cat /tmp/bittumama-next.log
           exit 1
 
+      - name: Verify all Service routes and dropdown destinations
+        env:
+          AUTH_SECRET: test-service-routes-secret
+          AUTH_URL: http://127.0.0.1:3000
+          NEXT_PUBLIC_APP_URL: http://127.0.0.1:3000
+        run: npm run services:routes:verify
+
       - name: Verify all location routes
         env:
           AUTH_SECRET: test-location-pages-secret
