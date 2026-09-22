@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Container } from "@/components/ui/container";
 import { contactData } from "@/data/contact";
+import { getLocationBySlug } from "@/data/locations";
 import { createPageMetadata } from "@/lib/metadata";
 import { getPublishedServices } from "@/lib/services/repository";
 
@@ -59,7 +60,7 @@ export default async function ContactPage() {
             <div className="border border-border bg-surface p-4 sm:p-6 lg:p-7">
               <p className="type-label text-muted-foreground">Start your enquiry</p>
               <div className="mt-5">
-                <ContactForm services={services} />
+                <ContactForm services={services} initialLocation={location ? `${location.city}, ${location.country}` : undefined} />
               </div>
             </div>
           </div>
