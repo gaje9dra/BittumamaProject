@@ -1,198 +1,56 @@
-// Migration-only Phase 7.2 canonical snapshot. Production Service reads come from PostgreSQL via lib/services/repository.ts.
+// Canonical Services dataset. Production reads service records from PostgreSQL via lib/services/repository.ts.
 
-export type ServiceSeo = {
-  title?: string;
-  description?: string;
-  image?: string;
-  canonical?: string;
-  noIndex?: boolean;
-};
-
+export type ServiceSeo = { title?: string; description?: string; image?: string; canonical?: string; noIndex?: boolean; };
 export type ServiceStatus = "Available" | "Coming Soon";
-
-export type ServiceHighlight = {
-  title: string;
-  description: string;
-};
-
-export type ServiceFaq = {
-  question: string;
-  answer: string;
-};
-
-export type Service = {
-  id: string;
-  title: string;
-  slug: string;
-  category: string;
-  shortDescription: string;
-  need?: string;
-  focus?: string;
-  audience?: string;
-  highlights?: ServiceHighlight[];
-  faq?: ServiceFaq[];
-  featured?: boolean;
-  status?: ServiceStatus;
-  seo?: ServiceSeo;
-};
+export type ServiceHighlight = { title: string; description: string; };
+export type ServiceFaq = { question: string; answer: string; };
+export type Service = { id: string; title: string; slug: string; category: string; shortDescription: string; need?: string; focus?: string; audience?: string; highlights?: ServiceHighlight[]; faq?: ServiceFaq[]; featured?: boolean; status?: ServiceStatus; seo?: ServiceSeo; };
 
 export const canonicalServices: Service[] = [
-  {
-    id: "research-support",
-    title: "Research Support",
-    slug: "research-support",
-    category: "Research",
-    shortDescription: "Research guidance for topic selection, planning and related research work.",
-    need: "Broader research support",
-    focus: "Research planning and guidance",
-    audience: "Students and researchers",
-    status: "Coming Soon",
-  },
-  {
-    id: "research-methodology",
-    title: "Research Methodology",
-    slug: "research-methodology",
-    category: "Research",
-    shortDescription: "Guidance on research methodology and study design.",
-    need: "Methodology support",
-    focus: "Methodology and study design",
-    audience: "Students and researchers",
-    status: "Coming Soon",
-  },
-  {
-    id: "literature-review",
-    title: "Literature Review",
-    slug: "literature-review",
-    category: "Research",
-    shortDescription: "Support for literature search, review and synthesis.",
-    need: "Literature review support",
-    focus: "Literature search and synthesis",
-    audience: "Students and researchers",
-    status: "Coming Soon",
-  },
-  {
-    id: "thesis-support",
-    title: "Thesis Support",
-    slug: "thesis-support",
-    category: "Thesis & Academic Work",
-    shortDescription: "Thesis assistance, editing and proofreading.",
-    need: "Thesis support",
-    focus: "Thesis research and academic work",
-    audience: "Students and researchers",
-  },
-  {
-    id: "dissertation-support",
-    title: "Dissertation Support",
-    slug: "dissertation-support",
-    category: "Thesis & Academic Work",
-    shortDescription: "Dissertation assistance, editing and research support.",
-    need: "Dissertation support",
-    focus: "Dissertation research and academic work",
-    audience: "Students and researchers",
-  },
-  {
-    id: "research-paper",
-    title: "Research Paper",
-    slug: "research-paper",
-    category: "Thesis & Academic Work",
-    shortDescription: "Research paper writing, review and editing support.",
-    need: "Research paper support",
-    focus: "Research paper preparation and review",
-    audience: "Students and researchers",
-  },
-  {
-    id: "mentoring",
-    title: "Mentoring",
-    slug: "mentoring",
-    category: "Mentoring",
-    shortDescription: "Ongoing guidance for research work and academic decisions.",
-    need: "Ongoing research guidance",
-    focus: "Research guidance",
-    audience: "Students and researchers",
-    status: "Coming Soon",
-  },
-  {
-    id: "data-analysis",
-    title: "Data Analysis",
-    slug: "data-analysis",
-    category: "Analysis",
-    shortDescription: "Statistical analysis, interpretation and visualization.",
-    need: "Statistical or data analysis",
-    focus: "Statistical analysis and visualization",
-    audience: "Students and researchers",
-  },
-  {
-    id: "analytical-services",
-    title: "Analytical Services",
-    slug: "analytical-services",
-    category: "Analysis",
-    shortDescription: "Analytical support for research data, interpretation and related analysis.",
-    need: "Analytical support",
-    focus: "Research data and interpretation",
-    audience: "Students and researchers",
-    status: "Coming Soon",
-  },
-  {
-    id: "publication-services",
-    title: "Publication Services",
-    slug: "publication-services",
-    category: "Publication",
-    shortDescription: "Support for preparing research work for publication.",
-    need: "Publication support",
-    focus: "Research publication preparation",
-    audience: "Researchers",
-    status: "Coming Soon",
-  },
-  {
-    id: "ai-research-engine",
-    title: "AI Research Engine / ResearchQuest",
-    slug: "ai-research-engine",
-    category: "Research Technology",
-    shortDescription: "Research technology for AI-assisted research workflows.",
-    need: "AI-assisted research capabilities",
-    focus: "AI-assisted research workflows",
-    audience: "Researchers",
-    status: "Coming Soon",
-  },
+  { id: "writing-services", title: "Writing Services", slug: "writing-services", category: "WRITING & THESIS", shortDescription: "Academic and technical writing support for structured research work, drafts and revisions.", need: "Structured writing support", focus: "Academic and technical writing", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Planning, drafting and refining academic or technical material." }, { title: "Approach", description: "Clear structure and wording aligned with the supplied research brief." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Writing Services | Bittumama", description: "Academic and technical writing support for structured research work, drafts and revisions.", canonical: "/services/writing-services" } },
+  { id: "synopsis-services", title: "Synopsis Services", slug: "synopsis-services", category: "WRITING & THESIS", shortDescription: "Support for developing a concise research synopsis with a clear problem, objectives and proposed approach.", need: "Research synopsis preparation", focus: "Problem framing and study outline", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Organise the research problem, objectives, questions and proposed methodology." }, { title: "Approach", description: "Refine alignment and clarity across synopsis sections." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Synopsis Services | Bittumama", description: "Support for developing a concise research synopsis with a clear problem, objectives and proposed approach.", canonical: "/services/synopsis-services" } },
+  { id: "research-wing", title: "Research Wing", slug: "research-wing", category: "WRITING & THESIS", shortDescription: "Research support for planning, organising and developing academic research work around a defined requirement.", need: "Broader research support", focus: "Research planning and development", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Clarify the research requirement, scope and intended outputs." }, { title: "Approach", description: "Organise research work into a practical sequence of tasks." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Research Wing | Bittumama", description: "Research support for planning, organising and developing academic research work around a defined requirement.", canonical: "/services/research-wing" } },
+  { id: "topic-selection", title: "Topic Selection", slug: "topic-selection", category: "WRITING & THESIS", shortDescription: "Guidance for narrowing a research area into a workable, specific and researchable topic.", need: "A workable research topic", focus: "Topic scope, relevance and feasibility", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Move from a broad area to a focused research problem." }, { title: "Approach", description: "Consider evidence, audience and intended research approach." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Topic Selection | Bittumama", description: "Guidance for narrowing a research area into a workable, specific and researchable topic.", canonical: "/services/topic-selection" } },
+  { id: "article-writing", title: "Article Writing", slug: "article-writing", category: "WRITING & THESIS", shortDescription: "Article writing support for research-led, academic and knowledge-focused material.", need: "A structured article", focus: "Article structure and argument", audience: "Researchers and academic authors", highlights: [{ title: "Scope", description: "Organise the article around its subject, evidence and readership." }, { title: "Approach", description: "Improve flow, clarity and consistency." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Article Writing | Bittumama", description: "Article writing support for research-led, academic and knowledge-focused material.", canonical: "/services/article-writing" } },
+  { id: "literature-review", title: "Literature Review", slug: "literature-review", category: "WRITING & THESIS", shortDescription: "Support for locating, organising and synthesising relevant literature around a defined research question.", need: "Literature synthesis", focus: "Search, screening and synthesis", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Organise literature around themes, methods or research questions." }, { title: "Approach", description: "Connect findings and identify patterns, differences and gaps." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Literature Review | Bittumama", description: "Support for locating, organising and synthesising relevant literature around a defined research question.", canonical: "/services/literature-review" } },
+  { id: "paper-review", title: "Paper Review", slug: "paper-review", category: "WRITING & THESIS", shortDescription: "Review support for improving the structure, clarity and research presentation of an existing paper.", need: "Independent paper review", focus: "Structure, argument and presentation", audience: "Researchers and academic authors", highlights: [{ title: "Scope", description: "Check whether sections and arguments follow a coherent progression." }, { title: "Approach", description: "Identify unclear, repetitive or weakly connected passages." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Paper Review | Bittumama", description: "Review support for improving the structure, clarity and research presentation of an existing paper.", canonical: "/services/paper-review" } },
+  { id: "research-paper", title: "Research Paper", slug: "research-paper", category: "WRITING & THESIS", shortDescription: "Research paper support covering structure, academic presentation and development of a defined research argument.", need: "Research paper development", focus: "Research structure and presentation", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Organise the paper around its question, evidence, analysis and conclusions." }, { title: "Approach", description: "Refine academic structure and readability." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Research Paper | Bittumama", description: "Research paper support covering structure, academic presentation and development of a defined research argument.", canonical: "/services/research-paper" } },
+  { id: "thesis-assistance", title: "Thesis Assistance", slug: "thesis-assistance", category: "WRITING & THESIS", shortDescription: "Structured assistance for planning, developing and refining thesis work around an agreed research requirement.", need: "Thesis development support", focus: "Research structure and thesis development", audience: "Postgraduate researchers", highlights: [{ title: "Scope", description: "Break the thesis requirement into research and writing stages." }, { title: "Approach", description: "Improve structure, consistency and presentation." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Thesis Assistance | Bittumama", description: "Structured assistance for planning, developing and refining thesis work around an agreed research requirement.", canonical: "/services/thesis-assistance" } },
+  { id: "dissertation-assistance", title: "Dissertation Assistance", slug: "dissertation-assistance", category: "WRITING & THESIS", shortDescription: "Dissertation support focused on research structure, chapter development and refinement of supplied academic work.", need: "Dissertation development", focus: "Dissertation structure and presentation", audience: "Postgraduate researchers", highlights: [{ title: "Scope", description: "Organise the dissertation around its research question and chapters." }, { title: "Approach", description: "Refine supplied chapters for structure and clarity." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Dissertation Assistance | Bittumama", description: "Dissertation support focused on research structure, chapter development and refinement of supplied academic work.", canonical: "/services/dissertation-assistance" } },
+  { id: "plagiarism-check-removal", title: "Plagiarism Check & Removal", slug: "plagiarism-check-removal", category: "ANALYSIS & TOOLS", shortDescription: "Similarity review and revision support to identify overlap and improve originality of supplied academic text.", need: "Similarity review", focus: "Similarity interpretation and revision", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Review reported similarity or supplied overlap concerns." }, { title: "Approach", description: "Identify passages needing clearer paraphrasing, attribution or restructuring." }], faq: [{ question: "Is a specific plagiarism score guaranteed?", answer: "No. Similarity depends on the document, sources and checking system; no fixed score is guaranteed." }], status: "Available", seo: { title: "Plagiarism Check & Removal | Bittumama", description: "Similarity review and revision support to identify overlap and improve originality of supplied academic text.", canonical: "/services/plagiarism-check-removal" } },
+  { id: "thesis-editing-proofreading", title: "Thesis Editing & Proofreading", slug: "thesis-editing-proofreading", category: "ANALYSIS & TOOLS", shortDescription: "Editing and proofreading support for thesis language, structure, consistency and presentation.", need: "A polished thesis draft", focus: "Language, consistency and presentation", audience: "Postgraduate researchers", highlights: [{ title: "Scope", description: "Identify grammar, wording and readability issues." }, { title: "Approach", description: "Check terminology, headings and presentation for consistency." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Thesis Editing & Proofreading | Bittumama", description: "Editing and proofreading support for thesis language, structure, consistency and presentation.", canonical: "/services/thesis-editing-proofreading" } },
+  { id: "research-guidance", title: "Research Guidance", slug: "research-guidance", category: "ANALYSIS & TOOLS", shortDescription: "Focused guidance for research decisions, methodology questions, structure and next steps.", need: "A research decision or question", focus: "Research planning and methodological guidance", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Turn a specific research question or obstacle into a defined discussion point." }, { title: "Approach", description: "Identify practical next steps for the stated research context." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Research Guidance | Bittumama", description: "Focused guidance for research decisions, methodology questions, structure and next steps.", canonical: "/services/research-guidance" } },
+  { id: "statistical-analytical-support", title: "Statistical & Analytical Support", slug: "statistical-analytical-support", category: "ANALYSIS & TOOLS", shortDescription: "Statistical and analytical support for research questions, datasets and interpretation requirements.", need: "Statistical analysis support", focus: "Analysis selection and interpretation", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Relate the research question and data structure to an analytical approach." }, { title: "Approach", description: "Explain analytical outputs in the context of the research question." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Statistical & Analytical Support | Bittumama", description: "Statistical and analytical support for research questions, datasets and interpretation requirements.", canonical: "/services/statistical-analytical-support" } },
+  { id: "data-analysis-visualization", title: "Data Analysis & Visualization", slug: "data-analysis-visualization", category: "ANALYSIS & TOOLS", shortDescription: "Support for preparing research data, analysing it and presenting findings through appropriate visualisations.", need: "Data analysis and presentation", focus: "Data preparation, analysis and visual interpretation", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Review supplied data for structure and analysis readiness." }, { title: "Approach", description: "Present relevant findings with clear tables or visual summaries." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Data Analysis & Visualization | Bittumama", description: "Support for preparing research data, analysing it and presenting findings through appropriate visualisations.", canonical: "/services/data-analysis-visualization" } },
+  { id: "phd-admission", title: "Ph.D Admission", slug: "phd-admission", category: "ANALYSIS & TOOLS", shortDescription: "Research-focused support for preparing and organising materials relevant to a Ph.D admission requirement.", need: "Ph.D admission preparation", focus: "Research profile, proposal and application materials", audience: "Prospective Ph.D applicants", highlights: [{ title: "Scope", description: "Clarify research and academic materials required for the application." }, { title: "Approach", description: "Refine relevant research documents for clarity and structure." }], faq: [{ question: "Is admission guaranteed?", answer: "No. Application support cannot guarantee admission or selection by an institution." }], status: "Available", seo: { title: "Ph.D Admission | Bittumama", description: "Research-focused support for preparing and organising materials relevant to a Ph.D admission requirement.", canonical: "/services/phd-admission" } },
+  { id: "research-work-sample", title: "Research Work Sample", slug: "research-work-sample", category: "ANALYSIS & TOOLS", shortDescription: "Support for preparing a focused research work sample that demonstrates structured academic research.", need: "A research work sample", focus: "Research structure and evidence presentation", audience: "Students, researchers and applicants", highlights: [{ title: "Scope", description: "Set a focused scope appropriate to the intended use." }, { title: "Approach", description: "Organise the sample so its question, approach and findings are clear." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Research Work Sample | Bittumama", description: "Support for preparing a focused research work sample that demonstrates structured academic research.", canonical: "/services/research-work-sample" } },
+  { id: "research-work-tools", title: "Research Work Tools", slug: "research-work-tools", category: "ANALYSIS & TOOLS", shortDescription: "Guidance on selecting and using practical tools that support research planning, analysis and academic workflows.", need: "Research workflow tooling", focus: "Tool selection and workflow use", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Relate a research task to the type of tool or workflow it requires." }, { title: "Approach", description: "Organise tools into a practical sequence without unnecessary software." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Research Work Tools | Bittumama", description: "Guidance on selecting and using practical tools that support research planning, analysis and academic workflows.", canonical: "/services/research-work-tools" } },
+  { id: "thesis-analyser", title: "Thesis Analyser", slug: "thesis-analyser", category: "ANALYSIS & TOOLS", shortDescription: "Structured analysis of a supplied thesis to identify areas for clarity, consistency and research presentation review.", need: "Thesis review and analysis", focus: "Document structure and presentation", audience: "Postgraduate researchers", highlights: [{ title: "Scope", description: "Examine the supplied thesis structure and identify areas requiring attention." }, { title: "Approach", description: "Turn observations into practical revision points." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Thesis Analyser | Bittumama", description: "Structured analysis of a supplied thesis to identify areas for clarity, consistency and research presentation review.", canonical: "/services/thesis-analyser" } },
+  { id: "international-conference-research-paper", title: "International Conference Research Paper", slug: "international-conference-research-paper", category: "INTERNATIONAL RESEARCH", shortDescription: "Support for preparing a research paper for an international conference context and its stated submission requirements.", need: "Conference paper preparation", focus: "Conference-oriented structure and presentation", audience: "Researchers and conference authors", highlights: [{ title: "Scope", description: "Align the paper structure with supplied conference requirements." }, { title: "Approach", description: "Refine the research argument and presentation for the conference context." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "International Conference Research Paper | Bittumama", description: "Support for preparing a research paper for an international conference context and its stated submission requirements.", canonical: "/services/international-conference-research-paper" } },
+  { id: "international-research-paper", title: "International Research Paper", slug: "international-research-paper", category: "INTERNATIONAL RESEARCH", shortDescription: "Research paper support for work intended for an international academic or research audience.", need: "International research paper", focus: "Research argument and academic presentation", audience: "Researchers and academic authors", highlights: [{ title: "Scope", description: "Present the research clearly for the intended international readership." }, { title: "Approach", description: "Review the argument, evidence and presentation against supplied requirements." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "International Research Paper | Bittumama", description: "Research paper support for work intended for an international academic or research audience.", canonical: "/services/international-research-paper" } },
+  { id: "physiotherapy-research", title: "Physiotherapy Research", slug: "physiotherapy-research", category: "INTERNATIONAL RESEARCH", shortDescription: "Research support for physiotherapy topics, study structure, literature and analysis requirements.", need: "Physiotherapy research support", focus: "Physiotherapy research planning and presentation", audience: "Physiotherapy students and researchers", highlights: [{ title: "Scope", description: "Frame physiotherapy research around a defined question and study context." }, { title: "Approach", description: "Organise literature, findings and research presentation." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Physiotherapy Research | Bittumama", description: "Research support for physiotherapy topics, study structure, literature and analysis requirements.", canonical: "/services/physiotherapy-research" } },
+  { id: "physical-education-research", title: "Physical Education Research", slug: "physical-education-research", category: "INTERNATIONAL RESEARCH", shortDescription: "Research support for physical education topics, study structure and academic presentation.", need: "Physical education research support", focus: "Research planning and academic presentation", audience: "Physical education students and researchers", highlights: [{ title: "Scope", description: "Define the topic, research question and study scope." }, { title: "Approach", description: "Organise literature, methods and findings coherently." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Physical Education Research | Bittumama", description: "Research support for physical education topics, study structure and academic presentation.", canonical: "/services/physical-education-research" } },
+  { id: "phd-thesis-writing", title: "PhD Thesis Writing", slug: "phd-thesis-writing", category: "INTERNATIONAL RESEARCH", shortDescription: "Structured writing support for PhD thesis work, from research organisation through chapter-level refinement.", need: "PhD thesis writing support", focus: "Doctoral research structure and writing", audience: "PhD researchers", highlights: [{ title: "Scope", description: "Organise complex research material into a coherent thesis structure." }, { title: "Approach", description: "Improve supplied chapters for clarity and academic presentation." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "PhD Thesis Writing | Bittumama", description: "Structured writing support for PhD thesis work, from research organisation through chapter-level refinement.", canonical: "/services/phd-thesis-writing" } },
+  { id: "mba-thesis-writing", title: "MBA Thesis Writing", slug: "mba-thesis-writing", category: "INTERNATIONAL RESEARCH", shortDescription: "MBA thesis support focused on research structure, business context, analysis and academic presentation.", need: "MBA thesis development", focus: "Business research, analysis and thesis structure", audience: "MBA students and researchers", highlights: [{ title: "Scope", description: "Keep the research problem and analysis connected to business context." }, { title: "Approach", description: "Organise the MBA thesis around its research question and evidence." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "MBA Thesis Writing | Bittumama", description: "MBA thesis support focused on research structure, business context, analysis and academic presentation.", canonical: "/services/mba-thesis-writing" } },
+  { id: "law-thesis-writing", title: "Law Thesis Writing", slug: "law-thesis-writing", category: "INTERNATIONAL RESEARCH", shortDescription: "Law thesis support focused on research structure, legal literature and clear academic presentation.", need: "Law thesis development", focus: "Legal research structure and academic writing", audience: "Law students and researchers", highlights: [{ title: "Scope", description: "Organise the research issue, sources and argument around the thesis question." }, { title: "Approach", description: "Refine structure and clarity while retaining the supplied legal context." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Law Thesis Writing | Bittumama", description: "Law thesis support focused on research structure, legal literature and clear academic presentation.", canonical: "/services/law-thesis-writing" } },
+  { id: "phd-management-thesis", title: "Phd Management Thesis", slug: "phd-management-thesis", category: "INTERNATIONAL RESEARCH", shortDescription: "Management thesis support for doctoral research structure, analysis and academic presentation.", need: "Management thesis development", focus: "Management research and doctoral thesis structure", audience: "PhD management researchers", highlights: [{ title: "Scope", description: "Organise the management research question, literature and methodology." }, { title: "Approach", description: "Present supplied analysis so it connects to the research question." }], faq: [{ question: "Why is the title written as Phd Management Thesis?", answer: "The service name follows the requested canonical display name exactly." }], status: "Available", seo: { title: "Phd Management Thesis | Bittumama", description: "Management thesis support for doctoral research structure, analysis and academic presentation.", canonical: "/services/phd-management-thesis" } },
+  { id: "dissertation-thesis-writing", title: "Dissertation Thesis Writing", slug: "dissertation-thesis-writing", category: "INTERNATIONAL RESEARCH", shortDescription: "Dissertation writing support for developing and refining research-led academic work.", need: "Dissertation writing support", focus: "Dissertation structure, writing and refinement", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Develop supplied research material into a structured dissertation." }, { title: "Approach", description: "Review chapters for clarity, consistency and academic presentation." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Dissertation Thesis Writing | Bittumama", description: "Dissertation writing support for developing and refining research-led academic work.", canonical: "/services/dissertation-thesis-writing" } },
 ];
 
-export function getServiceHref(service: Pick<Service, "slug">) {
-  return "/services/" + service.slug;
-}
+export function getServiceHref(service: Pick<Service, "slug">) { return "/services/" + service.slug; }
 
-export function getServiceCategoryAnchor(category: string) {
-  const slug = category
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
-
-  return `service-category-${slug}`;
-}
+export function getServiceCategoryAnchor(category: string) { const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); return "service-category-" + slug; }
 
 export function validateServices(records: readonly Service[] = canonicalServices) {
-  const ids = new Set<string>();
-  const slugs = new Set<string>();
-
+  if (records.length !== 28) throw new Error("The canonical Services dataset must contain exactly 28 requested services.");
+  const ids = new Set<string>(); const slugs = new Set<string>(); const titles = new Set<string>();
   for (const service of records) {
-    if (!service.id || !service.title || !service.slug) {
-      throw new Error("Every service must have an id, title and slug.");
-    }
-
-    if (ids.has(service.id)) {
-      throw new Error(`Duplicate service id: ${service.id}`);
-    }
-    ids.add(service.id);
-
-    if (slugs.has(service.slug)) {
-      throw new Error(`Duplicate service slug: ${service.slug}`);
-    }
-    slugs.add(service.slug);
-
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(service.slug)) {
-      throw new Error(`Invalid service slug: ${service.slug}`);
-    }
+    if (!service.id || !service.title || !service.slug) throw new Error("Every service must have an id, title and slug.");
+    if (ids.has(service.id)) throw new Error("Duplicate service id: " + service.id); if (slugs.has(service.slug)) throw new Error("Duplicate service slug: " + service.slug); if (titles.has(service.title)) throw new Error("Duplicate service title: " + service.title);
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(service.slug)) throw new Error("Invalid service slug: " + service.slug); ids.add(service.id); slugs.add(service.slug); titles.add(service.title);
   }
-
+  const counts = new Map<string, number>(); for (const service of records) counts.set(service.category, (counts.get(service.category) ?? 0) + 1);
+  for (const [category, expected] of [["WRITING & THESIS", 10], ["ANALYSIS & TOOLS", 9], ["INTERNATIONAL RESEARCH", 9] ] as const) if (counts.get(category) !== expected) throw new Error(category + " has an invalid service count.");
   return true;
 }
 
