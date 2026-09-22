@@ -27,6 +27,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "database",
   },
   secret: process.env.AUTH_SECRET,
+  // Netlify terminates HTTPS and forwards the public host/protocol to the
+  // Next.js runtime. Auth.js must trust that provider-controlled host.
+  trustHost: true,
   pages: {
     signIn: "/login",
   },
