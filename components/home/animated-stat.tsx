@@ -43,8 +43,8 @@ export function AnimatedStat({
 }: AnimatedStatProps) {
   const Icon = ICONS[icon];
   const [value, setValue] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const hasAnimatedRef = useRef(false);
+  const ref = useRef<HTMLElement>(null);
   const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -54,8 +54,8 @@ export function AnimatedStat({
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const startAnimation = () => {
-      if (hasAnimated) return;
-      setHasAnimated(true);
+      if (hasAnimatedRef.current) return;
+      hasAnimatedRef.current = true;
 
       if (reducedMotion) {
         setValue(targetValue);
@@ -94,7 +94,7 @@ export function AnimatedStat({
       observer.disconnect();
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
     };
-  }, [hasAnimated, targetValue]);
+  }, [targetValue]);
 
   return (
     <article
