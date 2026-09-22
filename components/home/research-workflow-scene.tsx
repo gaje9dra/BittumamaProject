@@ -32,10 +32,10 @@ export function ResearchWorkflowScene() {
         <div className="relative min-h-0 flex-1">
           <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-55" viewBox="0 0 1000 560" preserveAspectRatio="none">
             <path d="M150 105 C300 125 320 205 410 245" fill="none" stroke="var(--data-2)" strokeWidth="2" strokeDasharray="5 8" />
-            <path d="M850 105 C700 125 690 205 590 245" fill="none" stroke="var(--data-3)" strokeWidth="2" strokeDasharray="5 8" />
+            <path d="M850 105 C700 125 690 205 590 245" fill="none" stroke="var(--data-6)" strokeWidth="2" strokeDasharray="5 8" />
             <path d="M145 405 C290 385 330 330 410 315" fill="none" stroke="var(--data-4)" strokeWidth="2" strokeDasharray="5 8" />
             <path d="M855 405 C710 385 675 330 590 315" fill="none" stroke="var(--data-5)" strokeWidth="2" strokeDasharray="5 8" />
-            <circle cx="410" cy="245" r="5" fill="var(--data-2)" /><circle cx="590" cy="245" r="5" fill="var(--data-3)" />
+            <circle cx="410" cy="245" r="5" fill="var(--data-2)" /><circle cx="590" cy="245" r="5" fill="var(--data-6)" />
             <circle cx="410" cy="315" r="5" fill="var(--data-4)" /><circle cx="590" cy="315" r="5" fill="var(--data-5)" />
           </svg>
 
@@ -87,7 +87,7 @@ export function ResearchWorkflowScene() {
                     <p className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Evidence map</p>
                     <svg aria-hidden="true" viewBox="0 0 180 100" className="mt-2 h-20 w-full">
                       <path d="M10 80 C45 50 55 75 82 42 S120 64 170 18" fill="none" stroke="var(--data-2)" strokeWidth="3" />
-                      <circle cx="10" cy="80" r="4" fill="var(--data-2)" /><circle cx="82" cy="42" r="4" fill="var(--data-3)" /><circle cx="170" cy="18" r="4" fill="var(--data-5)" />
+                      <circle cx="10" cy="80" r="4" fill="var(--data-2)" /><circle cx="82" cy="42" r="4" fill="var(--data-6)" /><circle cx="170" cy="18" r="4" fill="var(--data-5)" />
                       <path d="M10 90H170M10 90V10" stroke="var(--dark-border)" strokeWidth="1" />
                     </svg>
                     <div className="mt-1 flex justify-between text-[8px] text-[var(--dark-muted-foreground)]"><span>evidence</span><span>signal</span></div>
