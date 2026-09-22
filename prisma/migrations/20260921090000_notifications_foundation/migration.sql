@@ -5,7 +5,7 @@ CREATE TYPE "NotificationType" AS ENUM ('INQUIRY_RECEIVED', 'REGISTRATION_RECEIV
 
 CREATE TABLE "Notification" (
   "id" TEXT NOT NULL,
-  "userId" TEXT,
+  "userId" UUID,
   "type" "NotificationType" NOT NULL,
   "channel" "NotificationChannel" NOT NULL,
   "status" "NotificationStatus" NOT NULL DEFAULT 'PENDING',

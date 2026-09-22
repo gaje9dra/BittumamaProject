@@ -4,7 +4,7 @@ CREATE TYPE "PaymentPurpose" AS ENUM ('SERVICE', 'EVENT', 'EVENT_REGISTRATION');
 
 CREATE TABLE "PaymentTransaction" (
   "id" TEXT NOT NULL,
-  "userId" TEXT,
+  "userId" UUID,
   "eventId" TEXT,
   "registrationId" TEXT,
   "serviceId" TEXT,
