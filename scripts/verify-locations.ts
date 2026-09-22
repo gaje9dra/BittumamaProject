@@ -9,6 +9,14 @@ async function fetchPage(path: string) {
   return { response, body };
 }
 
+function normalizeHtml(body: string) {
+  return body
+    .replace(/&amp;/g, "&")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"');
+}
+
 for (const location of locationPages) {
   const { response, body } = await fetchPage("/locations/" + location.id);
 
@@ -16,8 +24,10 @@ for (const location of locationPages) {
     throw new Error(location.id + " returned HTTP " + response.status);
   }
 
+  const normalizedBody = normalizeHtml(body);
+
   for (const required of [location.city, location.country, location.region, location.heading]) {
-    if (!body.includes(required)) {
+    if (!normalizedBody.includes(required)) {
       throw new Error(location.id + " is missing expected content: " + required);
     }
   }
@@ -26,12 +36,12 @@ for (const location of locationPages) {
     if (!canonicalServiceSlugs.includes(serviceSlug)) {
       throw new Error(location.id + " references a non-canonical service: " + serviceSlug);
     }
-    if (!body.includes("/services/" + serviceSlug)) {
+    if (!normalizedBody.includes("/services/" + serviceSlug)) {
       throw new Error(location.id + " is missing service link: " + serviceSlug);
     }
   }
 
-  if (!body.includes("/contact?location=" + encodeURIComponent(location.id))) {
+  if (!normalizedBody.includes("/contact?location=" + encodeURIComponent(location.id))) {
     throw new Error(location.id + " is missing the location-aware Contact CTA.");
   }
 }
