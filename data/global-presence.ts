@@ -30,6 +30,6 @@ export const globalPresenceCities:GlobalPresenceCity[]=[
 ["barcelona","Barcelona","Spain","ES","Europe","photo-1583422409516-2895a77efded","Barcelona cityscape","2°E  ·  41°N"],
 ["johannesburg","Johannesburg","South Africa","ZA","Africa","photo-1560253023-3ec5d502959f","Johannesburg skyline","28°E  ·  26°S"],
 ["vienna","Vienna","Austria","AT","Europe","photo-1516550893923-42d28e5677af","Vienna cityscape","16°E  ·  48°N"]
-].map(([id,city,country,code,region,image,alt,coordinates])=>({id,city,country,code,region,image:img(image),alt,detail:city==="Seoul"?"K-research and innovation redefining the Asian century through elite universities.":generic,coordinates})) as GlobalPresenceCity[];
+].map(([id,city,country,code,region,_legacyImage,alt,coordinates])=>({id,city,country,code,region,image:img(id),alt,detail:city==="Seoul"?"K-research and innovation redefining the Asian century through elite universities.":generic,coordinates})) as GlobalPresenceCity[];
 if(globalPresenceCities.length!==25)throw new Error("Global Presence must contain exactly 25 cities.");
 export function getGlobalPresenceCities(region:(typeof globalPresenceRegions)[number]){return region==="All"?globalPresenceCities:globalPresenceCities.filter(c=>c.region===region);}
