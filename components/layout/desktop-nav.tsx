@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { NavigationDropdown } from "@/components/layout/navigation-dropdown";
+import { NavigationMegaTrigger } from "@/components/layout/navigation-mega-trigger";
 import type { NavigationItem } from "@/data/site-config";
 import { isNavigationItemActive } from "@/lib/navigation";
 import { announceHeaderSurface } from "@/lib/header-surface";
@@ -25,6 +26,10 @@ export function DesktopNav({ navigation }: { navigation: NavigationItem[] }) {
       {navigation.map((item) => {
         if (item.type === "dropdown" && item.children?.length) {
           return <NavigationDropdown key={item.href} item={item} pathname={pathname} />;
+        }
+
+        if ((item.type === "grouped" || item.type === "mega") && item.groups?.length) {
+          return <NavigationMegaTrigger key={item.href} item={item} pathname={pathname} />;
         }
 
         const active = isNavigationItemActive(pathname, item.href);
