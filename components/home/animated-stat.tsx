@@ -99,11 +99,11 @@ export function AnimatedStat({
   return (
     <article
       ref={ref}
-      className={`group relative min-w-0 overflow-hidden border border-[#d9d3c7] bg-[#fbf7ef] p-5 shadow-[0_8px_24px_rgba(20,38,34,.05)] sm:p-6 ${accentClass}`}
+      className={`group relative min-w-0 overflow-hidden border border-[#28577f] bg-[#0a3b6c] p-5 shadow-[0_8px_24px_rgba(0,0,0,.16)] sm:p-6 ${accentClass}`}
     >
       <div className="flex items-start justify-between gap-4">
         <span
-          className={`flex size-11 items-center justify-center border bg-white/70 ${iconClass}`}
+          className={`flex size-11 items-center justify-center border ${iconClass}`}
           aria-hidden="true"
         >
           <Icon className="size-5" />
@@ -112,13 +112,13 @@ export function AnimatedStat({
       </div>
 
       <p
-        className="mt-8 min-h-[3.4rem] tabular-nums font-display text-[clamp(2.7rem,4vw,4.2rem)] font-semibold leading-none tracking-[-0.055em] text-[#142b27]"
+        className="mt-8 min-h-[3.4rem] tabular-nums font-display text-[clamp(2.7rem,4vw,4.2rem)] font-semibold leading-none tracking-[-0.055em]"
         aria-label={`${display} ${label.toLowerCase()}`}
       >
         {formatValue(value, display)}
       </p>
 
-      <p className="mt-3 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[#586762]">
+      <p className="mt-3 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-[#9bb8d3]">
         {label}
       </p>
 
