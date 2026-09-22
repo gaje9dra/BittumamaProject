@@ -1,7 +1,7 @@
 -- CreateEnum
 -- This migration may be re-run after a failed deployment where the enum was
 -- created manually or by an earlier partial migration attempt.
-DO $
+DO $bittumama$
 BEGIN
   IF NOT EXISTS (
     SELECT 1
@@ -13,7 +13,7 @@ BEGIN
     CREATE TYPE "UserRole" AS ENUM ('USER', 'ADMIN');
   END IF;
 END
-$;
+$bittumama$;
 
 -- CreateTable
 CREATE TABLE "User" (
