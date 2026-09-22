@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Container } from "@/components/ui/container";
 import { SHOWCASE_DISPLAY_MS, SceneFrame, useShowcaseVisibility } from "./coded-showcase-frame";
 import { ResearchWorkflowScene } from "./research-workflow-scene";
 import { ExpertResearchScene } from "./expert-research-scene";
@@ -40,18 +39,16 @@ export function HomepageVisualShowcase() {
   }, [reducedMotion, visible]);
 
   return (
-    <section ref={sectionRef} aria-label="Bittumama research visual showcase" className="overflow-hidden border-b border-border bg-background">
-      <Container size="wide" className="py-4 sm:py-6 lg:py-8">
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-xl)] border border-border bg-dark-background sm:aspect-[16/10] lg:aspect-[16/8.5]">
-          {SCENES.map((scene, index) => (
-            <SceneFrame key={scene.id} active={index === activeIndex} index={index} previousIndex={previousIndex} reducedMotion={reducedMotion} label={scene.label}>
-              {index === 0 ? <ResearchWorkflowScene /> : null}
-              {index === 1 ? <ExpertResearchScene /> : null}
-              {index === 2 ? <DataAnalysisScene /> : null}
-            </SceneFrame>
-          ))}
-        </div>
-      </Container>
+    <section ref={sectionRef} aria-label="Bittumama research visual showcase" className="w-full overflow-hidden border-b border-border bg-[var(--dark-background)]">
+      <div className="relative aspect-[4/5] w-full overflow-hidden border-y border-border bg-[var(--dark-background)] sm:aspect-[16/10] lg:aspect-[16/8.5]">
+        {SCENES.map((scene, index) => (
+          <SceneFrame key={scene.id} active={index === activeIndex} index={index} previousIndex={previousIndex} reducedMotion={reducedMotion} label={scene.label}>
+            {index === 0 ? <ResearchWorkflowScene /> : null}
+            {index === 1 ? <ExpertResearchScene /> : null}
+            {index === 2 ? <DataAnalysisScene /> : null}
+          </SceneFrame>
+        ))}
+      </div>
     </section>
   );
 }
