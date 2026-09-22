@@ -12,7 +12,7 @@ CREATE TYPE "AuditAction" AS ENUM (
 
 CREATE TABLE "AuditLog" (
   "id" TEXT NOT NULL,
-  "actorUserId" TEXT,
+  "actorUserId" UUID,
   "action" "AuditAction" NOT NULL,
   "category" "AuditCategory" NOT NULL,
   "entityType" TEXT,
