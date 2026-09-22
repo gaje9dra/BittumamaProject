@@ -43,18 +43,18 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
             <circle cx="410" cy="315" r="5" fill="var(--data-4)" /><circle cx="590" cy="315" r="5" fill="var(--data-5)" />
           </svg>
 
-          <div className="absolute left-0 top-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[0]} active={activeModule === "question"} onClick={() => setActiveModule("question")} accent="var(--data-2)" /></div>
+          <div className="absolute left-0 top-0 w-[31%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[0]} active={activeModule === "question"} onClick={() => setActiveModule("question")} accent="var(--data-2)" /></div>
           <div className="absolute right-0 top-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[1]} active={activeModule === "literature"} onClick={() => setActiveModule("literature")} accent="var(--data-3)" /></div>
           <div className="absolute bottom-0 left-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[3]} active={activeModule === "analysis"} onClick={() => setActiveModule("analysis")} accent="var(--data-4)" /></div>
           <div className="absolute bottom-0 right-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[4]} active={activeModule === "findings"} onClick={() => setActiveModule("findings")} accent="var(--data-5)" /></div>
 
-          <div className="absolute left-1/2 top-1/2 w-[88%] -translate-x-1/2 -translate-y-1/2 sm:w-[54%] lg:w-[47%]">
+          <div className="absolute left-1/2 top-1/2 w-[61%] -translate-x-1/2 -translate-y-1/2 sm:w-[54%] lg:w-[47%]">
             <div className="rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-3 shadow-[var(--shadow-lg)] backdrop-blur-sm sm:p-4">
               <div className="flex items-center justify-between border-b border-[var(--dark-border)] pb-2">
                 <div><p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--dark-muted-foreground)] sm:text-[10px]">Thesis working board</p><p className="mt-0.5 font-[var(--font-display-family)] text-sm sm:text-base">Research framework</p></div>
                 <span className="rounded border border-[var(--dark-border)] px-2 py-1 text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">v.04</span>
               </div>
-              <div className="mt-3 grid grid-cols-[1fr_0.7fr] gap-3">
+              <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_0.7fr] sm:gap-3">
                 <div className="rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2.5">
                   <div className="mb-2 flex items-center justify-between"><span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Document</span><span className="text-[8px] text-[var(--dark-muted-foreground)]">section 04</span></div>
                   <div className="space-y-1.5">
@@ -90,7 +90,7 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
 }
 
 function ModuleButton({ module, active, onClick, accent }: { module: (typeof modules)[number]; active: boolean; onClick: () => void; accent: string }) {
-  return <button type="button" aria-pressed={active} onClick={onClick} className={cn("group w-full rounded-[var(--radius-md)] border p-2 text-left transition-[border-color,background-color,transform] duration-200 sm:p-3", active ? "border-[var(--dark-border)] bg-[var(--dark-surface)] -translate-y-0.5" : "border-[var(--dark-border)]/70 bg-[var(--dark-surface)]/70 hover:-translate-y-0.5 hover:border-[var(--dark-border)]")} style={{ boxShadow: active ? "inset 3px 0 0 " + accent : undefined }}>
+  return <button type="button" aria-pressed={active} onClick={onClick} className={cn("group flex min-h-11 w-full items-center rounded-[var(--radius-md)] border p-2 text-left transition-[border-color,background-color,transform] duration-200 sm:p-3", active ? "border-[var(--dark-border)] bg-[var(--dark-surface)] -translate-y-0.5" : "border-[var(--dark-border)]/70 bg-[var(--dark-surface)]/70 hover:-translate-y-0.5 hover:border-[var(--dark-border)]")} style={{ boxShadow: active ? "inset 3px 0 0 " + accent : undefined }}>
     <span className="block text-[8px] font-semibold uppercase tracking-[0.11em] text-[var(--dark-muted-foreground)] sm:text-[9px]">{module.short}</span>
     <span className="mt-1 block truncate text-[10px] font-medium text-[var(--dark-foreground)] sm:text-xs">{module.label}</span>
   </button>;
