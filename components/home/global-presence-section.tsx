@@ -1,4 +1,7 @@
 "use client";
+
+// Interactive city filtering is intentionally derived from the active region so
+// filter changes never require a synchronous state update inside an effect.
 import Image from "next/image";
 import Link from "next/link";
 import {ArrowUpRight,X} from "lucide-react";
