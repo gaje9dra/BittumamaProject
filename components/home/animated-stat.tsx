@@ -35,6 +35,7 @@ export function AnimatedStat({
   const [value, setValue] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
     const node = ref.current;
@@ -60,11 +61,11 @@ export function AnimatedStat({
         setValue(progress === 1 ? targetValue : eased * targetValue);
 
         if (progress < 1) {
-          requestAnimationFrame(tick);
+          frameRef.current = requestAnimationFrame(tick);
         }
       };
 
-      requestAnimationFrame(tick);
+      frameRef.current = requestAnimationFrame(tick);
     };
 
     const observer = new IntersectionObserver(
@@ -79,7 +80,10 @@ export function AnimatedStat({
 
     observer.observe(node);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
   }, [hasAnimated, targetValue]);
 
   return (
