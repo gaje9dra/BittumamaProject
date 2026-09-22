@@ -4,13 +4,15 @@ import { GoogleSignIn } from "@/components/auth/google-sign-in";
 import { RegisterForm } from "@/components/auth/register-form";
 import { AuthShell } from "@/components/auth/auth-shell";
 import { isGoogleAuthConfigured } from "@/auth";
+import { getCurrentUser } from "@/lib/auth/guards";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create account | Bittumama",
   robots: { index: false, follow: false, nocache: true, noarchive: true },
 };
 
-export default function RegisterPage() {
+export default async function RegisterPage() {\n  if (await getCurrentUser()) redirect("/account");
   return (
     <AuthShell
       label="USER / CREATE ACCOUNT"
@@ -26,7 +28,7 @@ export default function RegisterPage() {
             <span className="type-caption text-muted-foreground">OR</span>
             <span className="h-px flex-1 bg-border" />
           </div>
-          <GoogleSignIn callbackUrl="/auth-test" />
+          <GoogleSignIn callbackUrl="/account" />
         </div>
       )}
       <p className="mt-7 type-body-sm text-muted-foreground">
