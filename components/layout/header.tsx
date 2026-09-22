@@ -21,7 +21,7 @@ export async function Header() {
             <span className="type-h5 font-semibold tracking-[-0.02em]">{siteConfig.siteName}</span>
           </Link>
           <DesktopNav />
-          <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" />
+          <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" user={user ? { name: user.name ?? null, email: user.email ?? null, image: user.image ?? null } : null} />
           <MobileNav className="ml-auto lg:hidden" user={user ? { name: user.name ?? null, email: user.email ?? null } : null} />
         </div>
       </header>
