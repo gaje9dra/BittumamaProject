@@ -1,98 +1,55 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/container";
-import { homepageShowcaseSlides } from "@/data/homepage-showcase";
+import { SHOWCASE_DISPLAY_MS, SceneFrame, useShowcaseVisibility } from "./coded-showcase-frame";
+import { ResearchWorkflowScene } from "./research-workflow-scene";
+import { ExpertResearchScene } from "./expert-research-scene";
+import { DataAnalysisScene } from "./data-analysis-scene";
 
-const DISPLAY_MS = 5200;
-const TRANSITION_MS = 750;
+const SCENES = [
+  { id: "research", label: "Research and thesis workflow" },
+  { id: "expert", label: "Expert research guidance" },
+  { id: "analysis", label: "Research data analysis and visualization" },
+] as const;
 
 export function HomepageVisualShowcase() {
   const sectionRef = useRef<HTMLElement>(null);
+  const visible = useShowcaseVisibility(sectionRef);
   const [activeIndex, setActiveIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(2);
-  const [isVisible, setIsVisible] = useState(true);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const updateMotionPreference = () => setReducedMotion(mediaQuery.matches);
-    updateMotionPreference();
-    mediaQuery.addEventListener("change", updateMotionPreference);
-    return () => mediaQuery.removeEventListener("change", updateMotionPreference);
+    const update = () => setReducedMotion(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
-    const node = sectionRef.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.05 },
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
+    if (!visible || reducedMotion) return;
     const timer = window.setInterval(() => {
       setActiveIndex((current) => {
         setPreviousIndex(current);
-        return (current + 1) % homepageShowcaseSlides.length;
+        return (current + 1) % SCENES.length;
       });
-    }, DISPLAY_MS);
-
+    }, SHOWCASE_DISPLAY_MS);
     return () => window.clearInterval(timer);
-  }, [isVisible]);
+  }, [reducedMotion, visible]);
 
   return (
-    <section
-      ref={sectionRef}
-      aria-label="Bittumama visual showcase"
-      className="overflow-hidden border-b border-border bg-background"
-    >
-      <Container size="wide" className="py-5 sm:py-7 lg:py-8">
-        <div className="relative aspect-[16/10] w-full overflow-hidden border border-border bg-surface-muted">
-          {homepageShowcaseSlides.map((slide, index) => {
-            const isActive = index === activeIndex;
-            const isPrevious = index === previousIndex;
-            const transform = reducedMotion
-              ? isActive ? "translateX(0)" : "translateX(100%)"
-              : isActive
-                ? "translateX(0)"
-                : isPrevious
-                  ? "translateX(-100%)"
-                  : "translateX(100%)";
-
-            return (
-              <div
-                key={slide.id}
-                aria-hidden={!isActive}
-                className="absolute inset-0 will-change-transform"
-                style={{
-                  transform,
-                  transition: reducedMotion
-                    ? "none"
-                    : `transform ${TRANSITION_MS}ms cubic-bezier(0.2, 0.8, 0.2, 1)`,
-                  zIndex: isActive ? 2 : isPrevious ? 1 : 0,
-                }}
-              >
-                <Image
-                  src={slide.image}
-                  alt={slide.alt}
-                  fill
-                  sizes="(max-width: 767px) calc(100vw - 2rem), (max-width: 1279px) calc(100vw - 3rem), 1200px"
-                  className="object-cover"
-                  loading="eager"
-                  {...(index === 0 ? { preload: true } : {})}
-                />
-              </div>
-            );
-          })}
+    <section ref={sectionRef} aria-label="Bittumama research visual showcase" className="overflow-hidden border-b border-border bg-background">
+      <Container size="wide" className="py-4 sm:py-6 lg:py-8">
+        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[var(--radius-xl)] border border-border bg-dark-background sm:aspect-[16/10] lg:aspect-[16/8.5]">
+          {SCENES.map((scene, index) => (
+            <SceneFrame key={scene.id} active={index === activeIndex} index={index} previousIndex={previousIndex} reducedMotion={reducedMotion} label={scene.label}>
+              {index === 0 ? <ResearchWorkflowScene /> : null}
+              {index === 1 ? <ExpertResearchScene /> : null}
+              {index === 2 ? <DataAnalysisScene /> : null}
+            </SceneFrame>
+          ))}
         </div>
       </Container>
     </section>
