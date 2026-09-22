@@ -8,9 +8,9 @@ import type {
   ServiceHighlight,
   ServiceSeo,
 } from "@/data/services";
-import { canonicalServiceSlugs } from "@/data/services";
+import { canonicalServiceSlugs, canonicalServices } from "@/data/services";
 
-async function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
+function getCanonicalFallback(slug: string): Service | undefined {\n  if (process.env.NODE_ENV === "production") return undefined;\n  return canonicalServices.find((service) => service.slug === slug);\n}\n\nasync function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
   try {
     return await query();
   } catch (error) {
