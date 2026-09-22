@@ -8,7 +8,7 @@ import {
   Globe2,
   PenLine,
 } from "lucide-react";
-import type { Service } from "@/data/services";
+import { canonicalServices, type Service } from "@/data/services";
 import { Container } from "@/components/ui/container";
 import { Heading } from "@/components/ui/heading";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
@@ -188,7 +188,7 @@ export async function FeaturedServicesSection() {
   const services = await getPublishedServices();
   const servicesBySlug = new Map(services.map((service) => [service.slug, service]));
   const featuredServices = FEATURED_SERVICE_SLUGS
-    .map((slug) => servicesBySlug.get(slug))
+    .map((slug) => servicesBySlug.get(slug) ?? canonicalServices.find((service) => service.slug === slug))
     .filter((service): service is Service => Boolean(service));
 
   return (
