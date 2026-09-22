@@ -231,7 +231,7 @@ model AdminSession {
 
 model Account {
   id                String  @id @default(cuid())
-  userId            String
+  userId            String @db.Uuid
   type              String
   provider          String
   providerAccountId String
@@ -251,7 +251,7 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       String
+  userId       String @db.Uuid
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -615,7 +615,7 @@ model ContactInquiry {
   email       String
   phone       String?
   serviceId   String?
-  userId      String?
+  userId      String? @db.Uuid
   message     String
   status      ContactInquiryStatus @default(NEW)
   service     Service?            @relation(fields: [serviceId], references: [id], onDelete: SetNull)
@@ -630,7 +630,7 @@ model ContactInquiry {
 model EventRegistration {
   id                  String                         @id @default(cuid())
   eventId             String
-  userId              String?
+  userId              String? @db.Uuid
   fullName             String
   email               String
   phone                String?
@@ -652,7 +652,7 @@ model EventRegistration {
 
 model PaymentTransaction {
   id                    String         @id @default(cuid())
-  userId                String?
+  userId                String? @db.Uuid
   eventId               String?
   registrationId         String?
   serviceId             String?
@@ -687,7 +687,7 @@ model PaymentTransaction {
 
 model Notification {
   id                 String               @id @default(cuid())
-  userId             String?
+  userId             String? @db.Uuid
   type               NotificationType
   channel            NotificationChannel
   status             NotificationStatus   @default(PENDING)
@@ -718,7 +718,7 @@ model AnalyticsEvent {
   id            String                 @id @default(cuid())
   eventName     AnalyticsEventName
   eventCategory AnalyticsEventCategory
-  userId        String?
+  userId        String? @db.Uuid
   anonymousId   String?
   sessionId     String?
   path          String?
