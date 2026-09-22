@@ -22,10 +22,10 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-background text-foreground">
       <HomepageVisualShowcase />
+      <FeaturedServicesSection />
       <HomePositioning />
       <HomeIntelligence />
       <HomeServiceDiscovery />
-      <FeaturedServicesSection />
       <HomeAudience services={services} />
       <HomeProcess />
       <GlobalPresenceSection />
