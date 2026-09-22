@@ -316,8 +316,14 @@ for (const slug of contentSlugs) {
   if (!globalCitiesBySlug.has(slug)) throw new Error("Location content has no Global Presence city: " + slug);
 }
 
-for (const slug of canonicalServiceSlugs) {
-  if (!slug) throw new Error("Canonical service slugs must be non-empty.");
+const canonicalServiceSlugSet = new Set(canonicalServiceSlugs);
+
+for (const slug of contentSlugs) {
+  for (const serviceSlug of locationContent[slug].serviceSlugs) {
+    if (!canonicalServiceSlugSet.has(serviceSlug)) {
+      throw new Error("Location references an unknown canonical service: " + serviceSlug);
+    }
+  }
 }
 
 export const locationPages: LocationPage[] = globalPresenceCities.map((city) => ({
