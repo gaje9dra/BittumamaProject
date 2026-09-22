@@ -1,15 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { SceneFrameShell } from "./coded-showcase-frame";
 
 const views = ["Overview", "Analysis", "Visualization"] as const;
 type View = (typeof views)[number];
 
-export function DataAnalysisScene({ active }: { active: boolean }) {
+export function DataAnalysisScene() {
   const [activeView, setActiveView] = useState<View>("Overview");
-  useEffect(() => { if (active) setActiveView("Overview"); }, [active]);
   const analysis = activeView === "Analysis";
   const visualization = activeView === "Visualization";
 
