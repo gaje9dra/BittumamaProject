@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Research & Academic Services | Bittumama",
-  description: "Thesis, research, analysis, publication, mentoring and research technology services.",
+  description: "Browse Bittumama’s 28 academic and research services across writing, analysis and international research support.",
 });
 
 export default async function ServicesPage() {
