@@ -35,9 +35,9 @@ export function ExpertResearchScene({ active }: { active: boolean }) {
           </svg>
 
           <div className="absolute left-0 top-0 w-[31%] sm:w-[29%]"><TopicButton topic={topics[0]} active={activeTopic === "thesis"} onClick={() => setActiveTopic("thesis")} /></div>
-          <div className="absolute right-0 top-0 w-[43%] sm:w-[29%]"><TopicButton topic={topics[1]} active={activeTopic === "topic"} onClick={() => setActiveTopic("topic")} /></div>
-          <div className="absolute bottom-0 left-0 w-[43%] sm:w-[29%]"><TopicButton topic={topics[3]} active={activeTopic === "literature"} onClick={() => setActiveTopic("literature")} /></div>
-          <div className="absolute bottom-0 right-0 w-[43%] sm:w-[29%]"><TopicButton topic={topics[4]} active={activeTopic === "method"} onClick={() => setActiveTopic("method")} /></div>
+          <div className="absolute right-0 top-0 w-[31%] sm:w-[29%]"><TopicButton topic={topics[1]} active={activeTopic === "topic"} onClick={() => setActiveTopic("topic")} /></div>
+          <div className="absolute bottom-0 left-0 w-[31%] sm:w-[29%]"><TopicButton topic={topics[3]} active={activeTopic === "literature"} onClick={() => setActiveTopic("literature")} /></div>
+          <div className="absolute bottom-0 right-0 w-[31%] sm:w-[29%]"><TopicButton topic={topics[4]} active={activeTopic === "method"} onClick={() => setActiveTopic("method")} /></div>
 
           <div className="absolute inset-0 grid place-items-center"><div className="w-[60%] sm:w-[39%] lg:w-[34%]">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[42%_42%_24%_24%] border border-[var(--dark-border)] bg-[var(--dark-background)] shadow-[var(--shadow-lg)]">
@@ -46,12 +46,12 @@ export function ExpertResearchScene({ active }: { active: boolean }) {
                   <circle cx="90" cy="62" r="30" fill="var(--secondary-400)" opacity=".78" /><path d="M48 160c4-44 26-65 42-65s38 21 42 65" fill="var(--primary-500)" /><path d="M65 55c5-28 50-35 57 4-17-11-38-12-57-4Z" fill="var(--dark-background)" /><path d="M64 101c12 9 40 9 52 0" fill="none" stroke="var(--secondary-600)" strokeWidth="3" /><circle cx="78" cy="67" r="2.5" fill="var(--dark-background)" /><circle cx="103" cy="67" r="2.5" fill="var(--dark-background)" />
                 </svg>
               </div>
-              <div className="absolute bottom-[8%] left-1/2 w-[72%] -translate-x-1/2 rounded border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-2 text-center">
+              <div className="absolute bottom-[8%] left-[14%] w-[72%] rounded border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-2 text-center">
                 <span className="block text-[8px] font-semibold uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Current focus</span><span className="mt-1 block truncate text-[10px] font-medium sm:text-xs">{topic.label}</span>
               </div>
             </div></div>
 
-          <button type="button" aria-pressed={activeTopic === "proposal"} onClick={() => setActiveTopic("proposal")} className={cn("absolute bottom-3 left-1/2 min-h-11 w-[48%] -translate-x-1/2 rounded-full border px-3 py-1.5 text-center transition-colors sm:bottom-5 sm:w-auto sm:min-w-[13rem]", activeTopic === "proposal" ? "border-[var(--dark-border)] bg-[var(--dark-background)]/95" : "border-[var(--dark-border)]/70 bg-[var(--dark-background)]/85 hover:border-[var(--dark-muted-foreground)]")}><span className="text-[8px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)]">{topic.detail}</span></button>
+          <button type="button" aria-pressed={activeTopic === "proposal"} onClick={() => setActiveTopic("proposal")} className={cn("absolute bottom-3 inset-x-0 mx-auto min-h-11 w-[48%] rounded-full border px-3 py-1.5 text-center transition-colors sm:bottom-5 sm:w-auto sm:min-w-[13rem]", activeTopic === "proposal" ? "border-[var(--dark-border)] bg-[var(--dark-background)]/95" : "border-[var(--dark-border)]/70 bg-[var(--dark-background)]/85 hover:border-[var(--dark-muted-foreground)]")}><span className="text-[8px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)]">{topic.detail}</span></button>
         </div>
 
         <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--dark-border)] pt-3">
