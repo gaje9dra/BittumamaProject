@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { UserRound } from "lucide-react";
 import { SearchPanel, SearchTrigger } from "@/components/layout/search";
 import { SignOutButton } from "@/components/auth/sign-out";
 import { cn } from "@/lib/utils";
@@ -68,10 +67,6 @@ export function HeaderActionsClient({
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [menuOpen]);
-
-  useEffect(() => {
-    if (!user) setMenuOpen(false);
-  }, [user]);
 
   return (
     <div className={cn("items-center gap-2", className)}>
