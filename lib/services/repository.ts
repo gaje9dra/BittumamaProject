@@ -101,6 +101,13 @@ export async function getRequestedPublishedServices(): Promise<Service[]> {
 
   const order = new Map(canonicalServiceSlugs.map((slug, index) => [slug, index]));
   records.sort((a, b) => (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER));
+
+  if (records.length !== canonicalServiceSlugs.length) {
+    const loaded = new Set(records.map((record) => record.slug));
+    const missing = canonicalServiceSlugs.filter((slug) => !loaded.has(slug));
+    throw new Error(`Canonical Services navigation is incomplete. Missing: ${missing.join(", ")}`);
+  }
+
   return records.map(toDomainService);
 }
 
