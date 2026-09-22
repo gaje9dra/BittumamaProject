@@ -275,16 +275,34 @@ export function MobileNav({
                         <ChevronDown aria-hidden="true" size={22} className={cn("shrink-0 text-[var(--menu-text-muted)] transition-transform duration-[var(--motion-fast)]", servicesExpanded && "rotate-180")} />
                       </button>
 
-                      {servicesExpanded && (
-                        <div id="mobile-services-submenu" className="ml-3 border-l border-[var(--menu-border)] pl-4">
+                      <div
+                        id="mobile-services-submenu"
+                        aria-hidden={!servicesExpanded}
+                        className={cn(
+                          "mobile-menu-submenu grid transition-[grid-template-rows,opacity] duration-[var(--motion-fast)] ease-[var(--motion-ease-standard)]",
+                          servicesExpanded
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "pointer-events-none grid-rows-[0fr] opacity-0",
+                        )}
+                      >
+                        <div className="min-h-0 overflow-hidden ml-3 border-l border-[var(--menu-border)] pl-4">
                           {(item.groups ?? []).map((group) => (
-                            <section key={group.label} className="py-3" aria-labelledby={"mobile-services-" + group.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}>
-                              <p id={"mobile-services-" + group.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")} className="type-label mb-2 text-[var(--menu-text-muted)]">{group.label}</p>
+                            <section
+                              key={group.label}
+                              className="py-3"
+                              aria-labelledby={"mobile-services-" + group.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+                            >
+                              <p
+                                id={"mobile-services-" + group.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+                                className="type-label mb-2 text-[var(--menu-text-muted)]"
+                              >
+                                {group.label}
+                              </p>
                               <div>{group.items.map(renderDestination)}</div>
                             </section>
                           ))}
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 })}
