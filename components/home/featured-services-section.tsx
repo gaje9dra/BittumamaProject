@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
+import { ScrollStagger } from "@/components/ui/scroll-stagger";
 
 const HOME_SERVICE_CARDS = [
   {
@@ -119,7 +120,7 @@ export function FeaturedServicesSection() {
             </div>
           </div>
 
-          <div className="mx-auto mt-8 grid max-w-[1180px] grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <ScrollStagger className="mx-auto mt-8 grid max-w-[1180px] grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4" stagger={0.09} distance={26}>
             {HOME_SERVICE_CARDS.map((card) => {
               const Icon = card.icon;
 
@@ -164,7 +165,7 @@ export function FeaturedServicesSection() {
                 </Link>
               );
             })}
-          </div>
+          </ScrollStagger>
         </ScrollTransition>
       </Container>
     </section>
