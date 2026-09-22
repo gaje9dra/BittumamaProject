@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { LocationPageView } from "@/components/locations/location-page";
-import { locationPages, getLocationBySlug } from "@/data/locations";
+import { getLocationBySlug } from "@/data/locations";
 import { createPageMetadata } from "@/lib/metadata";
 import { getRequestedPublishedServices } from "@/lib/services/repository";
 
