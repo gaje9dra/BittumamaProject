@@ -6,6 +6,7 @@ import { HomeProcess } from "@/components/home/home-process";
 import { HomeServiceDiscovery } from "@/components/home/home-service-discovery";
 import { FeaturedServicesSection } from "@/components/home/featured-services-section";
 import { GlobalPresenceSection } from "@/components/home/global-presence-section";
+import { HomepageStatisticsSection } from "@/components/home/homepage-statistics-section";
 import type { Metadata } from "next";
 import { createPageMetadata } from "@/lib/metadata";
 import { siteConfig } from "@/data/site-config";
@@ -29,6 +30,7 @@ export default async function Home() {
       <HomeAudience services={services} />
       <HomeProcess />
       <GlobalPresenceSection />
+      <HomepageStatisticsSection />
     </main>
   );
 }
