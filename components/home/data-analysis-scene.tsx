@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ShowcaseCTA } from "./coded-showcase-frame";
-import { SceneFrameShell } from "./coded-showcase-frame";
+import { SceneFrameShell, ShowcaseCTA } from "./coded-showcase-frame";
 
 const views = ["Overview", "Analysis", "Visualization"] as const;
 type View = (typeof views)[number];
@@ -39,11 +38,27 @@ export function DataAnalysisScene() {
                 </div>
                 <div className="rounded border border-[var(--secondary-200)] bg-[var(--background)] text-[var(--foreground)] p-2 sm:p-3">
                   <p className="text-[8px] uppercase tracking-[0.13em] text-[var(--dark-muted-foreground)]">Data table</p>
-                  <div className="mt-3 space-y-2">{[["A","low","ref"],["B","mid","ref"],["C","high","ref"],["D","mid","ref"]].map(([label,n,score])=><div key={label} className="grid grid-cols-3 items-center gap-2 border-b border-[var(--dark-border)] pb-2 text-[9px]"><span className="font-semibold">{label}</span><span className="text-[var(--dark-muted-foreground)]">{n}</span><span className="text-right text-[var(--dark-muted-foreground)]">{score}</span></div>)}</div>
+                  <div className="mt-3 space-y-2">{[["A","low","ref"],["B","mid","ref"],["C","high","ref"],["D","mid","ref"]].map(([label,n,score])=><div key={label} className="grid grid-cols-3 items-center gap-2 border-b border-[var(--secondary-200)] pb-2 text-[9px]"><span className="font-semibold">{label}</span><span className="text-[var(--muted-foreground)]">{n}</span><span className="text-right text-[var(--muted-foreground)]">{score}</span></div>)}</div>
+                  <div className="mt-3 grid grid-cols-2 gap-2">
+                    <div className="rounded border border-[var(--secondary-200)] bg-[var(--surface-muted)] p-2">
+                      <p className="text-[7px] uppercase tracking-[0.12em] text-[var(--muted-foreground)]">Bar profile</p>
+                      <svg viewBox="0 0 120 54" className="mt-1 h-12 w-full" role="img" aria-label="Illustrative bar chart">
+                        {[18,31,24,40].map((height,index)=><rect key={index} x={8 + index * 27} y={48-height} width="14" height={height} rx="2" fill={index === 2 ? "var(--accent)" : "var(--data-6)"} />)}
+                        <path d="M5 49H116" stroke="var(--secondary-300)" strokeWidth="1" />
+                      </svg>
+                    </div>
+                    <div className="rounded border border-[var(--secondary-200)] bg-[var(--surface-muted)] p-2">
+                      <p className="text-[7px] uppercase tracking-[0.12em] text-[var(--muted-foreground)]">Scatter profile</p>
+                      <svg viewBox="0 0 120 54" className="mt-1 h-12 w-full" role="img" aria-label="Illustrative scatter plot">
+                        <path d="M7 49H116M7 49V5" stroke="var(--secondary-300)" strokeWidth="1" />
+                        {[[18,38],[32,30],[47,35],[61,22],[77,27],[92,15],[106,20]].map(([cx,cy],index)=><circle key={index} cx={cx} cy={cy} r="3" fill={index % 2 ? "var(--data-2)" : "var(--accent)"} />)}
+                      </svg>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-            <aside className="grid grid-cols-3 gap-2 lg:grid-cols-1"><MetricCard label="Signal" value="Illustrative" accent="var(--data-2)" /><MetricCard label="Method" value="Structured" accent="var(--data-3)" /><MetricCard label="View" value={activeView} accent="var(--data-5)" /></aside>
+            <aside className="grid grid-cols-3 gap-2 lg:grid-cols-1"><MetricCard label="Signal" value="Illustrative" accent="var(--data-2)" /><MetricCard label="Method" value="Structured" accent="var(--data-6)" /><MetricCard label="View" value={activeView} accent="var(--data-5)" /></aside>
           </div>
         </div>
 
