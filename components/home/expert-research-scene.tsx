@@ -32,10 +32,10 @@ export function ExpertResearchScene() {
         <div className="relative min-h-0 flex-1 overflow-hidden rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--primary-950)]/75 p-3 sm:p-5">
           <svg aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-50" viewBox="0 0 1000 560" preserveAspectRatio="none">
             <path d="M165 125 C300 120 365 190 440 250" fill="none" stroke="var(--data-2)" strokeWidth="2" />
-            <path d="M835 125 C700 120 635 190 560 250" fill="none" stroke="var(--data-3)" strokeWidth="2" />
+            <path d="M835 125 C700 120 635 190 560 250" fill="none" stroke="var(--data-6)" strokeWidth="2" />
             <path d="M160 420 C300 420 360 355 440 315" fill="none" stroke="var(--data-4)" strokeWidth="2" />
             <path d="M840 420 C700 420 640 355 560 315" fill="none" stroke="var(--data-5)" strokeWidth="2" />
-            <circle cx="440" cy="250" r="5" fill="var(--data-2)" /><circle cx="560" cy="250" r="5" fill="var(--data-3)" /><circle cx="440" cy="315" r="5" fill="var(--data-4)" /><circle cx="560" cy="315" r="5" fill="var(--data-5)" />
+            <circle cx="440" cy="250" r="5" fill="var(--data-2)" /><circle cx="560" cy="250" r="5" fill="var(--data-6)" /><circle cx="440" cy="315" r="5" fill="var(--data-4)" /><circle cx="560" cy="315" r="5" fill="var(--data-5)" />
           </svg>
 
           <div className="absolute left-0 top-0 w-[31%] sm:w-[29%]"><TopicButton topic={topics[0]} active={activeTopic === "thesis"} onClick={() => setActiveTopic("thesis")} /></div>
@@ -73,7 +73,7 @@ export function ExpertResearchScene() {
         </div>
 
         <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--dark-border)] pt-3">
-          <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)] sm:text-[10px]"><span className="h-1.5 w-1.5 rounded-full bg-[var(--data-3)]" />Select a research topic to focus the board</div>
+          <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)] sm:text-[10px]"><span className="h-1.5 w-1.5 rounded-full bg-[var(--data-6)]" />Select a research topic to focus the board</div>
           <ShowcaseCTA href="/services" label="Explore Services" tone="teal" />
         </footer>
       </div>
