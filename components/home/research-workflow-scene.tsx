@@ -44,9 +44,9 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
           </svg>
 
           <div className="absolute left-0 top-0 w-[31%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[0]} active={activeModule === "question"} onClick={() => setActiveModule("question")} accent="var(--data-2)" /></div>
-          <div className="absolute right-0 top-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[1]} active={activeModule === "literature"} onClick={() => setActiveModule("literature")} accent="var(--data-3)" /></div>
-          <div className="absolute bottom-0 left-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[3]} active={activeModule === "analysis"} onClick={() => setActiveModule("analysis")} accent="var(--data-4)" /></div>
-          <div className="absolute bottom-0 right-0 w-[42%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[4]} active={activeModule === "findings"} onClick={() => setActiveModule("findings")} accent="var(--data-5)" /></div>
+          <div className="absolute right-0 top-0 w-[31%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[1]} active={activeModule === "literature"} onClick={() => setActiveModule("literature")} accent="var(--data-3)" /></div>
+          <div className="absolute bottom-0 left-0 w-[31%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[3]} active={activeModule === "analysis"} onClick={() => setActiveModule("analysis")} accent="var(--data-4)" /></div>
+          <div className="absolute bottom-0 right-0 w-[31%] sm:w-[30%] lg:w-[23%]"><ModuleButton module={modules[4]} active={activeModule === "findings"} onClick={() => setActiveModule("findings")} accent="var(--data-5)" /></div>
 
           <div className="absolute inset-0 grid place-items-center"><div className="w-[61%] sm:w-[54%] lg:w-[47%]">
             <div className="rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-3 shadow-[var(--shadow-lg)] backdrop-blur-sm sm:p-4">
@@ -74,7 +74,7 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
               </div>
             </div></div>
 
-          <div className="absolute bottom-[18%] left-1/2 hidden -translate-x-1/2 lg:block">
+          <div className="absolute bottom-[18%] inset-x-0 hidden justify-center lg:flex">
             <Link href="/services/thesis-assistance" className="rounded-full border border-[var(--dark-border)] bg-[var(--dark-surface)] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.13em] hover:border-[var(--data-5)] hover:text-[var(--data-5)]">Thesis assistance</Link>
           </div>
         </div>
