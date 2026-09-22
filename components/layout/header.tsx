@@ -4,10 +4,13 @@ import { HeaderActions } from "@/components/layout/header-actions";
 import { MobileNav } from "@/components/layout/mobile-nav";
 import { HeaderScrollShell } from "@/components/layout/header-scroll-shell";
 import { siteConfig } from "@/data/site-config";
+import { getPrimaryNavigationWithServices } from "@/data/navigation";
 import { getCurrentUser } from "@/lib/auth/guards";
+import { getPublishedServices } from "@/lib/services/repository";
 
 export async function Header() {
-  const user = await getCurrentUser();
+  const [user, services] = await Promise.all([getCurrentUser(), getPublishedServices()]);
+  const navigation = getPrimaryNavigationWithServices(services);
 
   return (
     <HeaderScrollShell>
@@ -20,9 +23,13 @@ export async function Header() {
           >
             <span className="type-h5 font-semibold tracking-[-0.02em]">{siteConfig.siteName}</span>
           </Link>
-          <DesktopNav />
+          <DesktopNav navigation={navigation} />
           <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" user={user ? { name: user.name ?? null, email: user.email ?? null, image: user.image ?? null } : null} />
-          <MobileNav className="ml-auto lg:hidden" user={user ? { name: user.name ?? null, email: user.email ?? null } : null} />
+          <MobileNav
+            className="ml-auto lg:hidden"
+            navigation={navigation}
+            user={user ? { name: user.name ?? null, email: user.email ?? null } : null}
+          />
         </div>
       </header>
     </HeaderScrollShell>
