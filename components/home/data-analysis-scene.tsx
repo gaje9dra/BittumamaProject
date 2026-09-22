@@ -16,10 +16,10 @@ export function DataAnalysisScene({ active }: { active: boolean }) {
   return (
     <SceneFrameShell>
       <div className="flex h-full flex-col gap-4 sm:gap-5">
-        <header className="flex items-center justify-between gap-4">
+        <header className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
           <div><p className="text-[9px] font-semibold uppercase tracking-[0.17em] text-[var(--dark-muted-foreground)] sm:text-[10px]">Research analysis lab</p><h2 className="mt-1 font-[var(--font-display-family)] text-base sm:text-xl">Evidence → analysis → visualization</h2></div>
           <div className="flex rounded-full border border-[var(--dark-border)] bg-[var(--dark-surface)] p-1" role="tablist" aria-label="Analysis views">
-            {views.map((view) => <button key={view} type="button" role="tab" aria-selected={activeView === view} aria-controls="showcase-analysis-panel" onClick={() => setActiveView(view)} className={cn("rounded-full px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.08em] sm:px-3 sm:text-[9px]", activeView === view ? "bg-[var(--dark-foreground)] text-[var(--dark-background)]" : "text-[var(--dark-muted-foreground)] hover:text-[var(--dark-foreground)]")}>{view}</button>)}
+            {views.map((view) => <button key={view} type="button" role="tab" aria-selected={activeView === view} aria-controls="showcase-analysis-panel" onClick={() => setActiveView(view)} className={cn("rounded-full min-h-11 px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.08em] sm:px-3 sm:text-[9px]", activeView === view ? "bg-[var(--dark-foreground)] text-[var(--dark-background)]" : "text-[var(--dark-muted-foreground)] hover:text-[var(--dark-foreground)]")}>{view}</button>)}
           </div>
         </header>
 
@@ -27,7 +27,7 @@ export function DataAnalysisScene({ active }: { active: boolean }) {
           <div className="grid h-full min-h-0 gap-3 lg:grid-cols-[1.65fr_0.8fr]">
             <div className="min-h-0 rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--dark-surface)]/45 p-3 sm:p-5">
               <div className="flex items-center justify-between gap-3"><div><p className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Illustrative signal</p><p className="mt-1 text-xs font-medium sm:text-sm">Evidence distribution</p></div><span className="rounded border border-[var(--dark-border)] px-2 py-1 text-[8px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)]">{activeView}</span></div>
-              <div className="mt-4 grid min-h-0 grid-cols-[1fr_0.7fr] gap-3 sm:mt-5">
+              <div className="mt-4 grid min-h-0 grid-cols-1 gap-3 sm:grid-cols-[1fr_0.7fr] sm:mt-5">
                 <div className="rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2 sm:p-3">
                   <svg viewBox="0 0 520 260" className="h-full min-h-[150px] w-full" role="img" aria-label="Illustrative research signal line chart">
                     <g stroke="var(--dark-border)" strokeWidth="1">{[40,90,140,190,240].map((y)=><line key={y} x1="48" y1={y} x2="500" y2={y} />)}{[48,160,272,384,496].map((x)=><line key={x} x1={x} y1="20" x2={x} y2="240" />)}</g>
