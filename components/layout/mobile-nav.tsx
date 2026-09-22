@@ -247,7 +247,7 @@ export function MobileNav({
 
               <div>
                 {navigation.map((item, index) => {
-                  const isServices = item.href === "/services" && Boolean(item.children?.length);
+                  const isServices = item.href === "/services" && Boolean(item.groups?.length);
                   if (!isServices) {
                     return (
                       <div key={item.href} className={cn(index === 0 && "border-t border-border")}>
@@ -272,19 +272,17 @@ export function MobileNav({
                         )}
                       >
                         <span>{item.label}</span>
-                        <ChevronDown
-                          aria-hidden="true"
-                          size={22}
-                          className={cn(
-                            "shrink-0 text-[var(--menu-text-muted)] transition-transform duration-[var(--motion-fast)]",
-                            servicesExpanded && "rotate-180",
-                          )}
-                        />
+                        <ChevronDown aria-hidden="true" size={22} className={cn("shrink-0 text-[var(--menu-text-muted)] transition-transform duration-[var(--motion-fast)]", servicesExpanded && "rotate-180")} />
                       </button>
 
                       {servicesExpanded && (
                         <div id="mobile-services-submenu" className="ml-3 border-l border-[var(--menu-border)] pl-4">
-                          {(item.children ?? []).map(renderDestination)}
+                          {(item.groups ?? []).map((group) => (
+                            <section key={group.label} className="py-3" aria-labelledby={"mobile-services-" + group.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}>
+                              <p id={"mobile-services-" + group.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")} className="type-label mb-2 text-[var(--menu-text-muted)]">{group.label}</p>
+                              <div>{group.items.map(renderDestination)}</div>
+                            </section>
+                          ))}
                         </div>
                       )}
                     </div>
