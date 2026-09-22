@@ -5,23 +5,14 @@ import { requireApiUser } from "@/lib/api/auth";
 import { recordAuditBestEffort } from "@/lib/audit/service";
 import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
 import { clientRateLimitKey, consumeApiRateLimit } from "@/lib/api/rate-limit";
+import { isSameOrigin } from "@/lib/auth/request-origin";
 import { createUserDatabaseSession } from "@/lib/auth/user-session";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function sameOrigin(request: Request) {
-  const origin = request.headers.get("origin");
-  if (!origin) return true;
-  try {
-    return new URL(origin).origin === new URL(request.url).origin;
-  } catch {
-    return false;
-  }
-}
-
 export async function POST(request: Request) {
-  if (!sameOrigin(request)) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  if (!isSameOrigin(request)) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
 
   const limit = consumeApiRateLimit(`change-password:${clientRateLimitKey(request)}`, 5, 15 * 60_000);
   if (!limit.allowed) {
