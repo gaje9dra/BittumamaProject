@@ -10,7 +10,12 @@ import type {
 } from "@/data/services";
 import { canonicalServiceSlugs, canonicalServices } from "@/data/services";
 
-function getCanonicalFallback(slug: string): Service | undefined {\n  if (process.env.NODE_ENV === "production") return undefined;\n  return canonicalServices.find((service) => service.slug === slug);\n}\n\nasync function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
+function getCanonicalFallback(slug: string): Service | undefined {
+  if (process.env.NODE_ENV === "production") return undefined;
+  return canonicalServices.find((service) => service.slug === slug);
+}
+
+async function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
   try {
     return await query();
   } catch (error) {
@@ -105,7 +110,25 @@ export async function getRequestedPublishedServices(): Promise<Service[]> {
   if (records.length !== canonicalServiceSlugs.length) {
     const loaded = new Set(records.map((record) => record.slug));
     const missing = canonicalServiceSlugs.filter((slug) => !loaded.has(slug));
-    throw new Error(`Canonical Services navigation is incomplete. Missing: ${missing.join(", ")}`);
+
+    if (process.env.NODE_ENV !== "production") {
+      const fallbackBySlug = new Map(
+        canonicalServices
+          .filter((service) => missing.includes(service.slug))
+          .map((service) => [service.slug, service]),
+      );
+
+      return canonicalServiceSlugs
+        .map((slug) => {
+          const record = records.find((item) => item.slug === slug);
+          return record ? toDomainService(record) : fallbackBySlug.get(slug);
+        })
+        .filter((service): service is Service => Boolean(service));
+    }
+
+    throw new Error(
+      `Canonical Services navigation is incomplete. Missing: ${missing.join(", ")}`,
+    );
   }
 
   return records.map(toDomainService);
@@ -118,7 +141,7 @@ export async function getPublishedServiceById(
     where: { id, status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
   }));
 
-  return record ? toDomainService(record) : undefined;
+  return record ? toDomainService(record) : getCanonicalFallback(id);
 }
 
 export async function getPublishedServiceBySlug(
@@ -131,7 +154,7 @@ export async function getPublishedServiceBySlug(
     },
   }));
 
-  return record ? toDomainService(record) : undefined;
+  return record ? toDomainService(record) : getCanonicalFallback(slug);
 }
 
 export async function getPublishedServiceCategories(): Promise<string[]> {
