@@ -15,7 +15,7 @@ const HOME_SERVICE_CARDS = [
     title: "Thesis Support",
     description:
       "Expert guidance through every chapter — from proposal to final submission, structured around your research requirement.",
-    href: "/services/thesis-assistance",
+    href: "/services/thesis-support",
     icon: BookOpen,
     art: "thesis",
   },
@@ -24,7 +24,7 @@ const HOME_SERVICE_CARDS = [
     title: "Publication",
     description:
       "Research paper support for manuscript preparation, academic presentation and submission requirements.",
-    href: "/services/research-paper",
+    href: "/services/publication",
     icon: FileText,
     art: "publication",
   },
@@ -33,7 +33,7 @@ const HOME_SERVICE_CARDS = [
     title: "Analytical Services",
     description:
       "Statistical analysis, data visualisation and research interpretation using appropriate analytical methods.",
-    href: "/services/data-analysis-visualization",
+    href: "/services/analytical-services",
     icon: BarChart3,
     art: "analysis",
   },
@@ -42,7 +42,7 @@ const HOME_SERVICE_CARDS = [
     title: "Mentoring",
     description:
       "Focused research guidance to help you make clearer decisions about methodology, structure and next steps.",
-    href: "/services/research-guidance",
+    href: "/services/mentoring",
     icon: GraduationCap,
     art: "mentoring",
   },
