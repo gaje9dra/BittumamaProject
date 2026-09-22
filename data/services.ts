@@ -37,6 +37,10 @@ export const canonicalServices: Service[] = [
   { id: "dissertation-thesis-writing", title: "Dissertation Thesis Writing", slug: "dissertation-thesis-writing", category: "INTERNATIONAL RESEARCH", shortDescription: "Dissertation writing support for developing and refining research-led academic work.", need: "Dissertation writing support", focus: "Dissertation structure, writing and refinement", audience: "Students and researchers", highlights: [{ title: "Scope", description: "Develop supplied research material into a structured dissertation." }, { title: "Approach", description: "Review chapters for clarity, consistency and academic presentation." }], faq: [{ question: "What information is useful before starting?", answer: "The research brief, existing material and relevant academic requirements help define the appropriate scope." }], status: "Available", seo: { title: "Dissertation Thesis Writing | Bittumama", description: "Dissertation writing support for developing and refining research-led academic work.", canonical: "/services/dissertation-thesis-writing" } },
 ];
 
+export const canonicalServiceSlugs = canonicalServices.map((service) => service.slug) as readonly string[];
+
+export const canonicalServiceCategories = ["WRITING & THESIS", "ANALYSIS & TOOLS", "INTERNATIONAL RESEARCH"] as const;
+
 export function getServiceHref(service: Pick<Service, "slug">) { return "/services/" + service.slug; }
 
 export function getServiceCategoryAnchor(category: string) { const slug = category.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""); return "service-category-" + slug; }
