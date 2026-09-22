@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { LucideIcon } from "lucide-react";
+import { BriefcaseBusiness, FileText, Globe2, Network } from "lucide-react";
+
+type AnimatedStatIcon = "file" | "briefcase" | "network" | "globe";
 
 type AnimatedStatProps = {
   targetValue: number;
   display: string;
-  icon: LucideIcon;
+  icon: AnimatedStatIcon;
   label: string;
   accentClass: string;
   iconClass: string;
@@ -24,14 +26,22 @@ function formatValue(value: number, display: string) {
   return Math.round(value).toLocaleString("en-IN");
 }
 
+const ICONS = {
+  file: FileText,
+  briefcase: BriefcaseBusiness,
+  network: Network,
+  globe: Globe2,
+} as const;
+
 export function AnimatedStat({
   targetValue,
   display,
-  icon: Icon,
+  icon,
   label,
   accentClass,
   iconClass,
 }: AnimatedStatProps) {
+  const Icon = ICONS[icon];
   const [value, setValue] = useState(0);
   const [hasAnimated, setHasAnimated] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
