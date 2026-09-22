@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact/contact-form";
 import { Container } from "@/components/ui/container";
 import { contactData } from "@/data/contact";
+import { getLocationBySlug } from "@/data/locations";
 import { createPageMetadata } from "@/lib/metadata";
 import { getPublishedServices } from "@/lib/services/repository";
 
@@ -10,8 +11,15 @@ export const metadata: Metadata = createPageMetadata({
   description: contactData.seo.description,
 });
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ location?: string | string[] }>;
+}) {
   const services = await getPublishedServices();
+  const params = await searchParams;
+  const locationSlug = typeof params?.location === "string" ? params.location : undefined;
+  const location = locationSlug ? getLocationBySlug(locationSlug) : undefined;
 
   return (
     <main className="bg-background text-foreground">
@@ -59,7 +67,7 @@ export default async function ContactPage() {
             <div className="border border-border bg-surface p-4 sm:p-6 lg:p-7">
               <p className="type-label text-muted-foreground">Start your enquiry</p>
               <div className="mt-5">
-                <ContactForm services={services} />
+                <ContactForm services={services} initialLocation={location ? `${location.city}, ${location.country}` : undefined} />
               </div>
             </div>
           </div>

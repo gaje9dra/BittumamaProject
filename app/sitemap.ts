@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getPublishedServices } from "@/lib/services/repository";
+import { locationPages } from "@/data/locations";
 
 const FALLBACK_ORIGIN = "https://bittumamaproject.netlify.app";
 

@@ -22,7 +22,7 @@ function validate(values: FormValues): FormErrors {
   return errors;
 }
 
-export function ContactForm({ initialService = "", services }: { initialService?: string; services: Service[] }) {
+export function ContactForm({ initialService = "", initialLocation, services }: { initialService?: string; initialLocation?: string; services: Service[] }) {
   const [values, setValues] = useState<FormValues>(() => ({ ...initialValues, service: initialService, formStartedAt: new Date().toISOString() }));
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Partial<Record<keyof FormValues, boolean>>>({});
@@ -83,7 +83,7 @@ export function ContactForm({ initialService = "", services }: { initialService?
 
   return (
     <form noValidate onSubmit={handleSubmit} className="bg-transparent">
-      <div className="grid gap-6">
+      <div className="grid gap-6">\n        {initialLocation ? <div className="border-l-2 border-primary bg-surface-muted px-4 py-3"><p className="type-label text-muted-foreground">Request context</p><p className="mt-1 type-body-sm">{initialLocation}</p></div> : null}
         <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
           <label htmlFor="contact-website">Website</label>
           <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={(e) => update("website", e.target.value)} />

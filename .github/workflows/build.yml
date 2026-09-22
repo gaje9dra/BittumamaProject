@@ -98,3 +98,26 @@ jobs:
 
       - name: Production build
         run: npm run build
+
+      - name: Start production server
+        env:
+          AUTH_SECRET: test-location-pages-secret
+          AUTH_URL: http://127.0.0.1:3000
+          NEXT_PUBLIC_APP_URL: http://127.0.0.1:3000
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3000 > /tmp/bittumama-next.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl -fsS http://127.0.0.1:3000/locations/new-york > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/bittumama-next.log
+          exit 1
+
+      - name: Verify all location routes
+        env:
+          AUTH_SECRET: test-location-pages-secret
+          AUTH_URL: http://127.0.0.1:3000
+          NEXT_PUBLIC_APP_URL: http://127.0.0.1:3000
+        run: npm exec tsx scripts/verify-locations.ts
