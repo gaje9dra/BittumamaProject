@@ -6,18 +6,13 @@ import { createUserDatabaseSession } from "@/lib/auth/user-session";
 import { recordAuditBestEffort } from "@/lib/audit/service";
 import { AuditAction, AuditCategory, AuditResult } from "@/generated/prisma/client";
 import { clientRateLimitKey, consumeApiRateLimit } from "@/lib/api/rate-limit";
+import { isSameOrigin } from "@/lib/auth/request-origin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-function sameOrigin(request: Request) {
-  const origin = request.headers.get("origin");
-  if (!origin) return true;
-  try { return new URL(origin).origin === new URL(request.url).origin; } catch { return false; }
-}
-
 export async function POST(request: Request) {
-  if (!sameOrigin(request)) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  if (!isSameOrigin(request)) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
   const limit = consumeApiRateLimit(`user-register:${clientRateLimitKey(request)}`, 5, 60 * 60_000);
   if (!limit.allowed) return NextResponse.json({ error: "Too many registration attempts. Please try again later." }, { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds), "Cache-Control": "no-store" } });
 
