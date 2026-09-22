@@ -8,6 +8,7 @@ import type {
   ServiceHighlight,
   ServiceSeo,
 } from "@/data/services";
+import { canonicalServiceSlugs } from "@/data/services";
 
 async function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
   try {
@@ -85,6 +86,21 @@ export async function getPublishedServices(): Promise<Service[]> {
     orderBy: [{ order: "asc" }, { id: "asc" }],
   }));
 
+  return records.map(toDomainService);
+}
+
+
+export async function getRequestedPublishedServices(): Promise<Service[]> {
+  const records = await runServiceQuery(() => prisma.client.service.findMany({
+    where: {
+      slug: { in: [...canonicalServiceSlugs] },
+      status: "PUBLISHED",
+      OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
+    },
+  }));
+
+  const order = new Map(canonicalServiceSlugs.map((slug, index) => [slug, index]));
+  records.sort((a, b) => (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER));
   return records.map(toDomainService);
 }
 
