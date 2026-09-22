@@ -7,6 +7,14 @@ function assert(condition: unknown, message: string) {
   if (!condition) throw new Error(message);
 }
 
+function htmlText(value: string) {
+  return value
+    .replaceAll("&amp;", "&")
+    .replaceAll("&#x27;", "'")
+    .replaceAll("&#39;", "'")
+    .replaceAll("&quot;", '"');
+}
+
 async function main() {
   const navigation = getPrimaryNavigationWithServices(canonicalServices);
   const servicesItem = navigation.find((item) => item.href === "/services");
@@ -23,7 +31,7 @@ async function main() {
     assert(links.some((link) => link.label === service.title && link.href === expectedHref), `Missing dropdown link: ${service.title}`);
 
     const response = await fetch(baseUrl + expectedHref, { redirect: "manual" });
-    const html = await response.text();
+    const html = htmlText(await response.text());
     assert(response.status === 200, `${expectedHref} returned HTTP ${response.status}.`);
     assert(html.includes(service.title), `${expectedHref} does not render the correct service title.`);
     assert(html.includes(service.category), `${expectedHref} does not render the correct service category.`);
