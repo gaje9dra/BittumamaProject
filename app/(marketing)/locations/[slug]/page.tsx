@@ -38,6 +38,3 @@ export default async function LocationPage({ params }: LocationPageProps) {
   return <LocationPageView location={location} services={relatedServices} />;
 }
 
-export function generateStaticParams() {
-  return locationPages.map((location) => ({ slug: location.id }));
-}
