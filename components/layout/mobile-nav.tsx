@@ -45,6 +45,14 @@ export function MobileNav({
     setPanelOpen(false);
     setClosing(true);
     setOpen(false);
+
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => {
+      setMounted(false);
+      setClosing(false);
+    }, 580);
+
+    requestAnimationFrame(() => triggerRef.current?.focus());
   }, []);
 
   const closeSearch = useCallback(() => {
@@ -153,14 +161,17 @@ export function MobileNav({
           "mobile-menu-trigger relative z-[var(--layer-toast)] inline-flex h-11 w-11 items-center justify-center rounded-full border border-transparent bg-transparent p-0 text-[var(--foreground)] transition-[background-color,border-color,color,transform] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)] active:scale-[0.98] hover:bg-[var(--surface-muted)] focus-visible:outline-2 focus-visible:outline-offset-3",
         )}
         onClick={() => {
-          if (open) closeMenu();
-          else {
-            announceHeaderSurface("mobile");
-            setClosing(false);
-            setPanelOpen(false);
-            setMounted(true);
-            setOpen(true);
+          if (open) {
+            closeMenu();
+            return;
           }
+
+          announceHeaderSurface("mobile");
+          if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+          setClosing(false);
+          setMounted(true);
+          setOpen(true);
+          requestAnimationFrame(() => setPanelOpen(true));
         }}
       >
         <Menu
@@ -264,6 +275,7 @@ export function MobileNav({
                         ref={servicesTriggerRef}
                         type="button"
                         aria-expanded={servicesExpanded}
+                        aria-haspopup="true"
                         aria-controls="mobile-services-submenu"
                         onClick={() => setServicesExpanded((value) => !value)}
                         className={cn(
