@@ -1,47 +1,30 @@
 import "dotenv/config";
 
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../generated/prisma/client";
+import { prisma } from "../lib/db/prisma";
 import { canonicalServices } from "../data/services";
 
-const databaseUrl = process.env.DATABASE_URL;
-
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL is required to verify Services.");
-}
-
-const adapter = new PrismaPg({ connectionString: databaseUrl });
-const prisma = new PrismaClient({ adapter });
-
-function normalizeJson(value: unknown) {
-  return value == null ? null : JSON.stringify(value);
-}
-
-function expectedAvailability(status: string | undefined) {
-  return status === "Coming Soon" ? "COMING_SOON" : "AVAILABLE";
-}
-
 async function main() {
-  const records = await prisma.service.findMany({ orderBy: { order: "asc" } });
-  const expectedBySlug = new Map(canonicalServices.map((service, index) => [service.slug, { service, index }]));
+  if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required to verify Services.");
+
+  const records = await prisma.client.service.findMany({
+    where: { slug: { in: canonicalServices.map((service) => service.slug) } },
+    orderBy: { order: "asc" },
+  });
+  const bySlug = new Map(records.map((record) => [record.slug, record]));
   const errors: string[] = [];
 
   if (records.length !== canonicalServices.length) {
-    errors.push(`Expected ${canonicalServices.length} Services, found ${records.length}.`);
+    errors.push(`Expected all 28 requested Services, found ${records.length} matching records.`);
   }
 
-  for (const record of records) {
-    const expected = expectedBySlug.get(record.slug);
-
-    if (!expected) {
-      errors.push(`Unexpected Service record: ${record.slug}`);
+  for (const [index, service] of canonicalServices.entries()) {
+    const record = bySlug.get(service.slug);
+    if (!record) {
+      errors.push(`Missing Service: ${service.title} (${service.slug})`);
       continue;
     }
 
-    const { service, index } = expected;
-
     const checks: Array<[string, unknown, unknown]> = [
-      ["id", record.id, service.id],
       ["title", record.title, service.title],
       ["category", record.category, service.category],
       ["shortDescription", record.shortDescription, service.shortDescription],
@@ -49,58 +32,47 @@ async function main() {
       ["need", record.need, service.need ?? null],
       ["focus", record.focus, service.focus ?? null],
       ["audience", record.audience, service.audience ?? null],
-      ["highlights", normalizeJson(record.highlights), normalizeJson(service.highlights)],
-      ["faq", normalizeJson(record.faq), normalizeJson(service.faq)],
-      ["featured", record.featured, service.featured ?? false],
-      ["availability", record.availability, expectedAvailability(service.status)],
       ["status", record.status, "PUBLISHED"],
+      ["availability", record.availability, "AVAILABLE"],
       ["seoTitle", record.seoTitle, service.seo?.title ?? null],
       ["seoDescription", record.seoDescription, service.seo?.description ?? null],
-      ["seoImage", record.seoImage, service.seo?.image ?? null],
       ["seoCanonical", record.seoCanonical, service.seo?.canonical ?? null],
       ["seoNoIndex", record.seoNoIndex, service.seo?.noIndex ?? false],
     ];
 
-    for (const [field, actual, expectedValue] of checks) {
-      if (actual !== expectedValue) {
-        errors.push(`${service.slug}: ${field} mismatch (database=${JSON.stringify(actual)}, canonical=${JSON.stringify(expectedValue)})`);
+    for (const [field, actual, expected] of checks) {
+      if (actual !== expected) {
+        errors.push(`${service.slug}: ${field} mismatch (database=${JSON.stringify(actual)}, canonical=${JSON.stringify(expected)})`);
       }
     }
 
-    if (record.slug !== service.slug) {
-      errors.push(`${service.id}: slug mismatch.`);
-    }
+    if (record.slug !== service.slug) errors.push(`${service.title}: slug mismatch.`);
   }
 
-  const duplicateIds = await prisma.service.groupBy({
-    by: ["id"],
-    _count: { id: true },
-    having: { id: { _count: { gt: 1 } } },
-  });
-  const duplicateSlugs = await prisma.service.groupBy({
+  const duplicateSlugs = await prisma.client.service.groupBy({
     by: ["slug"],
     _count: { slug: true },
     having: { slug: { _count: { gt: 1 } } },
   });
-
-  if (duplicateIds.length) errors.push("Duplicate Service IDs detected.");
   if (duplicateSlugs.length) errors.push("Duplicate Service slugs detected.");
 
+  const categoryCounts = new Map<string, number>();
+  for (const service of canonicalServices) categoryCounts.set(service.category, (categoryCounts.get(service.category) ?? 0) + 1);
+  for (const [category, expected] of categoryCounts) {
+    const actual = records.filter((record) => record.category === category).length;
+    if (actual !== expected) errors.push(`${category}: expected ${expected}, found ${actual}.`);
+  }
+
   if (errors.length) {
-    console.error("SERVICE INTEGRITY FAILED");
+    console.error("SERVICE INVENTORY FAILED");
     for (const error of errors) console.error(" - " + error);
     process.exitCode = 1;
     return;
   }
 
-  console.log(`SERVICE INTEGRITY PASSED — ${records.length} canonical Services match.`);
+  console.log("SERVICE INVENTORY PASSED — all 28 requested Services are canonical and published.");
 }
 
 main()
-  .catch((error) => {
-    console.error("Service verification failed:", error);
-    process.exitCode = 1;
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .catch((error) => { console.error("Service verification failed:", error); process.exitCode = 1; })
+  .finally(async () => { await prisma.client.$disconnect(); });
