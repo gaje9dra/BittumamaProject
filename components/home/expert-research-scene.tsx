@@ -39,7 +39,7 @@ export function ExpertResearchScene({ active }: { active: boolean }) {
           <div className="absolute bottom-0 left-0 w-[43%] sm:w-[29%]"><TopicButton topic={topics[3]} active={activeTopic === "literature"} onClick={() => setActiveTopic("literature")} /></div>
           <div className="absolute bottom-0 right-0 w-[43%] sm:w-[29%]"><TopicButton topic={topics[4]} active={activeTopic === "method"} onClick={() => setActiveTopic("method")} /></div>
 
-          <div className="absolute left-1/2 top-1/2 w-[60%] -translate-x-1/2 -translate-y-1/2 sm:w-[39%] lg:w-[34%]">
+          <div className="absolute inset-0 grid place-items-center"><div className="w-[60%] sm:w-[39%] lg:w-[34%]">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[42%_42%_24%_24%] border border-[var(--dark-border)] bg-[var(--dark-background)] shadow-[var(--shadow-lg)]">
               <div className="absolute inset-x-[14%] top-[13%] aspect-square rounded-full border border-[var(--dark-border)] bg-[var(--dark-surface)]">
                 <svg aria-hidden="true" viewBox="0 0 180 180" className="h-full w-full">
@@ -49,8 +49,7 @@ export function ExpertResearchScene({ active }: { active: boolean }) {
               <div className="absolute bottom-[8%] left-1/2 w-[72%] -translate-x-1/2 rounded border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-2 text-center">
                 <span className="block text-[8px] font-semibold uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Current focus</span><span className="mt-1 block truncate text-[10px] font-medium sm:text-xs">{topic.label}</span>
               </div>
-            </div>
-          </div>
+            </div></div>
 
           <button type="button" aria-pressed={activeTopic === "proposal"} onClick={() => setActiveTopic("proposal")} className={cn("absolute bottom-3 left-1/2 min-h-11 w-[48%] -translate-x-1/2 rounded-full border px-3 py-1.5 text-center transition-colors sm:bottom-5 sm:w-auto sm:min-w-[13rem]", activeTopic === "proposal" ? "border-[var(--dark-border)] bg-[var(--dark-background)]/95" : "border-[var(--dark-border)]/70 bg-[var(--dark-background)]/85 hover:border-[var(--dark-muted-foreground)]")}><span className="text-[8px] uppercase tracking-[0.12em] text-[var(--dark-muted-foreground)]">{topic.detail}</span></button>
         </div>
