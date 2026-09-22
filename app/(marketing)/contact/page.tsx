@@ -11,8 +11,15 @@ export const metadata: Metadata = createPageMetadata({
   description: contactData.seo.description,
 });
 
-export default async function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ location?: string | string[] }>;
+}) {
   const services = await getPublishedServices();
+  const params = await searchParams;
+  const locationSlug = typeof params?.location === "string" ? params.location : undefined;
+  const location = locationSlug ? getLocationBySlug(locationSlug) : undefined;
 
   return (
     <main className="bg-background text-foreground">
