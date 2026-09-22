@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   BookOpen,
-  ChartNoAxesCombined,
+  BarChart3,
   Compass,
   FileText,
   Globe2,
@@ -40,7 +40,7 @@ function ServiceIcon({ slug }: { slug: FeaturedSlug }) {
   switch (slug) {
     case "research-paper": return <FileText {...common} />;
     case "thesis-assistance": return <BookOpen {...common} />;
-    case "data-analysis-visualization": return <ChartNoAxesCombined {...common} />;
+    case "data-analysis-visualization": return <BarChart3 {...common} />;
     case "thesis-editing-proofreading": return <PenLine {...common} />;
     case "research-guidance": return <Compass {...common} />;
     case "international-research-paper": return <Globe2 {...common} />;
