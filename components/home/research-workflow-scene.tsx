@@ -56,7 +56,7 @@ export function ResearchWorkflowScene({ active }: { active: boolean }) {
               </div>
               <div className="mt-3 grid grid-cols-[1fr_0.7fr] gap-3">
                 <div className="rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2.5">
-                  <div className="mb-2 flex items-center justify-between"><span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Document</span><span className="text-[8px] text-[var(--dark-muted-foreground)]">pp. 18–26</span></div>
+                  <div className="mb-2 flex items-center justify-between"><span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Document</span><span className="text-[8px] text-[var(--dark-muted-foreground)]">section 04</span></div>
                   <div className="space-y-1.5">
                     {[78, 94, 64, 86, 72].map((width, index) => <div key={width} className="h-1.5 rounded-full bg-[var(--dark-border)]"><div className={cn("h-full rounded-full transition-[width,background-color]", index === 2 ? "bg-[var(--data-5)]" : "bg-[var(--primary-400)]")} style={{ width: width + "%" }} /></div>)}
                   </div>
