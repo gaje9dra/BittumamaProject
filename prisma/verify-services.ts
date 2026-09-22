@@ -1,12 +1,18 @@
 import "dotenv/config";
 
-import { prisma } from "../lib/db/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../generated/prisma/client";
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) throw new Error("DATABASE_URL is required to verify Services.");
+const adapter = new PrismaPg({ connectionString: databaseUrl });
+const prisma = new PrismaClient({ adapter });
 import { canonicalServices, getServiceHref } from "../data/services";
 
 async function main() {
   if (!process.env.DATABASE_URL) throw new Error("DATABASE_URL is required to verify Services.");
 
-  const records = await prisma.client.service.findMany({
+  const records = await prisma.service.findMany({
     where: { slug: { in: canonicalServices.map((service) => service.slug) } },
     orderBy: { order: "asc" },
   });
@@ -53,7 +59,7 @@ async function main() {
     if (getServiceHref(service) !== "/services/" + service.slug) errors.push(`${service.title}: canonical route mismatch.`);
   }
 
-  const duplicateSlugs = await prisma.client.service.groupBy({
+  const duplicateSlugs = await prisma.service.groupBy({
     by: ["slug"],
     _count: { slug: true },
     having: { slug: { _count: { gt: 1 } } },
@@ -79,4 +85,4 @@ async function main() {
 
 main()
   .catch((error) => { console.error("Service verification failed:", error); process.exitCode = 1; })
-  .finally(async () => { await prisma.client.$disconnect(); });
+  .finally(async () => { await prisma.$disconnect(); });
