@@ -47,7 +47,6 @@ async function main() {
         seoNoIndex: service.seo?.noIndex ?? false,
       },
       update: {
-        id: service.id,
         title: service.title,
         category: service.category,
         shortDescription: service.shortDescription,

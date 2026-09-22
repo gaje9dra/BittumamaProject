@@ -6,10 +6,10 @@ import { HeaderScrollShell } from "@/components/layout/header-scroll-shell";
 import { siteConfig } from "@/data/site-config";
 import { getPrimaryNavigationWithServices } from "@/data/navigation";
 import { getCurrentUser } from "@/lib/auth/guards";
-import { getPublishedServices } from "@/lib/services/repository";
+import { getRequestedPublishedServices } from "@/lib/services/repository";
 
 export async function Header() {
-  const [user, services] = await Promise.all([getCurrentUser(), getPublishedServices()]);
+  const [user, services] = await Promise.all([getCurrentUser(), getRequestedPublishedServices()]);
   const navigation = getPrimaryNavigationWithServices(services);
 
   return (

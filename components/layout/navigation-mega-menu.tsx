@@ -52,24 +52,36 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
   }, [open, onClose, triggerRef]);
 
   return (
-    <div id={panelId} ref={panelRef} hidden={!open} className="absolute inset-x-0 top-full z-[var(--layer-modal)] rounded-b-[var(--radius-md)] border-b border-border bg-surface shadow-[var(--shadow-sm)] motion-fade">
-      <div className="mx-auto w-full max-w-[var(--container-wide)] px-[var(--page-gutter)] py-8">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-12">
+    <div
+      id={panelId}
+      ref={panelRef}
+      hidden={!open}
+      className="absolute inset-x-0 top-full z-[var(--layer-modal)] border-b border-border bg-surface shadow-[var(--shadow-sm)] motion-fade"
+    >
+      <div className="mx-auto max-h-[min(70vh,38rem)] w-full max-w-[var(--container-wide)] overflow-y-auto overscroll-contain px-[var(--page-gutter)] py-6 sm:py-7 lg:py-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-8 lg:grid-cols-3 lg:gap-x-10">
           {(item.groups ?? []).map((group) => (
-            <section key={group.label} className="min-w-0 lg:col-span-3">
-              <p className="type-label text-muted-foreground">{group.label}</p>
+            <section key={group.label} className="min-w-0">
+              <p className="type-label border-b border-border pb-3 text-muted-foreground">{group.label}</p>
               {group.description && <p className="type-caption mt-2 max-w-[28ch] text-muted-foreground">{group.description}</p>}
-              <ul className="mt-4 space-y-1">
+              <ul className="mt-2">
                 {group.items.map((child) => {
                   const active = isNavigationItemActive(pathname, child.href);
                   return (
-                    <li key={child.href}>
-                      <Link href={child.href} aria-current={active ? "page" : undefined} onClick={() => onClose()} className={cn("group flex items-start justify-between gap-4 py-2 text-foreground transition-colors duration-[var(--motion-fast)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2", active && "font-medium text-primary")}>
+                    <li key={child.href} className="border-b border-border last:border-b-0">
+                      <Link
+                        href={child.href}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => onClose()}
+                        className={cn(
+                          "group flex min-h-10 items-start justify-between gap-3 py-2.5 text-foreground transition-[background-color,color,transform] duration-[var(--motion-fast)] hover:bg-surface-muted hover:text-primary focus-visible:bg-surface-muted focus-visible:outline-2 focus-visible:outline-offset-2",
+                          active && "font-medium text-primary",
+                        )}
+                      >
                         <span className="min-w-0">
                           <span className="type-body-sm block font-medium">{child.label}</span>
-                          {child.description && <span className="type-caption mt-1 block text-muted-foreground">{child.description}</span>}
                         </span>
-                        <ArrowUpRight aria-hidden="true" size={16} className="mt-0.5 shrink-0 opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-within:opacity-100" />
+                        <ArrowUpRight aria-hidden="true" size={15} className="mt-0.5 shrink-0 opacity-0 transition-opacity duration-[var(--motion-fast)] group-hover:opacity-100 group-focus-visible:opacity-100" />
                       </Link>
                     </li>
                   );
@@ -78,18 +90,6 @@ export function NavigationMegaMenu({ item, pathname, open, onClose, triggerRef, 
             </section>
           ))}
         </div>
-        {item.featured && (
-          <div className="mt-8 border-t border-border pt-6">
-            <Link href={item.featured.href} onClick={() => onClose()} className="group inline-flex items-start gap-3 focus-visible:outline-2 focus-visible:outline-offset-3">
-              <span>
-                {item.featured.eyebrow && <span className="type-label block text-muted-foreground">{item.featured.eyebrow}</span>}
-                <span className="type-body-sm mt-1 block font-medium text-foreground group-hover:text-primary">{item.featured.label}</span>
-                {item.featured.description && <span className="type-caption mt-1 block text-muted-foreground">{item.featured.description}</span>}
-              </span>
-              <ArrowUpRight aria-hidden="true" size={18} className="mt-0.5 shrink-0" />
-            </Link>
-          </div>
-        )}
       </div>
     </div>
   );

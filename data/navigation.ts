@@ -1,4 +1,5 @@
 import type { Service } from "@/data/services";
+import { canonicalServiceCategories } from "@/data/services";
 import {
   siteConfig,
   primaryNavigation,
@@ -17,34 +18,32 @@ export type {
   SiteConfig,
 } from "@/data/site-config";
 
-export {
-  siteConfig,
-  primaryNavigation,
-  footerNavigation,
-  globalActions,
-  siteRoutes,
-  validateSiteConfig,
-};
+export { siteConfig, primaryNavigation, footerNavigation, globalActions, siteRoutes, validateSiteConfig };
 
 export function getPrimaryNavigationWithServices(
-  services: readonly Pick<Service, "title" | "slug">[],
+  services: readonly Pick<Service, "title" | "slug" | "category">[],
 ) {
+  const byCategory = new Map<string, readonly Pick<Service, "title" | "slug" | "category">[]>();
+  for (const category of canonicalServiceCategories) byCategory.set(category, []);
+
+  for (const service of services) {
+    if (!byCategory.has(service.category)) continue;
+    byCategory.set(service.category, [...(byCategory.get(service.category) ?? []), service]);
+  }
+
   return primaryNavigation.map((item) => {
     if (item.href !== siteRoutes.services.href) return item;
 
     return {
       ...item,
-      type: "dropdown" as const,
-      children: [
-        ...services.map((service) => ({
+      type: "grouped" as const,
+      groups: canonicalServiceCategories.map((category) => ({
+        label: category,
+        items: (byCategory.get(category) ?? []).map((service) => ({
           label: service.title,
           href: "/services/" + service.slug,
         })),
-        {
-          label: "View all services",
-          href: siteRoutes.services.href,
-        },
-      ],
+      })),
     };
   });
 }
