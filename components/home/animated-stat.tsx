@@ -53,7 +53,6 @@ export function AnimatedStat({
 
       const duration = Math.min(2200, Math.max(1400, 1400 + targetValue / 12));
       const start = performance.now();
-      let frame = 0;
 
       const tick = (now: number) => {
         const progress = Math.min(1, (now - start) / duration);
@@ -61,21 +60,18 @@ export function AnimatedStat({
         setValue(progress === 1 ? targetValue : eased * targetValue);
 
         if (progress < 1) {
-          frame = requestAnimationFrame(tick);
+          requestAnimationFrame(tick);
         }
       };
 
-      frame = requestAnimationFrame(tick);
-
-      return () => cancelAnimationFrame(frame);
+      requestAnimationFrame(tick);
     };
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          const cleanup = startAnimation();
+          startAnimation();
           observer.disconnect();
-          if (cleanup) cleanup();
         }
       },
       { threshold: 0.28 },
