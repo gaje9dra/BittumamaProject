@@ -1,15 +1,14 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { SceneFrameShell } from "./coded-showcase-frame";
+import { SceneFrameShell, ShowcaseCTA } from "./coded-showcase-frame";
 
 const modules = [
-  { id: "question", label: "Research Question", short: "QUESTION", accent: "var(--data-2)" },
-  { id: "literature", label: "Literature", short: "LITERATURE", accent: "var(--data-3)" },
-  { id: "methodology", label: "Methodology", short: "METHOD", accent: "var(--data-5)" },
-  { id: "analysis", label: "Analysis", short: "ANALYSIS", accent: "var(--data-4)" },
+  { id: "question", label: "Research Question", short: "QUESTION", accent: "var(--data-6)" },
+  { id: "literature", label: "Literature", short: "LITERATURE", accent: "var(--data-2)" },
+  { id: "methodology", label: "Methodology", short: "METHOD", accent: "var(--secondary-400)" },
+  { id: "analysis", label: "Analysis", short: "ANALYSIS", accent: "var(--accent)" },
   { id: "findings", label: "Findings", short: "FINDINGS", accent: "var(--data-5)" },
 ] as const;
 
@@ -23,7 +22,7 @@ export function ResearchWorkflowScene() {
     <SceneFrameShell>
       <div className="flex h-full flex-col gap-4 sm:gap-5">
         <header className="flex items-center justify-between gap-3">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--dark-border)] bg-[var(--dark-surface)] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)] sm:text-xs">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--secondary-200)] bg-[var(--surface)] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)] sm:text-xs">
             <span className="h-1.5 w-1.5 rounded-full bg-[var(--data-5)]" />
             Research workflow
           </div>
@@ -55,8 +54,8 @@ export function ResearchWorkflowScene() {
 
           <div className="absolute inset-0 grid place-items-center">
             <div className="w-[61%] sm:w-[54%] lg:w-[47%]">
-              <div className="rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--dark-surface)]/95 p-3 shadow-[var(--shadow-lg)] backdrop-blur-sm sm:p-4">
-                <div className="flex items-center justify-between border-b border-[var(--dark-border)] pb-2">
+              <div className="rounded-[var(--radius-lg)] border border-[var(--dark-border)] bg-[var(--background)] p-3 text-[var(--foreground)] shadow-[var(--shadow-lg)] sm:p-4">
+                <div className="flex items-center justify-between border-b border-[var(--secondary-200)] pb-2">
                   <div>
                     <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--dark-muted-foreground)] sm:text-[10px]">Thesis working board</p>
                     <p className="mt-0.5 font-[var(--font-display-family)] text-sm sm:text-base">Research framework</p>
@@ -65,7 +64,7 @@ export function ResearchWorkflowScene() {
                 </div>
 
                 <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_0.7fr] sm:gap-3">
-                  <div className="rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2.5">
+                  <div className="rounded border border-[var(--secondary-200)] bg-[var(--surface-muted)] p-2.5">
                     <div className="mb-2 flex items-center justify-between">
                       <span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Document</span>
                       <span className="text-[8px] text-[var(--dark-muted-foreground)]">section 04</span>
@@ -78,13 +77,13 @@ export function ResearchWorkflowScene() {
                       ))}
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-1.5">
-                      <span className="h-9 rounded border border-[var(--dark-border)] bg-[var(--dark-surface)]" />
-                      <span className="h-9 rounded border border-[var(--dark-border)] bg-[var(--dark-surface)]" />
-                      <span className="h-9 rounded border border-[var(--dark-border)] bg-[var(--dark-surface)]" />
+                      <span className="h-9 rounded border border-[var(--secondary-200)] bg-[var(--surface)]" />
+                      <span className="h-9 rounded border border-[var(--secondary-200)] bg-[var(--surface)]" />
+                      <span className="h-9 rounded border border-[var(--secondary-200)] bg-[var(--surface)]" />
                     </div>
                   </div>
 
-                  <div className="rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2.5">
+                  <div className="rounded border border-[var(--secondary-200)] bg-[var(--surface-muted)] p-2.5">
                     <p className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Evidence map</p>
                     <svg aria-hidden="true" viewBox="0 0 180 100" className="mt-2 h-20 w-full">
                       <path d="M10 80 C45 50 55 75 82 42 S120 64 170 18" fill="none" stroke="var(--data-2)" strokeWidth="3" />
@@ -95,7 +94,7 @@ export function ResearchWorkflowScene() {
                   </div>
                 </div>
 
-                <div className="mt-3 rounded border border-[var(--dark-border)] bg-[var(--dark-background)] p-2.5">
+                <div className="mt-3 rounded border border-[var(--secondary-200)] bg-[var(--surface-muted)] p-2.5">
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-[8px] uppercase tracking-[0.14em] text-[var(--dark-muted-foreground)]">Active module</span>
                     <button
@@ -104,7 +103,7 @@ export function ResearchWorkflowScene() {
                       onClick={() => setActiveModule("methodology")}
                       className={cn(
                         "min-h-11 rounded border px-2 text-[9px] font-semibold transition-colors",
-                        activeModule === "methodology" ? "border-[var(--dark-border)] bg-[var(--dark-surface)]" : "border-[var(--dark-border)] text-[var(--dark-muted-foreground)] hover:text-[var(--dark-foreground)]",
+                        activeModule === "methodology" ? "border-[var(--secondary-200)] bg-[var(--surface)]" : "border-[var(--dark-border)] text-[var(--dark-muted-foreground)] hover:text-[var(--dark-foreground)]",
                       )}
                     >
                       Methodology
@@ -118,9 +117,6 @@ export function ResearchWorkflowScene() {
             </div>
           </div>
 
-          <div className="absolute bottom-[18%] inset-x-0 hidden justify-center lg:flex">
-            <Link href="/services/thesis-assistance" className="rounded-full border border-[var(--dark-border)] bg-[var(--dark-surface)] px-3 py-1.5 text-[9px] font-semibold uppercase tracking-[0.13em] hover:border-[var(--data-5)] hover:text-[var(--data-5)]">Thesis assistance</Link>
-          </div>
         </div>
 
         <footer className="flex items-center justify-between gap-4 border-t border-[var(--dark-border)] pt-3">
@@ -128,7 +124,7 @@ export function ResearchWorkflowScene() {
             <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: active.accent }} />
             <span className="truncate">Workflow state · {active.short}</span>
           </div>
-          <Link href="/research" className="shrink-0 text-[9px] font-semibold uppercase tracking-[0.13em] text-[var(--dark-muted-foreground)] underline decoration-[var(--dark-border)] underline-offset-4 hover:text-[var(--dark-foreground)]">Research</Link>
+          <ShowcaseCTA href="/contact" label="Request Support" tone="accent" />
         </footer>
       </div>
     </SceneFrameShell>
@@ -139,7 +135,7 @@ function ModuleButton({ module, active, onClick }: { module: (typeof modules)[nu
   return (
     <button type="button" aria-pressed={active} onClick={onClick} className={cn(
       "flex min-h-11 w-full items-center rounded-[var(--radius-md)] border p-2 text-left transition-[border-color,background-color,transform] duration-200 sm:p-3",
-      active ? "border-[var(--dark-border)] bg-[var(--dark-surface)] -translate-y-0.5" : "border-[var(--dark-border)]/70 bg-[var(--dark-surface)]/70 hover:-translate-y-0.5 hover:border-[var(--dark-border)]",
+      active ? "border-[var(--secondary-200)] bg-[var(--surface)] -translate-y-0.5" : "border-[var(--dark-border)]/70 bg-[var(--dark-surface)]/70 hover:-translate-y-0.5 hover:border-[var(--dark-border)]",
     )} style={{ boxShadow: active ? "inset 3px 0 0 " + module.accent : undefined }}>
       <span className="block text-[8px] font-semibold uppercase tracking-[0.11em] text-[var(--dark-muted-foreground)] sm:text-[9px]">{module.short}</span>
       <span className="mt-1 block truncate text-[10px] font-medium text-[var(--dark-foreground)] sm:text-xs">{module.label}</span>
