@@ -1,4 +1,4 @@
-# BittumamaProject
+# SkillVeda
 
 Production website foundation built with Next.js, React, TypeScript, App Router, ESLint, Tailwind CSS, PostgreSQL and Prisma.
 
