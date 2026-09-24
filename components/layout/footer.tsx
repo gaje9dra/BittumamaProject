@@ -66,7 +66,6 @@ export async function Footer() {
           aria-hidden="true"
           className="pointer-events-none absolute right-[var(--page-gutter)] top-4 hidden select-none font-display text-[clamp(10rem,20vw,18rem)] font-medium leading-none tracking-[-0.1em] text-primary-foreground/[0.035] lg:block"
         >
-          B
         </div>
 
         <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-x-12">
