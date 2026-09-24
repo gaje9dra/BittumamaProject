@@ -123,7 +123,7 @@ export async function Footer() {
                   Services
                 </h3>
                 <span aria-hidden="true" className="hidden type-caption text-primary-100/60 sm:block">
-                  Bittumama / Index
+                  SkillVeda / Index
                 </span>
               </div>
 
@@ -149,7 +149,7 @@ export async function Footer() {
         </div>
 
         <div className="relative mt-10 flex flex-col gap-3 border-t border-primary-foreground/10 pt-5 text-primary-100 sm:flex-row sm:items-center sm:justify-between">
-          <p className="type-caption">© {new Date().getFullYear()} Bittumama. All rights reserved.</p>
+          <p className="type-caption">© {new Date().getFullYear()} SkillVeda. All rights reserved.</p>
           <BackToTop />
         </div>
       </Container>
