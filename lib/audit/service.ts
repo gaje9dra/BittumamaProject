@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { PrismaClient } from "@/generated/prisma/client";
 import { AuditAction, AuditCategory, AuditResult, AuditSeverity } from "@/generated/prisma/client";
 import { normalizeAuditInput, type AuditRecordInput } from "@/lib/audit/types";
