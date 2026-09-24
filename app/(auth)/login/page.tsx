@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/auth/guards";
 import { isGoogleAuthConfigured } from "@/auth";
 
 export const metadata: Metadata = {
-  title: "Sign in | Bittumama",
+  title: "Sign in | SkillVeda",
   robots: { index: false, follow: false, nocache: true, noarchive: true },
 };
 
@@ -33,7 +33,7 @@ export default async function LoginPage({
     <AuthShell
       label="USER / SIGN IN"
       title="Sign in"
-      description="Access your Bittumama account."
+      description="Access your SkillVeda account."
       context="user"
     >
       {params.error && (
