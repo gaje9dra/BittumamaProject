@@ -61,7 +61,7 @@ export type SiteConfig = {
   };
 };
 
-const siteDescription = "Research support, academic services, analysis, expertise and knowledge resources from Bittumama.";
+const siteDescription = "Research support, academic services, analysis, expertise and knowledge resources from SkillVeda.";
 
 const routes = {
   home: { label: "Home", href: "/" },
@@ -97,7 +97,7 @@ const footerNavigationItems = {
 } satisfies SiteConfig["footerNavigation"];
 
 export const siteConfig: SiteConfig = {
-  siteName: "Bittumama",
+  siteName: "SkillVeda",
   siteDescription,
   routes,
   primaryNavigation: primaryNavigationItems,
@@ -106,7 +106,7 @@ export const siteConfig: SiteConfig = {
     contact: routes.contact,
   },
   defaultMetadata: {
-    title: "Bittumama — Research, Intelligence & Expertise",
+    title: "SkillVeda — Research, Intelligence & Expertise",
     description: siteDescription,
   },
 };
