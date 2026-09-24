@@ -16,13 +16,13 @@ export function isSameOrigin(request: Request) {
   if (!origin) return true;
 
   try {
-    const expectedOrigin =
-      configuredOrigin() ??
-      (process.env.NODE_ENV === "production"
-        ? PRODUCTION_ORIGIN
-        : new URL(request.url).origin);
+    const requestOrigin = new URL(request.url).origin;
+    const allowedOrigins = new Set([requestOrigin, PRODUCTION_ORIGIN]);
+    const configured = configuredOrigin();
 
-    return new URL(origin).origin === expectedOrigin;
+    if (configured) allowedOrigins.add(configured);
+
+    return allowedOrigins.has(new URL(origin).origin);
   } catch {
     return false;
   }
