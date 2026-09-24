@@ -1,5 +1,3 @@
-import "server-only";
-
 import type { Prisma, AuditAction, AuditCategory, AuditResult, AuditSeverity } from "@/generated/prisma/client";
 
 export type AuditActor = { userId: string | null; type: "USER" | "SYSTEM" };
