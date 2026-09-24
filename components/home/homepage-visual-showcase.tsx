@@ -39,7 +39,7 @@ export function HomepageVisualShowcase() {
   }, [reducedMotion, visible]);
 
   return (
-    <section ref={sectionRef} aria-label="Bittumama research visual showcase" className="w-full overflow-hidden border-b border-border bg-[var(--dark-background)]">
+    <section ref={sectionRef} aria-label="SkillVeda research visual showcase" className="w-full overflow-hidden border-b border-border bg-[var(--dark-background)]">
       <div className="relative aspect-[4/5] w-full overflow-hidden border-y border-border bg-[var(--dark-background)] sm:aspect-[16/10] lg:aspect-[16/8.5]">
         {SCENES.map((scene, index) => (
           <SceneFrame key={scene.id} active={index === activeIndex} index={index} previousIndex={previousIndex} reducedMotion={reducedMotion} label={scene.label}>
