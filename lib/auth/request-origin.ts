@@ -1,5 +1,3 @@
-import "server-only";
-
 const PRODUCTION_ORIGIN = "https://bittumamaproject.netlify.app";
 
 function configuredOrigin() {
