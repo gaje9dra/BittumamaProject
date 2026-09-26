@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 
 type AuthShellProps = {
@@ -23,7 +24,7 @@ export function AuthShell({ label, title, description, context, children }: Auth
           <div className="relative flex min-h-[15rem] flex-col justify-between sm:min-h-[19rem] lg:min-h-[calc(100vh-8rem)]">
             <div>
               <p className="type-label text-muted-foreground">01 / {admin ? "RESTRICTED ACCESS" : "ACCOUNT ACCESS"}</p>
-              <p className="mt-8 max-w-[10ch] type-display text-[clamp(2.8rem,6vw,6rem)]">SkillVeda</p>
+              <Image src="/skillveda-logo.svg" alt="SkillVeda" width={300} height={118} className="mt-8 h-auto w-[min(19rem,80vw)] object-contain object-left" priority />
             </div>
             <div className="max-w-xl">
               <p className="type-label text-muted-foreground">SKILLVEDA</p>
