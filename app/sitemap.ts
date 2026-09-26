@@ -46,7 +46,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: origin + "/services/" + service.slug,
     })),
     ...locationPages.map((location) => ({
-      url: origin + "/locations/" + location.slug,
+      url: origin + "/locations/" + location.id,
     })),
   ];
 }
