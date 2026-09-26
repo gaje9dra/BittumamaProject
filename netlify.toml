@@ -4,6 +4,3 @@
 
 [build.environment]
   NODE_VERSION = "24.21.0"
-
-[context.production]
-  command = "npx prisma migrate deploy && npm run build"
