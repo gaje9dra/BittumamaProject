@@ -5,7 +5,6 @@ import { HomePositioning } from "@/components/home/home-positioning";
 import { HomeProcess } from "@/components/home/home-process";
 import { HomeServiceDiscovery } from "@/components/home/home-service-discovery";
 import { FeaturedServicesSection } from "@/components/home/featured-services-section";
-import { HomepagePricingSection } from "@/components/home/homepage-pricing-section";
 import { GlobalPresenceSection } from "@/components/home/global-presence-section";
 import { HomepageStatisticsSection } from "@/components/home/homepage-statistics-section";
 import type { Metadata } from "next";
@@ -25,7 +24,6 @@ export default async function Home() {
     <main className="min-h-screen bg-background text-foreground">
       <HomepageVisualShowcase />
       <FeaturedServicesSection />
-      <HomepagePricingSection />
       <HomePositioning />
       <HomeIntelligence />
       <HomeServiceDiscovery />
