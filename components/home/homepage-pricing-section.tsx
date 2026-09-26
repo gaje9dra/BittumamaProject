@@ -1,40 +1,9 @@
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { ScrollTransition } from "@/components/ui/scroll-transition";
 import { ScrollStagger } from "@/components/ui/scroll-stagger";
-
-const PRICING_ITEMS = [
-  {
-    number: "01",
-    title: "Thesis / Dissertation",
-    scope: "200–250 pages",
-    price: "₹42,000",
-  },
-  {
-    number: "02",
-    title: "Thesis / Dissertation",
-    scope: "300 pages",
-    price: "₹55,000",
-  },
-  {
-    number: "03",
-    title: "Research Paper",
-    scope: "15–20 pages",
-    price: "₹8,000",
-  },
-  {
-    number: "04",
-    title: "Review Paper",
-    scope: "Systematic review",
-    price: "₹9,000",
-  },
-  {
-    number: "05",
-    title: "Publication",
-    scope: "Publication cost",
-    price: "₹18–19k",
-  },
-] as const;
+import { PRICING_ITEMS } from "@/data/pricing";
 
 export function HomepagePricingSection() {
   return (
@@ -69,9 +38,12 @@ export function HomepagePricingSection() {
           <ScrollStagger className="mt-10" stagger={0.08} distance={24}>
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
               {PRICING_ITEMS.map((item) => (
-                <article
+                <Link
                   key={item.number}
-                  className="group relative flex min-h-[15.5rem] flex-col overflow-hidden rounded-[0.5rem] border border-[#d8d0c3] bg-white px-5 py-5 shadow-[0_10px_30px_rgba(20,50,82,.06)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(20,50,82,.12)]"
+                  href={`/pricing/${item.slug}`}
+                  aria-label={`View pricing details for ${item.title}, ${item.scope}`}
+                  className="group relative flex min-h-[15.5rem] flex-col overflow-hidden rounded-[0.5rem] border border-[#d8d0c3] bg-white px-5 py-5 shadow-[0_10px_30px_rgba(20,50,82,.06)] transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_18px_42px_rgba(20,50,82,.12)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#173f6b]"
+                  
                 >
                   <div className="flex items-start justify-between">
                     <span className="font-display text-3xl font-semibold tracking-[-0.04em] text-[#173f6b]/20">
@@ -94,7 +66,7 @@ export function HomepagePricingSection() {
                       {item.price}
                     </p>
                   </div>
-                </article>
+                </Link>
               ))}
             </div>
           </ScrollStagger>
