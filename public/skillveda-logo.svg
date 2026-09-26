@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" role="img" aria-labelledby="title desc">
+<title id="title">Skill Veda</title>
+<desc id="desc">Skill Veda colorful infinity-inspired logo.</desc>
+<g transform="translate(60 28)">
+  <path d="M150 112 C75 35 5 78 18 132 C31 186 91 190 150 112 C209 34 269 39 282 91 C295 143 232 191 150 112Z" fill="none" stroke="#3c63c9" stroke-width="18" stroke-linecap="round" opacity=".9"/>
+  <path d="M150 112 C91 190 31 186 18 132 C5 78 75 35 150 112 C232 191 295 143 282 91 C269 39 209 34 150 112Z" fill="none" stroke="#e53b61" stroke-width="18" stroke-linecap="round" opacity=".72"/>
+  <g fill="#f39a1f">
+    <ellipse cx="118" cy="92" rx="26" ry="12" transform="rotate(-25 118 92)"/>
+    <ellipse cx="184" cy="130" rx="30" ry="14" transform="rotate(20 184 130)"/>
+  </g>
+  <g fill="#55a84f">
+    <ellipse cx="86" cy="137" rx="18" ry="10" transform="rotate(35 86 137)"/>
+    <ellipse cx="218" cy="78" rx="19" ry="10" transform="rotate(-25 218 78)"/>
+  </g>
+  <g fill="#7c42c8">
+    <circle cx="58" cy="92" r="10"/><circle cx="245" cy="123" r="9"/>
+  </g>
+  <g fill="#e83c4f">
+    <circle cx="104" cy="154" r="8"/><circle cx="201" cy="61" r="8"/>
+  </g>
+</g>
+<text x="380" y="244" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="54" font-weight="700" letter-spacing="6" fill="#d82f56">SKILL VEDA</text>
+</svg>
