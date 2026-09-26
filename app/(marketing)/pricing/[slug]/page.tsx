@@ -90,7 +90,7 @@ export default async function PricingDetailPage({ params }: PricingPageProps) {
               </h2>
             </ScrollTransition>
 
-            <ScrollTransition distance={28} delay={0.08}>
+            <ScrollTransition distance={28} mode="visual">
               <div className="border-y border-border">
                 {item.details.map((detail) => (
                   <div key={detail} className="flex items-start gap-4 border-b border-border py-5 last:border-b-0">
