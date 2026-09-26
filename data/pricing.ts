@@ -4,7 +4,7 @@ export const PRICING_ITEMS = [
     slug: "thesis-dissertation-200-250-pages",
     title: "Thesis / Dissertation",
     scope: "200–250 pages",
-    price: "₹42,000",
+    price: "₹33,600",
     description:
       "Research support for a 200–250 page thesis or dissertation, presented with a clear academic structure and defined scope.",
     details: [
@@ -19,7 +19,7 @@ export const PRICING_ITEMS = [
     slug: "thesis-dissertation-300-pages",
     title: "Thesis / Dissertation",
     scope: "300 pages",
-    price: "₹55,000",
+    price: "₹44,000",
     description:
       "Research support for a 300-page thesis or dissertation with a larger project scope and detailed document requirements.",
     details: [
@@ -34,7 +34,7 @@ export const PRICING_ITEMS = [
     slug: "research-paper",
     title: "Research Paper",
     scope: "15–20 pages",
-    price: "₹8,000",
+    price: "₹6,400",
     description:
       "Focused research-paper support for a 15–20 page academic document, with the work organized around the defined research requirement.",
     details: [
@@ -49,7 +49,7 @@ export const PRICING_ITEMS = [
     slug: "review-paper",
     title: "Review Paper",
     scope: "Systematic review",
-    price: "₹9,000",
+    price: "₹7,200",
     description:
       "Support for systematic review work, organized around a clearly defined review scope and academic presentation.",
     details: [
@@ -64,7 +64,7 @@ export const PRICING_ITEMS = [
     slug: "publication",
     title: "Publication",
     scope: "Publication cost",
-    price: "₹18–19k",
+    price: "₹14.4–15.2k",
     description:
       "Indicative publication pricing for research work that is ready to move through a publication process.",
     details: [
