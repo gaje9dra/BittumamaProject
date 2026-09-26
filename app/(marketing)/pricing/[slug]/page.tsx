@@ -47,7 +47,7 @@ export default async function PricingDetailPage({ params }: PricingPageProps) {
         <Container size="wide" className="layout-section-lg">
           <ScrollTransition distance={36}>
             <Link
-              href="/#pricing"
+              href="/pricing"
               className="inline-flex items-center gap-2 type-button text-[#173f6b] transition-colors hover:text-[#b3130d] focus-visible:outline-2 focus-visible:outline-offset-4"
             >
               <ArrowLeft aria-hidden="true" className="size-4" />
