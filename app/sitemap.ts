@@ -28,12 +28,25 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.warn("Sitemap service query failed; using canonical service dataset.", error);
   }
 
-  const staticRoutes = ["/", "/services", "/research", "/experts", "/articles", "/workshops", "/about", "/contact"];
+  const staticRoutes = [
+    "/",
+    "/services",
+    "/pricing",
+    "/research",
+    "/experts",
+    "/articles",
+    "/workshops",
+    "/about",
+    "/contact",
+  ];
 
   return [
     ...staticRoutes.map((path) => ({ url: origin + path })),
     ...services.map((service) => ({
       url: origin + "/services/" + service.slug,
+    })),
+    ...locationPages.map((location) => ({
+      url: origin + "/locations/" + location.slug,
     })),
   ];
 }
