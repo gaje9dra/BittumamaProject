@@ -40,6 +40,7 @@ export type SiteConfig = {
   routes: {
     home: SiteRoute;
     services: SiteRoute;
+    pricing: SiteRoute;
     research: SiteRoute;
     experts: SiteRoute;
     articles: SiteRoute;
@@ -66,6 +67,7 @@ const siteDescription = "Research support, academic services, analysis, expertis
 const routes = {
   home: { label: "Home", href: "/" },
   services: { label: "Services", href: "/services" },
+  pricing: { label: "Pricing", href: "/pricing" },
   research: { label: "Research", href: "/research" },
   experts: { label: "Experts", href: "/experts" },
   articles: { label: "Articles", href: "/articles" },
@@ -76,6 +78,7 @@ const routes = {
 
 const primaryNavigationItems: NavigationItem[] = [
   routes.services,
+  routes.pricing,
   routes.research,
   routes.workshops,
   routes.experts,
