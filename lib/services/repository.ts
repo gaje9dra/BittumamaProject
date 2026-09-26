@@ -11,17 +11,20 @@ import type {
 import { canonicalServiceSlugs, canonicalServices } from "@/data/services";
 
 function getCanonicalFallback(slug: string): Service | undefined {
-  if (process.env.NODE_ENV === "production") return undefined;
   return canonicalServices.find((service) => service.slug === slug);
 }
 
-async function runServiceQuery<T>(query: () => Promise<T>): Promise<T> {
+async function runServiceQuery<T>(
+  query: () => Promise<T>,
+  fallback?: T,
+): Promise<T> {
   try {
     return await query();
   } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("Service database query failed:", error);
-    }
+    // Public pages should remain available during a transient database outage.
+    // Keep the error visible in logs while serving the canonical service data.
+    console.error("Service database query failed:", error);
+    if (fallback !== undefined) return fallback;
     throw new Error("Unable to load Services from the database.");
   }
 }
@@ -86,23 +89,69 @@ function toDomainService(record: PrismaService): Service {
 }
 
 export async function getPublishedServices(): Promise<Service[]> {
-  const records = await runServiceQuery(() => prisma.client.service.findMany({
-    where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
-    orderBy: [{ order: "asc" }, { id: "asc" }],
-  }));
+  const records = await runServiceQuery(
+    () => prisma.client.service.findMany({
+      where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
+      orderBy: [{ order: "asc" }, { id: "asc" }],
+    }),
+    canonicalServices.map((service, index) => ({
+      id: service.id,
+      title: service.title,
+      slug: service.slug,
+      category: service.category,
+      shortDescription: service.shortDescription,
+      need: service.need ?? null,
+      focus: service.focus ?? null,
+      audience: service.audience ?? null,
+      highlights: service.highlights ?? [],
+      faq: service.faq ?? [],
+      featured: service.featured ?? false,
+      availability: service.status === "Coming Soon" ? "COMING_SOON" : "PUBLISHED",
+      seoTitle: service.seo?.title ?? null,
+      seoDescription: service.seo?.description ?? null,
+      seoImage: service.seo?.image ?? null,
+      seoCanonical: service.seo?.canonical ?? null,
+      seoNoIndex: service.seo?.noIndex ?? false,
+      publishAt: null,
+      order: index,
+    })),
+  );
 
   return records.map(toDomainService);
 }
 
 
 export async function getRequestedPublishedServices(): Promise<Service[]> {
-  const records = await runServiceQuery(() => prisma.client.service.findMany({
-    where: {
-      slug: { in: [...canonicalServiceSlugs] },
-      status: "PUBLISHED",
-      OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
-    },
-  }));
+  const records = await runServiceQuery(
+    () => prisma.client.service.findMany({
+      where: {
+        slug: { in: [...canonicalServiceSlugs] },
+        status: "PUBLISHED",
+        OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
+      },
+    }),
+    canonicalServices.map((service, index) => ({
+      id: service.id,
+      title: service.title,
+      slug: service.slug,
+      category: service.category,
+      shortDescription: service.shortDescription,
+      need: service.need ?? null,
+      focus: service.focus ?? null,
+      audience: service.audience ?? null,
+      highlights: service.highlights ?? [],
+      faq: service.faq ?? [],
+      featured: service.featured ?? false,
+      availability: service.status === "Coming Soon" ? "COMING_SOON" : "PUBLISHED",
+      seoTitle: service.seo?.title ?? null,
+      seoDescription: service.seo?.description ?? null,
+      seoImage: service.seo?.image ?? null,
+      seoCanonical: service.seo?.canonical ?? null,
+      seoNoIndex: service.seo?.noIndex ?? false,
+      publishAt: null,
+      order: index,
+    })),
+  );
 
   const order = new Map(canonicalServiceSlugs.map((slug, index) => [slug, index]));
   records.sort((a, b) => (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER));
@@ -111,24 +160,18 @@ export async function getRequestedPublishedServices(): Promise<Service[]> {
     const loaded = new Set(records.map((record) => record.slug));
     const missing = canonicalServiceSlugs.filter((slug) => !loaded.has(slug));
 
-    if (process.env.NODE_ENV !== "production") {
-      const fallbackBySlug = new Map(
-        canonicalServices
-          .filter((service) => missing.includes(service.slug))
-          .map((service) => [service.slug, service]),
-      );
-
-      return canonicalServiceSlugs
-        .map((slug) => {
-          const record = records.find((item) => item.slug === slug);
-          return record ? toDomainService(record) : fallbackBySlug.get(slug);
-        })
-        .filter((service): service is Service => Boolean(service));
-    }
-
-    throw new Error(
-      `Canonical Services navigation is incomplete. Missing: ${missing.join(", ")}`,
+    const fallbackBySlug = new Map(
+      canonicalServices
+        .filter((service) => missing.includes(service.slug))
+        .map((service) => [service.slug, service]),
     );
+
+    return canonicalServiceSlugs
+      .map((slug) => {
+        const record = records.find((item) => item.slug === slug);
+        return record ? toDomainService(record) : fallbackBySlug.get(slug);
+      })
+      .filter((service): service is Service => Boolean(service));
   }
 
   return records.map(toDomainService);
