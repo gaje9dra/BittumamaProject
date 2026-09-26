@@ -89,77 +89,45 @@ function toDomainService(record: PrismaService): Service {
 }
 
 export async function getPublishedServices(): Promise<Service[]> {
-  const records = await runServiceQuery(
-    () => prisma.client.service.findMany({
-      where: { status: "PUBLISHED", OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }] },
+  try {
+    const records = await prisma.client.service.findMany({
+      where: {
+        status: "PUBLISHED",
+        OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
+      },
       orderBy: [{ order: "asc" }, { id: "asc" }],
-    }),
-    canonicalServices.map((service, index) => ({
-      id: service.id,
-      title: service.title,
-      slug: service.slug,
-      category: service.category,
-      shortDescription: service.shortDescription,
-      need: service.need ?? null,
-      focus: service.focus ?? null,
-      audience: service.audience ?? null,
-      highlights: service.highlights ?? [],
-      faq: service.faq ?? [],
-      featured: service.featured ?? false,
-      availability: service.status === "Coming Soon" ? "COMING_SOON" : "PUBLISHED",
-      seoTitle: service.seo?.title ?? null,
-      seoDescription: service.seo?.description ?? null,
-      seoImage: service.seo?.image ?? null,
-      seoCanonical: service.seo?.canonical ?? null,
-      seoNoIndex: service.seo?.noIndex ?? false,
-      publishAt: null,
-      order: index,
-    })),
-  );
+    });
 
-  return records.map(toDomainService);
+    return records.map(toDomainService);
+  } catch (error) {
+    console.error("Service database query failed:", error);
+    return canonicalServices;
+  }
 }
 
-
 export async function getRequestedPublishedServices(): Promise<Service[]> {
-  const records = await runServiceQuery(
-    () => prisma.client.service.findMany({
+  try {
+    const records = await prisma.client.service.findMany({
       where: {
         slug: { in: [...canonicalServiceSlugs] },
         status: "PUBLISHED",
         OR: [{ publishAt: null }, { publishAt: { lte: new Date() } }],
       },
-    }),
-    canonicalServices.map((service, index) => ({
-      id: service.id,
-      title: service.title,
-      slug: service.slug,
-      category: service.category,
-      shortDescription: service.shortDescription,
-      need: service.need ?? null,
-      focus: service.focus ?? null,
-      audience: service.audience ?? null,
-      highlights: service.highlights ?? [],
-      faq: service.faq ?? [],
-      featured: service.featured ?? false,
-      availability: service.status === "Coming Soon" ? "COMING_SOON" : "PUBLISHED",
-      seoTitle: service.seo?.title ?? null,
-      seoDescription: service.seo?.description ?? null,
-      seoImage: service.seo?.image ?? null,
-      seoCanonical: service.seo?.canonical ?? null,
-      seoNoIndex: service.seo?.noIndex ?? false,
-      publishAt: null,
-      order: index,
-    })),
-  );
+    });
 
-  const order = new Map(canonicalServiceSlugs.map((slug, index) => [slug, index]));
-  records.sort((a, b) => (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) - (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER));
+    const order = new Map(canonicalServiceSlugs.map((slug, index) => [slug, index]));
+    records.sort(
+      (a, b) =>
+        (order.get(a.slug) ?? Number.MAX_SAFE_INTEGER) -
+        (order.get(b.slug) ?? Number.MAX_SAFE_INTEGER),
+    );
 
-  if (records.length !== canonicalServiceSlugs.length) {
+    if (records.length === canonicalServiceSlugs.length) {
+      return records.map(toDomainService);
+    }
+
     const loaded = new Set(records.map((record) => record.slug));
     const missing = canonicalServiceSlugs.filter((slug) => !loaded.has(slug));
-
     const fallbackBySlug = new Map(
       canonicalServices
         .filter((service) => missing.includes(service.slug))
@@ -172,9 +140,10 @@ export async function getRequestedPublishedServices(): Promise<Service[]> {
         return record ? toDomainService(record) : fallbackBySlug.get(slug);
       })
       .filter((service): service is Service => Boolean(service));
+  } catch (error) {
+    console.error("Service database query failed:", error);
+    return canonicalServices;
   }
-
-  return records.map(toDomainService);
 }
 
 export async function getPublishedServiceById(
