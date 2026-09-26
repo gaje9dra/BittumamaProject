@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { DesktopNav } from "@/components/layout/desktop-nav";
 import { HeaderActions } from "@/components/layout/header-actions";
@@ -21,7 +22,7 @@ export async function Header() {
             aria-label={siteConfig.siteName + " home"}
             className="shrink-0 text-foreground transition-colors duration-[var(--motion-micro)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4"
           >
-            <span className="type-h5 font-semibold tracking-[-0.02em]">{siteConfig.siteName}</span>
+            <Image src="/skillveda-logo.svg" alt={siteConfig.siteName} width={122} height={48} className="h-10 w-auto object-contain" priority />
           </Link>
           <DesktopNav navigation={navigation} />
           <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" user={user ? { name: user.name ?? null, email: user.email ?? null, image: user.image ?? null } : null} />
