@@ -4,7 +4,7 @@ import { AdminLoginForm } from "@/components/auth/admin-login-form";
 import { AuthShell } from "@/components/auth/auth-shell";
 
 export const metadata: Metadata = {
-  title: "Administrator Sign In | Bittumama",
+  title: "Administrator Sign In | Grade Boost Digitals",
   robots: { index: false, follow: false, nocache: true, noarchive: true },
 };
 

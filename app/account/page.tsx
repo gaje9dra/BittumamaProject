@@ -10,7 +10,7 @@ import { ChangePasswordForm } from "@/components/account/change-password-form";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Account | Bittumama",
+  title: "Account | Grade Boost Digitals",
   robots: { index: false, follow: false },
 };
 

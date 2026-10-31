@@ -62,7 +62,7 @@ export type SiteConfig = {
   };
 };
 
-const siteDescription = "Research support, academic services, analysis, expertise and knowledge resources from SkillVeda.";
+const siteDescription = "Research support, academic services, analysis, expertise and knowledge resources from Grade Boost Digitals.";
 
 const routes = {
   home: { label: "Home", href: "/" },
@@ -100,7 +100,7 @@ const footerNavigationItems = {
 } satisfies SiteConfig["footerNavigation"];
 
 export const siteConfig: SiteConfig = {
-  siteName: "SkillVeda",
+  siteName: "Grade Boost Digitals",
   siteDescription,
   routes,
   primaryNavigation: primaryNavigationItems,
@@ -109,7 +109,7 @@ export const siteConfig: SiteConfig = {
     contact: routes.contact,
   },
   defaultMetadata: {
-    title: "SkillVeda — Research, Intelligence & Expertise",
+    title: "Grade Boost Digitals — Research, Intelligence & Expertise",
     description: siteDescription,
   },
 };
