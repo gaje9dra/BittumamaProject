@@ -83,7 +83,8 @@ export function ContactForm({ initialService = "", initialLocation, services }: 
 
   return (
     <form noValidate onSubmit={handleSubmit} className="bg-transparent">
-      <div className="grid gap-6">\n        {initialLocation ? <div className="border-l-2 border-primary bg-surface-muted px-4 py-3"><p className="type-label text-muted-foreground">Request context</p><p className="mt-1 type-body-sm">{initialLocation}</p></div> : null}
+      <div className="grid gap-6">
+        {initialLocation ? <div className="border-l-2 border-primary bg-surface-muted px-4 py-3"><p className="type-label text-muted-foreground">Request context</p><p className="mt-1 type-body-sm">{initialLocation}</p></div> : null}
         <div aria-hidden="true" className="absolute -left-[10000px] h-px w-px overflow-hidden">
           <label htmlFor="contact-website">Website</label>
           <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" value={values.website} onChange={(e) => update("website", e.target.value)} />
