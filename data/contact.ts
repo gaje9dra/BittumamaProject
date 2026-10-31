@@ -5,10 +5,10 @@ export type ContactMethod = {
   external?: boolean;
 };
 
-// Replace this placeholder with the WhatsApp number in international format.
-// Use digits only: country code + phone number, without +, spaces, or dashes.
+// WhatsApp number in international format: country code + phone number,
+// using digits only (no +, spaces, or dashes).
 export const contactData = {
-  whatsappNumber: "91XXXXXXXXXX",
+  whatsappNumber: "918114490400",
   seo: {
     title: "Contact Bittumama | Research Enquiry",
     description: "Tell Bittumama what you are working on and identify the relevant research or academic support.",
