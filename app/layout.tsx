@@ -26,7 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body
+        style={
+          {
+            "--font-body": "Arial",
+            "--font-display": "Georgia",
+          } as React.CSSProperties
+        }
+      >
         {children}
         <WhatsAppContactButton />
         <PageViewTracker />
