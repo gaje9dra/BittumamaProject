@@ -1,23 +1,9 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Sans, Literata } from "next/font/google";
 import "./globals.css";
 import { siteConfig } from "@/data/site-config";
 import { runContentIntegrityValidation } from "@/lib/content/validation";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
-
-const bodyFont = IBM_Plex_Sans({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-body",
-  weight: ["400", "500", "600"],
-});
-
-const displayFont = Literata({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
-});
+import { WhatsAppContactButton } from "@/components/layout/whatsapp-contact-button";
 
 export const dynamic = "force-dynamic";
 
@@ -40,8 +26,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${bodyFont.variable} ${displayFont.variable}`}>
+      <body
+        style={
+          {
+            "--font-body": "Arial",
+            "--font-display": "Georgia",
+          } as React.CSSProperties
+        }
+      >
         {children}
+        <WhatsAppContactButton />
         <PageViewTracker />
       </body>
     </html>
