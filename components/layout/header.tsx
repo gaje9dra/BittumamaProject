@@ -16,13 +16,13 @@ export async function Header() {
   return (
     <HeaderScrollShell>
       <header className="border-b border-border bg-background transition-[background-color,border-color] duration-[var(--motion-micro)] ease-[var(--motion-ease-standard)]">
-        <div className="mx-auto flex min-h-[var(--header-height)] w-full max-w-[var(--container-wide)] items-center px-[var(--page-gutter)] lg:min-h-[var(--header-height-lg)]">
+        <div className="mx-auto flex min-h-[104px] w-full max-w-[var(--container-wide)] items-center px-[var(--page-gutter)] lg:min-h-[112px]">
           <Link
             href="/"
             aria-label={siteConfig.siteName + " home"}
             className="shrink-0 text-foreground transition-colors duration-[var(--motion-micro)] hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4"
           >
-            <Image src="/grade-boost-digitals-logo.png" alt={siteConfig.siteName} width={64} height={64} className="h-12 w-12 object-contain" priority />
+            <Image src="/grade-boost-digitals-logo.svg" alt={siteConfig.siteName} width={124} height={105} className="h-[92px] w-auto object-contain" priority />
           </Link>
           <DesktopNav navigation={navigation} />
           <HeaderActions className="ml-5 hidden lg:flex xl:ml-7" user={user ? { name: user.name ?? null, email: user.email ?? null, image: user.image ?? null } : null} />
