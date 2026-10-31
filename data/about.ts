@@ -7,10 +7,10 @@ export type AboutData = {
 };
 
 export const about: AboutData = {
-  name: "SkillVeda",
+  name: "Grade Boost Digitals",
   shortDescription: "Research, academic support, analysis and research technology.",
-  description: "SkillVeda brings together research support, academic work, data analysis, publication support, mentoring and research-oriented technology.",
-  purpose: "SkillVeda exists to bring practical research and academic support together with analysis, knowledge work and research-oriented technology.",
+  description: "Grade Boost Digitals brings together research support, academic work, data analysis, publication support, mentoring and research-oriented technology.",
+  purpose: "Grade Boost Digitals exists to bring practical research and academic support together with analysis, knowledge work and research-oriented technology.",
   focusAreas: [
     { title: "Research", description: "Research support, methodology and literature-focused work." },
     { title: "Academic Support", description: "Support around thesis, dissertation and research paper work." },
@@ -30,7 +30,7 @@ export const about: AboutData = {
     { title: "Articles", description: "Accessible articles and insights connected to research and knowledge.", href: "/articles", action: "Read Articles" },
   ],
   seo: {
-    title: "About SkillVeda | Organization & Focus",
-    description: "Learn what SkillVeda focuses on across research, academic support, analysis, publication and research technology.",
+    title: "About Grade Boost Digitals | Organization & Focus",
+    description: "Learn what Grade Boost Digitals focuses on across research, academic support, analysis, publication and research technology.",
   },
 };

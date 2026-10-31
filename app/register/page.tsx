@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/auth/guards";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Create account | Bittumama",
+  title: "Create account | Grade Boost Digitals",
   robots: { index: false, follow: false, nocache: true, noarchive: true },
 };
 
@@ -18,7 +18,7 @@ export default async function RegisterPage() {
     <AuthShell
       label="USER / CREATE ACCOUNT"
       title="Create an account"
-      description="Create a normal Bittumama account with the credentials you choose."
+      description="Create a normal Grade Boost Digitals account with the credentials you choose."
       context="user"
     >
       <RegisterForm />

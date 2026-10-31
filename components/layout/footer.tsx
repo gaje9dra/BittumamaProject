@@ -71,7 +71,7 @@ export async function Footer() {
 
         <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-x-12">
           <div className="lg:col-span-5">
-            <Image src="/skillveda-logo.svg" alt={siteConfig.siteName} width={190} height={75} className="h-14 w-auto object-contain object-left" />
+            <Image src="/grade-boost-digitals-logo.svg" alt={siteConfig.siteName} width={190} height={75} className="h-14 w-auto object-contain object-left" />
             <h2
               id="footer-title"
               className="mt-5 max-w-[11ch] font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-5xl lg:text-[clamp(3rem,4.2vw,4.5rem)]"
@@ -123,7 +123,7 @@ export async function Footer() {
                   Services
                 </h3>
                 <span aria-hidden="true" className="hidden type-caption text-primary-100/60 sm:block">
-                  SkillVeda / Index
+                  Grade Boost Digitals / Index
                 </span>
               </div>
 
@@ -149,7 +149,7 @@ export async function Footer() {
         </div>
 
         <div className="relative mt-10 flex flex-col gap-3 border-t border-primary-foreground/10 pt-5 text-primary-100 sm:flex-row sm:items-center sm:justify-between">
-          <p className="type-caption">© {new Date().getFullYear()} SkillVeda. All rights reserved.</p>
+          <p className="type-caption">© {new Date().getFullYear()} Grade Boost Digitals. All rights reserved.</p>
           <BackToTop />
         </div>
       </Container>

@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/auth/guards";
 import { isGoogleAuthConfigured } from "@/auth";
 
 export const metadata: Metadata = {
-  title: "Sign in | SkillVeda",
+  title: "Sign in | Grade Boost Digitals",
   robots: { index: false, follow: false, nocache: true, noarchive: true },
 };
 
@@ -33,7 +33,7 @@ export default async function LoginPage({
     <AuthShell
       label="USER / SIGN IN"
       title="Sign in"
-      description="Access your SkillVeda account."
+      description="Access your Grade Boost Digitals account."
       context="user"
     >
       {params.error && (
