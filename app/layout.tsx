@@ -4,6 +4,7 @@ import "./globals.css";
 import { siteConfig } from "@/data/site-config";
 import { runContentIntegrityValidation } from "@/lib/content/validation";
 import { PageViewTracker } from "@/components/analytics/page-view-tracker";
+import { WhatsAppContactButton } from "@/components/layout/whatsapp-contact-button";
 
 const bodyFont = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${bodyFont.variable} ${displayFont.variable}`}>
         {children}
+        <WhatsAppContactButton />
         <PageViewTracker />
       </body>
     </html>
