@@ -71,7 +71,7 @@ export async function Footer() {
 
         <div className="relative grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-x-12">
           <div className="lg:col-span-5">
-            <Image src="/grade-boost-digitals-logo.jpg" alt={siteConfig.siteName} width={190} height={75} className="h-14 w-auto object-contain object-left" />
+            <Image src="/grade-boost-digitals-logo.svg" alt={siteConfig.siteName} width={190} height={75} className="h-14 w-auto object-contain object-left" />
             <h2
               id="footer-title"
               className="mt-5 max-w-[11ch] font-display text-4xl font-semibold leading-[1.02] tracking-[-0.035em] sm:text-5xl lg:text-[clamp(3rem,4.2vw,4.5rem)]"
